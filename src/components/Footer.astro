@@ -1,0 +1,68 @@
+---
+import { siteConfig } from '../config/site';
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-copy">
+      <span>© {currentYear} {siteConfig.title}.</span>
+      <span class="footer-separator">•</span>
+      <span class="footer-ssg">Pure SSG powered by <a href="https://astro.build" target="_blank" rel="noopener noreferrer">Astro</a></span>
+    </div>
+
+    <div class="footer-signature">
+      <em>Crafted with pride in Brazil 🇧🇷 by <a href="https://github.com/rnt-rez" target="_blank" rel="noopener noreferrer">Renato Rezende</a>. Engineered for the global web.</em>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 0 3rem;
+    margin-top: auto;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+  }
+
+  .footer-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.75rem;
+  }
+
+  .footer-copy {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .footer-copy a {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .footer-separator {
+    opacity: 0.4;
+  }
+
+  .footer-signature {
+    font-size: 0.85rem;
+    opacity: 0.85;
+  }
+
+  .footer-signature a {
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .footer-signature a:hover {
+    color: var(--accent);
+  }
+</style>

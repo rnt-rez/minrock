@@ -1,0 +1,36 @@
+export interface SiteConfig {
+  title: string;
+  tagline: string;
+  description: string;
+  author: string;
+  siteUrl: string;
+  defaultTheme: 'white' | 'cream' | 'slate' | 'midnight';
+  socialLinks: {
+    github?: string;
+    twitter?: string;
+    linkedin?: string;
+    email?: string;
+  };
+  navLinks: {
+    title: string;
+    href: string;
+  }[];
+}
+
+export const siteConfig: SiteConfig = {
+  title: 'Minrock',
+  tagline: 'Raw ideas from your personal vault, finely polished into an ultra-fast static blog.',
+  description: 'Minimalist, typography-first Astro 5 theme crafted for technical writers and Obsidian vaults. Pure SSG, zero bloat.',
+  author: 'Renato Rezende',
+  siteUrl: 'https://minrock.pages.dev',
+  defaultTheme: 'cream',
+  socialLinks: {
+    github: 'https://github.com/rnt-rez/minrock',
+    email: 'contact@example.com'
+  },
+  navLinks: [
+    { title: 'Home', href: '/' },
+    { title: 'Blog', href: '/blog' },
+    { title: 'About', href: '/about' }
+  ]
+};

@@ -1,0 +1,89 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric'
+});
+---
+
+<article class="article-card">
+  <div class="card-meta">
+    <time datetime={post.data.pubDate.toISOString()}>{formattedDate}</time>
+    {post.data.tags && post.data.tags.length > 0 && (
+      <span class="tags">
+        {post.data.tags.map((tag) => (
+          <span class="tag">#{tag}</span>
+        ))}
+      </span>
+    )}
+  </div>
+
+  <h2 class="card-title">
+    <a href={`/blog/${post.id}`}>
+      {post.data.title}
+    </a>
+  </h2>
+
+  <p class="card-desc">
+    {post.data.description}
+  </p>
+</article>
+
+<style>
+  .article-card {
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .article-card:last-child {
+    border-bottom: none;
+  }
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-bottom: 0.4rem;
+  }
+
+  .tags {
+    display: flex;
+    gap: 0.4rem;
+  }
+
+  .tag {
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .card-title {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.35rem;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .card-title a {
+    color: var(--text);
+  }
+
+  .card-title a:hover {
+    color: var(--accent);
+  }
+
+  .card-desc {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+</style>

@@ -1,0 +1,76 @@
+---
+// ThemeToggle.astro: Switch between 4 color palettes (White, Cream, Slate, Midnight)
+---
+
+<div class="theme-switch" role="group" aria-label="Color theme switcher">
+  <button type="button" class="theme-btn" data-theme-val="white" title="Clean White" aria-label="White theme">☀️</button>
+  <button type="button" class="theme-btn" data-theme-val="cream" title="Warm Paper" aria-label="Cream theme">📜</button>
+  <button type="button" class="theme-btn" data-theme-val="slate" title="Slate Navy" aria-label="Slate theme">⚓</button>
+  <button type="button" class="theme-btn" data-theme-val="midnight" title="Midnight OLED" aria-label="Midnight theme">🌌</button>
+</div>
+
+<style>
+  .theme-switch {
+    display: flex;
+    align-items: center;
+    background: var(--bg-subtle);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2px 4px;
+    gap: 2px;
+  }
+
+  .theme-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 0.95rem;
+    padding: 3px 6px;
+    border-radius: 12px;
+    line-height: 1;
+    opacity: 0.6;
+    transition: opacity 0.2s ease, transform 0.15s ease, background 0.2s ease;
+  }
+
+  .theme-btn:hover {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+
+  .theme-btn.active {
+    opacity: 1;
+    background: var(--bg-surface);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+</style>
+
+<script>
+  function setupTheme() {
+    const buttons = document.querySelectorAll('.theme-btn');
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'cream';
+
+    buttons.forEach((btn) => {
+      const val = btn.getAttribute('data-theme-val');
+      if (val === currentTheme) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+
+      btn.addEventListener('click', () => {
+        if (!val) return;
+        document.documentElement.setAttribute('data-theme', val);
+        localStorage.setItem('minrock_theme', val);
+
+        buttons.forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        // Dispatch custom event for ScatterLeaf chameleon mode
+        window.dispatchEvent(new CustomEvent('minrock-theme-change', { detail: { theme: val } }));
+      });
+    });
+  }
+
+  setupTheme();
+  document.addEventListener('astro:after-swap', setupTheme);
+</script>

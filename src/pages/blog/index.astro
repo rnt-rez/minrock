@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// Collect unique tags
+const allTags = Array.from(new Set(allPosts.flatMap((p) => p.data.tags || []))).sort();
+---
+
+<BaseLayout title="Blog — All Notes">
+  <header class="blog-header">
+    <h1 class="page-title">Articles & Notes</h1>
+    <p class="page-desc">
+      Explorations in software engineering, technical writing, and minimalist design.
+    </p>
+
+    {allTags.length > 0 && (
+      <div class="tags-filter">
+        <span class="tags-label">Topics:</span>
+        {allTags.map((tag) => (
+          <span class="tag-pill">#{tag}</span>
+        ))}
+      </div>
+    )}
+  </header>
+
+  <section class="posts-list">
+    {allPosts.map((post) => (
+      <ArticleCard post={post} />
+    ))}
+  </section>
+</BaseLayout>
+
+<style>
+  .blog-header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .page-title {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 2.25rem;
+  }
+
+  .page-desc {
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+    font-size: 1.05rem;
+  }
+
+  .tags-filter {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    font-size: 0.85rem;
+  }
+
+  .tags-label {
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .tag-pill {
+    background: var(--bg-subtle);
+    border: 1px solid var(--border);
+    padding: 0.2rem 0.55rem;
+    border-radius: 12px;
+    color: var(--text-muted);
+  }
+</style>

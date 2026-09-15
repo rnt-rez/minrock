@@ -1,0 +1,159 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post }
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+---
+
+<BaseLayout title={post.data.title} description={post.data.description}>
+  <article class="post-article">
+    <header class="post-header">
+      <div class="post-meta">
+        <time datetime={post.data.pubDate.toISOString()}>{formattedDate}</time>
+        {post.data.tags && post.data.tags.length > 0 && (
+          <span class="meta-tags">
+            {post.data.tags.map((tag: string) => (
+              <span class="tag">#{tag}</span>
+            ))}
+          </span>
+        )}
+      </div>
+
+      <h1 class="post-title">{post.data.title}</h1>
+      <p class="post-description">{post.data.description}</p>
+    </header>
+
+    <div class="post-content">
+      <Content />
+    </div>
+
+    <!-- 🍃 ScatterLeaf Integration: Ready for testing -->
+    <section class="comments-area" id="comments">
+      <div class="comments-divider"></div>
+      <div class="comments-header">
+        <h3 class="comments-title">
+          <span>🍃</span>
+          <span>Marginalia & Discussion</span>
+        </h3>
+        <p class="comments-subtitle">
+          Iframe-free native comments powered by <a href="https://github.com/rnt-rez/scatterleaf" target="_blank" rel="noopener noreferrer">ScatterLeaf</a>.
+        </p>
+      </div>
+
+      <!-- Web Component Placeholder/Host -->
+      <div class="scatterleaf-host">
+        <scatter-leaf
+          id="post-comments"
+          repo="rnt-rez/scatterleaf"
+          category="General"
+          theme="auto"
+          lang="en"
+        ></scatter-leaf>
+      </div>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .post-article {
+    padding-top: 1rem;
+  }
+
+  .post-header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .post-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+  }
+
+  .meta-tags {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .tag {
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .post-title {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+    font-size: 2.4rem;
+    line-height: 1.25;
+    letter-spacing: -0.025em;
+  }
+
+  .post-description {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .post-content {
+    font-size: 1.05rem;
+    line-height: 1.8;
+  }
+
+  /* Comments Area */
+  .comments-area {
+    margin-top: 4rem;
+  }
+
+  .comments-divider {
+    height: 1px;
+    background: var(--border);
+    margin-bottom: 2.5rem;
+  }
+
+  .comments-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .comments-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 0.35rem 0;
+    font-size: 1.35rem;
+  }
+
+  .comments-subtitle {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+
+  .comments-subtitle a {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+
+  .scatterleaf-host {
+    min-height: 120px;
+  }
+</style>
