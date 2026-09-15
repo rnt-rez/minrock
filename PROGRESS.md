@@ -27,11 +27,14 @@
 
 ## 📋 Sequência de Etapas
 
-### 🟢 Etapa 1: Scaffolding & Design System (Em Andamento)
+### 🟢 Etapa 1: Scaffolding & Design System (Concluída — v0.1.0)
 - [x] Criação de `package.json`, `astro.config.mjs`, `tsconfig.json` e `.gitignore`.
-- [x] Design System com as 4 paletas calibradas em CSS puro.
+- [x] Design System com as 4 paletas calibradas em CSS puro (White, Cream, Slate, Midnight).
 - [x] Layouts base (`BaseLayout.astro`, `Header.astro`, `Footer.astro`).
 - [x] 3 artigos de demonstração com realce de sintaxe e tabelas.
+- [x] Equiparação técnica com Astro 7.3.2, Node >=22.12.0 e assinatura de binários nativos no Windows.
+- [x] Validação visual/funcional em navegador e suíte QA zerada (`0 errors, 0 warnings, 0 hints`).
+- [x] Commit consolidado, tagueamento `v0.1.0` e push remoto realizado.
 
 ### 🟡 Etapa 2: Integração e Testes com ScatterLeaf (Amanhã)
 - [ ] Importação do Web Component `<scatter-leaf>` no layout de post.
