@@ -2,7 +2,10 @@
   "name": "minrock",
   "type": "module",
   "version": "0.1.0",
-  "description": "Minimalist, typography-first Astro 5 theme crafted for technical writers and Obsidian vaults. Pure SSG, zero bloat.",
+  "description": "Minimalist, typography-first Astro 7 theme crafted for technical writers and Obsidian vaults. Pure SSG, zero bloat.",
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "author": "Renato Rezende (https://github.com/rnt-rez)",
   "license": "MIT",
   "repository": {
@@ -32,12 +35,13 @@
     "preview": "astro preview",
     "check": "astro check",
     "qa": "astro check && astro build",
-    "astro": "astro"
+    "astro": "astro",
+    "postinstall": "node scripts/sign-native-bindings.js"
   },
   "dependencies": {
-    "@astrojs/rss": "^4.0.11",
-    "@astrojs/sitemap": "^3.2.1",
-    "astro": "^5.4.1"
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.3",
+    "astro": "^7.2.9"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",

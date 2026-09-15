@@ -2,14 +2,14 @@
 
 > **Versão:** v0.1.0  
 > **Última Atualização:** 15/09/2026  
-> **Status:** 🟢 Scaffolding Inicial da Doca (Tema Astro 5 & Obsidian)  
+> **Status:** 🟢 Scaffolding Inicial da Doca (Tema Astro 7 & Obsidian)  
 > **Harness Central de Governança:** `..\estaleiro`  
 > **Autor & Mantenedor:** Renato Rezende ([@rnt-rez](https://github.com/rnt-rez))
 
 ---
 
 ## 🎯 Foco da Sprint Atual (Fase 1: Scaffolding & Base do Tema)
-* **Arquitetura Base:** Astro 5 SSG com tipografia refinada e zero bloat.
+* **Arquitetura Base:** Astro 7 SSG com tipografia refinada e zero bloat.
 * **4 Paletas Cromáticas:** Light (Clean White), Cream (Warm Paper), Dark (Slate), Midnight (OLED Neon).
 * **Obsidian Vault CMS:** Estrutura preparada para leitura direta de notas Markdown (`src/content/blog/`).
 * **Slot do ScatterLeaf:** Preparação do contêiner `<scatter-leaf>` para homologação do sistema de comentários.
@@ -19,7 +19,7 @@
 ## 🟢 Entregas Consolidadas na Doca
 1. **Governança Local:** `AGENTS.md` configurado (< 30 linhas) herdando os Lifecycle Gates do Estaleiro.
 2. **READMEs Bilíngues:** `README.md` (EN) e `README.pt-BR.md` (PT) com assinatura oficial e hero tagline.
-3. **Core Scaffolding:** Configuração do Astro 5, TypeScript, Content Collections com Zod e estilos globais.
+3. **Core Scaffolding:** Configuração do Astro 7, TypeScript, Content Collections com Zod e estilos globais.
 4. **Artigos de Demonstração:** 3 starter posts em inglês sobre introdução, escrita técnica e cofre do Obsidian.
 5. **Integração ScatterLeaf:** Componente preparado no layout de artigo para os testes de amanhã.
 

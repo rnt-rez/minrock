@@ -2,13 +2,13 @@
 
 > **"Ideias brutas do seu cofre pessoal, lapidadas com precisão em um blog estático ultrarrápido."**
 
-[![Astro](https://img.shields.io/badge/Astro-5.x-BC52EE?style=flat-square&logo=astro&logoColor=white)](https://astro.build)
+[![Astro](https://img.shields.io/badge/Astro-7.x-BC52EE?style=flat-square&logo=astro&logoColor=white)](https://astro.build)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
 [![Obsidian](https://img.shields.io/badge/Obsidian-Pronto-7C3AED?style=flat-square&logo=obsidian&logoColor=white)](https://obsidian.md)
 [![PRs Bem-vindos](https://img.shields.io/badge/PRs-bem--vindos-brightgreen.svg?style=flat-square)](https://github.com/rnt-rez/minrock/pulls)
 [![English](https://img.shields.io/badge/English-README.md-blue?style=flat-square)](README.md)
 
-**Minrock** é um tema estático opinativo, centrado em tipografia e ultraleve para [Astro 5](https://astro.build), lapidado sob medida para escritores técnicos, desenvolvedores e engenheiros que organizam seu conhecimento no [Obsidian](https://obsidian.md). Puro SSG, zero inchaço (*bloat*) e carregamento instantâneo.
+**Minrock** é um tema estático opinativo, centrado em tipografia e ultraleve para [Astro 7](https://astro.build), lapidado sob medida para escritores técnicos, desenvolvedores e engenheiros que organizam seu conhecimento no [Obsidian](https://obsidian.md). Puro SSG, zero inchaço (*bloat*) e carregamento instantâneo.
 
 [🇺🇸 Read this documentation in English](README.md)
 
@@ -64,7 +64,7 @@ minrock/
 │   ├── layouts/               # BaseLayout, PostLayout
 │   ├── pages/                 # index, blog, about, 404
 │   └── styles/                # Variáveis CSS globais e as 4 paletas cromáticas
-├── astro.config.mjs           # Configuração do Astro 5
+├── astro.config.mjs           # Configuração do Astro 7
 ├── package.json
 └── tsconfig.json
 ```
@@ -79,7 +79,7 @@ Personalize o seu blog em um único arquivo de configuração intuitivo:
 ```typescript
 export const siteConfig = {
   title: 'Minrock',
-  description: 'Tema minimalista para Astro 5 centrado em tipografia para escritores técnicos.',
+  description: 'Tema minimalista para Astro 7 centrado em tipografia para escritores técnicos.',
   author: 'Renato Rezende',
   siteUrl: 'https://minrock.pages.dev',
   theme: 'cream', // Tema padrão inicial: 'white' | 'cream' | 'slate' | 'midnight'

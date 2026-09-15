@@ -1,6 +1,6 @@
 ---
 title: "Getting Started with Minrock"
-description: "An introduction to Minrock, the opinionated typography-first static blog theme for Astro 5 and Obsidian."
+description: "An introduction to Minrock, the opinionated typography-first static blog theme for Astro 7 and Obsidian."
 pubDate: 2026-09-15
 tags: ["minrock", "astro", "minimalism"]
 draft: false
@@ -10,7 +10,7 @@ Welcome to **Minrock**! This theme was engineered from the ground up for technic
 
 ## The Architectural Foundation
 
-When publishing knowledge on the web, speed and readability are non-negotiable. Minrock pairs the static compilation superpowers of [Astro 5](https://astro.build) with modern, semantic CSS:
+When publishing knowledge on the web, speed and readability are non-negotiable. Minrock pairs the static compilation superpowers of [Astro 7](https://astro.build) with modern, semantic CSS:
 
 * **Zero Client-Side JavaScript by default:** The core layout and typography ship without runtime overhead.
 * **Instant Delivery:** Static HTML files generated ahead of time ready for CDN edge distribution.

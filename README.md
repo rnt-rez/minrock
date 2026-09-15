@@ -2,13 +2,13 @@
 
 > **"Raw ideas from your personal vault, finely polished into an ultra-fast static blog."**
 
-[![Astro](https://img.shields.io/badge/Astro-5.x-BC52EE?style=flat-square&logo=astro&logoColor=white)](https://astro.build)
+[![Astro](https://img.shields.io/badge/Astro-7.x-BC52EE?style=flat-square&logo=astro&logoColor=white)](https://astro.build)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
 [![Obsidian](https://img.shields.io/badge/Obsidian-Ready-7C3AED?style=flat-square&logo=obsidian&logoColor=white)](https://obsidian.md)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/rnt-rez/minrock/pulls)
 [![Translations](https://img.shields.io/badge/Portugu%C3%AAs-README.pt--BR.md-green?style=flat-square)](README.pt-BR.md)
 
-**Minrock** is an opinionated, typography-first static blog theme for [Astro 5](https://astro.build), crafted specifically for technical writers, software engineers, and developers who take notes in [Obsidian](https://obsidian.md). Pure SSG, zero bloat, and lightning-fast.
+**Minrock** is an opinionated, typography-first static blog theme for [Astro 7](https://astro.build), crafted specifically for technical writers, software engineers, and developers who take notes in [Obsidian](https://obsidian.md). Pure SSG, zero bloat, and lightning-fast.
 
 [🇧🇷 Leia esta documentação em Português](README.pt-BR.md)
 
@@ -64,7 +64,7 @@ minrock/
 │   ├── layouts/               # BaseLayout, PostLayout
 │   ├── pages/                 # index, blog, about, 404
 │   └── styles/                # Global CSS tokens and 4 color palettes
-├── astro.config.mjs           # Astro 5 configuration
+├── astro.config.mjs           # Astro 7 configuration
 ├── package.json
 └── tsconfig.json
 ```
@@ -79,7 +79,7 @@ Easily customize your blog settings in a single configuration file:
 ```typescript
 export const siteConfig = {
   title: 'Minrock',
-  description: 'Minimalist, typography-first Astro 5 theme for technical writers.',
+  description: 'Minimalist, typography-first Astro 7 theme for technical writers.',
   author: 'Renato Rezende',
   siteUrl: 'https://minrock.pages.dev',
   theme: 'cream', // Default theme: 'white' | 'cream' | 'slate' | 'midnight'
