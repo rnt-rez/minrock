@@ -1641,7 +1641,7 @@ Do you want to simulate a local test login (@rnt-rez)?`
    * Renderiza a Caixa de Escrita Principal (com Abas Escreva / Prévia, Aa e Autenticação)
    */
   renderComposer() {
-    const e = this._activeTab === "write", t = this._fontMode === "monospace", r = this._lang === "pt" ? "Deixe sua reflexão marginal ou comentário..." : "Leave your marginal note or comment...", o = this._lang === "pt" ? "Escreva" : "Write", a = this._lang === "pt" ? "Prévia" : "Preview", l = this._lang === "pt" ? "Nada para pré-visualizar ainda." : "Nothing to preview yet.", i = this._lang === "pt" ? "Entre com GitHub" : "Sign in with GitHub", p = this._lang === "pt" ? "Publicar nota" : "Post note";
+    const e = this._activeTab === "write", t = this._fontMode === "monospace", r = this._lang === "pt" ? "Deixe uma nota ou comentário..." : "Leave a note or comment...", o = this._lang === "pt" ? "Escreva" : "Write", a = this._lang === "pt" ? "Prévia" : "Preview", l = this._lang === "pt" ? "Nada para pré-visualizar ainda." : "Nothing to preview yet.", i = this._lang === "pt" ? "Entre com GitHub" : "Sign in with GitHub", p = this._lang === "pt" ? "Publicar nota" : "Post note";
     return `
       <div class="sl-composer" part="composer">
         <!-- Barra de Abas e Controle de Tipografia Aa -->
@@ -1817,7 +1817,7 @@ Do you want to simulate a local test login (@rnt-rez)?`
         <!-- Formulário de Resposta Aninhada Inline -->
         ${a ? `
           <div class="sl-inline-composer">
-            <textarea id="reply-textarea-${e.id}" placeholder="Respondendo para @${e.author.login}...">${this._replyText}</textarea>
+            <textarea id="reply-textarea-${e.id}" placeholder="${this._lang === "pt" ? `Respondendo para @${e.author.login}...` : `Replying to @${e.author.login}...`}">${this._replyText}</textarea>
             <div class="sl-inline-footer">
               <button class="sl-btn sl-btn-secondary btn-cancel-reply" data-comment-id="${e.id}">
                 ${this._lang === "pt" ? "Cancelar" : "Cancel"}
