@@ -1172,7 +1172,7 @@ class P extends HTMLElement {
             return null;
           if (n.startsWith("#")) {
             let s = n.slice(1);
-            if ((s.length === 3 || s.length === 4) && (s = s.split("").map((p) => p + p).join("")), s.length >= 6)
+            if ((s.length === 3 || s.length === 4) && (s = s.split("").map((b) => b + b).join("")), s.length >= 6)
               return {
                 r: parseInt(s.substring(0, 2), 16),
                 g: parseInt(s.substring(2, 4), 16),
@@ -1189,8 +1189,8 @@ class P extends HTMLElement {
           for (const u of n) {
             const s = a.getPropertyValue(u).trim() || r.getPropertyValue(u).trim() || t.getPropertyValue(u).trim();
             if (s) {
-              const p = e(s);
-              if (p) return p;
+              const b = e(s);
+              if (b) return b;
             }
           }
           return null;
@@ -1217,7 +1217,7 @@ class P extends HTMLElement {
           }
         }
         i || (i = e(r.backgroundColor) || e(t.backgroundColor) || { r: 255, g: 255, b: 255 });
-        let b = l([
+        let p = l([
           "--sl-text",
           "--page-text",
           "--color-text",
@@ -1226,12 +1226,12 @@ class P extends HTMLElement {
           "--foreground",
           "--text"
         ]);
-        if (!b) {
+        if (!p) {
           let n = this;
           for (; n; ) {
             const u = window.getComputedStyle(n).color, s = e(u);
             if (s) {
-              b = s;
+              p = s;
               break;
             }
             n = n.parentElement;
@@ -1251,15 +1251,15 @@ class P extends HTMLElement {
           n && (c = e(window.getComputedStyle(n).color));
         }
         const f = document.documentElement.classList.contains("dark") || document.body.classList.contains("dark") || document.documentElement.getAttribute("data-theme") === "dark" || document.body.getAttribute("data-theme") === "dark" || document.body.getAttribute("data-page-theme") === "midnight" || document.body.getAttribute("data-page-theme") === "slate" || document.body.getAttribute("data-page-theme") === "terminal", w = 0.2126 * i.r + 0.7152 * i.g + 0.0722 * i.b, $ = f || w < 128;
-        b || (b = $ ? { r: 230, g: 237, b: 243 } : { r: 28, g: 25, b: 23 }), c || (c = $ ? { r: 88, g: 166, b: 255 } : { r: 146, g: 64, b: 14 });
-        let v, x, m, C, T, A, E;
+        p || (p = $ ? { r: 230, g: 237, b: 243 } : { r: 28, g: 25, b: 23 }), c || (c = $ ? { r: 88, g: 166, b: 255 } : { r: 146, g: 64, b: 14 });
+        let v, x, m, C, T, E, A;
         if ($) {
           const n = Math.min(255, Math.round(i.r + 15)), u = Math.min(255, Math.round(i.g + 18)), s = Math.min(255, Math.round(i.b + 22));
-          v = `rgb(${n}, ${u}, ${s})`, x = "rgba(0, 0, 0, 0.35)", m = "rgba(255, 255, 255, 0.12)", C = `rgba(${b.r}, ${b.g}, ${b.b}, 0.62)`, T = `rgb(${Math.min(255, c.r + 30)}, ${Math.min(255, c.g + 30)}, ${Math.min(255, c.b + 30)})`, A = `rgba(${c.r}, ${c.g}, ${c.b}, 0.16)`, E = `rgba(${c.r}, ${c.g}, ${c.b}, 0.35)`;
+          v = `rgb(${n}, ${u}, ${s})`, x = "rgba(0, 0, 0, 0.35)", m = "rgba(255, 255, 255, 0.12)", C = `rgba(${p.r}, ${p.g}, ${p.b}, 0.62)`, T = `rgb(${Math.min(255, c.r + 30)}, ${Math.min(255, c.g + 30)}, ${Math.min(255, c.b + 30)})`, E = `rgba(${c.r}, ${c.g}, ${c.b}, 0.16)`, A = `rgba(${c.r}, ${c.g}, ${c.b}, 0.35)`;
         } else
-          v = "rgba(255, 255, 255, 0.96)", x = "rgba(0, 0, 0, 0.035)", m = "rgba(0, 0, 0, 0.12)", C = `rgba(${b.r}, ${b.g}, ${b.b}, 0.65)`, T = `rgb(${c.r}, ${c.g}, ${c.b})`, A = `rgba(${c.r}, ${c.g}, ${c.b}, 0.12)`, E = `rgba(${c.r}, ${c.g}, ${c.b}, 0.28)`;
+          v = "rgba(255, 255, 255, 0.96)", x = "rgba(0, 0, 0, 0.035)", m = "rgba(0, 0, 0, 0.12)", C = `rgba(${p.r}, ${p.g}, ${p.b}, 0.65)`, T = `rgb(${c.r}, ${c.g}, ${c.b})`, E = `rgba(${c.r}, ${c.g}, ${c.b}, 0.12)`, A = `rgba(${c.r}, ${c.g}, ${c.b}, 0.28)`;
         const h = `rgb(${c.r}, ${c.g}, ${c.b})`;
-        this.style.setProperty("--sl-bg", `rgb(${i.r}, ${i.g}, ${i.b})`), this.style.setProperty("--sl-surface", v), this.style.setProperty("--sl-tab-bg", x), this.style.setProperty("--sl-border", m), this.style.setProperty("--sl-text", `rgb(${b.r}, ${b.g}, ${b.b})`), this.style.setProperty("--sl-text-muted", C), this.style.setProperty("--sl-accent", h), this.style.setProperty("--sl-accent-hover", h), this.style.setProperty("--sl-mention-color", T), this.style.setProperty("--sl-mention-bg", A), this.style.setProperty("--sl-mention-border", E);
+        this.style.setProperty("--sl-bg", `rgb(${i.r}, ${i.g}, ${i.b})`), this.style.setProperty("--sl-surface", v), this.style.setProperty("--sl-tab-bg", x), this.style.setProperty("--sl-border", m), this.style.setProperty("--sl-text", `rgb(${p.r}, ${p.g}, ${p.b})`), this.style.setProperty("--sl-text-muted", C), this.style.setProperty("--sl-accent", h), this.style.setProperty("--sl-accent-hover", h), this.style.setProperty("--sl-mention-color", T), this.style.setProperty("--sl-mention-bg", E), this.style.setProperty("--sl-mention-border", A);
       } catch (e) {
         console.warn("🍃 [ScatterLeaf] Erro ao auto-computar paleta do tema:", e);
       }
@@ -1427,6 +1427,7 @@ Do you want to simulate a local test login (@rnt-rez)?`
     }
   }
   loadMockComments() {
+    const e = this._lang !== "pt";
     this._comments = [
       {
         id: "1",
@@ -1436,9 +1437,9 @@ Do you want to simulate a local test login (@rnt-rez)?`
           url: "https://github.com/rnt-rez",
           isAuthor: !0
         },
-        body: "Bem-vindo ao **ScatterLeaf**! 🍃 Este é um comentário nativo renderizado diretamente via Shadow DOM, com zero iframes e suporte a Markdown.",
-        createdAt: "há 10 minutos",
-        originalLang: "pt",
+        body: e ? "Welcome to **ScatterLeaf**! 🍃 This is a native comment rendered directly via Shadow DOM, with zero iframes and full Markdown support." : "Bem-vindo ao **ScatterLeaf**! 🍃 Este é um comentário nativo renderizado diretamente via Shadow DOM, com zero iframes e suporte a Markdown.",
+        createdAt: e ? "10 minutes ago" : "há 10 minutos",
+        originalLang: e ? "en" : "pt",
         reactions: [
           { content: "👍", count: 4, viewerHasReacted: !0 },
           { content: "❤️", count: 6, viewerHasReacted: !1 },
@@ -1453,8 +1454,8 @@ Do you want to simulate a local test login (@rnt-rez)?`
               url: "https://github.com",
               isAuthor: !1
             },
-            body: "@rnt-rez This is brilliant! Having native Shadow DOM makes the scroll buttery smooth without any iframe stutter.",
-            createdAt: "há 5 minutos",
+            body: e ? "@rnt-rez This is brilliant! Having native Shadow DOM makes the scroll buttery smooth without any iframe stutter." : "@rnt-rez Isso é genial! Ter Shadow DOM nativo deixa a rolagem suave como manteiga, sem nenhum engasgo de iframe.",
+            createdAt: e ? "5 minutes ago" : "há 5 minutos",
             originalLang: "en",
             reactions: [{ content: "❤️", count: 2, viewerHasReacted: !0 }],
             parentId: "1"
@@ -1467,9 +1468,9 @@ Do you want to simulate a local test login (@rnt-rez)?`
               url: "https://github.com/rnt-rez",
               isAuthor: !0
             },
-            body: "@sarah-eng Exato! A rolagem da página não sofre com os pulos visuais de redimensionamento do iframe.",
-            createdAt: "há 2 minutos",
-            originalLang: "pt",
+            body: e ? "@sarah-eng Exactly! Page scrolling does not suffer from visual jumping caused by iframe resizing." : "@sarah-eng Exato! A rolagem da página não sofre com os pulos visuais de redimensionamento do iframe.",
+            createdAt: e ? "2 minutes ago" : "há 2 minutos",
+            originalLang: e ? "en" : "pt",
             reactions: [{ content: "🚀", count: 1, viewerHasReacted: !1 }],
             parentId: "1"
           }
@@ -1484,7 +1485,7 @@ Do you want to simulate a local test login (@rnt-rez)?`
           isAuthor: !1
         },
         body: "¡Excelente proyecto! El tema Warm Paper (**Cream**) queda fenomenal para leer artículos largos.",
-        createdAt: "há 8 minutos",
+        createdAt: e ? "8 minutes ago" : "há 8 minutos",
         originalLang: "es",
         reactions: [{ content: "🎉", count: 3, viewerHasReacted: !1 }],
         replies: []
@@ -1517,7 +1518,7 @@ Do you want to simulate a local test login (@rnt-rez)?`
     return i < 2 ? this._lang : i === r ? "pt" : i === o ? "en" : i === a ? "es" : i === l ? "fr" : this._lang;
   }
   getVisitorLang() {
-    return typeof navigator < "u" && navigator.language ? navigator.language.split("-")[0].toLowerCase() : this._lang;
+    return this._lang ? this._lang : typeof navigator < "u" && navigator.language ? navigator.language.split("-")[0].toLowerCase() : "en";
   }
   getLanguageName(e, t) {
     return (t === "pt" ? {
@@ -1542,13 +1543,18 @@ Do you want to simulate a local test login (@rnt-rez)?`
             o.isShowingTranslation = !1;
           else {
             if (!o.translatedBody) {
-              const a = {
+              const a = this._lang !== "pt", p = a ? {
+                1: "Bem-vindo ao **ScatterLeaf**! 🍃 Este é um comentário nativo renderizado diretamente via Shadow DOM, com zero iframes e suporte a Markdown.",
+                "1-1": "@rnt-rez This is brilliant! Having native Shadow DOM makes the scroll buttery smooth without any iframe stutter.",
+                "1-2": "@sarah-eng Exactly! Page scrolling does not suffer from visual jumping caused by iframe resizing.",
+                2: "Excellent project! The Warm Paper (**Cream**) theme looks phenomenal for reading long articles."
+              } : {
                 1: "Welcome to **ScatterLeaf**! 🍃 This is a native comment rendered directly via Shadow DOM, with zero iframes and Markdown support.",
                 "1-1": "@rnt-rez Isso é genial! Ter Shadow DOM nativo deixa a rolagem suave como manteiga, sem nenhum engasgo de iframe.",
                 "1-2": "@sarah-eng Exactly! Page scrolling does not suffer from visual jumping caused by iframe resizing.",
                 2: "Excelente projeto! O tema Warm Paper (**Cream**) fica fenomenal para ler artigos longos."
               };
-              o.translatedBody = a[e] || `[Tradução automática]: ${o.body}`;
+              o.translatedBody = p[e] || (a ? `[Automated translation]: ${o.body}` : `[Tradução automática]: ${o.body}`);
             }
             o.isShowingTranslation = !0;
           }
@@ -1582,7 +1588,7 @@ Do you want to simulate a local test login (@rnt-rez)?`
       it: "it-IT"
     }[r] || r || (this._lang === "pt" ? "pt-BR" : "en-US");
     if (a.lang = i, "speechSynthesis" in window) {
-      const b = window.speechSynthesis.getVoices(), c = i.slice(0, 2).toLowerCase(), f = b.find(
+      const p = window.speechSynthesis.getVoices(), c = i.slice(0, 2).toLowerCase(), f = p.find(
         (w) => w.lang.replace("_", "-").toLowerCase().startsWith(c)
       );
       f && (a.voice = f);
@@ -1635,7 +1641,7 @@ Do you want to simulate a local test login (@rnt-rez)?`
    * Renderiza a Caixa de Escrita Principal (com Abas Escreva / Prévia, Aa e Autenticação)
    */
   renderComposer() {
-    const e = this._activeTab === "write", t = this._fontMode === "monospace", r = this._lang === "pt" ? "Deixe sua reflexão marginal ou comentário..." : "Leave your marginal note or comment...", o = this._lang === "pt" ? "Escreva" : "Write", a = this._lang === "pt" ? "Prévia" : "Preview", l = this._lang === "pt" ? "Nada para pré-visualizar ainda." : "Nothing to preview yet.", i = this._lang === "pt" ? "Entre com GitHub" : "Sign in with GitHub", b = this._lang === "pt" ? "Publicar nota" : "Post note";
+    const e = this._activeTab === "write", t = this._fontMode === "monospace", r = this._lang === "pt" ? "Deixe sua reflexão marginal ou comentário..." : "Leave your marginal note or comment...", o = this._lang === "pt" ? "Escreva" : "Write", a = this._lang === "pt" ? "Prévia" : "Preview", l = this._lang === "pt" ? "Nada para pré-visualizar ainda." : "Nothing to preview yet.", i = this._lang === "pt" ? "Entre com GitHub" : "Sign in with GitHub", p = this._lang === "pt" ? "Publicar nota" : "Post note";
     return `
       <div class="sl-composer" part="composer">
         <!-- Barra de Abas e Controle de Tipografia Aa -->
@@ -1673,12 +1679,12 @@ Do you want to simulate a local test login (@rnt-rez)?`
             <div class="sl-composer-actions">
               <button class="sl-btn sl-btn-primary" id="btn-submit" part="submit-btn">
                 <span>🍃</span>
-                <span>${b}</span>
+                <span>${p}</span>
               </button>
             </div>
           ` : `
             <span style="font-size: 0.75rem; color: var(--sl-text-muted);">
-              Markdown suportado
+              ${this._lang === "pt" ? "Markdown suportado" : "Markdown supported"}
             </span>
             <div class="sl-composer-actions">
               <button class="sl-btn sl-btn-github" id="btn-login-submit" part="submit-btn">
@@ -1712,7 +1718,7 @@ Do you want to simulate a local test login (@rnt-rez)?`
    * Renderiza um Card de Comentário Individual
    */
   renderCommentCard(e, t = !1) {
-    const r = e.author.isAuthor ? `<span class="sl-author-badge" part="author-badge">${this._lang === "pt" ? "Autor" : "Author"}</span>` : "", o = this._speakingId === e.id, a = this._replyingToId === e.id, l = this._editingId === e.id, i = this._openMenuId === e.id, b = o ? this._lang === "pt" ? "⏸️ Pausar" : "⏸️ Pause" : this._lang === "pt" ? "🔊 Ouvir" : "🔊 Listen", c = this._lang === "pt" ? "Responder" : "Reply", f = this.getVisitorLang(), w = e.originalLang || "pt", $ = w !== f, v = this.getLanguageName(w, f), x = e.isShowingTranslation && e.translatedBody ? e.translatedBody : e.body;
+    const r = e.author.isAuthor ? `<span class="sl-author-badge" part="author-badge">${this._lang === "pt" ? "Autor" : "Author"}</span>` : "", o = this._speakingId === e.id, a = this._replyingToId === e.id, l = this._editingId === e.id, i = this._openMenuId === e.id, p = o ? this._lang === "pt" ? "⏸️ Pausar" : "⏸️ Pause" : this._lang === "pt" ? "🔊 Ouvir" : "🔊 Listen", c = this._lang === "pt" ? "Responder" : "Reply", f = this.getVisitorLang(), w = e.originalLang || "pt", $ = w !== f, v = this.getLanguageName(w, f), x = e.isShowingTranslation && e.translatedBody ? e.translatedBody : e.body;
     return `
       <article class="sl-card ${t ? "sl-card-reply" : ""}" id="comment-${e.id}" part="card">
         <!-- Cabeçalho do Card (Avatar ancorado no topo!) -->
@@ -1733,7 +1739,7 @@ Do you want to simulate a local test login (@rnt-rez)?`
 
           <!-- Menu de Contexto In-Place (•••) -->
           <div class="sl-menu-wrapper">
-            <button class="sl-menu-btn" data-menu-id="${e.id}" aria-label="Opções do comentário">
+            <button class="sl-menu-btn" data-menu-id="${e.id}" aria-label="${this._lang === "pt" ? "Opções do comentário" : "Comment options"}">
               •••
             </button>
             ${i ? `
@@ -1803,7 +1809,7 @@ Do you want to simulate a local test login (@rnt-rez)?`
             ` : ""}
 
             <button class="sl-audio-btn ${o ? "sl-audio-playing" : ""}" data-speak-id="${e.id}" data-text="${encodeURIComponent(x)}" data-lang="${e.isShowingTranslation ? f : w}" part="audio-btn">
-              <span>${b}</span>
+              <span>${p}</span>
             </button>
           </div>
         </div>
@@ -1869,8 +1875,8 @@ Do you want to simulate a local test login (@rnt-rez)?`
       await this.handlePostComment(h);
     }), this.shadowRoot.querySelectorAll(".sl-reaction-btn").forEach((h) => {
       h.addEventListener("click", async (n) => {
-        const u = n.currentTarget, s = u.getAttribute("data-comment-id"), p = u.getAttribute("data-emoji");
-        s && p && await this.handleToggleReaction(s, p);
+        const u = n.currentTarget, s = u.getAttribute("data-comment-id"), b = u.getAttribute("data-emoji");
+        s && b && await this.handleToggleReaction(s, b);
       });
     }), this.shadowRoot.querySelectorAll(".sl-reply-btn:not(.btn-toggle-translate)").forEach((h) => {
       h.addEventListener("click", (n) => {
@@ -1883,17 +1889,17 @@ Do you want to simulate a local test login (@rnt-rez)?`
           this._replyingToId = null;
         else {
           this._replyingToId = s;
-          const p = this._comments.find((y) => y.id === s);
-          this._replyText = p ? `@${p.author.login} ` : "";
+          const b = this._comments.find((y) => y.id === s);
+          this._replyText = b ? `@${b.author.login} ` : "";
         }
         this.render();
       });
     }), this.shadowRoot.querySelectorAll(".btn-send-reply").forEach((h) => {
       h.addEventListener("click", async (n) => {
         var k;
-        const s = n.currentTarget.getAttribute("data-comment-id"), p = (k = this.shadowRoot) == null ? void 0 : k.getElementById(`reply-textarea-${s}`);
-        if (!p) return;
-        const y = p.value.trim();
+        const s = n.currentTarget.getAttribute("data-comment-id"), b = (k = this.shadowRoot) == null ? void 0 : k.getElementById(`reply-textarea-${s}`);
+        if (!b) return;
+        const y = b.value.trim();
         !y || !s || await this.handlePostReply(s, y);
       });
     }), this.shadowRoot.querySelectorAll(".btn-cancel-reply").forEach((h) => {
@@ -1907,9 +1913,9 @@ Do you want to simulate a local test login (@rnt-rez)?`
       });
     }), this.shadowRoot.querySelectorAll(".sl-audio-btn").forEach((h) => {
       h.addEventListener("click", (n) => {
-        const u = n.currentTarget, s = u.getAttribute("data-speak-id"), p = u.getAttribute("data-text"), y = u.getAttribute("data-lang") || void 0;
-        if (s && p) {
-          const k = decodeURIComponent(p);
+        const u = n.currentTarget, s = u.getAttribute("data-speak-id"), b = u.getAttribute("data-text"), y = u.getAttribute("data-lang") || void 0;
+        if (s && b) {
+          const k = decodeURIComponent(b);
           this.toggleSpeak(s, k, y);
         }
       });
@@ -1930,9 +1936,9 @@ Do you want to simulate a local test login (@rnt-rez)?`
     }), this.shadowRoot.querySelectorAll(".btn-save-edit").forEach((h) => {
       h.addEventListener("click", async (n) => {
         var k;
-        const s = n.currentTarget.getAttribute("data-comment-id"), p = (k = this.shadowRoot) == null ? void 0 : k.getElementById(`edit-textarea-${s}`);
-        if (!p || !s) return;
-        const y = p.value.trim();
+        const s = n.currentTarget.getAttribute("data-comment-id"), b = (k = this.shadowRoot) == null ? void 0 : k.getElementById(`edit-textarea-${s}`);
+        if (!b || !s) return;
+        const y = b.value.trim();
         y && await this.handleSaveEdit(s, y);
       });
     }), this.shadowRoot.querySelectorAll(".btn-cancel-edit").forEach((h) => {
@@ -1944,14 +1950,14 @@ Do you want to simulate a local test login (@rnt-rez)?`
         n.stopPropagation();
         const s = n.currentTarget.getAttribute("data-comment-id");
         if (!s) return;
-        const p = this._lang === "pt" ? "Tem certeza que deseja excluir esta nota?" : "Are you sure you want to delete this note?";
-        confirm(p) && await this.handleDelete(s);
+        const b = this._lang === "pt" ? "Tem certeza que deseja excluir esta nota?" : "Are you sure you want to delete this note?";
+        confirm(b) && await this.handleDelete(s);
       });
     }), this.shadowRoot.querySelectorAll(".btn-copy-link").forEach((h) => {
       h.addEventListener("click", (n) => {
         n.stopPropagation();
-        const s = n.currentTarget.getAttribute("data-comment-id"), p = `${window.location.href.split("#")[0]}#comment-${s}`;
-        navigator.clipboard.writeText(p).then(() => {
+        const s = n.currentTarget.getAttribute("data-comment-id"), b = `${window.location.href.split("#")[0]}#comment-${s}`;
+        navigator.clipboard.writeText(b).then(() => {
           alert(
             this._lang === "pt" ? "Link copiado para a área de transferência!" : "Link copied to clipboard!"
           );
@@ -2121,7 +2127,7 @@ Do you want to simulate a local test login (@rnt-rez)?`
         break;
       }
       if (l.replies) {
-        const i = l.replies.find((b) => b.id === e);
+        const i = l.replies.find((p) => p.id === e);
         if (i) {
           r = i;
           break;
