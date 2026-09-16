@@ -42,7 +42,8 @@
 - [x] Injeção sob demanda do `<scatter-leaf>` e do script no template de post `src/pages/blog/[...slug].astro` (zero JS nas demais páginas).
 - [x] Adequação das URLs canônicas e de deploy para Vercel (`https://minrock.vercel.app`) em `astro.config.mjs` e `BaseLayout.astro`.
 - [x] Suíte QA executada com perfeição: `0 errors, 0 warnings, 0 hints` e compilação SSG de 6 páginas em < 1s.
-- [ ] Deploy na Vercel para homologação online.
+- [x] Deploy na Vercel para homologação online concluído com sucesso: `https://minrock.vercel.app`.
+- [x] Validação de entrega global com HTTPS, CDN e carregamento do `scatterleaf.js`.
 - [ ] Validação de postagem de notas, threads e alternância de temas (Modo Camaleão) em produção.
 
 ### ⚪ Etapa 3: Homologação no Catálogo Astro Themes
