@@ -44,6 +44,13 @@ const pageTitle = title === siteConfig.title ? `${siteConfig.title} — ${siteCo
     <meta property="og:description" content={description} />
     <meta property="og:image" content={new URL(image, canonicalURL)} />
 
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalURL} />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(image, canonicalURL)} />
+
     <!-- Anti-FOUC script: Executed synchronously before DOM render -->
     <script is:inline>
       (function () {

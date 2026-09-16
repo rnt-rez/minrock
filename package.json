@@ -35,6 +35,9 @@
     "preview": "astro preview",
     "check": "astro check",
     "qa": "astro check && astro build",
+    "audit:wcag": "node scripts/audit-wcag.mjs",
+    "audit:security": "node scripts/audit-security.mjs",
+    "audit:google": "node scripts/audit-google-search.mjs",
     "astro": "astro",
     "postinstall": "node scripts/sign-native-bindings.js"
   },

@@ -125,8 +125,13 @@ const { title, description, slug, tags = [], stars = 0, repoUrl, demoUrl, catego
   .project-stars {
     font-size: 0.8rem;
     font-family: var(--font-mono);
-    color: #f59e0b;
+    color: #b45309;
     font-weight: 600;
+  }
+
+  :global([data-theme="slate"]) .project-stars,
+  :global([data-theme="midnight"]) .project-stars {
+    color: #fbbf24;
   }
 
   .project-action-link {
