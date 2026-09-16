@@ -25,6 +25,18 @@
       "indexFileName": "index",
       "ignoreSubfolders": false,
       "enableUnderscorePrefix": false
+    },
+    {
+      "id": "content-type-minrock-projects",
+      "name": "Projects",
+      "folder": "projects",
+      "linkBasePath": "/projects/",
+      "template": "---\ntitle: \"{{title}}\"\ndescription: \"\"\ndate: {{date}}\ncategory: \"Open Source\"\ntags: []\nemoji: \"🚀\"\nrepoUrl: \"\"\ndemoUrl: \"\"\nfeatured: false\n---",
+      "enabled": true,
+      "creationMode": "folder",
+      "indexFileName": "index",
+      "ignoreSubfolders": false,
+      "enableUnderscorePrefix": false
     }
   ],
   "migrationCompleted": true,

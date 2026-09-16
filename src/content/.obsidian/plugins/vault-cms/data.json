@@ -10,6 +10,15 @@
       "enabled": true,
       "indexFileName": "index",
       "linkBasePath": "/blog/"
+    },
+    {
+      "id": "content-type-minrock-projects",
+      "name": "Projects",
+      "folder": "projects",
+      "fileOrganization": "folder",
+      "enabled": true,
+      "indexFileName": "index",
+      "linkBasePath": "/projects/"
     }
   ],
   "frontmatterProperties": {
@@ -23,6 +32,17 @@
       "hasDraftStatus": true,
       "imageProperty": "image",
       "template": "---\ntitle: \"{{title}}\"\ndescription: \"\"\npubDate: {{date}}\ntags: []\ndraft: false\n---"
+    },
+    "content-type-minrock-projects": {
+      "titleProperty": "title",
+      "dateProperty": "date",
+      "descriptionProperty": "description",
+      "tagsProperty": "tags",
+      "draftProperty": "draft",
+      "draftLogic": "true-draft",
+      "hasDraftStatus": false,
+      "imageProperty": "image",
+      "template": "---\ntitle: \"{{title}}\"\ndescription: \"\"\ndate: {{date}}\ncategory: \"Open Source\"\ntags: []\nemoji: \"🚀\"\nrepoUrl: \"\"\ndemoUrl: \"\"\nfeatured: false\n---"
     }
   },
   "attachmentHandlingMode": "same-folder",

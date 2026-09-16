@@ -10,6 +10,9 @@ export const GET: APIRoute = async ({ site }) => {
   const posts = (await getCollection('blog', ({ data }) => !data.draft))
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
+  const projects = (await getCollection('projects'))
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
   const lines: string[] = [
     `# ${siteConfig.title}`,
     `> ${siteConfig.tagline}`,
@@ -32,6 +35,16 @@ export const GET: APIRoute = async ({ site }) => {
     const postUrl = `${baseUrl}/blog/${post.id}`;
     const tagsInfo = post.data.tags?.length ? ` [Tags: ${post.data.tags.join(', ')}]` : '';
     lines.push(`- [${post.data.title}](${postUrl}): ${post.data.description}${tagsInfo}`);
+  }
+
+  if (projects.length > 0) {
+    lines.push('');
+    lines.push('## Open Source Projects');
+    for (const proj of projects) {
+      const projUrl = `${baseUrl}/projects/${proj.id}`;
+      const catInfo = proj.data.category ? ` [${proj.data.category}]` : '';
+      lines.push(`- [${proj.data.title}](${projUrl}): ${proj.data.description}${catInfo}`);
+    }
   }
 
   lines.push('');

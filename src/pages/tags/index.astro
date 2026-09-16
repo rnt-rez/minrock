@@ -3,11 +3,17 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
 const posts = await getCollection('blog', ({ data }) => !data.draft);
+const projects = await getCollection('projects');
 
-// Aggregate tags with counts
+// Aggregate tags with counts across both blog articles and projects
 const tagCounts: Record<string, number> = {};
 posts.forEach((post) => {
   post.data.tags?.forEach((tag) => {
+    tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+  });
+});
+projects.forEach((proj) => {
+  proj.data.tags?.forEach((tag) => {
     tagCounts[tag] = (tagCounts[tag] || 0) + 1;
   });
 });

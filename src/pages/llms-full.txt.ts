@@ -10,6 +10,9 @@ export const GET: APIRoute = async ({ site }) => {
   const posts = (await getCollection('blog', ({ data }) => !data.draft))
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
+  const projects = (await getCollection('projects'))
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
   const lines: string[] = [
     `# ${siteConfig.title} — Full Knowledge Context`,
     `> Complete compilation of published technical articles and documentation.`,
@@ -26,7 +29,7 @@ export const GET: APIRoute = async ({ site }) => {
     const dateFormatted = post.data.pubDate.toISOString().split('T')[0];
     const tagsStr = post.data.tags?.join(', ') || 'N/A';
 
-    lines.push(`## ${post.data.title}`);
+    lines.push(`## Article: ${post.data.title}`);
     lines.push(`- **URL:** ${postUrl}`);
     lines.push(`- **Date:** ${dateFormatted}`);
     lines.push(`- **Author:** ${siteConfig.author}`);
@@ -36,6 +39,28 @@ export const GET: APIRoute = async ({ site }) => {
     lines.push('### Content:');
     lines.push('');
     lines.push(post.body || post.data.description);
+    lines.push('');
+    lines.push('---');
+    lines.push('');
+  }
+
+  for (const proj of projects) {
+    const projUrl = `${baseUrl}/projects/${proj.id}`;
+    const dateFormatted = proj.data.date.toISOString().split('T')[0];
+    const tagsStr = proj.data.tags?.join(', ') || 'N/A';
+
+    lines.push(`## Project: ${proj.data.title}`);
+    lines.push(`- **URL:** ${projUrl}`);
+    lines.push(`- **Date:** ${dateFormatted}`);
+    lines.push(`- **Category:** ${proj.data.category}`);
+    lines.push(`- **Tags:** ${tagsStr}`);
+    lines.push(`- **Description:** ${proj.data.description}`);
+    if (proj.data.repoUrl) lines.push(`- **Repository:** ${proj.data.repoUrl}`);
+    if (proj.data.demoUrl) lines.push(`- **Live Demo:** ${proj.data.demoUrl}`);
+    lines.push('');
+    lines.push('### Content:');
+    lines.push('');
+    lines.push(proj.body || proj.data.description);
     lines.push('');
     lines.push('---');
     lines.push('');

@@ -3,8 +3,9 @@ filters:
     - file.ext == "md"
 formulas:
   Slug: |-
-    if(file.folder == "blog", "/blog/" + file.name.replace(".md", ""), 
-      "/" + file.folder)
+    if(file.folder.startsWith("blog"), "/blog/" + file.name.replace(".md", ""),
+      if(file.folder.startsWith("projects"), "/projects/" + file.name.replace(".md", ""),
+        "/" + file.folder))
   Content Folder: |-
     if(file.name == "index",
       if(file.folder != "",
@@ -72,6 +73,29 @@ views:
     dateIncludeTime: false
     descriptionProperty: note.description
     hideQuickEditIcon: false
+  - type: cms
+    name: Projects
+    filters:
+      and:
+        - file.folder.startsWith("projects")
+    order: []
+    sort:
+      - property: date
+        direction: DESC
+    fallbackToEmbeds: never
+    propertyDisplay1: note.date
+    showTextPreview: true
+    imageFormat: none
+    showDate: true
+    showDraftStatus: false
+    propertyLabels: above
+    titleProperty: note.title
+    showTags: true
+    tagsProperty: note.tags
+    customizeNewButton: true
+    newNoteLocation: projects
+    cardSize: 250
+    descriptionProperty: note.description
   - type: cms
     name: Vault CMS Guide
     filters:

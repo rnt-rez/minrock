@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ImageZoom from '../../components/ImageZoom.astro';
 import CopyCode from '../../components/CopyCode.astro';
 import StructuredData from '../../components/StructuredData.astro';
 import { getCollection, render } from 'astro:content';
@@ -80,7 +79,6 @@ const currentUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).href;
     </footer>
   </article>
 
-  <ImageZoom />
   <CopyCode />
 </BaseLayout>
 

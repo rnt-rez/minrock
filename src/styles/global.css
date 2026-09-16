@@ -358,3 +358,31 @@ hr {
   --callout-color: #f87171;
   --callout-bg: rgba(239, 68, 68, 0.12);
 }
+
+/* ─── PhotoSwipe Lightbox overrides ─── */
+.pswp {
+  --pswp-bg: rgba(0, 0, 0, 0.94);
+}
+
+/* ─── Google Translate UI Fixes (Prevents layout shift) ─── */
+.goog-te-banner-frame.skiptranslate,
+.goog-te-banner-frame,
+iframe.goog-te-banner-frame {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+body {
+  top: 0px !important;
+  position: static !important;
+}
+
+.goog-tooltip,
+.goog-tooltip:hover {
+  display: none !important;
+}
+
+.goog-text-highlight {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
