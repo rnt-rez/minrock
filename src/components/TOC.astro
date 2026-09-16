@@ -13,10 +13,9 @@ const filtered = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
   <nav class="toc" aria-label="Table of contents">
     <div class="toc-title">{title}</div>
     <ol class="toc-list">
-      {filtered.map((h, i) => (
+      {filtered.map((h) => (
         <li class={`toc-item depth-${h.depth}`}>
           <a href={`#${h.slug}`} class="toc-link">
-            {h.depth === 2 && <span class="toc-num">{i + 1}. </span>}
             <span class="toc-text">{h.text}</span>
           </a>
         </li>
@@ -81,11 +80,6 @@ const filtered = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
   .toc-item.depth-3 .toc-link {
     padding-left: 1.5rem;
     font-size: 0.76rem;
-  }
-
-  .toc-num {
-    font-family: var(--font-mono);
-    opacity: 0.8;
   }
 </style>
 

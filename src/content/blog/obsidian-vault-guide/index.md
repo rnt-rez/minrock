@@ -81,7 +81,7 @@ Here is the exact field-by-field mapping required for Minrock:
 
 ---
 
-## The Page Bundle Architecture Explained
+## Step 4: The Page Bundle Architecture Explained
 
 Why does Minrock insist on the **Folder-Based (Page Bundle)** pattern over flat Markdown files?
 
@@ -96,14 +96,14 @@ src/content/blog/
     └── cover.jpg
 ```
 
-### 1. Seamless Inline Previews in Obsidian
+### 4.1 Seamless Inline Previews in Obsidian
 When you write in Obsidian and insert an image via standard Markdown (`![Diagram](architecture.svg)`), Obsidian resolves files relative to the current note. 
 If images were saved in an external `public/images/` directory outside the vault, Obsidian's live editor would display a broken image icon. With page bundles, the preview renders **instantaneously** both in Obsidian and on your live website.
 
-### 2. Zero Orphaned Media Files
+### 4.2 Zero Orphaned Media Files
 In long-running technical blogs, deleting an obsolete article often leaves dozens of forgotten screenshots cluttering `public/`. With page bundles, each article is completely self-contained. Deleting the article folder cleanly cleans up all associated images.
 
-### 3. One-Click Paste Workflow (`Ctrl + V`)
+### 4.3 One-Click Paste Workflow (`Ctrl + V`)
 To make sure Obsidian always places pasted screenshots right next to your note:
 1. Open Obsidian **Settings** (`Ctrl + ,`).
 2. Navigate to **Files and links** → **Default location for new attachments**.
@@ -111,7 +111,7 @@ To make sure Obsidian always places pasted screenshots right next to your note:
 
 ---
 
-## Frontmatter Template for New Posts
+## Step 5: Frontmatter Template for New Posts
 
 When you create a new note in Obsidian (or via `Ctrl + N` inside the Blog collection), the frontmatter will look like this:
 
@@ -129,7 +129,7 @@ When saved, Minrock's Astro engine automatically generates the clean route at `/
 
 ---
 
-## How to Update Community Plugins in Obsidian
+## Step 6: How to Update Community Plugins in Obsidian
 
 A frequent question regarding pre-bundled vaults is: *“What if the plugins become outdated?”*
 
@@ -144,7 +144,7 @@ Obsidian fetches the newest releases for Vault CMS, Astro Composer, and Obsidian
 
 ---
 
-## Publishing to the Web
+## Step 7: Publishing to the Web via Git
 
 Because Minrock is a pure **Static Site Generation (SSG)** engine, publishing is as simple as pushing your Git commits:
 
@@ -160,9 +160,9 @@ Your hosting provider (Vercel, Cloudflare Pages, Netlify, or GitHub Pages) detec
 
 ---
 
-## Video Walkthrough
+## Step 8: Video Walkthrough
 
-To see the installation process in action, watch David Kimball's setup walkthrough below. While the video uses the Axis theme as a reference, you can follow along visually and simply use the **Minrock-specific fields from our table above** during Step 3 and Step 4:
+To see the installation process in action, watch David Kimball's setup walkthrough below. While the video uses the Axis theme as a reference, you can follow along visually and simply use the **Minrock-specific fields from our table in Step 3**:
 
 <div class="video-container">
   <iframe 
