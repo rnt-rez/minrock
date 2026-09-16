@@ -215,19 +215,36 @@ const currentUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).href;
   }
 
   .meta-tags {
-    display: flex;
-    gap: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-wrap: wrap;
   }
 
   .tag {
+    display: inline-flex;
+    align-items: center;
     color: var(--accent);
     font-weight: 500;
+    font-size: 0.82rem;
     text-decoration: none;
-    transition: color 0.15s ease;
+    padding: 0.1rem 0.45rem;
+    border-radius: 4px;
+    background-color: transparent;
+    border: 1px solid transparent;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .tag:hover {
-    text-decoration: underline;
+    color: var(--accent);
+    background-color: var(--bg-subtle);
+    border-color: var(--accent);
+    transform: translateY(-1.5px) scale(1.04);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .tag:active {
+    transform: translateY(0) scale(0.98);
   }
 
   .post-title {

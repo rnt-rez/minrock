@@ -158,19 +158,33 @@ const { title, description, slug, tags = [], stars = 0, repoUrl, demoUrl, catego
 
   .project-tags {
     display: flex;
-    gap: 0.4rem;
+    gap: 0.35rem;
     flex-wrap: wrap;
-    margin-top: 0.25rem;
+    margin-top: 0.35rem;
   }
 
   .tag-badge {
+    display: inline-flex;
+    align-items: center;
     font-size: 0.78rem;
-    color: var(--text-muted);
+    color: var(--accent);
     text-decoration: none;
-    transition: color 0.15s ease;
+    padding: 0.1rem 0.42rem;
+    border-radius: 4px;
+    background-color: transparent;
+    border: 1px solid transparent;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .tag-badge:hover {
     color: var(--accent);
+    background-color: var(--bg-subtle);
+    border-color: var(--accent);
+    transform: translateY(-1.5px) scale(1.04);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .tag-badge:active {
+    transform: translateY(0) scale(0.98);
   }
 </style>
