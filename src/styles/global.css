@@ -249,3 +249,105 @@ hr {
   height: 100%;
   border: 0;
 }
+
+/* 📌 Obsidian & GitHub Native Callouts */
+.callout {
+  margin: 1.75rem 0;
+  padding: 1rem 1.25rem;
+  border-left: 4px solid var(--callout-border, var(--accent));
+  background-color: var(--callout-bg, var(--bg-surface));
+  border-radius: 0 8px 8px 0;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.callout-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--callout-color, var(--accent));
+  letter-spacing: -0.01em;
+}
+
+.callout-icon {
+  display: inline-flex;
+  align-items: center;
+  color: inherit;
+  flex-shrink: 0;
+}
+
+.callout-content p {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+}
+
+.callout-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* Callout Variants: Tip (Emerald) */
+.callout-tip {
+  --callout-border: #10b981;
+  --callout-color: #059669;
+  --callout-bg: rgba(16, 185, 129, 0.07);
+}
+
+/* Callout Variants: Important (Purple) */
+.callout-important {
+  --callout-border: #8b5cf6;
+  --callout-color: #7c3aed;
+  --callout-bg: rgba(139, 92, 246, 0.07);
+}
+
+/* Callout Variants: Warning (Amber) */
+.callout-warning {
+  --callout-border: #f59e0b;
+  --callout-color: #d97706;
+  --callout-bg: rgba(245, 158, 11, 0.08);
+}
+
+/* Callout Variants: Caution & Danger (Red) */
+.callout-caution,
+.callout-danger {
+  --callout-border: #ef4444;
+  --callout-color: #dc2626;
+  --callout-bg: rgba(239, 68, 68, 0.08);
+}
+
+/* Callout Variants: Note & Info (Theme Accent) */
+.callout-note,
+.callout-info {
+  --callout-border: var(--accent);
+  --callout-color: var(--accent);
+  --callout-bg: var(--bg-surface);
+}
+
+/* Dark Mode Callout Refinements (Slate & Midnight) */
+[data-theme="slate"] .callout-tip,
+[data-theme="midnight"] .callout-tip {
+  --callout-color: #34d399;
+  --callout-bg: rgba(16, 185, 129, 0.12);
+}
+
+[data-theme="slate"] .callout-important,
+[data-theme="midnight"] .callout-important {
+  --callout-color: #a78bfa;
+  --callout-bg: rgba(139, 92, 246, 0.12);
+}
+
+[data-theme="slate"] .callout-warning,
+[data-theme="midnight"] .callout-warning {
+  --callout-color: #fbbf24;
+  --callout-bg: rgba(245, 158, 11, 0.12);
+}
+
+[data-theme="slate"] .callout-caution,
+[data-theme="midnight"] .callout-caution,
+[data-theme="slate"] .callout-danger,
+[data-theme="midnight"] .callout-danger {
+  --callout-color: #f87171;
+  --callout-bg: rgba(239, 68, 68, 0.12);
+}

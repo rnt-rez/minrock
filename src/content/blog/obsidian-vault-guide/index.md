@@ -16,14 +16,14 @@ Instead of dealing with proprietary headless CMS services, cloud databases, or s
 
 Depending on your goals and familiarity with Obsidian, choose the path that best suits you:
 
-> 🟢 **Caminho 1 (Recomendado / Plug & Play):**
-> O Minrock **já vem com a pasta `.obsidian/` pré-configurada** dentro de `src/content/`. Se você apenas quer escrever posts e publicar no ar sem nenhuma burocracia, você não precisa executar este tutorial manual!
+> [!TIP] Path 1 (Recommended / Plug & Play)
+> Minrock **already comes with the `.obsidian/` folder pre-configured** inside `src/content/`. If you simply want to write posts and publish them without any setup, you don't need to follow this manual tutorial!
 > 
-> Basta abrir a pasta `src/content` no Obsidian e apertar `Ctrl + N`.
-> 👉 **[Siga o Guia de Início Rápido (Getting Started) →](/blog/getting-started-with-minrock)**
+> Simply open the `src/content` folder in Obsidian and press `Ctrl + N`.
+> 👉 **[Follow the Quickstart Guide (Getting Started) →](/blog/getting-started-with-minrock)**
 
-> 🛠️ **Caminho 2 (Manual / Do Zero com o Wizard):**
-> Se você quer entender a engenharia por trás da integração, está instalando o Vault CMS do zero em um projeto Astro existente via `npx create-vaultcms`, ou precisa reconfigurar o assistente gráfico acompanhando o vídeo do David Kimball, continue lendo o passo a passo técnico abaixo.
+> [!NOTE] Path 2 (Manual / From Scratch with Wizard)
+> If you want to understand the under-the-hood architecture, are setting up Vault CMS from scratch on an existing Astro project via `npx create-vaultcms`, or need to re-run the graphical setup wizard following David Kimball's video, read the step-by-step technical guide below.
 
 ---
 
