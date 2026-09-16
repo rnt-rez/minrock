@@ -6,6 +6,10 @@ import { rehypeCallouts } from './src/plugins/rehype-callouts.mjs';
 export default defineConfig({
   site: 'https://minrock.vercel.app',
   integrations: [sitemap()],
+  prefetch: {
+    prefetchAll: true,
+    defaultStrategy: 'hover'
+  },
   markdown: {
     processor: satteri({
       hastPlugins: [rehypeCallouts()],

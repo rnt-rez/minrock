@@ -1,0 +1,124 @@
+---
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: Heading[];
+}
+
+const { headings } = Astro.props;
+const tocHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+---
+
+{tocHeadings.length >= 2 && (
+  <nav class="toc-container" aria-label="Table of contents">
+    <details class="toc-details" open>
+      <summary class="toc-summary">
+        <span class="toc-title">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="8" y1="6" x2="21" y2="6"></line>
+            <line x1="8" y1="12" x2="21" y2="12"></line>
+            <line x1="8" y1="18" x2="21" y2="18"></line>
+            <line x1="3" y1="6" x2="3.01" y2="6"></line>
+            <line x1="3" y1="12" x2="3.01" y2="12"></line>
+            <line x1="3" y1="18" x2="3.01" y2="18"></line>
+          </svg>
+          Table of Contents
+        </span>
+        <span class="toc-arrow">▾</span>
+      </summary>
+      <ul class="toc-list">
+        {tocHeadings.map((heading) => (
+          <li class={`toc-item depth-${heading.depth}`}>
+            <a href={`#${heading.slug}`} class="toc-link">
+              {heading.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </details>
+  </nav>
+)}
+
+<style>
+  .toc-container {
+    margin: 2rem 0;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background-color: var(--bg-surface);
+    overflow: hidden;
+  }
+
+  .toc-details {
+    padding: 0;
+  }
+
+  .toc-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1.25rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text);
+    cursor: pointer;
+    user-select: none;
+    list-style: none;
+    transition: background-color 0.2s ease;
+  }
+
+  .toc-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .toc-summary:hover {
+    background-color: var(--bg-subtle);
+  }
+
+  .toc-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .toc-arrow {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    transition: transform 0.2s ease;
+  }
+
+  .toc-details[open] .toc-arrow {
+    transform: rotate(180deg);
+  }
+
+  .toc-list {
+    margin: 0;
+    padding: 0.5rem 1.25rem 1rem 1.25rem;
+    list-style: none;
+    border-top: 1px solid var(--border);
+  }
+
+  .toc-item {
+    margin-bottom: 0.35rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .toc-item.depth-3 {
+    padding-left: 1.25rem;
+    font-size: 0.85rem;
+  }
+
+  .toc-link {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .toc-link:hover {
+    color: var(--accent);
+  }
+</style>

@@ -19,7 +19,9 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
     {post.data.tags && post.data.tags.length > 0 && (
       <span class="tags">
         {post.data.tags.map((tag) => (
-          <span class="tag">#{tag}</span>
+          <a href={`/tags/${tag}`} class="tag">
+            #{tag}
+          </a>
         ))}
       </span>
     )}

@@ -1,0 +1,90 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+
+  const uniqueTags = [
+    ...new Set(allPosts.flatMap((post) => post.data.tags || [])),
+  ];
+
+  return uniqueTags.map((tag) => {
+    const filteredPosts = allPosts
+      .filter((post) => post.data.tags?.includes(tag))
+      .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+
+    return {
+      params: { tag },
+      props: { posts: filteredPosts, tag },
+    };
+  });
+}
+
+const { posts, tag } = Astro.props;
+---
+
+<BaseLayout
+  title={`#${tag} | Minrock`}
+  description={`Browse all articles tagged with #${tag}`}
+>
+  <header class="tag-header">
+    <div class="tag-breadcrumb">
+      <a href="/tags">Tags</a>
+      <span class="sep">/</span>
+      <span class="current">#{tag}</span>
+    </div>
+    <h1 class="tag-title">Articles tagged with <span class="highlight">#{tag}</span></h1>
+    <p class="tag-count">{posts.length} {posts.length === 1 ? 'article' : 'articles'} found</p>
+  </header>
+
+  <section class="posts-list">
+    {posts.map((post) => (
+      <ArticleCard post={post} />
+    ))}
+  </section>
+</BaseLayout>
+
+<style>
+  .tag-header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tag-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+  }
+
+  .tag-breadcrumb a {
+    color: var(--accent);
+  }
+
+  .tag-title {
+    font-size: 2.25rem;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.025em;
+  }
+
+  .highlight {
+    color: var(--accent);
+  }
+
+  .tag-count {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 1rem;
+  }
+
+  .posts-list {
+    display: flex;
+    flex-direction: column;
+  }
+</style>

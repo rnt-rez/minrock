@@ -1,0 +1,149 @@
+---
+interface Props {
+  title: string;
+  url: string;
+}
+
+const { title, url } = Astro.props;
+
+const encodedTitle = encodeURIComponent(title);
+const encodedUrl = encodeURIComponent(url);
+
+const twitterUrl = `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`;
+const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
+const whatsappUrl = `https://api.whatsapp.com/send?text=${encodedTitle}%20${encodedUrl}`;
+---
+
+<div class="share-bar" aria-label="Share article">
+  <span class="share-label">Share:</span>
+  <div class="share-buttons">
+    <a
+      href={twitterUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="share-btn"
+      title="Share on X"
+      aria-label="Share on X"
+    >
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+      </svg>
+    </a>
+
+    <a
+      href={linkedinUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="share-btn"
+      title="Share on LinkedIn"
+      aria-label="Share on LinkedIn"
+    >
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.2V10.9H6.46M7.83 6.45a1.6 1.6 0 0 0-1.6 1.6 1.6 1.6 0 0 0 1.6 1.6 1.6 1.6 0 0 0 1.6-1.6 1.6 1.6 0 0 0-1.6-1.6Z"/>
+      </svg>
+    </a>
+
+    <a
+      href={whatsappUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="share-btn"
+      title="Share on WhatsApp"
+      aria-label="Share on WhatsApp"
+    >
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.196 8.196 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.19-.09-1.12-.55-1.29-.62-.17-.06-.3-.09-.43.09-.12.19-.48.62-.59.75-.11.12-.23.14-.42.05-.19-.09-.8-.29-1.53-.94-.57-.5-1-1.12-1.11-1.31-.11-.19-.01-.29.08-.38.08-.09.19-.23.28-.34.09-.12.13-.19.19-.32.06-.12.03-.23-.02-.32-.05-.09-.43-1.04-.59-1.43-.16-.37-.32-.32-.43-.33h-.37c-.12 0-.32.05-.49.23s-.65.64-.65 1.56c0 .92.67 1.81.76 1.94.09.12 1.32 2.01 3.2 2.82.45.19.8.31 1.07.4.45.14.86.12 1.18.07.36-.05 1.12-.46 1.28-.9.16-.45.16-.83.11-.9-.05-.08-.18-.12-.37-.22"/>
+      </svg>
+    </a>
+
+    <button
+      type="button"
+      class="share-btn copy-link-btn"
+      title="Copy article link"
+      aria-label="Copy link to clipboard"
+      data-url={url}
+    >
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="copy-icon">
+        <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+        <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+      </svg>
+      <span class="copy-text">Copy link</span>
+    </button>
+  </div>
+</div>
+
+<script>
+  function setupCopyButtons() {
+    const copyBtns = document.querySelectorAll('.copy-link-btn');
+    copyBtns.forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const url = btn.getAttribute('data-url') || window.location.href;
+        const textSpan = btn.querySelector('.copy-text');
+        try {
+          await navigator.clipboard.writeText(url);
+          if (textSpan) textSpan.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(() => {
+            if (textSpan) textSpan.textContent = 'Copy link';
+            btn.classList.remove('copied');
+          }, 2000);
+        } catch {
+          // Fallback
+          prompt('Copy this link:', url);
+        }
+      });
+    });
+  }
+
+  setupCopyButtons();
+  document.addEventListener('astro:after-swap', setupCopyButtons);
+</script>
+
+<style>
+  .share-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 0;
+    margin-top: 2rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .share-label {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+
+  .share-buttons {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .share-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.65rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background-color: var(--bg-surface);
+    color: var(--text);
+    font-size: 0.82rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  }
+
+  .share-btn:hover {
+    background-color: var(--bg-subtle);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .share-btn.copied {
+    border-color: #10b981;
+    color: #10b981;
+  }
+</style>

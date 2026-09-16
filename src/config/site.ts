@@ -39,6 +39,7 @@ export const siteConfig: SiteConfig = {
   navLinks: [
     { title: 'Home', href: '/' },
     { title: 'Blog', href: '/blog' },
+    { title: 'Tags', href: '/tags' },
     { title: 'About', href: '/about' }
   ],
   comments: {

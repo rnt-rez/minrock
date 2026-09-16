@@ -1,0 +1,161 @@
+---
+// Lightweight, zero-dependency medium-style image zoom for Minrock
+---
+
+<div id="image-zoom-overlay" class="zoom-overlay" aria-hidden="true" role="dialog">
+  <button type="button" class="zoom-close-btn" aria-label="Close zoomed image">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+  </button>
+  <div class="zoom-content">
+    <img id="zoomed-image" src="" alt="" />
+    <p id="zoomed-caption" class="zoom-caption"></p>
+  </div>
+</div>
+
+<script>
+  function setupImageZoom() {
+    const overlay = document.getElementById('image-zoom-overlay');
+    const zoomedImg = document.getElementById('zoomed-image') as HTMLImageElement;
+    const zoomedCaption = document.getElementById('zoomed-caption');
+    const closeBtn = overlay?.querySelector('.zoom-close-btn');
+
+    if (!overlay || !zoomedImg) return;
+    const activeOverlay = overlay;
+
+    function openZoom(src: string, alt: string) {
+      zoomedImg.src = src;
+      zoomedImg.alt = alt;
+      if (zoomedCaption) {
+        zoomedCaption.textContent = alt || '';
+        zoomedCaption.style.display = alt ? 'block' : 'none';
+      }
+      activeOverlay.classList.add('active');
+      activeOverlay.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeZoom() {
+      activeOverlay.classList.remove('active');
+      activeOverlay.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      setTimeout(() => {
+        if (!activeOverlay.classList.contains('active')) {
+          zoomedImg.src = '';
+        }
+      }, 200);
+    }
+
+    // Attach click listeners to all post content images
+    const contentImages = document.querySelectorAll<HTMLImageElement>('.post-content img');
+    contentImages.forEach((img) => {
+      img.classList.add('zoomable');
+      img.addEventListener('click', (e) => {
+        e.preventDefault();
+        openZoom(img.currentSrc || img.src, img.alt || '');
+      });
+    });
+
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay || e.target === closeBtn || (closeBtn && closeBtn.contains(e.target as Node))) {
+        closeZoom();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && overlay.classList.contains('active')) {
+        closeZoom();
+      }
+    });
+  }
+
+  setupImageZoom();
+  document.addEventListener('astro:after-swap', setupImageZoom);
+</script>
+
+<style>
+  :global(.post-content img.zoomable) {
+    cursor: zoom-in;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  :global(.post-content img.zoomable:hover) {
+    opacity: 0.95;
+  }
+
+  .zoom-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: zoom-out;
+  }
+
+  .zoom-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .zoom-content {
+    max-width: 90vw;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: default;
+  }
+
+  #zoomed-image {
+    max-width: 90vw;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: 6px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    transform: scale(0.95);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .zoom-overlay.active #zoomed-image {
+    transform: scale(1);
+  }
+
+  .zoom-caption {
+    color: #e2e8f0;
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  .zoom-close-btn {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+  }
+
+  .zoom-close-btn:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+</style>

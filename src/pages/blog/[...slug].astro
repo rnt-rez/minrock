@@ -1,5 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import TOC from '../../components/TOC.astro';
+import ShareBar from '../../components/ShareBar.astro';
+import ImageZoom from '../../components/ImageZoom.astro';
+import CopyCode from '../../components/CopyCode.astro';
+import StructuredData from '../../components/StructuredData.astro';
 import { getCollection, render } from 'astro:content';
 import { siteConfig } from '../../config/site';
 
@@ -12,26 +17,59 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
 
 const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
   year: 'numeric',
   month: 'long',
   day: 'numeric'
 });
+
+// Reading time calculation
+const words = (post.body ?? '').split(/\s+/).filter(Boolean).length;
+const readingMin = Math.max(1, Math.ceil(words / 200));
+
+// Prev / Next posts
+const allPosts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const currentIndex = allPosts.findIndex((p) => p.id === post.id);
+const prevPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
+const nextPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
+
+const currentUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).href;
 ---
 
 <BaseLayout title={post.data.title} description={post.data.description}>
+  <StructuredData
+    type="article"
+    title={post.data.title}
+    description={post.data.description}
+    datePublished={post.data.pubDate}
+    tags={post.data.tags}
+    url={currentUrl}
+  />
+
   <article class="post-article">
     <header class="post-header">
       <div class="post-meta">
         <time datetime={post.data.pubDate.toISOString()}>{formattedDate}</time>
+        <span class="meta-dot">·</span>
+        <span class="reading-time">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          {readingMin} min read
+        </span>
         {post.data.tags && post.data.tags.length > 0 && (
-          <span class="meta-tags">
-            {post.data.tags.map((tag: string) => (
-              <span class="tag">#{tag}</span>
-            ))}
-          </span>
+          <>
+            <span class="meta-dot">·</span>
+            <span class="meta-tags">
+              {post.data.tags.map((tag: string) => (
+                <a href={`/tags/${tag}`} class="tag">#{tag}</a>
+              ))}
+            </span>
+          </>
         )}
       </div>
 
@@ -39,9 +77,33 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
       <p class="post-description">{post.data.description}</p>
     </header>
 
+    <TOC headings={headings} />
+
     <div class="post-content">
       <Content />
     </div>
+
+    <ShareBar title={post.data.title} url={currentUrl} />
+
+    <!-- Prev / Next Navigation -->
+    <nav class="post-nav" aria-label="Post navigation">
+      {prevPost ? (
+        <a href={`/blog/${prevPost.id}`} class="nav-card nav-prev">
+          <span class="nav-direction">← Older</span>
+          <span class="nav-title">{prevPost.data.title}</span>
+        </a>
+      ) : (
+        <div class="nav-spacer"></div>
+      )}
+      {nextPost ? (
+        <a href={`/blog/${nextPost.id}`} class="nav-card nav-next">
+          <span class="nav-direction">Newer →</span>
+          <span class="nav-title">{nextPost.data.title}</span>
+        </a>
+      ) : (
+        <div class="nav-spacer"></div>
+      )}
+    </nav>
 
     <!-- 🍃 ScatterLeaf Integration -->
     {siteConfig.comments?.enabled && (
@@ -73,6 +135,9 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
       <script is:inline type="module" src="/scatterleaf.js"></script>
     )}
   </article>
+
+  <ImageZoom />
+  <CopyCode />
 </BaseLayout>
 
 <style>
@@ -81,7 +146,7 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
   }
 
   .post-header {
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
     padding-bottom: 1.5rem;
     border-bottom: 1px solid var(--border);
   }
@@ -89,10 +154,22 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
   .post-meta {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.65rem;
     font-size: 0.88rem;
     color: var(--text-muted);
     margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .meta-dot {
+    color: var(--text-muted);
+    opacity: 0.5;
+  }
+
+  .reading-time {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
   }
 
   .meta-tags {
@@ -103,6 +180,12 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
   .tag {
     color: var(--accent);
     font-weight: 500;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .tag:hover {
+    text-decoration: underline;
   }
 
   .post-title {
@@ -125,9 +208,71 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
     line-height: 1.8;
   }
 
+  /* Prev / Next Navigation */
+  .post-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .nav-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background-color: var(--bg-surface);
+    text-decoration: none;
+    transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.15s ease;
+  }
+
+  .nav-card:hover {
+    border-color: var(--accent);
+    background-color: var(--bg-subtle);
+    transform: translateY(-2px);
+  }
+
+  .nav-next {
+    text-align: right;
+    align-items: flex-end;
+  }
+
+  .nav-direction {
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .nav-title {
+    font-size: 0.95rem;
+    color: var(--text);
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .nav-card:hover .nav-title {
+    color: var(--accent);
+  }
+
+  .nav-spacer {
+    display: block;
+  }
+
+  @media (max-width: 600px) {
+    .post-nav {
+      grid-template-columns: 1fr;
+    }
+  }
+
   /* Comments Area */
   .comments-area {
-    margin-top: 4rem;
+    margin-top: 3.5rem;
   }
 
   .comments-divider {
