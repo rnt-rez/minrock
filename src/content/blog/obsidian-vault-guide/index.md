@@ -147,7 +147,7 @@ Obsidian fetches the newest releases for Vault CMS, Astro Composer, and Obsidian
 
 Because Minrock is a pure **Static Site Generation (SSG)** engine, publishing is as simple as pushing your Git commits:
 
-1. **Inside Obsidian**: If you use the Obsidian Git plugin included with Vault CMS, click the **Git Push** icon in the bottom status bar (or run `Ctrl + P` → `Git: Commit and push`).
+1. **Inside Obsidian (1-Click Automagic)**: Click the **Git Push / Up Arrow (`↑`)** icon in Obsidian's bottom status bar (or run `Ctrl + P` → `Git: Push`). Obsidian automatically drafts the commit message and pushes to GitHub without opening a terminal or typing any commands.
 2. **Via Terminal**:
    ```bash
    git add .

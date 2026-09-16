@@ -51,21 +51,18 @@ Minrock comes with a **pre-configured Obsidian vault** located right inside `src
 
 ---
 
-### Step 3: Publish to the Web
+### Step 3: Publish to the Web (1-Click Automagic via Obsidian)
 
-Because Minrock is 100% pure **Static Site Generation (SSG)**, deploying is as simple as pushing code to GitHub:
+Whenever you save a post in Obsidian, Minrock lets you publish directly to the web without touching a terminal and without typing commit messages:
 
-```bash
-git add .
-git commit -m "feat: publish my first blog post"
-git push origin main
-```
+1. **The 1-Click Button**: In Obsidian's bottom status bar, simply click the **Git Push / Up Arrow (`↑`)** icon (or press `Ctrl / Cmd + P` and select `Git: Push`).
+2. **Automagic Commit**: Obsidian automatically drafts the commit message (e.g. `Blog update 9/16/2026: 2 file(s) changed.`) and pushes the changes straight to your GitHub repository.
+3. **Continuous Deployment**: Your connected hosting provider (**Vercel**, **Cloudflare Pages**, or **Netlify**) detects the push and publishes your new article worldwide in seconds.
 
-Connect your GitHub repository to **Vercel**, **Cloudflare Pages**, **Netlify**, or **GitHub Pages**:
+*(Prefer the terminal? Run `git add . && git commit -m "feat: my post" && git push origin main` as usual).*
+
 * **Build Command:** `npm run build`
 * **Output Directory:** `dist`
-
-Every `git push` automatically builds your site and distributes it across a global CDN in seconds.
 
 ---
 
