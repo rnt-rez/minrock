@@ -12,14 +12,18 @@ Instead of dealing with proprietary headless CMS services, cloud databases, or s
 
 ---
 
-## The Two Integration Approaches
+## Which Path Should You Follow?
 
-Depending on how you start with Minrock, you have two paths:
+Depending on your goals and familiarity with Obsidian, choose the path that best suits you:
 
-1. **Out of the Box (Pre-Configured)**: If your Minrock repository already contains the `.obsidian/` folder in `src/content/`, you don't need to run any setup wizard. Simply open `src/content` in Obsidian, press `Ctrl / Cmd + N`, and start writing immediately.
-2. **From Scratch (The Manual Wizard)**: If you are setting up Vault CMS from scratch on an existing installation or want to customize your collections, you run the command-line installer and follow the guided wizard.
+> 🟢 **Caminho 1 (Recomendado / Plug & Play):**
+> O Minrock **já vem com a pasta `.obsidian/` pré-configurada** dentro de `src/content/`. Se você apenas quer escrever posts e publicar no ar sem nenhuma burocracia, você não precisa executar este tutorial manual!
+> 
+> Basta abrir a pasta `src/content` no Obsidian e apertar `Ctrl + N`.
+> 👉 **[Siga o Guia de Início Rápido (Getting Started) →](/blog/getting-started-with-minrock)**
 
-Let's walk through the exact setup from scratch so you understand how every setting connects to Minrock's architecture.
+> 🛠️ **Caminho 2 (Manual / Do Zero com o Wizard):**
+> Se você quer entender a engenharia por trás da integração, está instalando o Vault CMS do zero em um projeto Astro existente via `npx create-vaultcms`, ou precisa reconfigurar o assistente gráfico acompanhando o vídeo do David Kimball, continue lendo o passo a passo técnico abaixo.
 
 ---
 
@@ -121,6 +125,21 @@ draft: false
 ```
 
 When saved, Minrock's Astro engine automatically generates the clean route at `/blog/your-post-title-here/`.
+
+---
+
+## How to Update Community Plugins in Obsidian
+
+A frequent question regarding pre-bundled vaults is: *“What if the plugins become outdated?”*
+
+Upgrading community plugins in Obsidian never requires terminal commands or touching git submodules:
+
+1. Open Obsidian **Settings** (`Ctrl + ,` or `Cmd + ,`).
+2. Click **Community plugins** in the left sidebar.
+3. Click the **"Check for updates"** button at the top.
+4. Click **"Update all"**.
+
+Obsidian fetches the newest releases for Vault CMS, Astro Composer, and Obsidian Git in seconds while preserving all your calibrated configuration files (`data.json`).
 
 ---
 

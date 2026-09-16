@@ -1,25 +1,87 @@
 ---
 title: "Getting Started with Minrock"
-description: "An introduction to Minrock, the opinionated typography-first static blog theme for Astro 7 and Obsidian."
+description: "A quickstart guide to spinning up your blog, writing in Obsidian out of the box, and publishing in minutes."
 pubDate: 2026-09-15
-tags: ["minrock", "astro", "minimalism"]
+tags: ["minrock", "astro", "quickstart", "obsidian"]
 draft: false
 ---
 
-Welcome to **Minrock**! This theme was engineered from the ground up for technical writers, software architects, and developers who seek maximum clarity, performance, and typography fidelity without framework bloat.
+Welcome to **Minrock**! This theme was engineered from the ground up for technical writers, software architects, and developers who seek maximum clarity, performance, and typographic fidelity without framework bloat.
 
-## The Architectural Foundation
+Whether you are an experienced developer or a non-technical writer, Minrock makes desktop writing and static publishing completely effortless.
 
-When publishing knowledge on the web, speed and readability are non-negotiable. Minrock pairs the static compilation superpowers of [Astro 7](https://astro.build) with modern, semantic CSS:
+---
 
-* **Zero Client-Side JavaScript by default:** The core layout and typography ship without runtime overhead.
-* **Instant Delivery:** Static HTML files generated ahead of time ready for CDN edge distribution.
-* **Dual Language Documentation:** Complete documentation available in English and Portuguese.
+## The 3-Step Quickstart (Plug & Play)
+
+Minrock follows a **batteries-included** philosophy: everything you need to run the site and write notes is already pre-configured.
+
+### Step 1: Spin Up the Dev Server
+
+Clone the repository and start the local development server:
 
 ```bash
-# Initialize a new Minrock blog in seconds
-npx create-astro@latest --template rnt-rez/minrock
+# 1. Clone your Minrock blog
+git clone https://github.com/rnt-rez/minrock.git
+cd minrock
+
+# 2. Install dependencies & start dev server
+npm install
+npm run dev
 ```
+
+Open your browser at `http://localhost:4321`. Your blog is now running locally with instant hot reloading!
+
+---
+
+### Step 2: Open Your Obsidian Vault (Zero Setup Required)
+
+Minrock comes with a **pre-configured Obsidian vault** located right inside `src/content/`. You do not need to run complex wizards or configure schemas manually:
+
+1. Launch [Obsidian](https://obsidian.md).
+2. Click **"Open folder as vault"** (or **"Open"**).
+3. Select the **`src/content`** folder inside your Minrock project.
+4. Trust the author and enable community plugins when prompted.
+
+**That's it!** The vault opens with Vault CMS and the Blog collection already calibrated.
+
+* **Create a Post:** Press `Ctrl / Cmd + N` (or click **+ New** in the Blog view).
+* **Paste Images:** Copy any screenshot to your clipboard and paste it (`Ctrl + V`) directly inside your note. The image is automatically saved right beside your article in `src/content/blog/<slug>/`.
+* **Instant Preview:** Save your note, and the local dev server updates `http://localhost:4321` instantly.
+
+---
+
+### Step 3: Publish to the Web
+
+Because Minrock is 100% pure **Static Site Generation (SSG)**, deploying is as simple as pushing code to GitHub:
+
+```bash
+git add .
+git commit -m "feat: publish my first blog post"
+git push origin main
+```
+
+Connect your GitHub repository to **Vercel**, **Cloudflare Pages**, **Netlify**, or **GitHub Pages**:
+* **Build Command:** `npm run build`
+* **Output Directory:** `dist`
+
+Every `git push` automatically builds your site and distributes it across a global CDN in seconds.
+
+---
+
+## Keeping Plugins Up to Date
+
+Because Minrock bundles the Obsidian configuration in `src/content/.obsidian/`, you might wonder: *“Will these plugins become outdated over time?”*
+
+Updating them is effortless and happens directly inside Obsidian with 1 click:
+
+1. In Obsidian, open **Settings** (`Ctrl + ,` or `Cmd + ,`).
+2. Go to **Community plugins**.
+3. Click **"Check for updates"** and then **"Update all"**.
+
+Obsidian updates all plugins to their latest releases while preserving your Minrock mapping settings.
+
+---
 
 ## Exploring the 4 Calibrated Themes
 
@@ -32,6 +94,10 @@ Minrock includes four hand-tuned color palettes accessible from the switcher in 
 
 Try switching themes using the buttons in the top navigation bar to see the typography instantly adapt.
 
-## What's Next?
+---
 
-In the next articles, we'll explore how to structure your technical notes and how to connect your existing [Obsidian](https://obsidian.md) vault seamlessly.
+## Deep Dive: Want to Learn the Under-the-Hood Architecture?
+
+If you want to understand how Vault CMS maps Astro content collections, learn how to configure the wizard from scratch, or watch the video walkthrough:
+
+👉 **[Read the Full Technical Guide: Connecting Your Obsidian Vault to Minrock →](/blog/obsidian-vault-guide)**

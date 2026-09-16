@@ -73,6 +73,8 @@ If you ever run the **Vault CMS Setup Wizard** (`Ctrl / Cmd + P` → `Vault CMS:
    draft: false
    ---
    ```
+4. **Updating Community Plugins**:
+   - Keep plugins up to date with 1 click: **Settings** (`Ctrl + ,`) → **Community plugins** → **Check for updates** → **Update all**. Your Minrock settings are preserved automatically.
 
 ---
 
