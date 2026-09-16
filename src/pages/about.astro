@@ -19,6 +19,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         "Minrock is the solid bedrock where knowledge rests; ScatterLeaf is the gentle breeze where ideas and conversations drift."
       </blockquote>
 
+      <h2>The Mission: Democratizing Digital Sovereignty</h2>
+      <p>
+        At its core, Minrock exists to <strong>democratize access and empower personal positioning on the open web</strong>. In an era where digital presence is increasingly corralled into corporate walled gardens and algorithmic feeds, this project provides everyone with a sovereign space to truly call their own—without outside interference, steep technical hurdles, and at zero financial cost.
+      </p>
+
+      <blockquote class="manifesto-quote">
+        <em>"A ideia do projeto é propiciar e democratizar o acesso e o posicionamento das pessoas na web, garantindo um espaço soberano para chamar de seu: sem interferências, sem grandes dificuldades e com custo zero."</em>
+        <br />
+        <span class="manifesto-author">— Renato Rezende, Creator of Minrock</span>
+      </blockquote>
+
       <h2>Core Principles</h2>
       <ul>
         <li><strong>Pure SSG (Zero Bloat):</strong> Every page is pre-rendered at build time. No database calls, no client-side runtime bloat, and instant CDN delivery worldwide.</li>
@@ -94,5 +105,22 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .about-content {
     font-size: 1.05rem;
     line-height: 1.8;
+  }
+
+  .manifesto-quote {
+    margin: 1.75rem 0;
+    padding: 1.25rem 1.5rem;
+    border-left: 3px solid var(--accent);
+    background: var(--bg-surface);
+    border-radius: 0 8px 8px 0;
+    font-style: normal;
+  }
+
+  .manifesto-author {
+    display: inline-block;
+    margin-top: 0.6rem;
+    font-size: 0.85rem;
+    font-family: var(--font-mono);
+    color: var(--text-muted);
   }
 </style>
