@@ -86,10 +86,16 @@ const { currentPath = Astro.url.pathname } = Astro.props;
 
 <style>
   .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
     border-bottom: 1px solid var(--border);
-    padding: 1.1rem 0;
-    margin-bottom: 2.5rem;
+    padding: 0.85rem 0;
+    margin-bottom: 2rem;
     background: var(--bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: background-color 0.2s ease, border-color 0.2s ease;
   }
 
   .header-inner {

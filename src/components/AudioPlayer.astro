@@ -18,7 +18,7 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
     class="audio-toggle-btn"
     aria-expanded="false"
     aria-controls="audio-player-drawer"
-    title="Toggle audio player"
+    title="Expand audio player"
   >
     <div class="audio-toggle-left">
       <div class="audio-speaker-icon" aria-hidden="true">
@@ -102,7 +102,7 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
           <div id="audio-progress-fill" class="audio-progress-fill" style="width: 0%;"></div>
         </div>
         <div class="audio-progress-labels">
-          <span id="audio-part-label">Paragraph 0 / 0</span>
+          <span id="audio-part-label">Paragraph 0 of 0</span>
           <span id="audio-pct-label">0%</span>
         </div>
       </div>
@@ -122,9 +122,9 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
 
     const toggleBtn = document.getElementById('audio-toggle-btn');
     const playBtn = document.getElementById('audio-play-btn');
-    const stopBtn = document.getElementById('audio-stop-btn') as HTMLButtonElement;
-    const prevBtn = document.getElementById('audio-prev-btn') as HTMLButtonElement;
-    const nextBtn = document.getElementById('audio-next-btn') as HTMLButtonElement;
+    const stopBtn = document.getElementById('audio-stop-btn') as HTMLButtonElement | null;
+    const prevBtn = document.getElementById('audio-prev-btn') as HTMLButtonElement | null;
+    const nextBtn = document.getElementById('audio-next-btn') as HTMLButtonElement | null;
     const rateBtn = document.getElementById('audio-rate-btn');
     const rateVal = document.getElementById('audio-rate-val');
     const playText = document.getElementById('audio-play-text');
@@ -146,8 +146,16 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
     // Extract textual elements (h2, h3, p, li, blockquote)
     const textNodes = Array.from(contentEl.querySelectorAll('h2, h3, p, li, blockquote'))
       .filter((el) => {
-        // Exclude callout icons, copy buttons, etc.
-        return !el.closest('.callout-title') && el.textContent?.trim().length;
+        // Exclude callout icons, copy buttons, pre, tables, toc, etc.
+        return (
+          !el.closest('pre') &&
+          !el.closest('.expressive-code') &&
+          !el.closest('.code-block') &&
+          !el.closest('.toc') &&
+          !el.closest('table') &&
+          !el.closest('.callout-title') &&
+          Boolean(el.textContent?.trim().length)
+        );
       }) as HTMLElement[];
 
     if (!textNodes.length) {
@@ -155,7 +163,7 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
       return;
     }
 
-    const parts = textNodes.map((el) => el.innerText.trim());
+    const parts = textNodes.map((el) => el.innerText.trim()).filter((t) => t.length > 0);
     const totalWords = parts.reduce((acc, text) => acc + text.split(/\s+/).filter(Boolean).length, 0);
     const estMin = Math.max(1, Math.ceil(totalWords / 140)); // ~140 words/min speech rate
 
@@ -169,17 +177,37 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
     let rates = [1.0, 1.25, 1.5, 2.0, 0.75];
     let currentRateIdx = 0;
     let synth = window.speechSynthesis;
+    let userToggledWhileSticky = false;
 
     // Detect language
     const pageLang = document.documentElement.lang || 'en';
     const targetLang = pageLang.startsWith('pt') ? 'pt-BR' : 'en-US';
 
-    function toggleDrawer() {
-      const isCollapsed = root?.classList.toggle('is-collapsed');
-      toggleBtn?.setAttribute('aria-expanded', String(!isCollapsed));
+    function setExpanded(expanded: boolean) {
+      if (expanded) {
+        root?.classList.add('is-expanded');
+        root?.classList.remove('is-collapsed');
+        toggleBtn?.setAttribute('aria-expanded', 'true');
+        toggleBtn?.setAttribute('title', 'Collapse audio player');
+      } else {
+        root?.classList.remove('is-expanded');
+        root?.classList.add('is-collapsed');
+        toggleBtn?.setAttribute('aria-expanded', 'false');
+        toggleBtn?.setAttribute('title', 'Expand audio player');
+      }
     }
 
-    toggleBtn?.addEventListener('click', toggleDrawer);
+    toggleBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      const isCurrentlyExpanded = root?.classList.contains('is-expanded');
+      if (root?.classList.contains('is-sticky')) {
+        userToggledWhileSticky = true;
+      }
+      if (!isCurrentlyExpanded) {
+        root?.classList.add('is-active-player');
+      }
+      setExpanded(!isCurrentlyExpanded);
+    });
 
     function updateProgress() {
       const pct = parts.length ? Math.round(((currentIndex + 1) / parts.length) * 100) : 0;
@@ -202,7 +230,10 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
       const currentEl = textNodes[currentIndex];
       if (currentEl) {
         currentEl.classList.add('audio-speaking-active');
-        currentEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const rect = currentEl.getBoundingClientRect();
+        if (rect.top < 90 || rect.bottom > window.innerHeight - 80) {
+          currentEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
       }
     }
 
@@ -210,6 +241,11 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
       if (currentIndex >= parts.length) {
         stopPlayback();
         return;
+      }
+
+      root?.classList.add('is-active-player');
+      if (sentinel && sentinel.getBoundingClientRect().top <= 64) {
+        root?.classList.add('is-sticky');
       }
 
       synth.cancel();
@@ -235,7 +271,8 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
         }
       };
 
-      utterance.onerror = () => {
+      utterance.onerror = (e) => {
+        if (e.error === 'canceled' || e.error === 'interrupted') return;
         stopPlayback();
       };
 
@@ -247,9 +284,11 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
         iconPlay?.classList.add('hidden');
         iconPause?.classList.remove('hidden');
         if (playText) playText.textContent = 'Pause';
-        if (statusBadge) statusBadge.textContent = 'Playing...';
+        if (statusBadge) {
+          statusBadge.textContent = parts.length > 0 ? `Playing (${currentIndex + 1}/${parts.length})` : 'Playing...';
+        }
         root?.classList.add('is-playing');
-        stopBtn.disabled = false;
+        if (stopBtn) stopBtn.disabled = false;
       } else if (isPaused) {
         iconPlay?.classList.remove('hidden');
         iconPause?.classList.add('hidden');
@@ -262,11 +301,12 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
         if (playText) playText.textContent = 'Play';
         if (statusBadge) statusBadge.textContent = 'Ready to play';
         root?.classList.remove('is-playing');
-        stopBtn.disabled = true;
+        if (stopBtn) stopBtn.disabled = true;
       }
     }
 
-    playBtn?.addEventListener('click', () => {
+    playBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
       if (!isPlaying) {
         playCurrentPart();
       } else if (isPaused) {
@@ -286,13 +326,19 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
       isPaused = false;
       currentIndex = 0;
       clearHighlight();
+      root?.classList.remove('is-active-player', 'is-sticky');
+      userToggledWhileSticky = false;
       updateUI();
       updateProgress();
     }
 
-    stopBtn?.addEventListener('click', stopPlayback);
+    stopBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      stopPlayback();
+    });
 
-    prevBtn?.addEventListener('click', () => {
+    prevBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
       if (currentIndex > 0) {
         currentIndex--;
         updateProgress();
@@ -301,7 +347,8 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
       }
     });
 
-    nextBtn?.addEventListener('click', () => {
+    nextBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
       if (currentIndex < parts.length - 1) {
         currentIndex++;
         updateProgress();
@@ -310,7 +357,8 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
       }
     });
 
-    rateBtn?.addEventListener('click', () => {
+    rateBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
       currentRateIdx = (currentRateIdx + 1) % rates.length;
       const newRate = rates[currentRateIdx];
       if (rateVal) rateVal.textContent = `${newRate.toFixed(1).replace('.0', '')}x`;
@@ -324,6 +372,34 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
     document.addEventListener('astro:before-swap', () => synth.cancel());
 
     updateProgress();
+
+    // Sentinel & IntersectionObserver for Sticky detection
+    let sentinel = root.parentElement?.querySelector('.audio-sticky-sentinel') as HTMLElement | null;
+    if (!sentinel) {
+      sentinel = document.createElement('div');
+      sentinel.className = 'audio-sticky-sentinel';
+      sentinel.style.cssText = 'position: relative; top: -64px; height: 1px; pointer-events: none; visibility: hidden; margin: 0; padding: 0;';
+      root.parentNode?.insertBefore(sentinel, root);
+    }
+
+    const stickyObserver = new IntersectionObserver(([entry]) => {
+      const isActive = root?.classList.contains('is-active-player') ?? false;
+      const isScrolledPast = !entry.isIntersecting && entry.boundingClientRect.top <= 64;
+      const shouldBeSticky = isActive && isScrolledPast;
+      const wasSticky = root?.classList.contains('is-sticky') ?? false;
+
+      root?.classList.toggle('is-sticky', shouldBeSticky);
+
+      if (shouldBeSticky && !wasSticky) {
+        if (!userToggledWhileSticky && root?.classList.contains('is-expanded')) {
+          setExpanded(false);
+        }
+      } else if (!shouldBeSticky && wasSticky) {
+        userToggledWhileSticky = false;
+      }
+    }, { threshold: [0, 1] });
+
+    stickyObserver.observe(sentinel);
   }
 
   setupAudioPlayer();
@@ -332,17 +408,49 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
 
 <style>
   .audio-player-card {
+    position: relative;
     margin: 1.5rem 0 2rem 0;
     border: 1px solid var(--border);
     border-radius: 8px;
     background-color: var(--bg-surface);
     overflow: hidden;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  }
+
+  /* Sticky when active playback is initiated */
+  .audio-player-card.is-active-player {
+    position: sticky;
+    top: 4.5rem;
+    z-index: 35;
   }
 
   .audio-player-card:hover,
   .audio-player-card.is-playing {
     border-color: var(--accent);
+  }
+
+  .audio-player-card.is-active-player.is-sticky {
+    box-shadow: 0 10px 28px -6px rgba(0, 0, 0, 0.25), 0 2px 8px -2px rgba(37, 99, 235, 0.2);
+    border-color: var(--accent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .audio-player-card.is-playing .wave-1 {
+    animation: pulse-wave 1.2s infinite ease-in-out;
+  }
+
+  .audio-player-card.is-playing .wave-2 {
+    animation: pulse-wave 1.2s infinite ease-in-out 0.2s;
+  }
+
+  @keyframes pulse-wave {
+    0%, 100% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 1;
+    }
   }
 
   .audio-toggle-btn {
@@ -406,29 +514,46 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
   .audio-status-badge {
     font-size: 0.75rem;
     font-family: var(--font-mono);
-    padding: 0.15rem 0.45rem;
+    padding: 0.15rem 0.5rem;
     border-radius: 4px;
     background-color: var(--bg);
     border: 1px solid var(--border);
     color: var(--text-muted);
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .audio-player-card.is-playing .audio-status-badge {
+    border-color: var(--accent);
+    color: var(--accent);
+    font-weight: 600;
   }
 
   .audio-chevron-icon {
     color: var(--text-muted);
-    transition: transform 0.2s ease;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease;
     display: flex;
     align-items: center;
   }
 
-  .audio-player-card:not(.is-collapsed) .audio-chevron-icon {
+  .audio-player-card.is-expanded .audio-chevron-icon {
     transform: rotate(180deg);
   }
 
-  .audio-player-card.is-collapsed .audio-player-drawer {
-    display: none;
+  /* Drawer Container with Smooth Grid Transition */
+  .audio-player-drawer {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+    opacity: 0;
+  }
+
+  .audio-player-card.is-expanded .audio-player-drawer {
+    grid-template-rows: 1fr;
+    opacity: 1;
   }
 
   .audio-drawer-content {
+    overflow: hidden;
     padding: 0 1.25rem 1rem 1.25rem;
   }
 

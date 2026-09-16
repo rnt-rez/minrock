@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CopyCode from '../../components/CopyCode.astro';
+import AudioPlayer from '../../components/AudioPlayer.astro';
 import StructuredData from '../../components/StructuredData.astro';
 import { getCollection, render } from 'astro:content';
 import { siteConfig } from '../../config/site';
@@ -69,6 +70,9 @@ const currentUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).href;
         )}
       </div>
     </header>
+
+    <!-- 🔊 Accessible Audio Player (Text-to-Speech) -->
+    <AudioPlayer selector=".post-content" title={project.data.title} label="Listen to Project" />
 
     <div class="post-content">
       <Content />
