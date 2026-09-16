@@ -19,6 +19,7 @@
   </button>
 
   <div id="lang-dropdown" class="lang-dropdown" role="menu" aria-label="Available languages">
+    <div class="lang-dropdown-header">LANGUAGE</div>
     <button class="lang-option" data-lang="en" role="menuitem">🇺🇸 English</button>
     <button class="lang-option" data-lang="pt" role="menuitem">🇧🇷 Português</button>
     <button class="lang-option" data-lang="es" role="menuitem">🇪🇸 Español</button>
@@ -40,7 +41,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 2px;
+    gap: 3px;
     width: 34px;
     height: 34px;
     border-radius: 6px;
@@ -48,7 +49,7 @@
     background: var(--bg-surface);
     color: var(--text-muted);
     cursor: pointer;
-    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
     padding: 0;
   }
 
@@ -67,13 +68,37 @@
     border: 1px solid var(--border);
     border-radius: 8px;
     padding: 0.35rem;
-    min-width: 150px;
+    min-width: 155px;
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     z-index: 1000;
+    animation: langDropdownFade 0.15s ease;
   }
 
   .lang-dropdown.open {
     display: block;
+  }
+
+  @keyframes langDropdownFade {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .lang-dropdown-header {
+    font-size: 0.68rem;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+    padding: 0.25rem 0.65rem 0.35rem;
+    letter-spacing: 0.06em;
+    opacity: 0.8;
   }
 
   .lang-option {
@@ -105,6 +130,10 @@
 
     btn?.addEventListener('click', (e) => {
       e.stopPropagation();
+      // Close other dropdowns if open
+      document.querySelectorAll('.theme-dropdown.open, .social-dropdown-menu.open').forEach(d => d.classList.remove('open'));
+      document.querySelectorAll('#theme-toggle-btn, #social-menu-btn').forEach(b => b.setAttribute('aria-expanded', 'false'));
+
       const open = dropdown?.classList.toggle('open');
       btn.setAttribute('aria-expanded', String(!!open));
     });
