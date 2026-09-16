@@ -47,6 +47,6 @@ export const siteConfig: SiteConfig = {
     repo: 'rnt-rez/minrock',
     category: 'General',
     theme: 'auto',
-    lang: 'en'
+    lang: 'auto'
   }
 };
