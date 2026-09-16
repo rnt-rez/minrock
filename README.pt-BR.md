@@ -107,8 +107,13 @@ Seu conteúdo em Markdown aqui...
 | Comando | Descrição |
 | :--- | :--- |
 | `npm run dev` | Inicia o servidor de desenvolvimento em `http://localhost:4321` |
+| `npm run check` | Checagem estática de tipos Astro e TypeScript |
 | `npm run build` | Compila o site estático completo para a pasta `dist/` |
 | `npm run preview` | Executa o preview local dos arquivos estáticos compilados |
+| `npm run qa` | Suíte de verificação básica (check de tipos + build de produção) |
+| `npm run audit:google` | Auditoria Google Search (SERP Snippets, Schema.org e Indexação) |
+| `npm run audit:wcag` | Auditoria de Acessibilidade e Semântica WCAG 2.1/2.2 AA |
+| `npm run audit:security` | Auditoria DevSecOps de segurança e varredura de credenciais |
 
 ---
 

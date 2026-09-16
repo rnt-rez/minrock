@@ -107,8 +107,13 @@ Your content goes here...
 | Command | Action |
 | :--- | :--- |
 | `npm run dev` | Starts local dev server at `http://localhost:4321` |
+| `npm run check` | Runs Astro and TypeScript static type diagnostics |
 | `npm run build` | Compiles production-ready static pages into `dist/` |
 | `npm run preview` | Previews the production build locally |
+| `npm run qa` | Baseline verification suite (`astro check && astro build`) |
+| `npm run audit:google` | Google Search audit (SERP Snippets, Schema.org and Discovery) |
+| `npm run audit:wcag` | Structural WCAG 2.1/2.2 AA accessibility and semantic audit |
+| `npm run audit:security` | DevSecOps Sentinel security and credential scanner |
 
 ---
 
