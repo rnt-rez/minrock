@@ -34,11 +34,13 @@ export const siteConfig: SiteConfig = {
   defaultTheme: 'cream',
   socialLinks: {
     github: 'https://github.com/rnt-rez/minrock',
+    linkedin: 'https://linkedin.com/in/renato-rezende-ops',
     email: 'contact@example.com'
   },
   navLinks: [
     { title: 'Home', href: '/' },
     { title: 'Blog', href: '/blog' },
+    { title: 'Projects', href: '/projects' },
     { title: 'Tags', href: '/tags' },
     { title: 'About', href: '/about' }
   ],

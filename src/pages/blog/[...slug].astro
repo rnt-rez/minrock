@@ -2,8 +2,8 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TOC from '../../components/TOC.astro';
 import ShareBar from '../../components/ShareBar.astro';
-import ImageZoom from '../../components/ImageZoom.astro';
 import CopyCode from '../../components/CopyCode.astro';
+import AudioPlayer from '../../components/AudioPlayer.astro';
 import StructuredData from '../../components/StructuredData.astro';
 import { getCollection, render } from 'astro:content';
 import { siteConfig } from '../../config/site';
@@ -39,7 +39,7 @@ const nextPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
 const currentUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).href;
 ---
 
-<BaseLayout title={post.data.title} description={post.data.description}>
+<BaseLayout title={post.data.title} description={post.data.description} wide={true}>
   <StructuredData
     type="article"
     title={post.data.title}
@@ -49,100 +49,142 @@ const currentUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).href;
     url={currentUrl}
   />
 
-  <article class="post-article">
-    <header class="post-header">
-      <div class="post-meta">
-        <time datetime={post.data.pubDate.toISOString()}>{formattedDate}</time>
-        <span class="meta-dot">·</span>
-        <span class="reading-time">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <circle cx="12" cy="12" r="10"></circle>
-            <polyline points="12 6 12 12 16 14"></polyline>
-          </svg>
-          {readingMin} min read
-        </span>
-        {post.data.tags && post.data.tags.length > 0 && (
-          <>
+  <div class="post-page-container">
+    <!-- Main Content Column -->
+    <div class="post-main">
+      <article class="post-article">
+        <header class="post-header">
+          <div class="post-meta">
+            <time datetime={post.data.pubDate.toISOString()}>{formattedDate}</time>
             <span class="meta-dot">·</span>
-            <span class="meta-tags">
-              {post.data.tags.map((tag: string) => (
-                <a href={`/tags/${tag}`} class="tag">#{tag}</a>
-              ))}
+            <span class="reading-time">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              {readingMin} min read
             </span>
-          </>
+            {post.data.tags && post.data.tags.length > 0 && (
+              <>
+                <span class="meta-dot">·</span>
+                <span class="meta-tags">
+                  {post.data.tags.map((tag: string) => (
+                    <a href={`/tags/${tag}`} class="tag">#{tag}</a>
+                  ))}
+                </span>
+              </>
+            )}
+          </div>
+
+          <h1 class="post-title">{post.data.title}</h1>
+          <p class="post-description">{post.data.description}</p>
+        </header>
+
+        <!-- 🔊 Accessible Audio Player (Text-to-Speech) -->
+        {post.data.audio !== false && (
+          <AudioPlayer selector=".post-content" title={post.data.title} label="Listen to Article" />
         )}
-      </div>
 
-      <h1 class="post-title">{post.data.title}</h1>
-      <p class="post-description">{post.data.description}</p>
-    </header>
+        {post.data.image && (
+          <figure class="post-cover">
+            <img src={post.data.image} alt={post.data.title} class="cover-img" />
+          </figure>
+        )}
 
-    <TOC headings={headings} />
+        <div class="post-content">
+          <Content />
+        </div>
 
-    <div class="post-content">
-      <Content />
+        <ShareBar title={post.data.title} url={currentUrl} />
+
+        <!-- Prev / Next Navigation -->
+        <nav class="post-nav" aria-label="Post navigation">
+          {prevPost ? (
+            <a href={`/blog/${prevPost.id}`} class="nav-card nav-prev">
+              <span class="nav-direction">← Older</span>
+              <span class="nav-title">{prevPost.data.title}</span>
+            </a>
+          ) : (
+            <div class="nav-spacer"></div>
+          )}
+          {nextPost ? (
+            <a href={`/blog/${nextPost.id}`} class="nav-card nav-next">
+              <span class="nav-direction">Newer →</span>
+              <span class="nav-title">{nextPost.data.title}</span>
+            </a>
+          ) : (
+            <div class="nav-spacer"></div>
+          )}
+        </nav>
+
+        <!-- 🍃 ScatterLeaf Integration -->
+        {siteConfig.comments?.enabled && (
+          <section class="comments-area" id="comments">
+            <div class="comments-divider"></div>
+            <div class="comments-header">
+              <h3 class="comments-title">
+                <span>🍃</span>
+                <span>Discussion & Notes</span>
+              </h3>
+              <p class="comments-subtitle">
+                Iframe-free native comments powered by <a href="https://github.com/rnt-rez/scatterleaf" target="_blank" rel="noopener noreferrer">ScatterLeaf</a>.
+              </p>
+            </div>
+
+            <!-- Web Component Host -->
+            <div class="scatterleaf-host">
+              <scatter-leaf
+                id="post-comments"
+                repo={siteConfig.comments.repo}
+                category={siteConfig.comments.category || 'General'}
+                theme={siteConfig.comments.theme || 'auto'}
+                lang={siteConfig.comments.lang || 'auto'}
+              ></scatter-leaf>
+            </div>
+          </section>
+
+          <script is:inline type="module" src="/scatterleaf.js"></script>
+        )}
+      </article>
     </div>
 
-    <ShareBar title={post.data.title} url={currentUrl} />
-
-    <!-- Prev / Next Navigation -->
-    <nav class="post-nav" aria-label="Post navigation">
-      {prevPost ? (
-        <a href={`/blog/${prevPost.id}`} class="nav-card nav-prev">
-          <span class="nav-direction">← Older</span>
-          <span class="nav-title">{prevPost.data.title}</span>
-        </a>
-      ) : (
-        <div class="nav-spacer"></div>
-      )}
-      {nextPost ? (
-        <a href={`/blog/${nextPost.id}`} class="nav-card nav-next">
-          <span class="nav-direction">Newer →</span>
-          <span class="nav-title">{nextPost.data.title}</span>
-        </a>
-      ) : (
-        <div class="nav-spacer"></div>
-      )}
-    </nav>
-
-    <!-- 🍃 ScatterLeaf Integration -->
-    {siteConfig.comments?.enabled && (
-      <section class="comments-area" id="comments">
-        <div class="comments-divider"></div>
-        <div class="comments-header">
-          <h3 class="comments-title">
-            <span>🍃</span>
-            <span>Discussion & Notes</span>
-          </h3>
-          <p class="comments-subtitle">
-            Iframe-free native comments powered by <a href="https://github.com/rnt-rez/scatterleaf" target="_blank" rel="noopener noreferrer">ScatterLeaf</a>.
-          </p>
-        </div>
-
-        <!-- Web Component Host -->
-        <div class="scatterleaf-host">
-          <scatter-leaf
-            id="post-comments"
-            repo={siteConfig.comments.repo}
-            category={siteConfig.comments.category || 'General'}
-            theme={siteConfig.comments.theme || 'auto'}
-            lang={siteConfig.comments.lang || 'auto'}
-          ></scatter-leaf>
-        </div>
-      </section>
-
-      <!-- Carregamento do Web Component isolado nas páginas de post -->
-      <script is:inline type="module" src="/scatterleaf.js"></script>
+    <!-- Sticky Sidebar Column (TOC) -->
+    {headings.length > 0 && (
+      <aside class="post-sidebar" aria-label="Article Table of Contents">
+        <TOC headings={headings} title="On This Page" />
+      </aside>
     )}
-  </article>
+  </div>
 
-  <ImageZoom />
   <CopyCode />
 </BaseLayout>
 
 <style>
-  .post-article {
+  .post-page-container {
+    display: grid;
+    grid-template-columns: 1fr 240px;
+    gap: 3.5rem;
+    align-items: start;
     padding-top: 1rem;
+  }
+
+  @media (max-width: 900px) {
+    .post-page-container {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .post-sidebar {
+      display: none;
+    }
+  }
+
+  .post-main {
+    min-width: 0;
+  }
+
+  .post-sidebar {
+    position: relative;
+    height: 100%;
   }
 
   .post-header {
@@ -201,6 +243,17 @@ const currentUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).href;
     color: var(--text-muted);
     margin: 0;
     line-height: 1.6;
+  }
+
+  .post-cover {
+    margin: 1.5rem 0;
+  }
+
+  .cover-img {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    display: block;
   }
 
   .post-content {

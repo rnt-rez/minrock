@@ -1,161 +1,215 @@
 ---
-// Lightweight, zero-dependency medium-style image zoom for Minrock
+// src/components/ImageZoom.astro
+// PhotoSwipe 5 lightbox with dynamic image sizing & gallery support
+import 'photoswipe/style.css';
 ---
 
-<div id="image-zoom-overlay" class="zoom-overlay" aria-hidden="true" role="dialog">
-  <button type="button" class="zoom-close-btn" aria-label="Close zoomed image">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <line x1="18" y1="6" x2="6" y2="18"></line>
-      <line x1="6" y1="6" x2="18" y2="18"></line>
-    </svg>
-  </button>
-  <div class="zoom-content">
-    <img id="zoomed-image" src="" alt="" />
-    <p id="zoomed-caption" class="zoom-caption"></p>
-  </div>
-</div>
-
 <script>
-  function setupImageZoom() {
-    const overlay = document.getElementById('image-zoom-overlay');
-    const zoomedImg = document.getElementById('zoomed-image') as HTMLImageElement;
-    const zoomedCaption = document.getElementById('zoomed-caption');
-    const closeBtn = overlay?.querySelector('.zoom-close-btn');
+  import PhotoSwipe, { type Bounds } from 'photoswipe';
 
-    if (!overlay || !zoomedImg) return;
-    const activeOverlay = overlay;
+  let activePswp: PhotoSwipe | null = null;
 
-    function openZoom(src: string, alt: string) {
-      zoomedImg.src = src;
-      zoomedImg.alt = alt;
-      if (zoomedCaption) {
-        zoomedCaption.textContent = alt || '';
-        zoomedCaption.style.display = alt ? 'block' : 'none';
+  function openPhotoSwipe(targetImg: HTMLImageElement) {
+    if (activePswp) {
+      try {
+        activePswp.destroy();
+      } catch {
+        // ignore if already destroyed
       }
-      activeOverlay.classList.add('active');
-      activeOverlay.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
+      activePswp = null;
     }
 
-    function closeZoom() {
-      activeOverlay.classList.remove('active');
-      activeOverlay.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
-      setTimeout(() => {
-        if (!activeOverlay.classList.contains('active')) {
-          zoomedImg.src = '';
+    const isAvatar = targetImg.matches('.avatar-zoomable');
+
+    // Find gallery group: images within the same article or post body
+    let list: HTMLImageElement[] = [];
+    if (isAvatar) {
+      list = [targetImg];
+    } else {
+      const container = targetImg.closest('article, .post-content, .prose, .post-main, main') || document.querySelector('article') || document.body;
+      const images = Array.from(
+        container.querySelectorAll<HTMLImageElement>('.post-content img, .prose img, .post-cover img, .cover-img, [data-zoomable]')
+      ).filter(img => !img.matches('.avatar-zoomable'));
+
+      list = images.length > 0 && images.includes(targetImg) ? images : [targetImg];
+    }
+
+    const index = list.indexOf(targetImg);
+
+    const dataSource = list.map((img) => {
+      const naturalW = Number(img.naturalWidth || 0);
+      const naturalH = Number(img.naturalHeight || 0);
+      const rect = img.getBoundingClientRect();
+      const isSvg = (img.currentSrc || img.src || '').toLowerCase().includes('.svg');
+
+      const aspect =
+        naturalW > 0 && naturalH > 0
+          ? naturalW / naturalH
+          : rect.width > 0 && rect.height > 0
+            ? rect.width / rect.height
+            : 16 / 9;
+
+      // Ensure SVGs have high virtual resolution (1920px) so deep zooming renders sharp details
+      const baseW = isSvg ? Math.max(naturalW, 1920) : Math.max(naturalW, 1400);
+
+      return {
+        src: img.currentSrc || img.src,
+        msrc: img.currentSrc || img.src,
+        w: Math.round(baseW),
+        h: Math.round(baseW / aspect),
+        element: img,
+        alt: img.alt || '',
+      };
+    });
+
+    const pswp = new PhotoSwipe({
+      dataSource,
+      index: index >= 0 ? index : 0,
+      closeSVG: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>',
+      zoomSVG: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff"><path d="M340-540h-40q-17 0-28.5-11.5T260-580q0-17 11.5-28.5T300-620h40v-40q0-17 11.5-28.5T380-700q17 0 28.5 11.5T420-660v40h40q17 0 28.5 11.5T500-580q0 17-11.5 28.5T460-540h-40v40q0 17-11.5 28.5T380-460q-17 0-28.5-11.5T340-500v-40Zm40 220q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l224 224q11 11 11 28t-11 28q-11 11-28 11t-28-11L532-372q-30 24-69 38t-83 14Zm0-80q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>',
+      padding: { top: 20, bottom: 20, left: 20, right: 20 },
+      showHideAnimationType: 'zoom',
+      showAnimationDuration: 280,
+      hideAnimationDuration: 240,
+      wheelToZoom: true,
+      arrowPrev: list.length > 1,
+      arrowNext: list.length > 1,
+      imageClickAction: 'zoom-or-close',
+      tapAction: 'zoom-or-close',
+      doubleTapAction: 'zoom',
+      secondaryZoomLevel: (zoomLevelObject) => Math.max(zoomLevelObject.fit * 1.8, 1.4),
+      maxZoomLevel: (zoomLevelObject) => Math.max(zoomLevelObject.fit * 3.5, 2.5),
+      bgOpacity: 0.94,
+    });
+
+    // Viewport-based thumbBounds for smooth opening/closing transition
+    pswp.addFilter('thumbBounds', (thumbBounds, itemData): Bounds => {
+      const el = itemData.element;
+      if (el && el instanceof HTMLElement) {
+        const rect = el.getBoundingClientRect();
+        if (rect.width > 0 && rect.height > 0) {
+          return {
+            x: rect.left,
+            y: rect.top,
+            w: rect.width,
+          };
         }
-      }, 200);
-    }
-
-    // Attach click listeners to all post content images
-    const contentImages = document.querySelectorAll<HTMLImageElement>('.post-content img');
-    contentImages.forEach((img) => {
-      img.classList.add('zoomable');
-      img.addEventListener('click', (e) => {
-        e.preventDefault();
-        openZoom(img.currentSrc || img.src, img.alt || '');
-      });
+      }
+      return thumbBounds ?? { x: 0, y: 0, w: 0 };
     });
 
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay || e.target === closeBtn || (closeBtn && closeBtn.contains(e.target as Node))) {
-        closeZoom();
+    pswp.on('destroy', () => {
+      if (activePswp === pswp) {
+        activePswp = null;
       }
     });
 
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && overlay.classList.contains('active')) {
-        closeZoom();
+    activePswp = pswp;
+    pswp.init();
+  }
+
+  function handleImageClick(e: MouseEvent) {
+    const target = e.target;
+    if (!target || !(target instanceof HTMLImageElement)) return;
+
+    const isZoomable = target.matches('.post-content img, .prose img, .post-cover img, .cover-img, .avatar-zoomable, [data-zoomable]');
+    if (!isZoomable) return;
+
+    // If image is inside an external/navigation link, let standard navigation occur unless it's a direct image link
+    const parentLink = target.closest('a');
+    if (parentLink) {
+      const href = parentLink.getAttribute('href') || '';
+      const isImageFile = href.match(/\.(png|jpe?g|webp|svg|gif|avif)(\?.*)?$/i);
+      if (!isImageFile && href !== '#' && href !== '') {
+        return;
+      }
+      e.preventDefault();
+    }
+
+    e.preventDefault();
+    e.stopPropagation();
+    openPhotoSwipe(target);
+  }
+
+  // Initialize listener once globally on window/document
+  if (!(window as any).__imageZoomInitialized) {
+    (window as any).__imageZoomInitialized = true;
+    document.addEventListener('click', handleImageClick, false);
+
+    document.addEventListener('astro:before-swap', () => {
+      if (activePswp) {
+        try {
+          activePswp.destroy();
+        } catch {
+          // ignore
+        }
+        activePswp = null;
       }
     });
   }
-
-  setupImageZoom();
-  document.addEventListener('astro:after-swap', setupImageZoom);
 </script>
 
-<style>
-  :global(.post-content img.zoomable) {
+<style is:global>
+  .post-content img,
+  .prose img,
+  .post-cover img,
+  .cover-img,
+  .avatar-zoomable,
+  [data-zoomable] {
     cursor: zoom-in;
-    transition: opacity 0.2s ease, transform 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
   }
 
-  :global(.post-content img.zoomable:hover) {
-    opacity: 0.95;
+  .post-content img:hover,
+  .prose img:hover,
+  .post-cover img:hover,
+  .cover-img:hover {
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
   }
 
-  .zoom-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.85);
+  /* Don't show zoom cursor if image is inside a non-image link */
+  a:not([data-pswp]) > .post-content img,
+  a:not([data-pswp]) > .prose img,
+  .post-content a:not([data-pswp]) img,
+  .prose a:not([data-pswp]) img {
+    cursor: pointer;
+  }
+
+  /* PhotoSwipe UI controls styling */
+  .pswp__button {
+    transition: background 0.15s ease, transform 0.15s ease !important;
+    background: rgba(0, 0, 0, 0.45) !important;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    z-index: 9999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    cursor: zoom-out;
-  }
-
-  .zoom-overlay.active {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  .zoom-content {
-    max-width: 90vw;
-    max-height: 85vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: default;
-  }
-
-  #zoomed-image {
-    max-width: 90vw;
-    max-height: 80vh;
-    object-fit: contain;
-    border-radius: 6px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    transform: scale(0.95);
-    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .zoom-overlay.active #zoomed-image {
-    transform: scale(1);
-  }
-
-  .zoom-caption {
-    color: #e2e8f0;
-    margin-top: 0.75rem;
-    font-size: 0.9rem;
-    text-align: center;
-  }
-
-  .zoom-close-btn {
-    position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
-    background: transparent;
-    border: none;
-    color: #ffffff;
-    cursor: pointer;
-    padding: 0.5rem;
-    display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
-    transition: background-color 0.2s ease;
+    width: 44px !important;
+    height: 44px !important;
+    border-radius: 12px !important;
   }
 
-  .zoom-close-btn:hover {
-    background-color: rgba(255, 255, 255, 0.15);
+  .pswp__button:not([style*="display: none"]):not([disabled]) {
+    display: flex;
+  }
+
+  .pswp__button:hover {
+    background: rgba(0, 0, 0, 0.65) !important;
+  }
+
+  .pswp__button:active {
+    transform: scale(0.9) !important;
+  }
+
+  .pswp__button--zoom,
+  .pswp__button--close {
+    margin-top: 1rem !important;
+  }
+
+  .pswp__button--zoom {
+    margin-right: 0.625rem !important;
+  }
+
+  .pswp__button--close {
+    margin-right: 1.25rem !important;
   }
 </style>

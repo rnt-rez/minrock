@@ -1,6 +1,7 @@
 ---
 import { siteConfig } from '../config/site';
 import ThemeToggle from './ThemeToggle.astro';
+import LanguageSelector from './LanguageSelector.astro';
 
 interface Props {
   currentPath?: string;
@@ -10,12 +11,14 @@ const { currentPath = Astro.url.pathname } = Astro.props;
 ---
 
 <header class="site-header">
-  <div class="container header-inner">
+  <div class="container-wide header-inner">
+    <!-- Brand -->
     <a href="/" class="brand" aria-label="Minrock Home">
       <span class="brand-rock">🪨</span>
       <span class="brand-title">{siteConfig.title}</span>
     </a>
 
+    <!-- Main Nav -->
     <nav class="nav" aria-label="Main Navigation">
       {siteConfig.navLinks.map((link) => {
         const isActive = currentPath === link.href || (link.href !== '/' && currentPath.startsWith(link.href));
@@ -27,16 +30,56 @@ const { currentPath = Astro.url.pathname } = Astro.props;
       })}
     </nav>
 
+    <!-- Header Actions -->
     <div class="header-actions">
+      <!-- Search Trigger (Desktop) -->
+      <button id="header-search-btn" class="search-trigger desktop-only" type="button" aria-label="Search (Ctrl + K)" title="Search (Ctrl + K)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.3-4.3"></path>
+        </svg>
+        <span class="search-trigger-text">Search...</span>
+        <kbd class="search-trigger-kbd">Ctrl K</kbd>
+      </button>
+
+      <!-- Mobile Search Button -->
+      <button id="mobile-search-btn" class="icon-btn mobile-only" type="button" aria-label="Search" title="Search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.3-4.3"></path>
+        </svg>
+      </button>
+
+      <!-- Social Media Icons (in, github, email) -->
+      <div class="social-links-row">
+        {siteConfig.socialLinks.linkedin && (
+          <a href={siteConfig.socialLinks.linkedin} target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="LinkedIn" title="LinkedIn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.2V10.9H6.46M7.83 6.45a1.6 1.6 0 0 0-1.6 1.6 1.6 1.6 0 0 0 1.6 1.6 1.6 1.6 0 0 0 1.6-1.6 1.6 1.6 0 0 0-1.6-1.6Z"/>
+            </svg>
+          </a>
+        )}
+
+        {siteConfig.socialLinks.github && (
+          <a href={siteConfig.socialLinks.github} target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="GitHub Repository" title="GitHub">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/>
+            </svg>
+          </a>
+        )}
+
+        {siteConfig.socialLinks.email && (
+          <a href={`mailto:${siteConfig.socialLinks.email}`} class="social-icon" aria-label="Email Contact" title="Email">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+            </svg>
+          </a>
+        )}
+      </div>
+
       <ThemeToggle />
-      {siteConfig.socialLinks.github && (
-        <a href={siteConfig.socialLinks.github} target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="GitHub Repository" title="GitHub">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path>
-            <path d="M9 18c-4.51 2-5-2-7-2"></path>
-          </svg>
-        </a>
-      )}
+      <LanguageSelector />
     </div>
   </div>
 </header>
@@ -44,7 +87,7 @@ const { currentPath = Astro.url.pathname } = Astro.props;
 <style>
   .site-header {
     border-bottom: 1px solid var(--border);
-    padding: 1.25rem 0;
+    padding: 1.1rem 0;
     margin-bottom: 2.5rem;
     background: var(--bg);
   }
@@ -63,6 +106,8 @@ const { currentPath = Astro.url.pathname } = Astro.props;
     font-weight: 700;
     font-size: 1.25rem;
     letter-spacing: -0.02em;
+    text-decoration: none;
+    color: var(--text);
   }
 
   .brand-rock {
@@ -79,6 +124,7 @@ const { currentPath = Astro.url.pathname } = Astro.props;
     font-size: 0.95rem;
     font-weight: 500;
     color: var(--text-muted);
+    text-decoration: none;
     transition: color 0.2s ease;
   }
 
@@ -97,21 +143,102 @@ const { currentPath = Astro.url.pathname } = Astro.props;
     gap: 0.75rem;
   }
 
-  .social-icon {
+  /* Search Trigger */
+  .search-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.35rem 0.65rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background-color: var(--bg-surface);
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+  }
+
+  .search-trigger:hover {
+    border-color: var(--accent);
+    color: var(--text);
+    background-color: var(--bg-subtle);
+  }
+
+  .search-trigger-kbd {
+    font-size: 0.72rem;
+    font-family: var(--font-mono);
+    padding: 0.1rem 0.35rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background-color: var(--bg);
+  }
+
+  .icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background-color: var(--bg-surface);
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .icon-btn:hover {
+    color: var(--text);
+    border-color: var(--accent);
+    background-color: var(--bg-subtle);
+  }
+
+  .social-links-row {
     display: flex;
     align-items: center;
+    gap: 0.45rem;
+  }
+
+  .social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
     color: var(--text-muted);
-    transition: color 0.2s ease, transform 0.15s ease;
+    text-decoration: none;
+    transition: color 0.15s ease, transform 0.15s ease;
   }
 
   .social-icon:hover {
     color: var(--text);
-    transform: scale(1.1);
+    transform: translateY(-1px);
   }
 
-  @media (max-width: 600px) {
+  .desktop-only {
+    display: inline-flex;
+  }
+
+  .mobile-only {
+    display: none;
+  }
+
+  @media (max-width: 900px) {
+    .desktop-only {
+      display: none;
+    }
+    .mobile-only {
+      display: inline-flex;
+    }
+  }
+
+  @media (max-width: 700px) {
     .header-inner {
       flex-wrap: wrap;
+    }
+    .social-links-row {
+      display: none;
     }
   }
 </style>

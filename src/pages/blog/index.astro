@@ -11,30 +11,109 @@ const allTags = Array.from(new Set(allPosts.flatMap((p) => p.data.tags || []))).
 ---
 
 <BaseLayout title="Blog — All Notes">
-  <header class="blog-header">
-    <h1 class="page-title">Articles & Notes</h1>
-    <p class="page-desc">
-      Explorations in software engineering, technical writing, and minimalist design.
-    </p>
+  <div class="blog-page">
+    <header class="blog-header">
+      <h1 class="page-title">Articles &amp; Notes</h1>
+      <p class="page-desc">
+        Explorations in software engineering, technical writing, and minimalist design.
+      </p>
 
-    {allTags.length > 0 && (
-      <div class="tags-filter">
-        <span class="tags-label">Topics:</span>
-        {allTags.map((tag) => (
-          <span class="tag-pill">#{tag}</span>
+      {allTags.length > 0 && (
+        <div class="tags-filter">
+          <span class="tags-label">Topics:</span>
+          {allTags.map((tag) => (
+            <a href={`/tags/${tag}`} class="tag-pill">#{tag}</a>
+          ))}
+        </div>
+      )}
+    </header>
+
+    <section class="articles-section">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span>All Articles</span>
+          <span class="section-arrow">→</span>
+        </h2>
+
+        <!-- Simple Search Filter Box -->
+        <div class="search-wrap">
+          <div class="search-box">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.3-4.3"></path>
+            </svg>
+            <input
+              type="text"
+              id="search-input"
+              placeholder="Filter articles..."
+              aria-label="Filter articles"
+              autocomplete="off"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="posts-list" id="posts-list">
+        {allPosts.map((post) => (
+          <div
+            class="article-wrapper"
+            data-title={post.data.title.toLowerCase()}
+            data-description={post.data.description.toLowerCase()}
+            data-tags={post.data.tags.join(' ').toLowerCase()}
+          >
+            <ArticleCard post={post} />
+          </div>
         ))}
       </div>
-    )}
-  </header>
 
-  <section class="posts-list">
-    {allPosts.map((post) => (
-      <ArticleCard post={post} />
-    ))}
-  </section>
+      <div id="no-results" class="no-results" style="display: none;">
+        <p>No articles found matching your filter.</p>
+      </div>
+    </section>
+  </div>
 </BaseLayout>
 
+<script>
+  function setupArticleFilter() {
+    const searchInput = document.getElementById('search-input') as HTMLInputElement;
+    const articleWrappers = document.querySelectorAll<HTMLElement>('.article-wrapper');
+    const noResults = document.getElementById('no-results');
+
+    if (!searchInput) return;
+
+    searchInput.addEventListener('input', (e) => {
+      const query = (e.target as HTMLInputElement).value.trim().toLowerCase();
+      let visibleCount = 0;
+
+      articleWrappers.forEach((wrapper) => {
+        const title = wrapper.dataset.title || '';
+        const desc = wrapper.dataset.description || '';
+        const tags = wrapper.dataset.tags || '';
+
+        const matches = !query || title.includes(query) || desc.includes(query) || tags.includes(query);
+        if (matches) {
+          wrapper.style.display = 'block';
+          visibleCount++;
+        } else {
+          wrapper.style.display = 'none';
+        }
+      });
+
+      if (noResults) {
+        noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+      }
+    });
+  }
+
+  setupArticleFilter();
+  document.addEventListener('astro:after-swap', setupArticleFilter);
+</script>
+
 <style>
+  .blog-page {
+    padding-top: 1rem;
+  }
+
   .blog-header {
     margin-bottom: 2.5rem;
     padding-bottom: 1.5rem;
@@ -44,13 +123,15 @@ const allTags = Array.from(new Set(allPosts.flatMap((p) => p.data.tags || []))).
   .page-title {
     margin-top: 0;
     margin-bottom: 0.5rem;
-    font-size: 2.25rem;
+    font-size: 2.4rem;
+    letter-spacing: -0.025em;
   }
 
   .page-desc {
     color: var(--text-muted);
     margin-bottom: 1.25rem;
     font-size: 1.05rem;
+    line-height: 1.6;
   }
 
   .tags-filter {
@@ -67,10 +148,87 @@ const allTags = Array.from(new Set(allPosts.flatMap((p) => p.data.tags || []))).
   }
 
   .tag-pill {
-    background: var(--bg-subtle);
+    background: var(--bg-surface);
     border: 1px solid var(--border);
-    padding: 0.2rem 0.55rem;
-    border-radius: 12px;
+    padding: 0.2rem 0.6rem;
+    border-radius: 9999px;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+  }
+
+  .tag-pill:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--bg-subtle);
+  }
+
+  .articles-section {
+    margin-top: 1rem;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.35rem;
+    margin: 0;
+  }
+
+  .section-arrow {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+  }
+
+  .search-wrap {
+    flex: 1;
+    max-width: 360px;
+    min-width: 220px;
+  }
+
+  .search-box {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background-color: var(--bg-surface);
+    color: var(--text-muted);
+  }
+
+  .search-box input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    color: var(--text);
+    font-size: 0.9rem;
+    font-family: var(--font-sans);
+    outline: none;
+  }
+
+  .search-box input::placeholder {
+    color: var(--text-muted);
+  }
+
+  .posts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .no-results {
+    padding: 3rem 0;
+    text-align: center;
     color: var(--text-muted);
   }
 </style>

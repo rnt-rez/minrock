@@ -4,6 +4,7 @@ description: "A complete technical walkthrough on integrating Vault CMS and Obsi
 pubDate: 2026-09-16
 tags: ["obsidian", "vault", "workflow", "astro"]
 draft: false
+image: "/images/vaultcms-architecture.svg"
 ---
 
 One of the foundational architectural goals of **Minrock** is to eliminate the friction between private note-taking in [Obsidian](https://obsidian.md) and public publishing on the web.
