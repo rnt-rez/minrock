@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
+import { siteConfig } from '../../config/site';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
@@ -42,30 +43,35 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
       <Content />
     </div>
 
-    <!-- 🍃 ScatterLeaf Integration: Ready for testing -->
-    <section class="comments-area" id="comments">
-      <div class="comments-divider"></div>
-      <div class="comments-header">
-        <h3 class="comments-title">
-          <span>🍃</span>
-          <span>Marginalia & Discussion</span>
-        </h3>
-        <p class="comments-subtitle">
-          Iframe-free native comments powered by <a href="https://github.com/rnt-rez/scatterleaf" target="_blank" rel="noopener noreferrer">ScatterLeaf</a>.
-        </p>
-      </div>
+    <!-- 🍃 ScatterLeaf Integration -->
+    {siteConfig.comments?.enabled && (
+      <section class="comments-area" id="comments">
+        <div class="comments-divider"></div>
+        <div class="comments-header">
+          <h3 class="comments-title">
+            <span>🍃</span>
+            <span>Marginalia & Discussion</span>
+          </h3>
+          <p class="comments-subtitle">
+            Iframe-free native comments powered by <a href="https://github.com/rnt-rez/scatterleaf" target="_blank" rel="noopener noreferrer">ScatterLeaf</a>.
+          </p>
+        </div>
 
-      <!-- Web Component Placeholder/Host -->
-      <div class="scatterleaf-host">
-        <scatter-leaf
-          id="post-comments"
-          repo="rnt-rez/scatterleaf"
-          category="General"
-          theme="auto"
-          lang="en"
-        ></scatter-leaf>
-      </div>
-    </section>
+        <!-- Web Component Host -->
+        <div class="scatterleaf-host">
+          <scatter-leaf
+            id="post-comments"
+            repo={siteConfig.comments.repo}
+            category={siteConfig.comments.category || 'General'}
+            theme={siteConfig.comments.theme || 'auto'}
+            lang={siteConfig.comments.lang || 'en'}
+          ></scatter-leaf>
+        </div>
+      </section>
+
+      <!-- Carregamento do Web Component isolado nas páginas de post -->
+      <script is:inline type="module" src="/scatterleaf.js"></script>
+    )}
   </article>
 </BaseLayout>
 

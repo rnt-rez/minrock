@@ -15,6 +15,14 @@ export interface SiteConfig {
     title: string;
     href: string;
   }[];
+  comments?: {
+    enabled: boolean;
+    provider: 'scatterleaf';
+    repo: string;
+    category?: string;
+    theme?: 'auto' | 'light' | 'dark' | 'cream' | 'midnight' | 'slate';
+    lang?: string;
+  };
 }
 
 export const siteConfig: SiteConfig = {
@@ -22,7 +30,7 @@ export const siteConfig: SiteConfig = {
   tagline: 'Raw ideas from your personal vault, finely polished into an ultra-fast static blog.',
   description: 'Minimalist, typography-first Astro 7 theme crafted for technical writers and Obsidian vaults. Pure SSG, zero bloat.',
   author: 'Renato Rezende',
-  siteUrl: 'https://minrock.pages.dev',
+  siteUrl: 'https://minrock.vercel.app',
   defaultTheme: 'cream',
   socialLinks: {
     github: 'https://github.com/rnt-rez/minrock',
@@ -32,5 +40,13 @@ export const siteConfig: SiteConfig = {
     { title: 'Home', href: '/' },
     { title: 'Blog', href: '/blog' },
     { title: 'About', href: '/about' }
-  ]
+  ],
+  comments: {
+    enabled: true,
+    provider: 'scatterleaf',
+    repo: 'rnt-rez/minrock',
+    category: 'General',
+    theme: 'auto',
+    lang: 'en'
+  }
 };

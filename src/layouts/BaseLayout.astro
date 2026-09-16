@@ -16,7 +16,7 @@ const {
   image = '/og-image.png'
 } = Astro.props;
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://minrock.pages.dev');
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://minrock.vercel.app');
 const pageTitle = title === siteConfig.title ? `${siteConfig.title} — ${siteConfig.tagline}` : `${title} | ${siteConfig.title}`;
 ---
 

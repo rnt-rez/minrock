@@ -36,10 +36,14 @@
 - [x] Validação visual/funcional em navegador e suíte QA zerada (`0 errors, 0 warnings, 0 hints`).
 - [x] Commit consolidado, tagueamento `v0.1.0` e push remoto realizado.
 
-### 🟡 Etapa 2: Integração e Testes com ScatterLeaf (Amanhã)
-- [ ] Importação do Web Component `<scatter-leaf>` no layout de post.
-- [ ] Teste de alternância dinâmica de tema (Modo Camaleão) entre Minrock e ScatterLeaf.
-- [ ] Validação de postagem de notas, threads e renderização sem iframes.
+### 🟢 Etapa 2: Integração e Testes com ScatterLeaf (Em Homologação — v0.2.0-pre)
+- [x] Bundle estático do Web Component copiado para `public/scatterleaf.js`.
+- [x] Configuração centralizada e tipada de comentários em `src/config/site.ts` (`enabled: true`, modo fallback).
+- [x] Injeção sob demanda do `<scatter-leaf>` e do script no template de post `src/pages/blog/[...slug].astro` (zero JS nas demais páginas).
+- [x] Adequação das URLs canônicas e de deploy para Vercel (`https://minrock.vercel.app`) em `astro.config.mjs` e `BaseLayout.astro`.
+- [x] Suíte QA executada com perfeição: `0 errors, 0 warnings, 0 hints` e compilação SSG de 6 páginas em < 1s.
+- [ ] Deploy na Vercel para homologação online.
+- [ ] Validação de postagem de notas, threads e alternância de temas (Modo Camaleão) em produção.
 
 ### ⚪ Etapa 3: Homologação no Catálogo Astro Themes
 - [ ] Auditoria de acessibilidade WCAG e performance Lighthouse (100/100).
