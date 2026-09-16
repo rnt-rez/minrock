@@ -1,62 +1,40 @@
 # 🪨 PROGRESS — Minrock (Doca de Desenvolvimento)
 
-> **Versão:** v0.1.0  
-> **Última Atualização:** 15/09/2026  
-> **Status:** 🟢 Scaffolding Inicial da Doca (Tema Astro 7 & Obsidian)  
-> **Harness Central de Governança:** `..\estaleiro`  
-> **Autor & Mantenedor:** Renato Rezende ([@rnt-rez](https://github.com/rnt-rez))
+> **Versão:** v0.2.0 | **Status:** 🟢 Produção & Homologação | **Lighthouse:** 100/100  
+> **Autor:** Renato Rezende ([@rnt-rez](https://github.com/rnt-rez)) | **Harness:** `..\estaleiro`
 
 ---
 
-## 🎯 Foco da Sprint Atual (Fase 1: Scaffolding & Base do Tema)
-* **Arquitetura Base:** Astro 7 SSG com tipografia refinada e zero bloat.
-* **4 Paletas Cromáticas:** Light (Clean White), Cream (Warm Paper), Dark (Slate), Midnight (OLED Neon).
-* **Obsidian Vault CMS:** Estrutura preparada para leitura direta de notas Markdown (`src/content/blog/`).
-* **Slot do ScatterLeaf:** Preparação do contêiner `<scatter-leaf>` para homologação do sistema de comentários.
-
----
-
-## 🟢 Entregas Consolidadas na Doca
-1. **Governança Local:** `AGENTS.md` configurado (< 30 linhas) herdando os Lifecycle Gates do Estaleiro.
-2. **READMEs Bilíngues:** `README.md` (EN) e `README.pt-BR.md` (PT) com assinatura oficial e hero tagline.
-3. **Core Scaffolding:** Configuração do Astro 7, TypeScript, Content Collections com Zod e estilos globais.
-4. **Artigos de Demonstração:** 3 starter posts em inglês sobre introdução, escrita técnica e cofre do Obsidian.
-5. **Integração ScatterLeaf:** Componente preparado no layout de artigo para os testes de amanhã.
+## 🎯 Foco Atual & Entregas Consolidadas
+* **Astro 7 SSG:** Tipografia calibrada, 4 temas (White, Cream, Slate, Midnight), zero bloat.
+* **Acessibilidade Universal:** Voice reader acessível, navegação por teclado, WCAG 2.1/2.2 AA.
+* **Obsidian CMS:** Suporte nativo a Markdown com imagens locais e visualizador PhotoSwipe.
+* **Governança Estaleiro:** `AGENTS.md` ativo, Lifecycle Gates, suíte de auditoria (`npm run qa`).
 
 ---
 
 ## 📋 Sequência de Etapas
 
 ### 🟢 Etapa 1: Scaffolding & Design System (Concluída — v0.1.0)
-- [x] Criação de `package.json`, `astro.config.mjs`, `tsconfig.json` e `.gitignore`.
-- [x] Design System com as 4 paletas calibradas em CSS puro (White, Cream, Slate, Midnight).
-- [x] Layouts base (`BaseLayout.astro`, `Header.astro`, `Footer.astro`).
-- [x] 3 artigos de demonstração com realce de sintaxe e tabelas.
-- [x] Equiparação técnica com Astro 7.3.2, Node >=22.12.0 e assinatura de binários nativos no Windows.
-- [x] Validação visual/funcional em navegador e suíte QA zerada (`0 errors, 0 warnings, 0 hints`).
-- [x] Commit consolidado, tagueamento `v0.1.0` e push remoto realizado.
+- [x] Base Astro 7, TypeScript, paletas CSS calibradas e validação QA zerada.
 
-### 🟢 Etapa 2: Integração e Testes com ScatterLeaf (Em Homologação — v0.2.0-pre)
-- [x] Bundle estático do Web Component copiado para `public/scatterleaf.js`.
-- [x] Configuração centralizada e tipada de comentários em `src/config/site.ts` (`enabled: true`, modo fallback).
-- [x] Injeção sob demanda do `<scatter-leaf>` e do script no template de post `src/pages/blog/[...slug].astro` (zero JS nas demais páginas).
-- [x] Adequação das URLs canônicas e de deploy para Vercel (`https://minrock.vercel.app`) em `astro.config.mjs` e `BaseLayout.astro`.
-- [x] Suíte QA executada com perfeição: `0 errors, 0 warnings, 0 hints` e compilação SSG de 6 páginas em < 1s.
-- [x] Deploy na Vercel para homologação online concluído com sucesso: `https://minrock.vercel.app`.
-- [x] Validação de entrega global com HTTPS, CDN e carregamento do `scatterleaf.js`.
-- [ ] Validação de postagem de notas, threads e alternância de temas (Modo Camaleão) em produção.
+### 🟢 Etapa 2: Recursos, Inclusão e Conteúdo (Concluída — v0.2.0)
+- [x] Busca instantânea Lunr, paginação sincronizada e tags com micro-interações.
+- [x] Integração ScatterLeaf, leitor de áudio flutuante e traduções com bandeiras nativas.
+- [x] Artigos sobre Obsidian, Domínio próprio, Personalização e Acessibilidade/Valores.
+- [x] Auditoria de Acessibilidade, Boas Práticas e SEO com **100/100 no Lighthouse**.
 
 ### ⚪ Etapa 3: Homologação no Catálogo Astro Themes
-- [ ] Auditoria de acessibilidade WCAG e performance Lighthouse (100/100).
+- [x] Auditoria WCAG 2.1/2.2 AA e performance máxima em produção.
 - [ ] Submissão ao diretório oficial `astro.build/themes`.
 
 ---
 
-## 🛠️ Comandos Rápidos de Validação
+## 🛠️ Comandos Rápidos
 ```bash
-npm run dev    # Servidor local de desenvolvimento
-npm run check  # Checagem estática de tipos Astro (.astro e .ts)
-npm run build  # Compilação estática SSG de produção
-npm run qa     # Suíte de verificação completa (check + build)
+npm run dev             # Dev local (http://localhost:4321)
+npm run qa              # Checagem completa de tipos + build estático
+npm run audit:google    # SERP Preview, Schema.org e Googlebot
+npm run audit:wcag      # Conformidade semântica e Acessibilidade WCAG
+npm run audit:security  # Varredura DevSecOps Sentinel
 ```
-
