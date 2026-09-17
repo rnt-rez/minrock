@@ -192,11 +192,20 @@
   @keyframes langDropdownFade {
     from {
       opacity: 0;
-      transform: translateY(-4px);
+      margin-top: -4px;
     }
     to {
       opacity: 1;
-      transform: translateY(0);
+      margin-top: 0;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .lang-dropdown {
+      left: 50%;
+      right: auto;
+      transform: translateX(-50%);
+      max-width: calc(100vw - 24px);
     }
   }
 
@@ -259,6 +268,29 @@
     const dropdown = document.getElementById('lang-dropdown');
     const selector = document.getElementById('lang-selector');
 
+    function positionDropdown() {
+      if (!dropdown) return;
+      if (window.innerWidth <= 768) {
+        dropdown.style.left = '50%';
+        dropdown.style.right = 'auto';
+        dropdown.style.transform = 'translateX(-50%)';
+
+        const rect = dropdown.getBoundingClientRect();
+        const pad = 12;
+        if (rect.left < pad) {
+          const offset = pad - rect.left;
+          dropdown.style.transform = `translateX(calc(-50% + ${offset}px))`;
+        } else if (rect.right > window.innerWidth - pad) {
+          const offset = rect.right - (window.innerWidth - pad);
+          dropdown.style.transform = `translateX(calc(-50% - ${offset}px))`;
+        }
+      } else {
+        dropdown.style.left = '';
+        dropdown.style.right = '';
+        dropdown.style.transform = '';
+      }
+    }
+
     btn?.addEventListener('click', (e) => {
       e.stopPropagation();
       // Close other dropdowns if open
@@ -267,6 +299,16 @@
 
       const open = dropdown?.classList.toggle('open');
       btn.setAttribute('aria-expanded', String(!!open));
+
+      if (open) {
+        positionDropdown();
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      if (dropdown?.classList.contains('open')) {
+        positionDropdown();
+      }
     });
 
     document.addEventListener('click', (e) => {

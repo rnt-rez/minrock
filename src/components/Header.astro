@@ -211,9 +211,16 @@ const { currentPath = Astro.url.pathname } = Astro.props;
     }
   }
 
-  @media (max-width: 700px) {
+  @media (max-width: 768px) {
     .header-inner {
       flex-wrap: wrap;
+      row-gap: 0.85rem;
+    }
+
+    .header-actions {
+      width: 100%;
+      justify-content: center;
+      margin-top: 0.2rem;
     }
   }
 </style>
