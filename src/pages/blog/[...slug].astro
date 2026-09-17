@@ -5,6 +5,7 @@ import ShareBar from '../../components/ShareBar.astro';
 import CopyCode from '../../components/CopyCode.astro';
 import AudioPlayer from '../../components/AudioPlayer.astro';
 import StructuredData from '../../components/StructuredData.astro';
+import Comments from '../../components/Comments.astro';
 import { getCollection, render } from 'astro:content';
 import { siteConfig } from '../../config/site';
 
@@ -117,36 +118,8 @@ const currentUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).href;
           )}
         </nav>
 
-        <!-- 🍃 ScatterLeaf Integration -->
-        {siteConfig.comments?.enabled && (
-          <section class="comments-area" id="comments">
-            <div class="comments-divider"></div>
-            <div class="comments-header">
-              <h3 class="comments-title">
-                <span>🍃</span>
-                <span>Discussion & Notes</span>
-              </h3>
-              <p class="comments-subtitle">
-                Iframe-free native comments powered by <a href="https://github.com/rnt-rez/scatterleaf" target="_blank" rel="noopener noreferrer">ScatterLeaf</a>.
-              </p>
-            </div>
-
-            <!-- Web Component Host -->
-            <div class="scatterleaf-host">
-              <scatter-leaf
-                id="post-comments"
-                repo={siteConfig.comments.repo}
-                category={siteConfig.comments.category || 'General'}
-                theme={siteConfig.comments.theme || 'auto'}
-                lang={siteConfig.comments.lang || 'auto'}
-                broker={siteConfig.comments.broker}
-                client-id={siteConfig.comments.clientId}
-              ></scatter-leaf>
-            </div>
-          </section>
-
-          <script is:inline type="module" src="/scatterleaf.js"></script>
-        )}
+        <!-- 💬 Modular Comments Area -->
+        <Comments />
       </article>
     </div>
 
@@ -340,43 +313,5 @@ const currentUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).href;
     .post-nav {
       grid-template-columns: 1fr;
     }
-  }
-
-  /* Comments Area */
-  .comments-area {
-    margin-top: 3.5rem;
-  }
-
-  .comments-divider {
-    height: 1px;
-    background: var(--border);
-    margin-bottom: 2.5rem;
-  }
-
-  .comments-header {
-    margin-bottom: 1.5rem;
-  }
-
-  .comments-title {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin: 0 0 0.35rem 0;
-    font-size: 1.35rem;
-  }
-
-  .comments-subtitle {
-    margin: 0;
-    font-size: 0.9rem;
-    color: var(--text-muted);
-  }
-
-  .comments-subtitle a {
-    color: var(--accent);
-    text-decoration: underline;
-  }
-
-  .scatterleaf-host {
-    min-height: 120px;
   }
 </style>

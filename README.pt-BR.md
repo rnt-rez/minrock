@@ -116,6 +116,17 @@ tags: ["engenharia", "arquitetura", "devops"]
 Seu conteúdo em Markdown aqui...
 ```
 
+### 3. Sistema de Comentários (Modular & Opcional)
+
+O Minrock respeita integralmente a sua soberania digital: o sistema de comentários é 100% opcional, sem dependências forçadas e isolado no componente [`src/components/Comments.astro`](src/components/Comments.astro).
+
+* **Para Desativar:** Mude para `comments.enabled = false` em `src/config/site.ts`. Quando desativado, o Astro remove completamente qualquer HTML ou script de comentários do seu build estático (0 bytes de JS, 0 requisições de rede).
+* **Para Ativar o ScatterLeaf:**
+  1. Habilite o **GitHub Discussions** no seu repositório público do GitHub.
+  2. Ajuste `comments.repo` para o seu próprio repositório (`seu-usuario/seu-repositorio`).
+  3. *(Opcional)* Para permitir que leitores publiquem notas diretamente pelo blog, conecte seu Edge Broker na Cloudflare e seu GitHub OAuth Client ID (consulte o [Guia do ScatterLeaf](https://github.com/rnt-rez/scatterleaf)).
+* **Para Usar Outro Provedor (Giscus, Utterances, Disqus, etc.):** Você tem soberania e liberdade total! Basta abrir [`src/components/Comments.astro`](src/components/Comments.astro) e colar o script ou widget do seu provedor favorito dentro do componente. Sem nenhum aprisionamento (*vendor lock-in*).
+
 ---
 
 ## 📜 Comandos Disponíveis

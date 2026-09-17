@@ -116,6 +116,17 @@ tags: ["engineering", "architecture", "devops"]
 Your content goes here...
 ```
 
+### 3. Comments System (Modular & Optional)
+
+Minrock respects your digital sovereignty: comments are 100% optional, zero-bloat, and cleanly encapsulated inside [`src/components/Comments.astro`](src/components/Comments.astro).
+
+* **To Disable Comments:** Set `comments.enabled = false` in `src/config/site.ts`. When disabled, Astro completely eliminates all comment HTML and script tags at build time (0 bytes of JS, 0 network requests).
+* **To Enable ScatterLeaf:** 
+  1. Enable GitHub Discussions on your public repository.
+  2. Update `comments.repo` with your own repository name (`your-username/your-repo`).
+  3. *(Optional)* For live in-page reader comments, provide your Cloudflare Edge Broker URL and GitHub OAuth Client ID (see the [ScatterLeaf Guide](https://github.com/rnt-rez/scatterleaf)).
+* **To Use Another Solution (Giscus, Utterances, Disqus, etc.):** You have complete freedom! Simply open [`src/components/Comments.astro`](src/components/Comments.astro) and paste your preferred widget or script. Zero vendor lock-in.
+
 ---
 
 ## 📜 Available Scripts
