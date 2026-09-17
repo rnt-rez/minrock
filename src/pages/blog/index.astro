@@ -57,6 +57,7 @@ const allTags = Array.from(new Set(allPosts.flatMap((p) => p.data.tags || []))).
         {allPosts.map((post) => (
           <div
             class="article-wrapper"
+            data-slug={post.id.toLowerCase()}
             data-title={post.data.title.toLowerCase()}
             data-description={post.data.description.toLowerCase()}
             data-tags={post.data.tags.join(' ').toLowerCase()}
@@ -172,10 +173,11 @@ const allTags = Array.from(new Set(allPosts.flatMap((p) => p.data.tags || []))).
       searchInput.addEventListener('input', (e) => {
         const query = (e.target as HTMLInputElement).value.trim().toLowerCase();
         matchingItems = articleWrappers.filter((wrapper) => {
+          const slug = wrapper.dataset.slug || '';
           const title = wrapper.dataset.title || '';
           const desc = wrapper.dataset.description || '';
           const tags = wrapper.dataset.tags || '';
-          return !query || title.includes(query) || desc.includes(query) || tags.includes(query);
+          return !query || title.includes(query) || desc.includes(query) || tags.includes(query) || slug.includes(query);
         });
         currentPage = 1;
         renderPagination();

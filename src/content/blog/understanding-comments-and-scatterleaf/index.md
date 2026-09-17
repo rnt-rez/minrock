@@ -1,5 +1,5 @@
 ---
-title: "Demystifying Comments: Minrock, ScatterLeaf & Digital Sovereignty"
+title: "Understanding Comments & ScatterLeaf: Architecture, Personas & Digital Sovereignty"
 description: "A clear, visual guide to how comments work in Minrock: separating the 3 personas, the car vs. engine analogy, and zero-setup configuration."
 pubDate: 2026-09-17
 tags: ["minrock", "scatterleaf", "architecture", "guide", "comments", "web-components"]
