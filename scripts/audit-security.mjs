@@ -5,7 +5,7 @@ function walk(dir, exts = ['.astro', '.ts', '.js', '.mjs', '.md', '.json']) {
   let results = [];
   const list = fs.readdirSync(dir);
   for (const file of list) {
-    if (file === 'node_modules' || file === '.git' || file === '.astro') continue;
+    if (file === 'node_modules' || file === '.git' || file === '.astro' || file === '.obsidian') continue;
     const full = path.join(dir, file);
     const stat = fs.statSync(full);
     if (stat && stat.isDirectory()) {

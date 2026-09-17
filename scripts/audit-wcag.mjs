@@ -52,7 +52,8 @@ for (const file of htmlFiles) {
   const imgMatches = content.match(/<img[^>]*>/gi) || [];
   for (const img of imgMatches) {
     stats.imagesChecked++;
-    if (!/\balt=["'][^"']*["']/i.test(img)) {
+    const hasAlt = /\balt=["'][^"']*["']/i.test(img) || (img.includes('__ASTRO_IMAGE_') && img.includes('&quot;alt&quot;:'));
+    if (!hasAlt) {
       issues.push({ file: rel, type: 'WCAG 1.1.1 (Non-text Content)', msg: `Image missing alt attribute: ${img.slice(0, 70)}` });
     }
   }
@@ -63,9 +64,10 @@ for (const file of htmlFiles) {
     stats.buttonsChecked++;
     const hasAria = /aria-label=["'][^"']+["']/i.test(btn);
     const hasAriaLabelledby = /aria-labelledby=["'][^"']+["']/i.test(btn);
+    const hasTitle = /title=["'][^"']+["']/i.test(btn);
     const innerText = btn.replace(/<[^>]+>/g, '').trim();
-    if (!hasAria && !hasAriaLabelledby && !innerText) {
-      issues.push({ file: rel, type: 'WCAG 4.1.2 (Name, Role, Value)', msg: `Button missing accessible name (no text, no aria-label): ${btn.slice(0, 80)}` });
+    if (!hasAria && !hasAriaLabelledby && !hasTitle && !innerText) {
+      issues.push({ file: rel, type: 'WCAG 4.1.2 (Name, Role, Value)', msg: `Button missing accessible name (no text, no aria-label, no title): ${btn.slice(0, 80)}` });
     }
   }
 

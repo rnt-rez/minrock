@@ -53,15 +53,6 @@ const allTags = Array.from(new Set(allPosts.flatMap((p) => p.data.tags || []))).
         </div>
       </div>
 
-      <!-- Top Pagination -->
-      <div class="pagination-container pagination-top" id="pagination-top" style="display: none;">
-        <nav class="pagination-bar" aria-label="Top article pagination">
-          <button type="button" class="pagination-btn prev" id="page-prev-top" aria-label="Previous page">←</button>
-          <div class="pagination-pages" id="pagination-pages-top"></div>
-          <button type="button" class="pagination-btn next" id="page-next-top" aria-label="Next page">→</button>
-        </nav>
-      </div>
-
       <div class="posts-list" id="posts-list">
         {allPosts.map((post) => (
           <div
@@ -97,12 +88,8 @@ const allTags = Array.from(new Set(allPosts.flatMap((p) => p.data.tags || []))).
     const articleWrappers = Array.from(document.querySelectorAll<HTMLElement>('.article-wrapper'));
     const noResults = document.getElementById('no-results');
 
-    const topContainer = document.getElementById('pagination-top');
     const bottomContainer = document.getElementById('pagination-bottom');
-    const topPages = document.getElementById('pagination-pages-top');
     const bottomPages = document.getElementById('pagination-pages-bottom');
-    const topPrev = document.getElementById('page-prev-top') as HTMLButtonElement | null;
-    const topNext = document.getElementById('page-next-top') as HTMLButtonElement | null;
     const bottomPrev = document.getElementById('page-prev-bottom') as HTMLButtonElement | null;
     const bottomNext = document.getElementById('page-next-bottom') as HTMLButtonElement | null;
 
@@ -130,12 +117,10 @@ const allTags = Array.from(new Set(allPosts.flatMap((p) => p.data.tags || []))).
       }
 
       if (totalPages <= 1) {
-        if (topContainer) topContainer.style.display = 'none';
         if (bottomContainer) bottomContainer.style.display = 'none';
         return;
       }
 
-      if (topContainer) topContainer.style.display = 'flex';
       if (bottomContainer) bottomContainer.style.display = 'flex';
 
       function createPageButtons(targetEl: HTMLElement | null) {
@@ -156,15 +141,12 @@ const allTags = Array.from(new Set(allPosts.flatMap((p) => p.data.tags || []))).
         }
       }
 
-      createPageButtons(topPages);
       createPageButtons(bottomPages);
 
       const isFirst = currentPage <= 1;
       const isLast = currentPage >= totalPages;
 
-      if (topPrev) topPrev.disabled = isFirst;
       if (bottomPrev) bottomPrev.disabled = isFirst;
-      if (topNext) topNext.disabled = isLast;
       if (bottomNext) bottomNext.disabled = isLast;
     }
 
@@ -183,9 +165,7 @@ const allTags = Array.from(new Set(allPosts.flatMap((p) => p.data.tags || []))).
       }
     }
 
-    topPrev?.addEventListener('click', handlePrev);
     bottomPrev?.addEventListener('click', handlePrev);
-    topNext?.addEventListener('click', handleNext);
     bottomNext?.addEventListener('click', handleNext);
 
     if (searchInput) {
@@ -337,11 +317,6 @@ const allTags = Array.from(new Set(allPosts.flatMap((p) => p.data.tags || []))).
     display: flex;
     justify-content: center;
     margin: 1.5rem 0;
-  }
-
-  .pagination-top {
-    margin-top: 0.5rem;
-    margin-bottom: 1.5rem;
   }
 
   .pagination-bottom {

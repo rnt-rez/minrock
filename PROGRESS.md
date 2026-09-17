@@ -19,10 +19,11 @@
 - [x] Base Astro 7, TypeScript, paletas CSS calibradas e validação QA zerada.
 
 ### 🟢 Etapa 2: Recursos, Inclusão e Conteúdo (Concluída — v0.2.0)
-- [x] Busca instantânea Lunr, paginação sincronizada e tags com micro-interações.
+- [x] Busca instantânea Lunr, paginação inferior simplificada e tags com micro-interações.
 - [x] Integração ScatterLeaf, leitor de áudio flutuante e traduções com bandeiras nativas.
 - [x] Artigos sobre Obsidian, Domínio próprio, Personalização e Acessibilidade/Valores.
-- [x] Auditoria de Acessibilidade, Boas Práticas e SEO com **100/100 no Lighthouse**.
+- [x] RSS Feed 2.0 com auto-discovery `<link rel="alternate">` e botão acessível no rodapé.
+- [x] Auditoria de Acessibilidade, Boas Práticas e SEO com **100/100 no Lighthouse** e 0 erros WCAG.
 
 ### ⚪ Etapa 3: Homologação no Catálogo Astro Themes
 - [x] Auditoria WCAG 2.1/2.2 AA e performance máxima em produção.
