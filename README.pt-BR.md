@@ -157,5 +157,5 @@ Este projeto é distribuído sob a licença [MIT License](LICENSE).
 ---
 
 <p align="center">
-  <em>Crafted with pride in Brazil 🇧🇷 by <a href="https://github.com/rnt-rez">Renato Rezende</a> como parte da frota do Estaleiro. Lapidado para a soberania digital na web global.</em>
+  <em>Crafted with pride in Brazil 🇧🇷 by <a href="https://github.com/rnt-rez">Renato Rezende</a>. Lapidado para a soberania digital na web global.</em>
 </p>

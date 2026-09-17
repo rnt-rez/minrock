@@ -157,5 +157,5 @@ This project is licensed under the [MIT License](LICENSE).
 ---
 
 <p align="center">
-  <em>Crafted with pride in Brazil 🇧🇷 by <a href="https://github.com/rnt-rez">Renato Rezende</a> as part of the Estaleiro fleet. Engineered for digital sovereignty on the global web.</em>
+  <em>Crafted with pride in Brazil 🇧🇷 by <a href="https://github.com/rnt-rez">Renato Rezende</a>. Engineered for digital sovereignty on the global web.</em>
 </p>

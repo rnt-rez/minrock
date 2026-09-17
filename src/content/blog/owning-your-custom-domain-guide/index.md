@@ -60,7 +60,7 @@ Pick a clean, memorable name on a reputable registrar (e.g., Cloudflare Registra
 ### 2. Add Domain to Your Hosting Dashboard
 In your **Vercel** or **Cloudflare Pages** project settings:
 * Navigate to **Settings** → **Domains**.
-* Type your domain name (e.g., `renatorezende.com` and `www.renatorezende.com`).
+* Type your domain name (e.g., `yourdomain.com` and `www.yourdomain.com`).
 
 ### 3. Point Your DNS Records
 Your host will give you two simple DNS values:
