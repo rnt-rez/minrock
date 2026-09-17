@@ -143,8 +143,21 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
       return;
     }
 
-    // Extract textual elements (h2, h3, p, li, blockquote)
-    const textNodes = Array.from(contentEl.querySelectorAll('h2, h3, p, li, blockquote'))
+    // 1. Extract Title and Subtitle/Description from article header
+    const articleEl = contentEl.closest('article') || document.querySelector('article') || document;
+    const titleEl = articleEl.querySelector('h1.post-title, h1.project-title, .post-header h1, .project-header h1, h1') as HTMLElement | null;
+    const subtitleEl = articleEl.querySelector('.post-description, .project-description, .post-header p.post-description, .project-header p') as HTMLElement | null;
+
+    const initialNodes: HTMLElement[] = [];
+    if (titleEl && (titleEl.innerText || titleEl.textContent || '').trim()) {
+      initialNodes.push(titleEl);
+    }
+    if (subtitleEl && (subtitleEl.innerText || subtitleEl.textContent || '').trim()) {
+      initialNodes.push(subtitleEl);
+    }
+
+    // 2. Extract textual elements from content body (h2, h3, p, li, blockquote)
+    const bodyNodes = Array.from(contentEl.querySelectorAll('h2, h3, p, li, blockquote'))
       .filter((el) => {
         // Exclude callout icons, copy buttons, pre, tables, toc, etc.
         return (
@@ -158,12 +171,18 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
         );
       }) as HTMLElement[];
 
+    const rawNodes = [...initialNodes, ...bodyNodes];
+    const textNodes = rawNodes.filter((el) => {
+      const text = (el.innerText || el.textContent || '').trim();
+      return text.length > 0;
+    });
+
     if (!textNodes.length) {
       root.style.display = 'none';
       return;
     }
 
-    const parts = textNodes.map((el) => el.innerText.trim()).filter((t) => t.length > 0);
+    const parts = textNodes.map((el) => (el.innerText || el.textContent || '').trim());
     const totalWords = parts.reduce((acc, text) => acc + text.split(/\s+/).filter(Boolean).length, 0);
     const estMin = Math.max(1, Math.ceil(totalWords / 140)); // ~140 words/min speech rate
 
@@ -212,7 +231,29 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
     function updateProgress() {
       const pct = parts.length ? Math.round(((currentIndex + 1) / parts.length) * 100) : 0;
       if (progressFill) progressFill.style.width = `${pct}%`;
-      if (partLabel) partLabel.textContent = `Paragraph ${currentIndex + 1} of ${parts.length}`;
+
+      const currentEl = textNodes[currentIndex];
+      let label = `Part ${currentIndex + 1} of ${parts.length}`;
+      if (currentEl) {
+        if (currentEl.tagName === 'H1') {
+          label = targetLang.startsWith('pt')
+            ? `Título (${currentIndex + 1} de ${parts.length})`
+            : `Title (${currentIndex + 1} of ${parts.length})`;
+        } else if (
+          currentEl.classList.contains('post-description') ||
+          currentEl.classList.contains('project-description')
+        ) {
+          label = targetLang.startsWith('pt')
+            ? `Subtítulo (${currentIndex + 1} de ${parts.length})`
+            : `Subtitle (${currentIndex + 1} of ${parts.length})`;
+        } else {
+          label = targetLang.startsWith('pt')
+            ? `Parágrafo ${currentIndex + 1} de ${parts.length}`
+            : `Paragraph ${currentIndex + 1} of ${parts.length}`;
+        }
+      }
+
+      if (partLabel) partLabel.textContent = label;
       if (pctLabel) pctLabel.textContent = `${pct}%`;
 
       if (prevBtn) prevBtn.disabled = currentIndex <= 0;
