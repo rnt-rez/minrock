@@ -1,6 +1,6 @@
 # 🪨 PROGRESS — Minrock (Doca de Desenvolvimento)
 
-> **Versão:** v0.2.1 | **Status:** 🟢 Produção & Homologação | **Lighthouse:** 100/100  
+> **Versão:** v0.2.2 | **Status:** 🟢 Produção & Homologação | **Lighthouse:** 100/100  
 > **Autor:** Renato Rezende ([@rnt-rez](https://github.com/rnt-rez)) | **Harness:** `..\estaleiro`
 
 ---
