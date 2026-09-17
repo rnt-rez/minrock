@@ -1712,6 +1712,8 @@ class J {
    */
   async toggleReaction(m, e, t) {
     const a = {
+      "🧙‍♂️": "THUMBS_UP",
+      "🧙": "THUMBS_UP",
       "👍": "THUMBS_UP",
       "👏": "HOORAY",
       "❤️": "HEART",
@@ -1777,17 +1779,20 @@ const D = "scatterleaf_skin_tone", Y = [
   "👩",
   "🧓",
   "👴",
-  "👵"
+  "👵",
+  "🧙",
+  "🧙‍♂️",
+  "🧙‍♀️"
 ]);
 function O(_, m) {
   return !m || m === "default" ? _ : _.replace(/[\u{1F3FB}-\u{1F3FF}]/gu, "").replace(/\uFE0F/g, "") + m;
 }
 const F = [
-  { symbol: "👍", namePt: "Gostei", nameEn: "Like" },
+  { symbol: "🧙‍♂️", namePt: "Mago", nameEn: "Wizard" },
+  { symbol: "🚀", namePt: "Sensacional", nameEn: "Rocket" },
   { symbol: "👏", namePt: "Parabéns", nameEn: "Celebrate" },
   { symbol: "❤️", namePt: "Amei", nameEn: "Love" },
   { symbol: "💡", namePt: "Genial", nameEn: "Insightful" },
-  { symbol: "🚀", namePt: "Sensacional", nameEn: "Curious" },
   { symbol: "😄", namePt: "Divertido", nameEn: "Laugh" }
 ], V = [
   "pornhub.com",
@@ -2101,14 +2106,14 @@ class Z extends HTMLElement {
         }
         const g = document.documentElement.classList.contains("dark") || document.body.classList.contains("dark") || document.documentElement.getAttribute("data-theme") === "dark" || document.body.getAttribute("data-theme") === "dark" || document.body.getAttribute("data-page-theme") === "midnight" || document.body.getAttribute("data-page-theme") === "slate" || document.body.getAttribute("data-page-theme") === "terminal", T = 0.2126 * s.r + 0.7152 * s.g + 0.0722 * s.b, w = g || T < 128;
         d || (d = w ? { r: 230, g: 237, b: 243 } : { r: 28, g: 25, b: 23 }), l || (l = w ? { r: 88, g: 166, b: 255 } : { r: 146, g: 64, b: 14 });
-        let E, $, L, C, R, I, M;
+        let E, $, L, C, R, M, I;
         if (w) {
           const f = Math.min(255, Math.round(s.r + 15)), x = Math.min(255, Math.round(s.g + 18)), v = Math.min(255, Math.round(s.b + 22));
-          E = `rgb(${f}, ${x}, ${v})`, $ = "rgba(0, 0, 0, 0.35)", L = "rgba(255, 255, 255, 0.12)", C = `rgba(${d.r}, ${d.g}, ${d.b}, 0.62)`, R = `rgb(${Math.min(255, l.r + 30)}, ${Math.min(255, l.g + 30)}, ${Math.min(255, l.b + 30)})`, I = `rgba(${l.r}, ${l.g}, ${l.b}, 0.16)`, M = `rgba(${l.r}, ${l.g}, ${l.b}, 0.35)`;
+          E = `rgb(${f}, ${x}, ${v})`, $ = "rgba(0, 0, 0, 0.35)", L = "rgba(255, 255, 255, 0.12)", C = `rgba(${d.r}, ${d.g}, ${d.b}, 0.62)`, R = `rgb(${Math.min(255, l.r + 30)}, ${Math.min(255, l.g + 30)}, ${Math.min(255, l.b + 30)})`, M = `rgba(${l.r}, ${l.g}, ${l.b}, 0.16)`, I = `rgba(${l.r}, ${l.g}, ${l.b}, 0.35)`;
         } else
-          E = "rgba(255, 255, 255, 0.96)", $ = "rgba(0, 0, 0, 0.035)", L = "rgba(0, 0, 0, 0.12)", C = `rgba(${d.r}, ${d.g}, ${d.b}, 0.65)`, R = `rgb(${l.r}, ${l.g}, ${l.b})`, I = `rgba(${l.r}, ${l.g}, ${l.b}, 0.12)`, M = `rgba(${l.r}, ${l.g}, ${l.b}, 0.28)`;
+          E = "rgba(255, 255, 255, 0.96)", $ = "rgba(0, 0, 0, 0.035)", L = "rgba(0, 0, 0, 0.12)", C = `rgba(${d.r}, ${d.g}, ${d.b}, 0.65)`, R = `rgb(${l.r}, ${l.g}, ${l.b})`, M = `rgba(${l.r}, ${l.g}, ${l.b}, 0.12)`, I = `rgba(${l.r}, ${l.g}, ${l.b}, 0.28)`;
         const A = `rgb(${l.r}, ${l.g}, ${l.b})`;
-        this.style.setProperty("--sl-bg", `rgb(${s.r}, ${s.g}, ${s.b})`), this.style.setProperty("--sl-surface", E), this.style.setProperty("--sl-tab-bg", $), this.style.setProperty("--sl-border", L), this.style.setProperty("--sl-text", `rgb(${d.r}, ${d.g}, ${d.b})`), this.style.setProperty("--sl-text-muted", C), this.style.setProperty("--sl-accent", A), this.style.setProperty("--sl-accent-hover", A), this.style.setProperty("--sl-mention-color", R), this.style.setProperty("--sl-mention-bg", I), this.style.setProperty("--sl-mention-border", M);
+        this.style.setProperty("--sl-bg", `rgb(${s.r}, ${s.g}, ${s.b})`), this.style.setProperty("--sl-surface", E), this.style.setProperty("--sl-tab-bg", $), this.style.setProperty("--sl-border", L), this.style.setProperty("--sl-text", `rgb(${d.r}, ${d.g}, ${d.b})`), this.style.setProperty("--sl-text-muted", C), this.style.setProperty("--sl-accent", A), this.style.setProperty("--sl-accent-hover", A), this.style.setProperty("--sl-mention-color", R), this.style.setProperty("--sl-mention-bg", M), this.style.setProperty("--sl-mention-border", I);
       } catch (e) {
         console.warn("🍃 [ScatterLeaf] Erro ao auto-computar paleta do tema:", e);
       }
@@ -2852,13 +2857,15 @@ Do you want to simulate a local test login (@rnt-rez)?`
         ]
       },
       {
-        name: this.currentLang === "pt" ? "Gestos & Reações" : "Gestures & Reactions",
+        name: this.currentLang === "pt" ? "Gestos & Mágica" : "Gestures & Magic",
         emojis: [
-          "👍",
-          "👎",
+          "🧙‍♂️",
+          "🧙",
+          "🔮",
+          "✨",
+          "🪄",
           "👏",
           "🙌",
-          "👐",
           "🤝",
           "🙏",
           "✌️",
@@ -2879,9 +2886,7 @@ Do you want to simulate a local test login (@rnt-rez)?`
           "🧠",
           "🫀",
           "💯",
-          "💥",
-          "✨",
-          "🎯"
+          "💥"
         ]
       },
       {
@@ -2941,13 +2946,13 @@ Do you want to simulate a local test login (@rnt-rez)?`
           "⚙️",
           "🔧",
           "🔨",
-          "🪄",
           "🔍",
           "🔒",
           "🛡️",
           "🎨",
           "🧪",
-          "💎"
+          "💎",
+          "🎯"
         ]
       }
     ], t = this.currentLang === "pt" ? "Inserir GIF ou Imagem" : "Insert GIF or Image", r = this.currentLang === "pt" ? "Emojis & Ícones" : "Emojis & Icons", a = O("👊", this._selectedSkinTone), o = this.currentLang === "pt" ? "Tom de pele (clique para escolher)" : "Skin tone (click to choose)";
@@ -3047,7 +3052,7 @@ Do you want to simulate a local test login (@rnt-rez)?`
    */
   renderCommentCard(e, t = !1) {
     var j;
-    const r = this._repo ? this._repo.split("/")[0].toLowerCase() : "", o = e.author.isAuthor || r && e.author.login.toLowerCase() === r ? `<span class="sl-author-badge" part="author-badge">${this.currentLang === "pt" ? "Autor" : "Author"}</span>` : "", n = this._speakingId === e.id, s = this._replyingToId === e.id, d = this._editingId === e.id, l = this._openMenuId === e.id, g = n ? this.currentLang === "pt" ? "⏸️ Pausar" : "⏸️ Pause" : this.currentLang === "pt" ? "🔊 Ouvir" : "🔊 Listen", T = this.currentLang === "pt" ? "Responder" : "Reply", w = this.getVisitorLang(), E = e.originalLang || "pt", $ = E !== w, L = this.getLanguageName(E, w), C = e.isShowingTranslation && e.translatedBody ? e.translatedBody : e.body, R = this.formatDate(e.createdAt), I = (j = e.reactions) == null ? void 0 : j.find((y) => y.viewerHasReacted), M = I ? I.content : "👍", A = F.find((y) => y.symbol === M), f = this.currentLang === "pt" ? (A == null ? void 0 : A.namePt) || "Gostei" : (A == null ? void 0 : A.nameEn) || "Like", x = !!I, v = (e.reactions || []).filter((y) => y.count > 0);
+    const r = this._repo ? this._repo.split("/")[0].toLowerCase() : "", o = e.author.isAuthor || r && e.author.login.toLowerCase() === r ? `<span class="sl-author-badge" part="author-badge">${this.currentLang === "pt" ? "Autor" : "Author"}</span>` : "", n = this._speakingId === e.id, s = this._replyingToId === e.id, d = this._editingId === e.id, l = this._openMenuId === e.id, g = n ? this.currentLang === "pt" ? "⏸️ Pausar" : "⏸️ Pause" : this.currentLang === "pt" ? "🔊 Ouvir" : "🔊 Listen", T = this.currentLang === "pt" ? "Responder" : "Reply", w = this.getVisitorLang(), E = e.originalLang || "pt", $ = E !== w, L = this.getLanguageName(E, w), C = e.isShowingTranslation && e.translatedBody ? e.translatedBody : e.body, R = this.formatDate(e.createdAt), M = (j = e.reactions) == null ? void 0 : j.find((y) => y.viewerHasReacted), I = M ? M.content : "🧙‍♂️", A = F.find((y) => y.symbol === I), f = this.currentLang === "pt" ? (A == null ? void 0 : A.namePt) || "Mago" : (A == null ? void 0 : A.nameEn) || "Wizard", x = !!M, v = (e.reactions || []).filter((y) => y.count > 0);
     return `
       <article class="sl-card ${t ? "sl-card-reply" : ""}" id="comment-${e.id}" part="card">
         <!-- Cabeçalho do Card (Avatar ancorado no topo!) -->
@@ -3114,8 +3119,8 @@ Do you want to simulate a local test login (@rnt-rez)?`
           <div class="sl-actions-left">
             <!-- Gatilho de Reação Universal LinkedIn -->
             <div class="sl-reaction-container" data-comment-id="${e.id}">
-              <button type="button" class="sl-reaction-trigger-btn ${x ? "sl-reacted" : ""}" data-comment-id="${e.id}" data-emoji="${M}" part="reaction-trigger-btn" title="${x ? this.currentLang === "pt" ? "Desfazer reação" : "Undo reaction" : this.currentLang === "pt" ? "Curtir" : "Like"}">
-                <span>${M}</span>
+              <button type="button" class="sl-reaction-trigger-btn ${x ? "sl-reacted" : ""}" data-comment-id="${e.id}" data-emoji="${I}" part="reaction-trigger-btn" title="${x ? this.currentLang === "pt" ? "Desfazer reação" : "Undo reaction" : this.currentLang === "pt" ? "Curtir" : "Like"}">
+                <span>${I}</span>
                 <span>${f}</span>
               </button>
 
@@ -3315,7 +3320,7 @@ Do you want to simulate a local test login (@rnt-rez)?`
           this.loginWithGitHub();
           return;
         }
-        const b = u.currentTarget, c = b.getAttribute("data-comment-id"), h = b.getAttribute("data-emoji") || "👍";
+        const b = u.currentTarget, c = b.getAttribute("data-comment-id"), h = b.getAttribute("data-emoji") || "🧙‍♂️";
         c && await this.handleToggleReaction(c, h);
       });
     }), this.shadowRoot.querySelectorAll(".sl-reaction-picker-item").forEach((i) => {
