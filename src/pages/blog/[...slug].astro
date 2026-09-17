@@ -139,6 +139,8 @@ const currentUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).href;
                 category={siteConfig.comments.category || 'General'}
                 theme={siteConfig.comments.theme || 'auto'}
                 lang={siteConfig.comments.lang || 'auto'}
+                broker={siteConfig.comments.broker}
+                client-id={siteConfig.comments.clientId}
               ></scatter-leaf>
             </div>
           </section>

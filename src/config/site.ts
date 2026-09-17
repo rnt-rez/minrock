@@ -22,6 +22,8 @@ export interface SiteConfig {
     category?: string;
     theme?: 'auto' | 'light' | 'dark' | 'cream' | 'midnight' | 'slate';
     lang?: string;
+    broker?: string;
+    clientId?: string;
   };
 }
 
@@ -50,6 +52,8 @@ export const siteConfig: SiteConfig = {
     repo: 'rnt-rez/minrock',
     category: 'General',
     theme: 'auto',
-    lang: 'auto'
+    lang: 'auto',
+    clientId: 'Ov23lifOPHm1GvM1BOFW',
+    broker: 'https://scatterleaf-broker.renato-rezende-rrz.workers.dev'
   }
 };
