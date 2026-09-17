@@ -1,6 +1,6 @@
-var B = Object.defineProperty;
-var z = (E, u, e) => u in E ? B(E, u, { enumerable: !0, configurable: !0, writable: !0, value: e }) : E[u] = e;
-var g = (E, u, e) => z(E, typeof u != "symbol" ? u + "" : u, e);
+var M = Object.defineProperty;
+var B = (E, u, e) => u in E ? M(E, u, { enumerable: !0, configurable: !0, writable: !0, value: e }) : E[u] = e;
+var g = (E, u, e) => B(E, typeof u != "symbol" ? u + "" : u, e);
 const O = `
 :host {
   display: block;
@@ -12,6 +12,12 @@ const O = `
 
 *, *::before, *::after {
   box-sizing: inherit;
+}
+
+button, input, textarea, select {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
 }
 
 /* Foco Visível para Acessibilidade (A11y) */
@@ -233,15 +239,19 @@ const O = `
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
   background: var(--sl-bg);
   border: 1px solid var(--sl-border);
   border-radius: 6px;
-  padding: 0.38rem 0.58rem;
   font-size: 1.15rem;
   cursor: pointer;
   color: var(--sl-text);
   line-height: 1;
   transition: all 0.15s ease;
+  box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .sl-btn-emoji:hover,
@@ -486,14 +496,18 @@ const O = `
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem;
-  padding: 0.45rem 0.9rem;
+  gap: 0.45rem;
+  height: 36px;
+  padding: 0 0.95rem;
   border-radius: 6px;
   font-size: 0.875rem;
   font-weight: 500;
+  line-height: 1;
   cursor: pointer;
   transition: all 0.15s ease;
   border: 1px solid transparent;
+  box-sizing: border-box;
+  white-space: nowrap;
 }
 
 .sl-btn-primary {
@@ -535,10 +549,11 @@ const O = `
 .sl-user-badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  font-size: 0.8rem;
+  gap: 0.45rem;
+  font-size: 0.8125rem;
   color: var(--sl-text);
   font-weight: 500;
+  line-height: 1;
 }
 
 .sl-user-avatar {
@@ -547,22 +562,37 @@ const O = `
   border-radius: 50%;
   border: 1px solid var(--sl-border);
   object-fit: cover;
+  flex-shrink: 0;
+}
+
+.sl-user-name {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+  color: var(--sl-text);
+  font-weight: 500;
 }
 
 .sl-btn-logout {
   background: transparent;
-  border: none;
+  border: 1px solid transparent;
   color: var(--sl-text-muted);
+  font-family: inherit;
   font-size: 0.75rem;
   cursor: pointer;
-  padding: 0.2rem 0.4rem;
+  padding: 0.15rem 0.45rem;
   border-radius: 4px;
   transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+  vertical-align: middle;
 }
 
 .sl-btn-logout:hover {
   color: #ef4444;
   background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.2);
 }
 
 .sl-broker-status {
@@ -1357,7 +1387,7 @@ class U {
     return await a.json();
   }
 }
-const M = "scatterleaf_skin_tone", H = [
+const z = "scatterleaf_skin_tone", H = [
   { id: "default", namePt: "Padrão (Amarelo)", nameEn: "Default (Yellow)", modifier: "", swatch: "🟡" },
   { id: "light", namePt: "Tom Claro", nameEn: "Light Skin Tone", modifier: "🏻", swatch: "🏻" },
   { id: "medium-light", namePt: "Tom Médio-Claro", nameEn: "Medium-Light Skin Tone", modifier: "🏼", swatch: "🏼" },
@@ -1510,7 +1540,7 @@ class F extends HTMLElement {
   initSkinTonePreference() {
     if (!(typeof window > "u"))
       try {
-        const e = localStorage.getItem(M);
+        const e = localStorage.getItem(z);
         e !== null && (this._selectedSkinTone = e);
       } catch (e) {
         console.warn("🍃 [ScatterLeaf] localStorage inacessível para skin tones:", e);
@@ -1519,7 +1549,7 @@ class F extends HTMLElement {
   saveSkinTonePreference(e) {
     if (this._selectedSkinTone = e, typeof window < "u")
       try {
-        localStorage.setItem(M, e);
+        localStorage.setItem(z, e);
       } catch (t) {
         console.warn("🍃 [ScatterLeaf] Erro ao salvar skin tone em localStorage:", t);
       }
@@ -2227,7 +2257,7 @@ Do you want to simulate a local test login (@rnt-rez)?`
           ${this._currentUser ? `
             <div class="sl-user-badge">
               <img class="sl-user-avatar" src="${this._currentUser.avatarUrl}" alt="${this._currentUser.login}" />
-              <span>@${this._currentUser.login}</span>
+              <span class="sl-user-name">@${this._currentUser.login}</span>
               <button class="sl-btn-logout" id="btn-logout" title="Sair da sessão">
                 ${this.currentLang === "pt" ? "Sair" : "Logout"}
               </button>
