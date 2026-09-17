@@ -1,6 +1,7 @@
 # 🪨 Minrock — Tema Minimalista para Astro & Obsidian
 
-> **"Ideias brutas do seu cofre pessoal, lapidadas com precisão em um blog estático ultrarrápido."**
+> **"Ideias brutas do seu cofre pessoal, lapidadas com precisão em um blog estático ultrarrápido."**  
+> *"O Minrock é a rocha sólida onde o conhecimento descansa; o ScatterLeaf é a brisa suave onde as ideias e conversas flutuam."*
 
 [![Astro](https://img.shields.io/badge/Astro-7.x-BC52EE?style=flat-square&logo=astro&logoColor=white)](https://astro.build)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
@@ -8,7 +9,7 @@
 [![PRs Bem-vindos](https://img.shields.io/badge/PRs-bem--vindos-brightgreen.svg?style=flat-square)](https://github.com/rnt-rez/minrock/pulls)
 [![English](https://img.shields.io/badge/English-README.md-blue?style=flat-square)](README.md)
 
-**Minrock** é um tema estático opinativo, centrado em tipografia e ultraleve para [Astro 7](https://astro.build), lapidado sob medida para escritores técnicos, desenvolvedores e engenheiros que organizam seu conhecimento no [Obsidian](https://obsidian.md). Puro SSG, zero inchaço (*bloat*) e carregamento instantâneo.
+**Minrock** é um tema estático opinativo, centrado em tipografia e ultraleve para [Astro 7](https://astro.build), lapidado sob medida para escritores técnicos, desenvolvedores e engenheiros que organizam seu conhecimento no [Obsidian](https://obsidian.md). Construído sob o princípio da **soberania digital**, o projeto existe para democratizar o acesso e o posicionamento pessoal na web aberta: um espaço soberano para chamar de seu, sem interferências de feeds algorítmicos, sem barreiras técnicas e com custo financeiro zero.
 
 [🇺🇸 Read this documentation in English](README.md)
 
@@ -17,6 +18,7 @@
 ## ✨ Principais Diferenciais
 
 * **💎 Geração Estática Pura (SSG):** Todo o HTML é pré-compilado em tempo de build, garantindo velocidade máxima e custo zero de servidor em tempo de execução.
+* **🌐 Soberania Digital & IndieWeb:** Propriedade integral do seu conteúdo em Markdown aberto, sem dependência de plataformas proprietárias e com custo zero de infraestrutura.
 * **✍️ Arquitetura Centrada em Tipografia (*Typography-First*):** Ritmo vertical milimétrico, entrelinha calibrada e hierarquia de tipos pensada para leitura profunda e confortável.
 * **🎨 4 Paletas Cromáticas Calibradas:**
   * ☀️ **Clean White:** Visual editorial limpo e moderno para ambientes bem iluminados.
@@ -81,8 +83,14 @@ export const siteConfig = {
   title: 'Minrock',
   description: 'Tema minimalista para Astro 7 centrado em tipografia para escritores técnicos.',
   author: 'Renato Rezende',
-  siteUrl: 'https://minrock.pages.dev',
+  siteUrl: 'https://minrock.vercel.app',
   theme: 'cream', // Tema padrão inicial: 'white' | 'cream' | 'slate' | 'midnight'
+  comments: {
+    enabled: true,
+    provider: 'scatterleaf',
+    repo: 'rnt-rez/minrock',
+    category: 'General',
+  }
 };
 ```
 
@@ -130,5 +138,5 @@ Este projeto é distribuído sob a licença [MIT License](LICENSE).
 ---
 
 <p align="center">
-  <em>Crafted with pride in Brazil 🇧🇷 by <a href="https://github.com/rnt-rez">Renato Rezende</a>. Engineered for the global web.</em>
+  <em>Crafted with pride in Brazil 🇧🇷 by <a href="https://github.com/rnt-rez">Renato Rezende</a> como parte da frota do Estaleiro. Lapidado para a soberania digital na web global.</em>
 </p>

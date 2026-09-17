@@ -1,6 +1,7 @@
 # 🪨 Minrock — Minimalist Theme for Astro & Obsidian
 
-> **"Raw ideas from your personal vault, finely polished into an ultra-fast static blog."**
+> **"Raw ideas from your personal vault, finely polished into an ultra-fast static blog."**  
+> *"Minrock is the solid bedrock where knowledge rests; ScatterLeaf is the gentle breeze where ideas and conversations drift."*
 
 [![Astro](https://img.shields.io/badge/Astro-7.x-BC52EE?style=flat-square&logo=astro&logoColor=white)](https://astro.build)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
@@ -8,7 +9,7 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/rnt-rez/minrock/pulls)
 [![Translations](https://img.shields.io/badge/Portugu%C3%AAs-README.pt--BR.md-green?style=flat-square)](README.pt-BR.md)
 
-**Minrock** is an opinionated, typography-first static blog theme for [Astro 7](https://astro.build), crafted specifically for technical writers, software engineers, and developers who take notes in [Obsidian](https://obsidian.md). Pure SSG, zero bloat, and lightning-fast.
+**Minrock** is an opinionated, typography-first static blog theme for [Astro 7](https://astro.build), crafted specifically for technical writers, software engineers, and developers who take notes in [Obsidian](https://obsidian.md). Built on the principle of **digital sovereignty**, it empowers thinkers and builders to claim a space to truly call their own on the open web—free from corporate walled gardens, algorithmic feeds, and hosting costs.
 
 [🇧🇷 Leia esta documentação em Português](README.pt-BR.md)
 
@@ -17,6 +18,7 @@
 ## ✨ Key Features
 
 * **💎 Pure Static Site Generation (SSG):** Pre-rendered HTML for maximum delivery speed and zero runtime server overhead.
+* **🌐 Digital Sovereignty & IndieWeb:** Total ownership of your content in open Markdown, hosted wherever you choose at zero financial cost.
 * **✍️ Typography-First Architecture:** Tailored vertical rhythm, optimal line heights, and elegant type hierarchy designed for deep reading.
 * **🎨 4 Calibrated Color Themes:**
   * ☀️ **Clean White:** Crisp, modern editorial look.
@@ -81,8 +83,14 @@ export const siteConfig = {
   title: 'Minrock',
   description: 'Minimalist, typography-first Astro 7 theme for technical writers.',
   author: 'Renato Rezende',
-  siteUrl: 'https://minrock.pages.dev',
+  siteUrl: 'https://minrock.vercel.app',
   theme: 'cream', // Default theme: 'white' | 'cream' | 'slate' | 'midnight'
+  comments: {
+    enabled: true,
+    provider: 'scatterleaf',
+    repo: 'rnt-rez/minrock',
+    category: 'General',
+  }
 };
 ```
 
@@ -130,5 +138,5 @@ This project is licensed under the [MIT License](LICENSE).
 ---
 
 <p align="center">
-  <em>Crafted with pride in Brazil 🇧🇷 by <a href="https://github.com/rnt-rez">Renato Rezende</a>. Engineered for the global web.</em>
+  <em>Crafted with pride in Brazil 🇧🇷 by <a href="https://github.com/rnt-rez">Renato Rezende</a> as part of the Estaleiro fleet. Engineered for digital sovereignty on the global web.</em>
 </p>
