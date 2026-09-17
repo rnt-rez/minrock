@@ -4,12 +4,16 @@
 > *"O Minrock é a rocha sólida onde o conhecimento descansa; o ScatterLeaf é a brisa suave onde as ideias e conversas flutuam."*
 
 [![Astro](https://img.shields.io/badge/Astro-7.x-BC52EE?style=flat-square&logo=astro&logoColor=white)](https://astro.build)
+[![Versão: v0.2.1](https://img.shields.io/badge/Vers%C3%A3o-v0.2.1-brightgreen.svg?style=flat-square)](https://github.com/rnt-rez/minrock/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
 [![Obsidian](https://img.shields.io/badge/Obsidian-Pronto-7C3AED?style=flat-square&logo=obsidian&logoColor=white)](https://obsidian.md)
 [![PRs Bem-vindos](https://img.shields.io/badge/PRs-bem--vindos-brightgreen.svg?style=flat-square)](https://github.com/rnt-rez/minrock/pulls)
 [![English](https://img.shields.io/badge/English-README.md-blue?style=flat-square)](README.md)
 
 **Minrock** é um tema estático opinativo, centrado em tipografia e ultraleve para [Astro 7](https://astro.build), lapidado sob medida para escritores técnicos, desenvolvedores e engenheiros que organizam seu conhecimento no [Obsidian](https://obsidian.md). Construído sob o princípio da **soberania digital**, o projeto existe para democratizar o acesso e o posicionamento pessoal na web aberta: um espaço soberano para chamar de seu, sem interferências de feeds algorítmicos, sem barreiras técnicas e com custo financeiro zero.
+
+> *"A ideia do projeto é propiciar e democratizar o acesso e o posicionamento das pessoas na web, garantindo um espaço soberano para chamar de seu: sem interferências, sem grandes dificuldades e com custo zero."*  
+> — **Renato Rezende**, Criador do Minrock
 
 [🇺🇸 Read this documentation in English](README.md)
 
@@ -18,7 +22,7 @@
 ## ✨ Principais Diferenciais
 
 * **💎 Geração Estática Pura (SSG):** Todo o HTML é pré-compilado em tempo de build, garantindo velocidade máxima e custo zero de servidor em tempo de execução.
-* **🌐 Soberania Digital & IndieWeb:** Propriedade integral do seu conteúdo em Markdown aberto, sem dependência de plataformas proprietárias e com custo zero de infraestrutura.
+* **🌐 Soberania Digital & Posicionamento Pessoal:** Um espaço soberano na web aberta—livre de feeds algorítmicos, sem dependência de plataformas proprietárias e com custo financeiro zero.
 * **✍️ Arquitetura Centrada em Tipografia (*Typography-First*):** Ritmo vertical milimétrico, entrelinha calibrada e hierarquia de tipos pensada para leitura profunda e confortável.
 * **🎨 4 Paletas Cromáticas Calibradas:**
   * ☀️ **Clean White:** Visual editorial limpo e moderno para ambientes bem iluminados.
@@ -26,7 +30,7 @@
   * ⚓ **Slate Navy:** Modo escuro profissional inspirado em ferramentas modernas como Linear e Vercel.
   * 🌌 **Midnight:** Preto OLED puro (`#000000`) com iluminação neon reativa e sutil nos cards.
 * **🗃️ Integração Amigável com o Obsidian Vault CMS:** Suporte nativo a *Page Bundles* em Markdown com suporte a colagem direta de prints e imagens locais (`Ctrl + V`).
-* **🍃 Pronto para ScatterLeaf:** Suporte ao sistema nativo de comentários sem iframes movido a GitHub Discussions via `<scatter-leaf>`.
+* **🍃 Pronto para ScatterLeaf:** Suporte ao sistema nativo de comentários sem iframes movido a GitHub Discussions via `<scatter-leaf>`, com Cloudflare Edge Broker e Modo Camaleão.
 * **💻 Blocos de Código Refinados:** Destaque de sintaxe harmonizado com temas claros e escuros, numeração de linhas e botão de cópia rápida.
 * **♿ Acessibilidade Universal:** Em conformidade estrita com padrões WCAG 2.1/2.2 Nível AA, anel de foco visível (`:focus-visible`) e ausência total de deslocamentos bruscos de tela (*layout shifts*).
 
@@ -84,12 +88,16 @@ export const siteConfig = {
   description: 'Tema minimalista para Astro 7 centrado em tipografia para escritores técnicos.',
   author: 'Renato Rezende',
   siteUrl: 'https://minrock.vercel.app',
-  theme: 'cream', // Tema padrão inicial: 'white' | 'cream' | 'slate' | 'midnight'
+  defaultTheme: 'cream', // Tema padrão inicial: 'white' | 'cream' | 'slate' | 'midnight'
   comments: {
     enabled: true,
     provider: 'scatterleaf',
     repo: 'rnt-rez/minrock',
     category: 'General',
+    theme: 'auto',        // Modo Camaleão com detecção de contraste
+    lang: 'auto',
+    clientId: 'Ov23lifOPHm1GvM1BOFW',
+    broker: 'https://scatterleaf-broker.renato-rezende-rrz.workers.dev'
   }
 };
 ```
