@@ -2411,7 +2411,7 @@ Do you want to simulate a local test login (@rnt-rez)?`
           "💎"
         ]
       }
-    ], t = this.currentLang === "pt" ? "Inserir GIF ou Imagem" : "Insert GIF or Image", r = this.currentLang === "pt" ? "Emojis & Ícones" : "Emojis & Icons", o = I("🖐️", this._selectedSkinTone), a = this.currentLang === "pt" ? "Tom de pele das mãos (clique para escolher)" : "Hand skin tone (click to choose)";
+    ], t = this.currentLang === "pt" ? "Inserir GIF ou Imagem" : "Insert GIF or Image", r = this.currentLang === "pt" ? "Emojis & Ícones" : "Emojis & Icons", o = I("👊", this._selectedSkinTone), a = this.currentLang === "pt" ? "Tom de pele (clique para escolher)" : "Skin tone (click to choose)";
     return `
       <div class="sl-emoji-popover" id="emoji-popover" part="emoji-popover">
         <div class="sl-emoji-header">
@@ -2436,7 +2436,7 @@ Do you want to simulate a local test login (@rnt-rez)?`
             </div>
             <div class="sl-skin-tone-options">
               ${H.map((s) => {
-      const n = I(this._activeTonePickerEmoji || "👍", s.modifier), d = this._selectedSkinTone === s.modifier || this._selectedSkinTone === "default" && s.modifier === "", l = this.currentLang === "pt" ? s.namePt : s.nameEn;
+      const n = I("👊", s.modifier), d = this._selectedSkinTone === s.modifier || this._selectedSkinTone === "default" && s.modifier === "", l = this.currentLang === "pt" ? s.namePt : s.nameEn;
       return `
                   <button type="button" class="sl-tone-btn ${d ? "sl-tone-selected" : ""}" data-tone-mod="${s.modifier || "default"}" title="${l}">
                     ${n}
