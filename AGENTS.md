@@ -13,3 +13,10 @@ Herdado deterministicamente de [estaleiro/governance/lifecycle-gates.md](file://
 ## 🛡️ Governança & Fronteira
 * Mantenha o código estritamente autocontido nesta pasta (`src/`, `public/`, `tests/`).
 * Proibido registrar tarefas de outras docas no `PROGRESS.md` local (Anti-Context Bleed).
+
+## ⏱️ Cadência Modular & Atomicidade (Token Efficiency Gate)
+* **Proibição de Avalanche de Escopo:** Proibido agrupar múltiplos subsistemas independentes em um único ciclo de execução.
+* **Lotes Coesos (1 a 2 tópicos por ciclo):** Decomponha demandas em fases modulares com foco cirúrgico.
+* **Checkpoints Atômicos no Git:** Cada fase requer aprovação no `npm run qa` (`astro check && astro build`) e commit isolado.
+* **Preservação de Contexto & FinOps:** Diffs enxutos protegem a janela de contexto e evitam queima desnecessária de tokens.
+
