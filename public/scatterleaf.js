@@ -73,7 +73,7 @@ button, input, textarea, select {
   gap: 0.75rem;
 }
 
-/* Barra de Ferramentas e Filtro de Comentários (Toolbar) */
+/* Barra de Ferramentas e Filtro de Comentários (Toolbar - Opção 1: Subtle Capsule Minimal) */
 .sl-toolbar {
   display: flex;
   align-items: center;
@@ -89,24 +89,25 @@ button, input, textarea, select {
   align-items: center;
   background: var(--sl-surface);
   border: 1px solid var(--sl-border);
-  border-radius: var(--sl-radius-sm, 8px);
-  padding: 0 0.75rem;
-  height: 36px;
-  width: 290px;
+  border-radius: 9999px;
+  padding: 0 0.85rem;
+  height: 34px;
+  width: 270px;
   max-width: 100%;
   box-sizing: border-box;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 .sl-search-wrapper:hover {
   border-color: var(--sl-text-muted);
+  background: var(--sl-card-bg-hover, rgba(0, 0, 0, 0.02));
 }
 
 .sl-search-wrapper:focus-within {
-  width: 340px;
   border-color: var(--sl-accent);
-  box-shadow: 0 0 0 3px var(--sl-accent-glow, rgba(0, 0, 0, 0.08));
+  box-shadow: 0 0 0 3px var(--sl-accent-glow, rgba(194, 91, 59, 0.15));
+  background: var(--sl-surface);
 }
 
 .sl-search-icon {
@@ -122,19 +123,51 @@ button, input, textarea, select {
 .sl-search-input {
   width: 100%;
   height: 100%;
-  border: none;
-  background: transparent;
-  outline: none;
+  border: none !important;
+  outline: none !important;
+  -webkit-appearance: none;
+  appearance: none;
+  box-shadow: none !important;
+  background: transparent !important;
+  border-radius: 9999px;
   color: var(--sl-text);
   font-family: inherit;
   font-size: 0.8125rem;
   box-sizing: border-box;
+  padding: 0;
+}
+
+.sl-search-input:focus,
+.sl-search-input:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
 }
 
 .sl-search-input::placeholder {
   color: var(--sl-text-muted);
-  opacity: 0.8;
+  opacity: 0.75;
   font-size: 0.8125rem;
+}
+
+.sl-search-kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border: 1px solid var(--sl-border);
+  border-radius: 4px;
+  background: var(--sl-tab-bg, rgba(0, 0, 0, 0.04));
+  color: var(--sl-text-muted);
+  font-family: inherit;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1;
+  user-select: none;
+  pointer-events: none;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
 }
 
 .sl-search-clear-btn {
@@ -2912,9 +2945,17 @@ class be extends HTMLElement {
       ) || (this._isEmojiPickerOpen = !1, t = !0)), t && this.render();
     });
     m(this, "_handleDocumentKeydown", (e) => {
+      var t;
+      if (e.key === "/" && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        const r = document.activeElement;
+        if (!(r instanceof HTMLInputElement || r instanceof HTMLTextAreaElement || (r == null ? void 0 : r.isContentEditable))) {
+          const a = (t = this.shadowRoot) == null ? void 0 : t.getElementById("sl-search-input");
+          a && (e.preventDefault(), a.focus());
+        }
+      }
       if (e.key === "Escape") {
-        let t = !1;
-        this._openMenuId && (this._openMenuId = null, t = !0), this._isCodePickerOpen && (this._isCodePickerOpen = !1, t = !0), this._isEmojiPickerOpen && (this._isEmojiPickerOpen = !1, t = !0), t && this.render();
+        let r = !1;
+        this._openMenuId && (this._openMenuId = null, r = !0), this._isCodePickerOpen && (this._isCodePickerOpen = !1, r = !0), this._isEmojiPickerOpen && (this._isEmojiPickerOpen = !1, r = !0), this._searchQuery && (this._searchQuery = "", this._currentPage = 1, r = !0), r && this.render();
       }
     });
     m(this, "_mediaModalError", null);
@@ -3068,12 +3109,12 @@ class be extends HTMLElement {
           if (!E || E === "transparent" || E === "rgba(0, 0, 0, 0)")
             return null;
           if (E.startsWith("#")) {
-            let C = E.slice(1);
-            if ((C.length === 3 || C.length === 4) && (C = C.split("").map(($) => $ + $).join("")), C.length >= 6)
+            let T = E.slice(1);
+            if ((T.length === 3 || T.length === 4) && (T = T.split("").map(($) => $ + $).join("")), T.length >= 6)
               return {
-                r: parseInt(C.substring(0, 2), 16),
-                g: parseInt(C.substring(2, 4), 16),
-                b: parseInt(C.substring(4, 6), 16)
+                r: parseInt(T.substring(0, 2), 16),
+                g: parseInt(T.substring(2, 4), 16),
+                b: parseInt(T.substring(4, 6), 16)
               };
           }
           const S = E.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/i);
@@ -3084,9 +3125,9 @@ class be extends HTMLElement {
           } : null;
         }, t = window.getComputedStyle(document.documentElement), r = window.getComputedStyle(document.body), o = this.parentElement || document.body, a = window.getComputedStyle(o), i = (E) => {
           for (const S of E) {
-            const C = a.getPropertyValue(S).trim() || r.getPropertyValue(S).trim() || t.getPropertyValue(S).trim();
-            if (C) {
-              const $ = e(C);
+            const T = a.getPropertyValue(S).trim() || r.getPropertyValue(S).trim() || t.getPropertyValue(S).trim();
+            if (T) {
+              const $ = e(T);
               if ($) return $;
             }
           }
@@ -3105,9 +3146,9 @@ class be extends HTMLElement {
         if (!n) {
           let E = this;
           for (; E; ) {
-            const S = window.getComputedStyle(E).backgroundColor, C = e(S);
-            if (C) {
-              n = C;
+            const S = window.getComputedStyle(E).backgroundColor, T = e(S);
+            if (T) {
+              n = T;
               break;
             }
             E = E.parentElement;
@@ -3126,9 +3167,9 @@ class be extends HTMLElement {
         if (!l) {
           let E = this;
           for (; E; ) {
-            const S = window.getComputedStyle(E).color, C = e(S);
-            if (C) {
-              l = C;
+            const S = window.getComputedStyle(E).color, T = e(S);
+            if (T) {
+              l = T;
               break;
             }
             E = E.parentElement;
@@ -3151,12 +3192,12 @@ class be extends HTMLElement {
         l || (l = g ? { r: 230, g: 237, b: 243 } : { r: 28, g: 25, b: 23 }), s || (s = g ? { r: 88, g: 166, b: 255 } : { r: 146, g: 64, b: 14 });
         let w, f, k, _, M, I, R;
         if (g) {
-          const E = Math.min(255, Math.round(n.r + 15)), S = Math.min(255, Math.round(n.g + 18)), C = Math.min(255, Math.round(n.b + 22));
-          w = `rgb(${E}, ${S}, ${C})`, f = "rgba(0, 0, 0, 0.35)", k = "rgba(255, 255, 255, 0.12)", _ = `rgba(${l.r}, ${l.g}, ${l.b}, 0.62)`, M = `rgb(${Math.min(255, s.r + 30)}, ${Math.min(255, s.g + 30)}, ${Math.min(255, s.b + 30)})`, I = `rgba(${s.r}, ${s.g}, ${s.b}, 0.16)`, R = `rgba(${s.r}, ${s.g}, ${s.b}, 0.35)`;
+          const E = Math.min(255, Math.round(n.r + 15)), S = Math.min(255, Math.round(n.g + 18)), T = Math.min(255, Math.round(n.b + 22));
+          w = `rgb(${E}, ${S}, ${T})`, f = "rgba(0, 0, 0, 0.35)", k = "rgba(255, 255, 255, 0.12)", _ = `rgba(${l.r}, ${l.g}, ${l.b}, 0.62)`, M = `rgb(${Math.min(255, s.r + 30)}, ${Math.min(255, s.g + 30)}, ${Math.min(255, s.b + 30)})`, I = `rgba(${s.r}, ${s.g}, ${s.b}, 0.16)`, R = `rgba(${s.r}, ${s.g}, ${s.b}, 0.35)`;
         } else
           w = "rgba(255, 255, 255, 0.96)", f = "rgba(0, 0, 0, 0.035)", k = "rgba(0, 0, 0, 0.12)", _ = `rgba(${l.r}, ${l.g}, ${l.b}, 0.65)`, M = `rgb(${s.r}, ${s.g}, ${s.b})`, I = `rgba(${s.r}, ${s.g}, ${s.b}, 0.12)`, R = `rgba(${s.r}, ${s.g}, ${s.b}, 0.28)`;
-        const D = `rgb(${s.r}, ${s.g}, ${s.b})`;
-        this.style.setProperty("--sl-bg", `rgb(${n.r}, ${n.g}, ${n.b})`), this.style.setProperty("--sl-surface", w), this.style.setProperty("--sl-tab-bg", f), this.style.setProperty("--sl-border", k), this.style.setProperty("--sl-text", `rgb(${l.r}, ${l.g}, ${l.b})`), this.style.setProperty("--sl-text-muted", _), this.style.setProperty("--sl-accent", D), this.style.setProperty("--sl-accent-hover", D), this.style.setProperty("--sl-mention-color", M), this.style.setProperty("--sl-mention-bg", I), this.style.setProperty("--sl-mention-border", R);
+        const H = `rgb(${s.r}, ${s.g}, ${s.b})`;
+        this.style.setProperty("--sl-bg", `rgb(${n.r}, ${n.g}, ${n.b})`), this.style.setProperty("--sl-surface", w), this.style.setProperty("--sl-tab-bg", f), this.style.setProperty("--sl-border", k), this.style.setProperty("--sl-text", `rgb(${l.r}, ${l.g}, ${l.b})`), this.style.setProperty("--sl-text-muted", _), this.style.setProperty("--sl-accent", H), this.style.setProperty("--sl-accent-hover", H), this.style.setProperty("--sl-mention-color", M), this.style.setProperty("--sl-mention-bg", I), this.style.setProperty("--sl-mention-border", R);
       } catch (e) {
         console.warn("🍃 [ScatterLeaf] Erro ao auto-computar paleta do tema:", e);
       }
@@ -4449,7 +4490,7 @@ ${i}
             spellcheck="false"
             aria-label="${this.currentLang === "pt" ? "Buscar comentários ou autor" : "Search comments or author"}"
           />
-          ${this._searchQuery ? `<button type="button" class="sl-search-clear-btn" id="sl-search-clear" part="search-clear-btn" title="${this.currentLang === "pt" ? "Limpar busca" : "Clear search"}">✕</button>` : ""}
+          ${this._searchQuery ? `<button type="button" class="sl-search-clear-btn" id="sl-search-clear" part="search-clear-btn" title="${this.currentLang === "pt" ? "Limpar busca (Esc)" : "Clear search (Esc)"}">✕</button>` : `<kbd class="sl-search-kbd" title="${this.currentLang === "pt" ? "Pressione / para buscar" : "Press / to search"}">/</kbd>`}
         </div>
       </div>
     `;
@@ -4526,8 +4567,8 @@ ${i}
    * Renderiza um Card de Comentário Individual
    */
   renderCommentCard(e, t = !1, r) {
-    var C;
-    const o = this._repo ? this._repo.split("/")[0].toLowerCase() : "", i = e.author.isAuthor || o && e.author.login.toLowerCase() === o ? `<span class="sl-author-badge" part="author-badge">${this.currentLang === "pt" ? "Autor" : "Author"}</span>` : "", n = this._speakingId === e.id, l = this._replyingToId === e.id, s = this._editingId === e.id, c = this._openMenuId === e.id, b = n ? this.currentLang === "pt" ? "⏸️ Pausar" : "⏸️ Pause" : this.currentLang === "pt" ? "🔊 Ouvir" : "🔊 Listen", g = this.currentLang === "pt" ? "Responder" : "Reply", w = this.getVisitorLang(), f = e.originalLang || "pt", k = f !== w, _ = this.getLanguageName(f, w), M = e.isShowingTranslation && e.translatedBody ? e.translatedBody : e.body, I = this.formatDate(e.createdAt), R = !!((C = e.reactions) != null && C.find(($) => $.content === "👍" && $.viewerHasReacted)), D = this.currentLang === "pt" ? "Gostei" : "Like", E = R ? this.currentLang === "pt" ? "Remover curtida" : "Remove like" : this.currentLang === "pt" ? "Curtir" : "Like", S = (e.reactions || []).filter(($) => $.count > 0);
+    var T;
+    const o = this._repo ? this._repo.split("/")[0].toLowerCase() : "", i = e.author.isAuthor || o && e.author.login.toLowerCase() === o ? `<span class="sl-author-badge" part="author-badge">${this.currentLang === "pt" ? "Autor" : "Author"}</span>` : "", n = this._speakingId === e.id, l = this._replyingToId === e.id, s = this._editingId === e.id, c = this._openMenuId === e.id, b = n ? this.currentLang === "pt" ? "⏸️ Pausar" : "⏸️ Pause" : this.currentLang === "pt" ? "🔊 Ouvir" : "🔊 Listen", g = this.currentLang === "pt" ? "Responder" : "Reply", w = this.getVisitorLang(), f = e.originalLang || "pt", k = f !== w, _ = this.getLanguageName(f, w), M = e.isShowingTranslation && e.translatedBody ? e.translatedBody : e.body, I = this.formatDate(e.createdAt), R = !!((T = e.reactions) != null && T.find(($) => $.content === "👍" && $.viewerHasReacted)), H = this.currentLang === "pt" ? "Gostei" : "Like", E = R ? this.currentLang === "pt" ? "Remover curtida" : "Remove like" : this.currentLang === "pt" ? "Curtir" : "Like", S = (e.reactions || []).filter(($) => $.count > 0);
     return `
       <article class="sl-card ${t ? "sl-card-reply" : ""}" id="comment-${e.id}" part="card">
         <!-- Cabeçalho do Card (Avatar ancorado no topo!) -->
@@ -4596,7 +4637,7 @@ ${i}
             <div class="sl-reaction-container" data-comment-id="${e.id}">
               <button type="button" class="sl-reaction-trigger-btn" data-comment-id="${e.id}" data-emoji="👍" part="reaction-trigger-btn" title="${E}">
                 <span>👍</span>
-                <span>${D}</span>
+                <span>${H}</span>
               </button>
 
               <!-- Popover Flutuante com 6 Emojis Animados -->
@@ -4739,8 +4780,8 @@ ${i}
         this.saveSkinTonePreference(p);
         const y = this._activeTonePickerEmoji;
         if (this._isSkinTonePanelOpen = !1, this._activeTonePickerEmoji = null, y) {
-          const T = W(y, p === "default" ? "" : p);
-          this.insertTextAtCursor(T);
+          const C = W(y, p === "default" ? "" : p);
+          this.insertTextAtCursor(C);
         } else
           this.render();
       });
@@ -4759,7 +4800,7 @@ ${i}
     if (k && k.addEventListener("click", (d) => {
       d.stopPropagation(), this._isEmojiPickerOpen = !1, this._isMediaModalOpen = !0, this._mediaModalUrl = "", this._mediaModalAlt = "", this._mediaModalError = null, this._mediaModalFile = null, this._mediaModalFileDataUrl = null, this.render();
     }), this._isMediaModalOpen) {
-      const d = this.shadowRoot.getElementById("media-modal-backdrop"), h = this.shadowRoot.getElementById("btn-close-media-modal"), v = this.shadowRoot.getElementById("btn-cancel-media-modal"), p = this.shadowRoot.getElementById("btn-confirm-media-modal"), y = this.shadowRoot.getElementById("media-url-input"), T = this.shadowRoot.getElementById("media-alt-input"), z = this.shadowRoot.getElementById("media-file-input"), j = this.shadowRoot.getElementById("btn-browse-media-file"), N = this.shadowRoot.getElementById("btn-remove-media-file"), B = this.shadowRoot.getElementById("media-drop-zone"), H = this.currentLang === "pt", Y = () => {
+      const d = this.shadowRoot.getElementById("media-modal-backdrop"), h = this.shadowRoot.getElementById("btn-close-media-modal"), v = this.shadowRoot.getElementById("btn-cancel-media-modal"), p = this.shadowRoot.getElementById("btn-confirm-media-modal"), y = this.shadowRoot.getElementById("media-url-input"), C = this.shadowRoot.getElementById("media-alt-input"), P = this.shadowRoot.getElementById("media-file-input"), j = this.shadowRoot.getElementById("btn-browse-media-file"), N = this.shadowRoot.getElementById("btn-remove-media-file"), B = this.shadowRoot.getElementById("media-drop-zone"), D = this.currentLang === "pt", Y = () => {
         this._isMediaModalOpen = !1, this._mediaModalUrl = "", this._mediaModalAlt = "", this._mediaModalError = null, this._mediaModalFile = null, this._mediaModalFileDataUrl = null, this._mediaModalWasCompressed = !1, this._mediaModalCompressedSize = 0, this.render();
       };
       h && h.addEventListener("click", Y), v && v.addEventListener("click", Y), d && d.addEventListener("click", (L) => {
@@ -4767,41 +4808,41 @@ ${i}
       });
       const V = async (L) => {
         this._mediaModalError = null;
-        const A = await me(L, H);
+        const A = await me(L, D);
         if (!A.safe || !A.format) {
-          this._mediaModalError = A.reason || (H ? "Arquivo inválido." : "Invalid file."), this.render();
+          this._mediaModalError = A.reason || (D ? "Arquivo inválido." : "Invalid file."), this.render();
           return;
         }
         try {
-          const P = await ge(L, A.format, 520, 0.82);
-          this._mediaModalFile = L, this._mediaModalFileDataUrl = P.dataUrl, this._mediaModalWasCompressed = P.wasCompressed, this._mediaModalCompressedSize = P.compressedSize, this._mediaModalUrl = "", this._mediaModalAlt.trim() || (this._mediaModalAlt = L.name.replace(/\.[^/.]+$/, "")), this._mediaModalError = null, this.render();
+          const z = await ge(L, A.format, 520, 0.82);
+          this._mediaModalFile = L, this._mediaModalFileDataUrl = z.dataUrl, this._mediaModalWasCompressed = z.wasCompressed, this._mediaModalCompressedSize = z.compressedSize, this._mediaModalUrl = "", this._mediaModalAlt.trim() || (this._mediaModalAlt = L.name.replace(/\.[^/.]+$/, "")), this._mediaModalError = null, this.render();
         } catch {
-          this._mediaModalError = H ? "Erro ao processar ou otimizar a imagem selecionada." : "Error processing or optimizing selected image.", this.render();
+          this._mediaModalError = D ? "Erro ao processar ou otimizar a imagem selecionada." : "Error processing or optimizing selected image.", this.render();
         }
       };
       y && (y.addEventListener("input", () => {
         if (this._mediaModalFile = null, this._mediaModalFileDataUrl = null, this._mediaModalWasCompressed = !1, this._mediaModalCompressedSize = 0, this._mediaModalUrl = y.value, this._mediaModalUrl.trim().length > 0) {
           const L = K(this._mediaModalUrl);
-          this._mediaModalError = L.safe ? null : L.reason || (H ? "Link inválido." : "Invalid link.");
+          this._mediaModalError = L.safe ? null : L.reason || (D ? "Link inválido." : "Invalid link.");
         } else
           this._mediaModalError = null;
       }), y.addEventListener("blur", () => {
         this._mediaModalUrl.trim() && this.render();
-      })), T && T.addEventListener("input", () => {
-        this._mediaModalAlt = T.value;
-      }), j && z && j.addEventListener("click", (L) => {
-        L.stopPropagation(), z.click();
-      }), z && z.addEventListener("change", async () => {
-        if (z.files && z.files.length > 0) {
-          const L = z.files[0];
+      })), C && C.addEventListener("input", () => {
+        this._mediaModalAlt = C.value;
+      }), j && P && j.addEventListener("click", (L) => {
+        L.stopPropagation(), P.click();
+      }), P && P.addEventListener("change", async () => {
+        if (P.files && P.files.length > 0) {
+          const L = P.files[0];
           await V(L);
         }
       }), N && N.addEventListener("click", (L) => {
         L.stopPropagation(), this._mediaModalFile = null, this._mediaModalFileDataUrl = null, this._mediaModalWasCompressed = !1, this._mediaModalCompressedSize = 0, this._mediaModalError = null, this.render();
       }), this.shadowRoot.querySelectorAll(".sl-recent-gif-item").forEach((L) => {
         L.addEventListener("click", () => {
-          const A = L.getAttribute("data-url") || "", P = L.getAttribute("data-alt") || "";
-          this._mediaModalUrl = A, this._mediaModalAlt = P, this._mediaModalFile = null, this._mediaModalFileDataUrl = null, this._mediaModalWasCompressed = !1, this._mediaModalCompressedSize = 0, this._mediaModalError = null, this.render();
+          const A = L.getAttribute("data-url") || "", z = L.getAttribute("data-alt") || "";
+          this._mediaModalUrl = A, this._mediaModalAlt = z, this._mediaModalFile = null, this._mediaModalFileDataUrl = null, this._mediaModalWasCompressed = !1, this._mediaModalCompressedSize = 0, this._mediaModalError = null, this.render();
         });
       });
       const Z = this.shadowRoot.getElementById("btn-clear-recent-gifs");
@@ -4820,15 +4861,15 @@ ${i}
           await V(U);
           return;
         }
-        let P = "";
-        if (A.dataTransfer && (P = A.dataTransfer.getData("text/uri-list") || A.dataTransfer.getData("text/plain") || "", !P && A.dataTransfer.getData("text/html"))) {
+        let z = "";
+        if (A.dataTransfer && (z = A.dataTransfer.getData("text/uri-list") || A.dataTransfer.getData("text/plain") || "", !z && A.dataTransfer.getData("text/html"))) {
           const U = A.dataTransfer.getData("text/html").match(/src=["'](https:[^"']+)["']/i);
-          U && (P = U[1]);
+          U && (z = U[1]);
         }
-        if (P = P.trim(), P) {
+        if (z = z.trim(), z) {
           this._mediaModalFile = null, this._mediaModalFileDataUrl = null, this._mediaModalWasCompressed = !1, this._mediaModalCompressedSize = 0;
-          const U = K(P);
-          this._mediaModalUrl = P, this._mediaModalError = U.safe ? null : U.reason || (H ? "URL inválida ou insegura." : "Invalid or unsafe URL."), this.render();
+          const U = K(z);
+          this._mediaModalUrl = z, this._mediaModalError = U.safe ? null : U.reason || (D ? "URL inválida ou insegura." : "Invalid or unsafe URL."), this.render();
         }
       })), p && p.addEventListener("click", () => {
         const L = this._mediaModalAlt.trim() || "GIF";
@@ -4839,12 +4880,12 @@ ${i}
         }
         const A = this._mediaModalUrl.trim();
         if (!A) {
-          this._mediaModalError = H ? "Por favor, insira a URL do GIF ou carregue um arquivo local." : "Please enter a GIF URL or upload a local file.", this.render();
+          this._mediaModalError = D ? "Por favor, insira a URL do GIF ou carregue um arquivo local." : "Please enter a GIF URL or upload a local file.", this.render();
           return;
         }
-        const P = K(A);
-        if (!P.safe) {
-          this._mediaModalError = P.reason || (H ? "URL inválida ou não segura." : "Invalid or unsafe URL."), this.render();
+        const z = K(A);
+        if (!z.safe) {
+          this._mediaModalError = z.reason || (D ? "URL inválida ou não segura." : "Invalid or unsafe URL."), this.render();
           return;
         }
         de(A, L);
@@ -4893,8 +4934,8 @@ ${i}
           this.loginWithGitHub();
           return;
         }
-        const v = h.currentTarget, p = v.getAttribute("data-comment-id"), y = v.getAttribute("data-emoji"), T = v.closest(".sl-reaction-container");
-        T == null || T.classList.remove("sl-popover-open"), p && y && await this.handleToggleReaction(p, y);
+        const v = h.currentTarget, p = v.getAttribute("data-comment-id"), y = v.getAttribute("data-emoji"), C = v.closest(".sl-reaction-container");
+        C == null || C.classList.remove("sl-popover-open"), p && y && await this.handleToggleReaction(p, y);
       });
     }), this.shadowRoot.querySelectorAll(".sl-reaction-badge").forEach((d) => {
       d.addEventListener("click", async (h) => {
@@ -4925,19 +4966,19 @@ ${i}
           this._replyingToId = null, this._replyText = "";
         else {
           this._replyingToId = p;
-          let T = "";
-          const z = this._comments.find((j) => j.id === p);
-          if (z)
-            T = z.author.login;
+          let C = "";
+          const P = this._comments.find((j) => j.id === p);
+          if (P)
+            C = P.author.login;
           else
             for (const j of this._comments) {
               const N = (y = j.replies) == null ? void 0 : y.find((B) => B.id === p);
               if (N) {
-                T = N.author.login;
+                C = N.author.login;
                 break;
               }
             }
-          this._replyText = T ? `@${T} ` : "";
+          this._replyText = C ? `@${C} ` : "";
         }
         this.render();
       });
@@ -4949,10 +4990,10 @@ ${i}
     }), this.shadowRoot.querySelectorAll(".btn-send-reply").forEach((d) => {
       d.addEventListener("click", async (h) => {
         var j;
-        const v = h.currentTarget, p = v.getAttribute("data-comment-id"), y = v.getAttribute("data-parent-id") || p, T = (j = this.shadowRoot) == null ? void 0 : j.getElementById(`reply-textarea-${p}`);
-        if (!T) return;
-        const z = T.value.trim();
-        !z || !y || await this.handlePostReply(y, z);
+        const v = h.currentTarget, p = v.getAttribute("data-comment-id"), y = v.getAttribute("data-parent-id") || p, C = (j = this.shadowRoot) == null ? void 0 : j.getElementById(`reply-textarea-${p}`);
+        if (!C) return;
+        const P = C.value.trim();
+        !P || !y || await this.handlePostReply(y, P);
       });
     }), this.shadowRoot.querySelectorAll(".btn-cancel-reply").forEach((d) => {
       d.addEventListener("click", () => {
@@ -4965,10 +5006,10 @@ ${i}
       });
     }), this.shadowRoot.querySelectorAll(".sl-audio-btn").forEach((d) => {
       d.addEventListener("click", (h) => {
-        const v = h.currentTarget, p = v.getAttribute("data-speak-id"), y = v.getAttribute("data-text"), T = v.getAttribute("data-lang") || void 0;
+        const v = h.currentTarget, p = v.getAttribute("data-speak-id"), y = v.getAttribute("data-text"), C = v.getAttribute("data-lang") || void 0;
         if (p && y) {
-          const z = decodeURIComponent(y);
-          this.toggleSpeak(p, z, T);
+          const P = decodeURIComponent(y);
+          this.toggleSpeak(p, P, C);
         }
       });
     }), this.shadowRoot.querySelectorAll(".sl-menu-btn").forEach((d) => {
@@ -4987,11 +5028,11 @@ ${i}
       });
     }), this.shadowRoot.querySelectorAll(".btn-save-edit").forEach((d) => {
       d.addEventListener("click", async (h) => {
-        var z;
-        const p = h.currentTarget.getAttribute("data-comment-id"), y = (z = this.shadowRoot) == null ? void 0 : z.getElementById(`edit-textarea-${p}`);
+        var P;
+        const p = h.currentTarget.getAttribute("data-comment-id"), y = (P = this.shadowRoot) == null ? void 0 : P.getElementById(`edit-textarea-${p}`);
         if (!y || !p) return;
-        const T = y.value.trim();
-        T && await this.handleSaveEdit(p, T);
+        const C = y.value.trim();
+        C && await this.handleSaveEdit(p, C);
       });
     }), this.shadowRoot.querySelectorAll(".btn-cancel-edit").forEach((d) => {
       d.addEventListener("click", () => {
@@ -5055,8 +5096,8 @@ ${i}
         </button>
       `, !c.querySelector(".sl-code-line")) {
         const R = b.split(/\r?\n/);
-        c.innerHTML = R.map((D, E) => {
-          const S = D.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        c.innerHTML = R.map((H, E) => {
+          const S = H.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
           return `<span class="sl-code-line"><span class="sl-line-num">${E + 1}</span><span class="sl-line-code">${S || " "}</span></span>`;
         }).join(`
 `);
