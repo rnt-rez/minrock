@@ -2891,7 +2891,7 @@ class be extends HTMLElement {
     m(this, "_lang", "pt");
     m(this, "_inputPosition", "top");
     m(this, "_broker", "");
-    m(this, "_clientId", "");
+    m(this, "_clientId", "Iv23liZHApvnx6e6wtMJ");
     m(this, "_pageSize", 10);
     m(this, "_currentPage", 1);
     m(this, "_comments", []);
@@ -3059,7 +3059,7 @@ class be extends HTMLElement {
     }
   }
   syncAttributes() {
-    this._repo = this.getAttribute("repo") || "", this._category = this.getAttribute("category") || "General", this._theme = this.getAttribute("theme") || "cream", this._lang = this.getAttribute("lang") || "auto", this._broker = this.getAttribute("broker") || "", this._clientId = this.getAttribute("client-id") || "";
+    this._repo = this.getAttribute("repo") || "", this._category = this.getAttribute("category") || "General", this._theme = this.getAttribute("theme") || "cream", this._lang = this.getAttribute("lang") || "auto", this._broker = this.getAttribute("broker") || "", this._clientId = this.getAttribute("client-id") || "Iv23liZHApvnx6e6wtMJ";
     const e = this.getAttribute("input-position");
     (e === "top" || e === "bottom") && (this._inputPosition = e);
     const t = this.getAttribute("page-size");
@@ -3316,7 +3316,7 @@ Do you want to simulate a local test login (@rnt-rez)?`
       }
       return;
     }
-    const e = encodeURIComponent(window.location.origin + window.location.pathname), t = encodeURIComponent("public_repo read:user"), r = `https://github.com/login/oauth/authorize?client_id=${this._clientId}&scope=${t}&redirect_uri=${e}`, o = 600, a = 700, i = window.screen.width / 2 - o / 2, n = window.screen.height / 2 - a / 2;
+    const e = encodeURIComponent(window.location.origin + window.location.pathname), t = encodeURIComponent("read:user"), r = `https://github.com/login/oauth/authorize?client_id=${this._clientId}&scope=${t}&redirect_uri=${e}`, o = 600, a = 700, i = window.screen.width / 2 - o / 2, n = window.screen.height / 2 - a / 2;
     window.open(
       r,
       "scatterleaf-oauth-popup",

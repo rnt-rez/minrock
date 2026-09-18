@@ -53,7 +53,7 @@ export const siteConfig: SiteConfig = {
     category: 'General',
     theme: 'auto',
     lang: 'auto',
-    clientId: 'Ov23lifOPhm1GvMlBOEW',
+    clientId: 'Iv23liZHApvnx6e6wtMJ',
     broker: 'https://scatterleaf-broker.renato-rezende-rrz.workers.dev'
   }
 };

@@ -96,7 +96,7 @@ export const siteConfig = {
     category: 'General',
     theme: 'auto',        // Chameleon mode: dynamic contrast detection
     lang: 'auto',
-    clientId: 'Ov23lifOPhm1GvMlBOEW',
+    clientId: 'Iv23liZHApvnx6e6wtMJ',
     broker: 'https://scatterleaf-broker.renato-rezende-rrz.workers.dev'
   }
 };
