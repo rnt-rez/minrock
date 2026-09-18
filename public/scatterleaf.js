@@ -73,7 +73,7 @@ button, input, textarea, select {
   gap: 0.75rem;
 }
 
-/* Barra de Ferramentas e Filtro de Comentários (Toolbar - Opção 1: Subtle Capsule Minimal) */
+/* Barra de Ferramentas e Filtro de Comentários (Toolbar - Estilo Minrock com Efeito Neon) */
 .sl-toolbar {
   display: flex;
   align-items: center;
@@ -87,37 +87,40 @@ button, input, textarea, select {
   position: relative;
   display: flex;
   align-items: center;
+  gap: 0.5rem;
   background: var(--sl-surface);
   border: 1px solid var(--sl-border);
-  border-radius: 9999px;
-  padding: 0 0.85rem;
-  height: 34px;
-  width: 270px;
+  border-radius: 6px;
+  padding: 0 0.75rem;
+  height: 36px;
+  width: 280px;
   max-width: 100%;
   box-sizing: border-box;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .sl-search-wrapper:hover {
-  border-color: var(--sl-text-muted);
-  background: var(--sl-card-bg-hover, rgba(0, 0, 0, 0.02));
+  border-color: var(--sl-accent);
+  box-shadow: 0 0 8px var(--sl-accent-glow, rgba(146, 64, 14, 0.2));
 }
 
 .sl-search-wrapper:focus-within {
   border-color: var(--sl-accent);
-  box-shadow: 0 0 0 3px var(--sl-accent-glow, rgba(194, 91, 59, 0.15));
+  box-shadow: 0 0 0 1px var(--sl-accent), 0 0 14px var(--sl-accent-glow, rgba(146, 64, 14, 0.35)), 0 2px 4px rgba(0, 0, 0, 0.06);
   background: var(--sl-surface);
 }
 
-.sl-search-icon {
-  font-size: 0.8125rem;
-  opacity: 0.6;
-  margin-right: 0.5rem;
-  user-select: none;
-  display: flex;
-  align-items: center;
+.sl-search-svg {
   flex-shrink: 0;
+  color: var(--sl-text-muted);
+  transition: color 0.2s ease;
+  user-select: none;
+}
+
+.sl-search-wrapper:focus-within .sl-search-svg,
+.sl-search-wrapper:hover .sl-search-svg {
+  color: var(--sl-accent);
 }
 
 .sl-search-input {
@@ -129,10 +132,10 @@ button, input, textarea, select {
   appearance: none;
   box-shadow: none !important;
   background: transparent !important;
-  border-radius: 9999px;
+  border-radius: 4px;
   color: var(--sl-text);
   font-family: inherit;
-  font-size: 0.8125rem;
+  font-size: 0.84rem;
   box-sizing: border-box;
   padding: 0;
 }
@@ -147,7 +150,7 @@ button, input, textarea, select {
 .sl-search-input::placeholder {
   color: var(--sl-text-muted);
   opacity: 0.75;
-  font-size: 0.8125rem;
+  font-size: 0.84rem;
 }
 
 .sl-search-kbd {
@@ -181,7 +184,7 @@ button, input, textarea, select {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
+  border-radius: 4px;
   transition: color 0.15s ease, background 0.15s ease;
   line-height: 1;
 }
@@ -4478,7 +4481,10 @@ ${i}
     return this._comments.length === 0 && !this._searchQuery ? "" : `
       <div class="sl-toolbar" part="toolbar">
         <div class="sl-search-wrapper" part="search-wrapper">
-          <span class="sl-search-icon" aria-hidden="true">🔍</span>
+          <svg class="sl-search-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </svg>
           <input
             type="text"
             id="sl-search-input"
