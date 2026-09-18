@@ -2049,19 +2049,20 @@ class oe {
    */
   async toggleReaction(c, e, t) {
     const o = {
-      "🧙‍♂️": "THUMBS_UP",
-      "🧙‍♀️": "THUMBS_UP",
-      "🧙": "THUMBS_UP",
       "👍": "THUMBS_UP",
-      "👏": "HOORAY",
       "❤️": "HEART",
       "🚀": "ROCKET",
-      "💡": "ROCKET",
-      "😄": "LAUGH",
       "🎉": "HOORAY",
+      "😄": "LAUGH",
       "👀": "EYES",
       "👎": "THUMBS_DOWN",
-      "😕": "CONFUSED"
+      "😕": "CONFUSED",
+      // Aliases retrocompatíveis
+      "👏": "HOORAY",
+      "💡": "ROCKET",
+      "🧙‍♂️": "THUMBS_UP",
+      "🧙‍♀️": "THUMBS_UP",
+      "🧙": "THUMBS_UP"
     }[e] || e, a = await fetch(`${this.baseUrl}/api/reactions`, {
       method: "POST",
       headers: this.getAuthHeaders(),
@@ -2131,14 +2132,12 @@ function G(g, c) {
   return g.replace(/[\u{1F3FB}-\u{1F3FF}]/gu, "").replace(/\uFE0F/g, "") + c;
 }
 const Z = [
-  { symbol: "🧙‍♂️", namePt: "Mago", nameEn: "Wizard" },
-  { symbol: "🧙‍♀️", namePt: "Maga", nameEn: "Witch" },
   { symbol: "👍", namePt: "Gostei", nameEn: "Like" },
-  { symbol: "🚀", namePt: "Sensacional", nameEn: "Rocket" },
-  { symbol: "👏", namePt: "Parabéns", nameEn: "Celebrate" },
   { symbol: "❤️", namePt: "Amei", nameEn: "Love" },
-  { symbol: "💡", namePt: "Genial", nameEn: "Insightful" },
-  { symbol: "😄", namePt: "Divertido", nameEn: "Laugh" }
+  { symbol: "🚀", namePt: "Sensacional", nameEn: "Rocket" },
+  { symbol: "🎉", namePt: "Parabéns", nameEn: "Celebrate" },
+  { symbol: "😄", namePt: "Divertido", nameEn: "Laugh" },
+  { symbol: "👀", namePt: "De olho", nameEn: "Eyes" }
 ], W = "scatterleaf_recent_gifs";
 function Q() {
   try {
@@ -2506,7 +2505,7 @@ class pe extends HTMLElement {
             return null;
           if (v.startsWith("#")) {
             let w = v.slice(1);
-            if ((w.length === 3 || w.length === 4) && (w = w.split("").map((z) => z + z).join("")), w.length >= 6)
+            if ((w.length === 3 || w.length === 4) && (w = w.split("").map((j) => j + j).join("")), w.length >= 6)
               return {
                 r: parseInt(w.substring(0, 2), 16),
                 g: parseInt(w.substring(2, 4), 16),
@@ -2523,8 +2522,8 @@ class pe extends HTMLElement {
           for (const S of v) {
             const w = a.getPropertyValue(S).trim() || r.getPropertyValue(S).trim() || t.getPropertyValue(S).trim();
             if (w) {
-              const z = e(w);
-              if (z) return z;
+              const j = e(w);
+              if (j) return j;
             }
           }
           return null;
@@ -3622,8 +3621,8 @@ Do you want to simulate a local test login (@rnt-rez)?`
    * Renderiza um Card de Comentário Individual
    */
   renderCommentCard(e, t = !1) {
-    var z;
-    const r = this._repo ? this._repo.split("/")[0].toLowerCase() : "", a = e.author.isAuthor || r && e.author.login.toLowerCase() === r ? `<span class="sl-author-badge" part="author-badge">${this.currentLang === "pt" ? "Autor" : "Author"}</span>` : "", i = this._speakingId === e.id, s = this._replyingToId === e.id, d = this._editingId === e.id, n = this._openMenuId === e.id, u = i ? this.currentLang === "pt" ? "⏸️ Pausar" : "⏸️ Pause" : this.currentLang === "pt" ? "🔊 Ouvir" : "🔊 Listen", $ = this.currentLang === "pt" ? "Responder" : "Reply", x = this.getVisitorLang(), _ = e.originalLang || "pt", L = _ !== x, C = this.getLanguageName(_, x), T = e.isShowingTranslation && e.translatedBody ? e.translatedBody : e.body, B = this.formatDate(e.createdAt), P = (z = e.reactions) == null ? void 0 : z.find((k) => k.viewerHasReacted), U = P ? P.content : "🧙‍♂️", R = Z.find((k) => k.symbol === U), v = !!P, S = v ? this.currentLang === "pt" ? (R == null ? void 0 : R.namePt) || "Curtir" : (R == null ? void 0 : R.nameEn) || "Like" : this.currentLang === "pt" ? "Curtir" : "Like", w = (e.reactions || []).filter((k) => k.count > 0);
+    var j;
+    const r = this._repo ? this._repo.split("/")[0].toLowerCase() : "", a = e.author.isAuthor || r && e.author.login.toLowerCase() === r ? `<span class="sl-author-badge" part="author-badge">${this.currentLang === "pt" ? "Autor" : "Author"}</span>` : "", i = this._speakingId === e.id, s = this._replyingToId === e.id, d = this._editingId === e.id, n = this._openMenuId === e.id, u = i ? this.currentLang === "pt" ? "⏸️ Pausar" : "⏸️ Pause" : this.currentLang === "pt" ? "🔊 Ouvir" : "🔊 Listen", $ = this.currentLang === "pt" ? "Responder" : "Reply", x = this.getVisitorLang(), _ = e.originalLang || "pt", L = _ !== x, C = this.getLanguageName(_, x), T = e.isShowingTranslation && e.translatedBody ? e.translatedBody : e.body, B = this.formatDate(e.createdAt), P = (j = e.reactions) == null ? void 0 : j.find((k) => k.viewerHasReacted), U = P ? P.content : "👍", R = Z.find((k) => k.symbol === U), v = !!P, S = v ? this.currentLang === "pt" ? (R == null ? void 0 : R.namePt) || "Curtir" : (R == null ? void 0 : R.nameEn) || "Like" : this.currentLang === "pt" ? "Curtir" : "Like", w = (e.reactions || []).filter((k) => k.count > 0);
     return `
       <article class="sl-card ${t ? "sl-card-reply" : ""}" id="comment-${e.id}" part="card">
         <!-- Cabeçalho do Card (Avatar ancorado no topo!) -->
@@ -3884,25 +3883,25 @@ Do you want to simulate a local test login (@rnt-rez)?`
         y.preventDefault(), F.classList.remove("sl-drag-over");
         const E = y;
         if ((H = E.dataTransfer) != null && H.files && E.dataTransfer.files.length > 0) {
-          const j = E.dataTransfer.files[0];
-          await J(j);
+          const z = E.dataTransfer.files[0];
+          await J(z);
           return;
         }
         let M = "";
         if (E.dataTransfer && (M = E.dataTransfer.getData("text/uri-list") || E.dataTransfer.getData("text/plain") || "", !M && E.dataTransfer.getData("text/html"))) {
-          const j = E.dataTransfer.getData("text/html").match(/src=["'](https:[^"']+)["']/i);
-          j && (M = j[1]);
+          const z = E.dataTransfer.getData("text/html").match(/src=["'](https:[^"']+)["']/i);
+          z && (M = z[1]);
         }
         if (M = M.trim(), M) {
           this._mediaModalFile = null, this._mediaModalFileDataUrl = null, this._mediaModalWasCompressed = !1, this._mediaModalCompressedSize = 0;
-          const j = N(M);
-          this._mediaModalUrl = M, this._mediaModalError = j.safe ? null : j.reason || (O ? "URL inválida ou insegura." : "Invalid or unsafe URL."), this.render();
+          const z = N(M);
+          this._mediaModalUrl = M, this._mediaModalError = z.safe ? null : z.reason || (O ? "URL inválida ou insegura." : "Invalid or unsafe URL."), this.render();
         }
       })), m && m.addEventListener("click", () => {
         const y = this._mediaModalAlt.trim() || "GIF";
         if (this._mediaModalFileDataUrl && this._mediaModalFile) {
-          const j = `![${y}](${this._mediaModalFileDataUrl})`;
-          this._isMediaModalOpen = !1, this._mediaModalFile = null, this._mediaModalFileDataUrl = null, this._mediaModalWasCompressed = !1, this._mediaModalCompressedSize = 0, this._mediaModalError = null, this.insertTextAtCursor(j);
+          const z = `![${y}](${this._mediaModalFileDataUrl})`;
+          this._isMediaModalOpen = !1, this._mediaModalFile = null, this._mediaModalFileDataUrl = null, this._mediaModalWasCompressed = !1, this._mediaModalCompressedSize = 0, this._mediaModalError = null, this.insertTextAtCursor(z);
           return;
         }
         const E = this._mediaModalUrl.trim();
@@ -3952,7 +3951,7 @@ Do you want to simulate a local test login (@rnt-rez)?`
           this.loginWithGitHub();
           return;
         }
-        const f = p.currentTarget, m = f.getAttribute("data-comment-id"), b = f.getAttribute("data-emoji") || "🧙‍♂️";
+        const f = p.currentTarget, m = f.getAttribute("data-comment-id"), b = f.getAttribute("data-emoji") || "👍";
         m && await this.handleToggleReaction(m, b);
       });
     }), this.shadowRoot.querySelectorAll(".sl-reaction-picker-item").forEach((l) => {
