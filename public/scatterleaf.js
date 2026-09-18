@@ -73,63 +73,89 @@ button, input, textarea, select {
   gap: 0.75rem;
 }
 
-/* Campo de Busca no Cabeçalho */
+/* Barra de Ferramentas e Filtro de Comentários (Toolbar) */
+.sl-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 0.25rem;
+  margin-bottom: 1.25rem;
+  gap: 0.75rem;
+}
+
 .sl-search-wrapper {
   position: relative;
   display: flex;
   align-items: center;
   background: var(--sl-surface);
   border: 1px solid var(--sl-border);
-  border-radius: 9999px;
-  padding: 0.25rem 0.65rem;
-  width: 200px;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: var(--sl-radius-sm, 8px);
+  padding: 0 0.75rem;
+  height: 36px;
+  width: 290px;
+  max-width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sl-search-wrapper:hover {
+  border-color: var(--sl-text-muted);
 }
 
 .sl-search-wrapper:focus-within {
-  width: 260px;
+  width: 340px;
   border-color: var(--sl-accent);
   box-shadow: 0 0 0 3px var(--sl-accent-glow, rgba(0, 0, 0, 0.08));
 }
 
 .sl-search-icon {
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   opacity: 0.6;
-  margin-right: 0.35rem;
+  margin-right: 0.5rem;
   user-select: none;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .sl-search-input {
   width: 100%;
+  height: 100%;
   border: none;
   background: transparent;
   outline: none;
   color: var(--sl-text);
   font-family: inherit;
-  font-size: 0.78rem;
+  font-size: 0.8125rem;
+  box-sizing: border-box;
 }
 
 .sl-search-input::placeholder {
   color: var(--sl-text-muted);
-  opacity: 0.75;
+  opacity: 0.8;
+  font-size: 0.8125rem;
 }
 
 .sl-search-clear-btn {
   background: transparent;
   border: none;
   color: var(--sl-text-muted);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   cursor: pointer;
-  padding: 0 0.2rem;
+  padding: 0.2rem;
+  margin-left: 0.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  transition: color 0.15s ease;
+  transition: color 0.15s ease, background 0.15s ease;
+  line-height: 1;
 }
 
 .sl-search-clear-btn:hover {
   color: var(--sl-text);
+  background: var(--sl-card-bg-hover, rgba(0, 0, 0, 0.06));
 }
 
 /* Banner de Resultados da Busca */
@@ -166,8 +192,10 @@ button, input, textarea, select {
     flex-wrap: wrap;
     gap: 0.75rem;
   }
+  .sl-toolbar {
+    width: 100%;
+  }
   .sl-search-wrapper {
-    order: 3;
     width: 100% !important;
   }
 }
@@ -3861,25 +3889,13 @@ Do you want to simulate a local test login (@rnt-rez)?`
                   </span>` : ""}
           </div>
 
-          <div class="sl-search-wrapper" part="search-wrapper">
-            <span class="sl-search-icon">🔍</span>
-            <input
-              type="text"
-              id="sl-search-input"
-              class="sl-search-input"
-              part="search-input"
-              placeholder="${this.currentLang === "pt" ? "Buscar comentários ou @autor..." : "Search comments or @user..."}"
-              value="${this.escapeHtml(this._searchQuery)}"
-            />
-            ${this._searchQuery ? `<button type="button" class="sl-search-clear-btn" id="sl-search-clear" part="search-clear-btn" title="${this.currentLang === "pt" ? "Limpar busca" : "Clear search"}">✕</button>` : ""}
-          </div>
-
           <span class="sl-brand-tag" part="brand">
             🍃 <a href="https://github.com/rnt-rez/scatterleaf" target="_blank" rel="noopener noreferrer">ScatterLeaf</a>
           </span>
         </header>
 
         ${this._inputPosition === "top" ? r : ""}
+        ${this.renderCommentsToolbar()}
         ${o}
         ${this._inputPosition === "bottom" ? r : ""}
       </div>
@@ -4415,6 +4431,30 @@ ${i}
     return o.sort((a, i) => i.score - a.score), o.map((a) => a.comment);
   }
   /**
+   * Renderiza a Barra de Ferramentas / Buscador acima da Lista de Comentários
+   */
+  renderCommentsToolbar() {
+    return this._comments.length === 0 && !this._searchQuery ? "" : `
+      <div class="sl-toolbar" part="toolbar">
+        <div class="sl-search-wrapper" part="search-wrapper">
+          <span class="sl-search-icon" aria-hidden="true">🔍</span>
+          <input
+            type="text"
+            id="sl-search-input"
+            class="sl-search-input"
+            part="search-input"
+            placeholder="${this.currentLang === "pt" ? "Buscar comentários ou @autor..." : "Search comments or @user..."}"
+            value="${this.escapeHtml(this._searchQuery)}"
+            autocomplete="off"
+            spellcheck="false"
+            aria-label="${this.currentLang === "pt" ? "Buscar comentários ou autor" : "Search comments or author"}"
+          />
+          ${this._searchQuery ? `<button type="button" class="sl-search-clear-btn" id="sl-search-clear" part="search-clear-btn" title="${this.currentLang === "pt" ? "Limpar busca" : "Clear search"}">✕</button>` : ""}
+        </div>
+      </div>
+    `;
+  }
+  /**
    * Renderiza a Lista Completa com Threads, Filtros de Busca e Paginação
    */
   renderCommentsList() {
@@ -4719,7 +4759,7 @@ ${i}
     if (k && k.addEventListener("click", (d) => {
       d.stopPropagation(), this._isEmojiPickerOpen = !1, this._isMediaModalOpen = !0, this._mediaModalUrl = "", this._mediaModalAlt = "", this._mediaModalError = null, this._mediaModalFile = null, this._mediaModalFileDataUrl = null, this.render();
     }), this._isMediaModalOpen) {
-      const d = this.shadowRoot.getElementById("media-modal-backdrop"), h = this.shadowRoot.getElementById("btn-close-media-modal"), v = this.shadowRoot.getElementById("btn-cancel-media-modal"), p = this.shadowRoot.getElementById("btn-confirm-media-modal"), y = this.shadowRoot.getElementById("media-url-input"), T = this.shadowRoot.getElementById("media-alt-input"), P = this.shadowRoot.getElementById("media-file-input"), j = this.shadowRoot.getElementById("btn-browse-media-file"), N = this.shadowRoot.getElementById("btn-remove-media-file"), B = this.shadowRoot.getElementById("media-drop-zone"), H = this.currentLang === "pt", Y = () => {
+      const d = this.shadowRoot.getElementById("media-modal-backdrop"), h = this.shadowRoot.getElementById("btn-close-media-modal"), v = this.shadowRoot.getElementById("btn-cancel-media-modal"), p = this.shadowRoot.getElementById("btn-confirm-media-modal"), y = this.shadowRoot.getElementById("media-url-input"), T = this.shadowRoot.getElementById("media-alt-input"), z = this.shadowRoot.getElementById("media-file-input"), j = this.shadowRoot.getElementById("btn-browse-media-file"), N = this.shadowRoot.getElementById("btn-remove-media-file"), B = this.shadowRoot.getElementById("media-drop-zone"), H = this.currentLang === "pt", Y = () => {
         this._isMediaModalOpen = !1, this._mediaModalUrl = "", this._mediaModalAlt = "", this._mediaModalError = null, this._mediaModalFile = null, this._mediaModalFileDataUrl = null, this._mediaModalWasCompressed = !1, this._mediaModalCompressedSize = 0, this.render();
       };
       h && h.addEventListener("click", Y), v && v.addEventListener("click", Y), d && d.addEventListener("click", (L) => {
@@ -4733,8 +4773,8 @@ ${i}
           return;
         }
         try {
-          const z = await ge(L, A.format, 520, 0.82);
-          this._mediaModalFile = L, this._mediaModalFileDataUrl = z.dataUrl, this._mediaModalWasCompressed = z.wasCompressed, this._mediaModalCompressedSize = z.compressedSize, this._mediaModalUrl = "", this._mediaModalAlt.trim() || (this._mediaModalAlt = L.name.replace(/\.[^/.]+$/, "")), this._mediaModalError = null, this.render();
+          const P = await ge(L, A.format, 520, 0.82);
+          this._mediaModalFile = L, this._mediaModalFileDataUrl = P.dataUrl, this._mediaModalWasCompressed = P.wasCompressed, this._mediaModalCompressedSize = P.compressedSize, this._mediaModalUrl = "", this._mediaModalAlt.trim() || (this._mediaModalAlt = L.name.replace(/\.[^/.]+$/, "")), this._mediaModalError = null, this.render();
         } catch {
           this._mediaModalError = H ? "Erro ao processar ou otimizar a imagem selecionada." : "Error processing or optimizing selected image.", this.render();
         }
@@ -4749,19 +4789,19 @@ ${i}
         this._mediaModalUrl.trim() && this.render();
       })), T && T.addEventListener("input", () => {
         this._mediaModalAlt = T.value;
-      }), j && P && j.addEventListener("click", (L) => {
-        L.stopPropagation(), P.click();
-      }), P && P.addEventListener("change", async () => {
-        if (P.files && P.files.length > 0) {
-          const L = P.files[0];
+      }), j && z && j.addEventListener("click", (L) => {
+        L.stopPropagation(), z.click();
+      }), z && z.addEventListener("change", async () => {
+        if (z.files && z.files.length > 0) {
+          const L = z.files[0];
           await V(L);
         }
       }), N && N.addEventListener("click", (L) => {
         L.stopPropagation(), this._mediaModalFile = null, this._mediaModalFileDataUrl = null, this._mediaModalWasCompressed = !1, this._mediaModalCompressedSize = 0, this._mediaModalError = null, this.render();
       }), this.shadowRoot.querySelectorAll(".sl-recent-gif-item").forEach((L) => {
         L.addEventListener("click", () => {
-          const A = L.getAttribute("data-url") || "", z = L.getAttribute("data-alt") || "";
-          this._mediaModalUrl = A, this._mediaModalAlt = z, this._mediaModalFile = null, this._mediaModalFileDataUrl = null, this._mediaModalWasCompressed = !1, this._mediaModalCompressedSize = 0, this._mediaModalError = null, this.render();
+          const A = L.getAttribute("data-url") || "", P = L.getAttribute("data-alt") || "";
+          this._mediaModalUrl = A, this._mediaModalAlt = P, this._mediaModalFile = null, this._mediaModalFileDataUrl = null, this._mediaModalWasCompressed = !1, this._mediaModalCompressedSize = 0, this._mediaModalError = null, this.render();
         });
       });
       const Z = this.shadowRoot.getElementById("btn-clear-recent-gifs");
@@ -4780,15 +4820,15 @@ ${i}
           await V(U);
           return;
         }
-        let z = "";
-        if (A.dataTransfer && (z = A.dataTransfer.getData("text/uri-list") || A.dataTransfer.getData("text/plain") || "", !z && A.dataTransfer.getData("text/html"))) {
+        let P = "";
+        if (A.dataTransfer && (P = A.dataTransfer.getData("text/uri-list") || A.dataTransfer.getData("text/plain") || "", !P && A.dataTransfer.getData("text/html"))) {
           const U = A.dataTransfer.getData("text/html").match(/src=["'](https:[^"']+)["']/i);
-          U && (z = U[1]);
+          U && (P = U[1]);
         }
-        if (z = z.trim(), z) {
+        if (P = P.trim(), P) {
           this._mediaModalFile = null, this._mediaModalFileDataUrl = null, this._mediaModalWasCompressed = !1, this._mediaModalCompressedSize = 0;
-          const U = K(z);
-          this._mediaModalUrl = z, this._mediaModalError = U.safe ? null : U.reason || (H ? "URL inválida ou insegura." : "Invalid or unsafe URL."), this.render();
+          const U = K(P);
+          this._mediaModalUrl = P, this._mediaModalError = U.safe ? null : U.reason || (H ? "URL inválida ou insegura." : "Invalid or unsafe URL."), this.render();
         }
       })), p && p.addEventListener("click", () => {
         const L = this._mediaModalAlt.trim() || "GIF";
@@ -4802,9 +4842,9 @@ ${i}
           this._mediaModalError = H ? "Por favor, insira a URL do GIF ou carregue um arquivo local." : "Please enter a GIF URL or upload a local file.", this.render();
           return;
         }
-        const z = K(A);
-        if (!z.safe) {
-          this._mediaModalError = z.reason || (H ? "URL inválida ou não segura." : "Invalid or unsafe URL."), this.render();
+        const P = K(A);
+        if (!P.safe) {
+          this._mediaModalError = P.reason || (H ? "URL inválida ou não segura." : "Invalid or unsafe URL."), this.render();
           return;
         }
         de(A, L);
@@ -4886,9 +4926,9 @@ ${i}
         else {
           this._replyingToId = p;
           let T = "";
-          const P = this._comments.find((j) => j.id === p);
-          if (P)
-            T = P.author.login;
+          const z = this._comments.find((j) => j.id === p);
+          if (z)
+            T = z.author.login;
           else
             for (const j of this._comments) {
               const N = (y = j.replies) == null ? void 0 : y.find((B) => B.id === p);
@@ -4911,8 +4951,8 @@ ${i}
         var j;
         const v = h.currentTarget, p = v.getAttribute("data-comment-id"), y = v.getAttribute("data-parent-id") || p, T = (j = this.shadowRoot) == null ? void 0 : j.getElementById(`reply-textarea-${p}`);
         if (!T) return;
-        const P = T.value.trim();
-        !P || !y || await this.handlePostReply(y, P);
+        const z = T.value.trim();
+        !z || !y || await this.handlePostReply(y, z);
       });
     }), this.shadowRoot.querySelectorAll(".btn-cancel-reply").forEach((d) => {
       d.addEventListener("click", () => {
@@ -4927,8 +4967,8 @@ ${i}
       d.addEventListener("click", (h) => {
         const v = h.currentTarget, p = v.getAttribute("data-speak-id"), y = v.getAttribute("data-text"), T = v.getAttribute("data-lang") || void 0;
         if (p && y) {
-          const P = decodeURIComponent(y);
-          this.toggleSpeak(p, P, T);
+          const z = decodeURIComponent(y);
+          this.toggleSpeak(p, z, T);
         }
       });
     }), this.shadowRoot.querySelectorAll(".sl-menu-btn").forEach((d) => {
@@ -4947,8 +4987,8 @@ ${i}
       });
     }), this.shadowRoot.querySelectorAll(".btn-save-edit").forEach((d) => {
       d.addEventListener("click", async (h) => {
-        var P;
-        const p = h.currentTarget.getAttribute("data-comment-id"), y = (P = this.shadowRoot) == null ? void 0 : P.getElementById(`edit-textarea-${p}`);
+        var z;
+        const p = h.currentTarget.getAttribute("data-comment-id"), y = (z = this.shadowRoot) == null ? void 0 : z.getElementById(`edit-textarea-${p}`);
         if (!y || !p) return;
         const T = y.value.trim();
         T && await this.handleSaveEdit(p, T);
