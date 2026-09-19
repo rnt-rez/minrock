@@ -20,7 +20,7 @@
 
 ### 🟢 Etapa 2: Recursos, Inclusão e Conteúdo (Concluída — v0.2.0)
 - [x] Busca instantânea Lunr, paginação inferior simplificada e tags com micro-interações.
-- [x] Integração ScatterLeaf, leitor de áudio flutuante e traduções com bandeiras nativas.
+- [x] Integração ScatterLeaf v0.4.0 (GitHub App, escopo limpo read:user, buscador estilo Minrock neon e reações independentes).
 - [x] Artigos sobre Obsidian, Domínio próprio, Personalização e Acessibilidade/Valores.
 - [x] RSS Feed 2.0 com auto-discovery `<link rel="alternate">` e botão acessível no rodapé.
 - [x] Auditoria de Acessibilidade, Boas Práticas e SEO com **100/100 no Lighthouse** e 0 erros WCAG.
