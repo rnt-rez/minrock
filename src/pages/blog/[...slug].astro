@@ -119,7 +119,7 @@ const currentUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).href;
         </nav>
 
         <!-- 💬 Modular Comments Area -->
-        <Comments />
+        <Comments title={post.data.title} />
       </article>
     </div>
 
