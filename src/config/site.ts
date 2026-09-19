@@ -24,6 +24,15 @@ export interface SiteConfig {
     lang?: string;
     broker?: string;
     clientId?: string;
+    order?: 'oldest' | 'newest';
+    features?: {
+      reactions?: boolean;
+      skinTone?: boolean;
+      sorting?: boolean;
+      codeScroll?: boolean;
+      preview?: boolean;
+      search?: boolean;
+    };
   };
 }
 

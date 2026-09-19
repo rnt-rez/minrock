@@ -41,10 +41,17 @@ const isEnabled = Boolean(comments?.enabled);
             broker={comments.broker}
             client-id={comments.clientId}
             title={title}
+            order={comments.order || 'oldest'}
+            hide-reactions={comments.features?.reactions === false ? '' : undefined}
+            hide-skin-tone={comments.features?.skinTone === false ? '' : undefined}
+            hide-sorting={comments.features?.sorting === false ? '' : undefined}
+            hide-code-scroll={comments.features?.codeScroll === false ? '' : undefined}
+            hide-preview={comments.features?.preview === false ? '' : undefined}
+            hide-search={comments.features?.search === false ? '' : undefined}
           ></scatter-leaf>
         </div>
 
-        <script is:inline type="module" src="/scatterleaf.js?v=0.4.9"></script>
+        <script is:inline type="module" src="/scatterleaf.js?v=0.5.0"></script>
       </div>
     )}
 
