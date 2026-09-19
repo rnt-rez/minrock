@@ -3193,14 +3193,14 @@ class be extends HTMLElement {
         }
         const c = document.documentElement.classList.contains("dark") || document.body.classList.contains("dark") || document.documentElement.getAttribute("data-theme") === "dark" || document.body.getAttribute("data-theme") === "dark" || document.body.getAttribute("data-page-theme") === "midnight" || document.body.getAttribute("data-page-theme") === "slate" || document.body.getAttribute("data-page-theme") === "terminal", b = 0.2126 * n.r + 0.7152 * n.g + 0.0722 * n.b, g = c || b < 128;
         l || (l = g ? { r: 230, g: 237, b: 243 } : { r: 28, g: 25, b: 23 }), s || (s = g ? { r: 88, g: 166, b: 255 } : { r: 146, g: 64, b: 14 });
-        let w, f, k, _, M, I, R;
+        let w, f, k, _, M, I, P;
         if (g) {
           const E = Math.min(255, Math.round(n.r + 15)), S = Math.min(255, Math.round(n.g + 18)), T = Math.min(255, Math.round(n.b + 22));
-          w = `rgb(${E}, ${S}, ${T})`, f = "rgba(0, 0, 0, 0.35)", k = "rgba(255, 255, 255, 0.12)", _ = `rgba(${l.r}, ${l.g}, ${l.b}, 0.62)`, M = `rgb(${Math.min(255, s.r + 30)}, ${Math.min(255, s.g + 30)}, ${Math.min(255, s.b + 30)})`, I = `rgba(${s.r}, ${s.g}, ${s.b}, 0.16)`, R = `rgba(${s.r}, ${s.g}, ${s.b}, 0.35)`;
+          w = `rgb(${E}, ${S}, ${T})`, f = "rgba(0, 0, 0, 0.35)", k = "rgba(255, 255, 255, 0.12)", _ = `rgba(${l.r}, ${l.g}, ${l.b}, 0.62)`, M = `rgb(${Math.min(255, s.r + 30)}, ${Math.min(255, s.g + 30)}, ${Math.min(255, s.b + 30)})`, I = `rgba(${s.r}, ${s.g}, ${s.b}, 0.16)`, P = `rgba(${s.r}, ${s.g}, ${s.b}, 0.35)`;
         } else
-          w = "rgba(255, 255, 255, 0.96)", f = "rgba(0, 0, 0, 0.035)", k = "rgba(0, 0, 0, 0.12)", _ = `rgba(${l.r}, ${l.g}, ${l.b}, 0.65)`, M = `rgb(${s.r}, ${s.g}, ${s.b})`, I = `rgba(${s.r}, ${s.g}, ${s.b}, 0.12)`, R = `rgba(${s.r}, ${s.g}, ${s.b}, 0.28)`;
-        const H = `rgb(${s.r}, ${s.g}, ${s.b})`;
-        this.style.setProperty("--sl-bg", `rgb(${n.r}, ${n.g}, ${n.b})`), this.style.setProperty("--sl-surface", w), this.style.setProperty("--sl-tab-bg", f), this.style.setProperty("--sl-border", k), this.style.setProperty("--sl-text", `rgb(${l.r}, ${l.g}, ${l.b})`), this.style.setProperty("--sl-text-muted", _), this.style.setProperty("--sl-accent", H), this.style.setProperty("--sl-accent-hover", H), this.style.setProperty("--sl-mention-color", M), this.style.setProperty("--sl-mention-bg", I), this.style.setProperty("--sl-mention-border", R);
+          w = "rgba(255, 255, 255, 0.96)", f = "rgba(0, 0, 0, 0.035)", k = "rgba(0, 0, 0, 0.12)", _ = `rgba(${l.r}, ${l.g}, ${l.b}, 0.65)`, M = `rgb(${s.r}, ${s.g}, ${s.b})`, I = `rgba(${s.r}, ${s.g}, ${s.b}, 0.12)`, P = `rgba(${s.r}, ${s.g}, ${s.b}, 0.28)`;
+        const D = `rgb(${s.r}, ${s.g}, ${s.b})`;
+        this.style.setProperty("--sl-bg", `rgb(${n.r}, ${n.g}, ${n.b})`), this.style.setProperty("--sl-surface", w), this.style.setProperty("--sl-tab-bg", f), this.style.setProperty("--sl-border", k), this.style.setProperty("--sl-text", `rgb(${l.r}, ${l.g}, ${l.b})`), this.style.setProperty("--sl-text-muted", _), this.style.setProperty("--sl-accent", D), this.style.setProperty("--sl-accent-hover", D), this.style.setProperty("--sl-mention-color", M), this.style.setProperty("--sl-mention-bg", I), this.style.setProperty("--sl-mention-border", P);
       } catch (e) {
         console.warn("🍃 [ScatterLeaf] Erro ao auto-computar paleta do tema:", e);
       }
@@ -3714,7 +3714,7 @@ Do you want to simulate a local test login (@rnt-rez)?`
       /```([a-zA-Z0-9_-]*)\r?\n?([\s\S]*?)```/g,
       (i, n, l) => {
         const s = (n || "code").trim().toLowerCase(), w = l.replace(/^\n+|\n+$/g, "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").split(/\r?\n/).map(
-          (I, R) => `<span class="sl-code-line"><span class="sl-line-num">${R + 1}</span><span class="sl-line-code">${I || " "}</span></span>`
+          (I, P) => `<span class="sl-code-line"><span class="sl-line-num">${P + 1}</span><span class="sl-line-code">${I || " "}</span></span>`
         ).join(`
 `), f = this.currentLang === "pt" ? "Copiar" : "Copy", k = this.currentLang === "pt" ? "Copiar código" : "Copy code", _ = `
           <div class="sl-code-block" data-lang="${s}">
@@ -4574,7 +4574,7 @@ ${i}
    */
   renderCommentCard(e, t = !1, r) {
     var T;
-    const o = this._repo ? this._repo.split("/")[0].toLowerCase() : "", i = e.author.isAuthor || o && e.author.login.toLowerCase() === o ? `<span class="sl-author-badge" part="author-badge">${this.currentLang === "pt" ? "Autor" : "Author"}</span>` : "", n = this._speakingId === e.id, l = this._replyingToId === e.id, s = this._editingId === e.id, c = this._openMenuId === e.id, b = n ? this.currentLang === "pt" ? "⏸️ Pausar" : "⏸️ Pause" : this.currentLang === "pt" ? "🔊 Ouvir" : "🔊 Listen", g = this.currentLang === "pt" ? "Responder" : "Reply", w = this.getVisitorLang(), f = e.originalLang || "pt", k = f !== w, _ = this.getLanguageName(f, w), M = e.isShowingTranslation && e.translatedBody ? e.translatedBody : e.body, I = this.formatDate(e.createdAt), R = !!((T = e.reactions) != null && T.find(($) => $.content === "👍" && $.viewerHasReacted)), H = this.currentLang === "pt" ? "Gostei" : "Like", E = R ? this.currentLang === "pt" ? "Remover curtida" : "Remove like" : this.currentLang === "pt" ? "Curtir" : "Like", S = (e.reactions || []).filter(($) => $.count > 0);
+    const o = this._repo ? this._repo.split("/")[0].toLowerCase() : "", i = e.author.isAuthor || o && e.author.login.toLowerCase() === o ? `<span class="sl-author-badge" part="author-badge">${this.currentLang === "pt" ? "Autor" : "Author"}</span>` : "", n = this._speakingId === e.id, l = this._replyingToId === e.id, s = this._editingId === e.id, c = this._openMenuId === e.id, b = n ? this.currentLang === "pt" ? "⏸️ Pausar" : "⏸️ Pause" : this.currentLang === "pt" ? "🔊 Ouvir" : "🔊 Listen", g = this.currentLang === "pt" ? "Responder" : "Reply", w = this.getVisitorLang(), f = e.originalLang || "pt", k = f !== w, _ = this.getLanguageName(f, w), M = e.isShowingTranslation && e.translatedBody ? e.translatedBody : e.body, I = this.formatDate(e.createdAt), P = !!((T = e.reactions) != null && T.find(($) => $.content === "👍" && $.viewerHasReacted)), D = this.currentLang === "pt" ? "Gostei" : "Like", E = P ? this.currentLang === "pt" ? "Remover curtida" : "Remove like" : this.currentLang === "pt" ? "Curtir" : "Like", S = (e.reactions || []).filter(($) => $.count > 0);
     return `
       <article class="sl-card ${t ? "sl-card-reply" : ""}" id="comment-${e.id}" part="card">
         <!-- Cabeçalho do Card (Avatar ancorado no topo!) -->
@@ -4643,7 +4643,7 @@ ${i}
             <div class="sl-reaction-container" data-comment-id="${e.id}">
               <button type="button" class="sl-reaction-trigger-btn" data-comment-id="${e.id}" data-emoji="👍" part="reaction-trigger-btn" title="${E}">
                 <span>👍</span>
-                <span>${H}</span>
+                <span>${D}</span>
               </button>
 
               <!-- Popover Flutuante com 6 Emojis Animados -->
@@ -4806,7 +4806,7 @@ ${i}
     if (k && k.addEventListener("click", (d) => {
       d.stopPropagation(), this._isEmojiPickerOpen = !1, this._isMediaModalOpen = !0, this._mediaModalUrl = "", this._mediaModalAlt = "", this._mediaModalError = null, this._mediaModalFile = null, this._mediaModalFileDataUrl = null, this.render();
     }), this._isMediaModalOpen) {
-      const d = this.shadowRoot.getElementById("media-modal-backdrop"), h = this.shadowRoot.getElementById("btn-close-media-modal"), v = this.shadowRoot.getElementById("btn-cancel-media-modal"), p = this.shadowRoot.getElementById("btn-confirm-media-modal"), y = this.shadowRoot.getElementById("media-url-input"), C = this.shadowRoot.getElementById("media-alt-input"), P = this.shadowRoot.getElementById("media-file-input"), j = this.shadowRoot.getElementById("btn-browse-media-file"), N = this.shadowRoot.getElementById("btn-remove-media-file"), B = this.shadowRoot.getElementById("media-drop-zone"), D = this.currentLang === "pt", Y = () => {
+      const d = this.shadowRoot.getElementById("media-modal-backdrop"), h = this.shadowRoot.getElementById("btn-close-media-modal"), v = this.shadowRoot.getElementById("btn-cancel-media-modal"), p = this.shadowRoot.getElementById("btn-confirm-media-modal"), y = this.shadowRoot.getElementById("media-url-input"), C = this.shadowRoot.getElementById("media-alt-input"), R = this.shadowRoot.getElementById("media-file-input"), j = this.shadowRoot.getElementById("btn-browse-media-file"), N = this.shadowRoot.getElementById("btn-remove-media-file"), B = this.shadowRoot.getElementById("media-drop-zone"), H = this.currentLang === "pt", Y = () => {
         this._isMediaModalOpen = !1, this._mediaModalUrl = "", this._mediaModalAlt = "", this._mediaModalError = null, this._mediaModalFile = null, this._mediaModalFileDataUrl = null, this._mediaModalWasCompressed = !1, this._mediaModalCompressedSize = 0, this.render();
       };
       h && h.addEventListener("click", Y), v && v.addEventListener("click", Y), d && d.addEventListener("click", (L) => {
@@ -4814,33 +4814,33 @@ ${i}
       });
       const V = async (L) => {
         this._mediaModalError = null;
-        const A = await me(L, D);
+        const A = await me(L, H);
         if (!A.safe || !A.format) {
-          this._mediaModalError = A.reason || (D ? "Arquivo inválido." : "Invalid file."), this.render();
+          this._mediaModalError = A.reason || (H ? "Arquivo inválido." : "Invalid file."), this.render();
           return;
         }
         try {
           const z = await ge(L, A.format, 520, 0.82);
           this._mediaModalFile = L, this._mediaModalFileDataUrl = z.dataUrl, this._mediaModalWasCompressed = z.wasCompressed, this._mediaModalCompressedSize = z.compressedSize, this._mediaModalUrl = "", this._mediaModalAlt.trim() || (this._mediaModalAlt = L.name.replace(/\.[^/.]+$/, "")), this._mediaModalError = null, this.render();
         } catch {
-          this._mediaModalError = D ? "Erro ao processar ou otimizar a imagem selecionada." : "Error processing or optimizing selected image.", this.render();
+          this._mediaModalError = H ? "Erro ao processar ou otimizar a imagem selecionada." : "Error processing or optimizing selected image.", this.render();
         }
       };
       y && (y.addEventListener("input", () => {
         if (this._mediaModalFile = null, this._mediaModalFileDataUrl = null, this._mediaModalWasCompressed = !1, this._mediaModalCompressedSize = 0, this._mediaModalUrl = y.value, this._mediaModalUrl.trim().length > 0) {
           const L = K(this._mediaModalUrl);
-          this._mediaModalError = L.safe ? null : L.reason || (D ? "Link inválido." : "Invalid link.");
+          this._mediaModalError = L.safe ? null : L.reason || (H ? "Link inválido." : "Invalid link.");
         } else
           this._mediaModalError = null;
       }), y.addEventListener("blur", () => {
         this._mediaModalUrl.trim() && this.render();
       })), C && C.addEventListener("input", () => {
         this._mediaModalAlt = C.value;
-      }), j && P && j.addEventListener("click", (L) => {
-        L.stopPropagation(), P.click();
-      }), P && P.addEventListener("change", async () => {
-        if (P.files && P.files.length > 0) {
-          const L = P.files[0];
+      }), j && R && j.addEventListener("click", (L) => {
+        L.stopPropagation(), R.click();
+      }), R && R.addEventListener("change", async () => {
+        if (R.files && R.files.length > 0) {
+          const L = R.files[0];
           await V(L);
         }
       }), N && N.addEventListener("click", (L) => {
@@ -4875,7 +4875,7 @@ ${i}
         if (z = z.trim(), z) {
           this._mediaModalFile = null, this._mediaModalFileDataUrl = null, this._mediaModalWasCompressed = !1, this._mediaModalCompressedSize = 0;
           const U = K(z);
-          this._mediaModalUrl = z, this._mediaModalError = U.safe ? null : U.reason || (D ? "URL inválida ou insegura." : "Invalid or unsafe URL."), this.render();
+          this._mediaModalUrl = z, this._mediaModalError = U.safe ? null : U.reason || (H ? "URL inválida ou insegura." : "Invalid or unsafe URL."), this.render();
         }
       })), p && p.addEventListener("click", () => {
         const L = this._mediaModalAlt.trim() || "GIF";
@@ -4886,12 +4886,12 @@ ${i}
         }
         const A = this._mediaModalUrl.trim();
         if (!A) {
-          this._mediaModalError = D ? "Por favor, insira a URL do GIF ou carregue um arquivo local." : "Please enter a GIF URL or upload a local file.", this.render();
+          this._mediaModalError = H ? "Por favor, insira a URL do GIF ou carregue um arquivo local." : "Please enter a GIF URL or upload a local file.", this.render();
           return;
         }
         const z = K(A);
         if (!z.safe) {
-          this._mediaModalError = z.reason || (D ? "URL inválida ou não segura." : "Invalid or unsafe URL."), this.render();
+          this._mediaModalError = z.reason || (H ? "URL inválida ou não segura." : "Invalid or unsafe URL."), this.render();
           return;
         }
         de(A, L);
@@ -4973,9 +4973,9 @@ ${i}
         else {
           this._replyingToId = p;
           let C = "";
-          const P = this._comments.find((j) => j.id === p);
-          if (P)
-            C = P.author.login;
+          const R = this._comments.find((j) => j.id === p);
+          if (R)
+            C = R.author.login;
           else
             for (const j of this._comments) {
               const N = (y = j.replies) == null ? void 0 : y.find((B) => B.id === p);
@@ -4998,8 +4998,8 @@ ${i}
         var j;
         const v = h.currentTarget, p = v.getAttribute("data-comment-id"), y = v.getAttribute("data-parent-id") || p, C = (j = this.shadowRoot) == null ? void 0 : j.getElementById(`reply-textarea-${p}`);
         if (!C) return;
-        const P = C.value.trim();
-        !P || !y || await this.handlePostReply(y, P);
+        const R = C.value.trim();
+        !R || !y || await this.handlePostReply(y, R);
       });
     }), this.shadowRoot.querySelectorAll(".btn-cancel-reply").forEach((d) => {
       d.addEventListener("click", () => {
@@ -5014,8 +5014,8 @@ ${i}
       d.addEventListener("click", (h) => {
         const v = h.currentTarget, p = v.getAttribute("data-speak-id"), y = v.getAttribute("data-text"), C = v.getAttribute("data-lang") || void 0;
         if (p && y) {
-          const P = decodeURIComponent(y);
-          this.toggleSpeak(p, P, C);
+          const R = decodeURIComponent(y);
+          this.toggleSpeak(p, R, C);
         }
       });
     }), this.shadowRoot.querySelectorAll(".sl-menu-btn").forEach((d) => {
@@ -5034,8 +5034,8 @@ ${i}
       });
     }), this.shadowRoot.querySelectorAll(".btn-save-edit").forEach((d) => {
       d.addEventListener("click", async (h) => {
-        var P;
-        const p = h.currentTarget.getAttribute("data-comment-id"), y = (P = this.shadowRoot) == null ? void 0 : P.getElementById(`edit-textarea-${p}`);
+        var R;
+        const p = h.currentTarget.getAttribute("data-comment-id"), y = (R = this.shadowRoot) == null ? void 0 : R.getElementById(`edit-textarea-${p}`);
         if (!y || !p) return;
         const C = y.value.trim();
         C && await this.handleSaveEdit(p, C);
@@ -5080,13 +5080,13 @@ ${i}
       let g = "code";
       const w = s.closest('[class*="highlight-source-"]');
       if (w) {
-        const R = w.className.match(/highlight-source-([a-zA-Z0-9_-]+)/);
-        R && R[1] && (g = R[1]);
+        const P = w.className.match(/highlight-source-([a-zA-Z0-9_-]+)/);
+        P && P[1] && (g = P[1]);
       } else if (s.getAttribute("lang"))
         g = s.getAttribute("lang") || "code";
       else if (c.className) {
-        const R = c.className.match(/(?:language|lang)-([a-zA-Z0-9_-]+)/);
-        R && R[1] && (g = R[1]);
+        const P = c.className.match(/(?:language|lang)-([a-zA-Z0-9_-]+)/);
+        P && P[1] && (g = P[1]);
       }
       const f = this.currentLang === "pt" ? "Copiar" : "Copy", k = this.currentLang === "pt" ? "Copiar código" : "Copy code", _ = document.createElement("div");
       _.className = "sl-code-block", _.setAttribute("data-lang", g);
@@ -5101,9 +5101,9 @@ ${i}
           <span class="sl-copy-text">${f}</span>
         </button>
       `, !c.querySelector(".sl-code-line")) {
-        const R = b.split(/\r?\n/);
-        c.innerHTML = R.map((H, E) => {
-          const S = H.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        const P = b.split(/\r?\n/);
+        c.innerHTML = P.map((D, E) => {
+          const S = D.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
           return `<span class="sl-code-line"><span class="sl-line-num">${E + 1}</span><span class="sl-line-code">${S || " "}</span></span>`;
         }).join(`
 `);
@@ -5209,7 +5209,7 @@ ${i}
             bodyHtml: o.bodyHTML,
             createdAt: this.currentLang === "pt" ? "agora mesmo" : "just now",
             originalLang: this.detectTextLanguage(e),
-            reactions: [{ content: "❤️", count: 1, viewerHasReacted: !0 }],
+            reactions: [],
             replies: []
           };
           this._comments.unshift(a), this._currentPage = 1, this._composerText = "", this._activeTab = "write", this.render();
@@ -5229,7 +5229,7 @@ ${i}
       body: e,
       createdAt: this.currentLang === "pt" ? "agora mesmo" : "just now",
       originalLang: this.detectTextLanguage(e),
-      reactions: [{ content: "❤️", count: 1, viewerHasReacted: !0 }],
+      reactions: [],
       replies: []
     };
     this._comments.unshift(r), this._currentPage = 1, this._composerText = "", this._activeTab = "write", this.render(), this.dispatchEvent(
@@ -5266,7 +5266,7 @@ ${i}
             bodyHtml: a.bodyHTML,
             createdAt: this.currentLang === "pt" ? "agora mesmo" : "just now",
             originalLang: this.detectTextLanguage(t),
-            reactions: [{ content: "👍", count: 1, viewerHasReacted: !0 }],
+            reactions: [],
             parentId: e
           }), this._expandedThreads.add(e), this._replyingToId = null, this._replyText = "", this.render();
           return;
@@ -5288,7 +5288,7 @@ ${i}
         body: t,
         createdAt: this.currentLang === "pt" ? "agora mesmo" : "just now",
         originalLang: this.detectTextLanguage(t),
-        reactions: [{ content: "👍", count: 1, viewerHasReacted: !0 }],
+        reactions: [],
         parentId: e
       };
       o.replies.push(a), this._expandedThreads.add(e), this._replyingToId = null, this._replyText = "", this.render(), this.dispatchEvent(
