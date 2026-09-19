@@ -29,6 +29,20 @@
 - [x] Auditoria WCAG 2.1/2.2 AA e performance máxima em produção.
 - [ ] Submissão ao diretório oficial `astro.build/themes`.
 
+### ⚪ Etapa 4: Sistema de Feature Flags ("Rico por padrão, minimalista sob demanda")
+- [ ] Criar objeto `features` no `siteConfig` (`src/config/site.ts`) para controle granular de componentes.
+- [ ] Habilitar todos os recursos por padrão (Experiência Rica / Efeito UAU imediato).
+- [ ] Permitir desativação seletiva para puristas do minimalismo (Obsidian style):
+  - [ ] `search`: Modal e barra de busca Lunr.
+  - [ ] `tableOfContents`: Sumário lateral com scroll-spy no post.
+  - [ ] `readingTime`: Tempo estimado de leitura ("5 min read").
+  - [ ] `themeSwitcher`: Alternador de paletas (Cream, Midnight, Slate, White).
+  - [ ] `tags`: Exibição de chips e nuvem de tags.
+  - [ ] `authorBio`: Card de biografia e avatar do autor no rodapé.
+  - [ ] `socialShare`: Botões de compartilhamento social.
+  - [ ] `comments`: Integração nativa com ScatterLeaf.
+- [ ] Garantir zero overhead de bundle no SSG (componentes desativados não são compilados no HTML final).
+
 ---
 
 ## 🛠️ Comandos Rápidos
