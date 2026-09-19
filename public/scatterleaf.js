@@ -2587,8 +2587,8 @@ class se {
       body: JSON.stringify({ subjectId: u, content: o, action: t })
     });
     if (!a.ok) {
-      const i = await a.json().catch(() => ({}));
-      throw new Error(i.error || `Erro ao atualizar reação: HTTP ${a.status}`);
+      const n = await a.json().catch(() => ({}));
+      throw new Error(n.error || `Erro ao atualizar reação: HTTP ${a.status}`);
     }
     return await a.json();
   }
@@ -2761,14 +2761,14 @@ function K(y) {
     return { safe: !1, reason: "Formato de URL inválido." };
   }
   const t = e.hostname.toLowerCase(), r = e.pathname.toLowerCase(), o = e.search.toLowerCase(), a = t + r + o;
-  for (const i of ue)
-    if (t === i || t.endsWith("." + i))
+  for (const n of ue)
+    if (t === n || t.endsWith("." + n))
       return {
         safe: !1,
         reason: "Domínio bloqueado pelo filtro de conteúdo sensível / adulto."
       };
-  for (const i of te)
-    if (new RegExp(`(^|[-_/.?&=])${i}([-_/.?&=]|$)`, "i").test(a))
+  for (const n of te)
+    if (new RegExp(`(^|[-_/.?&=])${n}([-_/.?&=]|$)`, "i").test(a))
       return {
         safe: !1,
         reason: "O link contém termos classificados como potencialmente sensíveis ou adultos."
@@ -2824,40 +2824,40 @@ async function ge(y, u, e = 520, t = 0.82) {
   return u === "gif" ? new Promise((r, o) => {
     const a = new FileReader();
     a.onload = () => {
-      const i = a.result, n = new Image();
-      n.onload = () => {
+      const n = a.result, i = new Image();
+      i.onload = () => {
         r({
-          dataUrl: i,
-          width: n.naturalWidth || 480,
-          height: n.naturalHeight || 320,
+          dataUrl: n,
+          width: i.naturalWidth || 480,
+          height: i.naturalHeight || 320,
           originalSize: y.size,
           compressedSize: y.size,
           wasCompressed: !1
         });
-      }, n.onerror = () => {
+      }, i.onerror = () => {
         r({
-          dataUrl: i,
+          dataUrl: n,
           width: 480,
           height: 320,
           originalSize: y.size,
           compressedSize: y.size,
           wasCompressed: !1
         });
-      }, n.src = i;
+      }, i.src = n;
     }, a.onerror = o, a.readAsDataURL(y);
   }) : new Promise((r, o) => {
     const a = new FileReader();
     a.onload = () => {
-      const i = a.result, n = new Image();
-      n.onload = () => {
-        let l = n.naturalWidth || n.width, s = n.naturalHeight || n.height;
+      const n = a.result, i = new Image();
+      i.onload = () => {
+        let l = i.naturalWidth || i.width, s = i.naturalHeight || i.height;
         (l > e || s > e) && (l >= s ? (s = Math.round(s * e / l), l = e) : (l = Math.round(l * e / s), s = e));
         const c = document.createElement("canvas");
         c.width = l, c.height = s;
         const b = c.getContext("2d");
         if (!b) {
           r({
-            dataUrl: i,
+            dataUrl: n,
             width: l,
             height: s,
             originalSize: y.size,
@@ -2866,7 +2866,7 @@ async function ge(y, u, e = 520, t = 0.82) {
           });
           return;
         }
-        b.drawImage(n, 0, 0, l, s);
+        b.drawImage(i, 0, 0, l, s);
         let g = c.toDataURL("image/webp", t);
         g.startsWith("data:image/webp") || (g = c.toDataURL("image/jpeg", t));
         const w = g.indexOf(","), v = w >= 0 ? g.slice(w + 1) : g, k = Math.round(v.length * 0.75);
@@ -2878,7 +2878,7 @@ async function ge(y, u, e = 520, t = 0.82) {
           compressedSize: k,
           wasCompressed: !0
         });
-      }, n.onerror = o, n.src = i;
+      }, i.onerror = o, i.src = n;
     }, a.onerror = o, a.readAsDataURL(y);
   });
 }
@@ -2933,18 +2933,18 @@ class be extends HTMLElement {
       const r = e.composedPath();
       this._openMenuId && (r.some(
         (a) => {
-          var i;
-          return a instanceof HTMLElement && ((i = a.classList) == null ? void 0 : i.contains("sl-menu-wrapper"));
+          var n;
+          return a instanceof HTMLElement && ((n = a.classList) == null ? void 0 : n.contains("sl-menu-wrapper"));
         }
       ) || (this._openMenuId = null, t = !0)), this._isCodePickerOpen && (r.some(
         (a) => {
-          var i, n;
-          return a instanceof HTMLElement && (((i = a.classList) == null ? void 0 : i.contains("sl-code-menu-wrapper")) || ((n = a.classList) == null ? void 0 : n.contains("sl-code-picker-popover")));
+          var n, i;
+          return a instanceof HTMLElement && (((n = a.classList) == null ? void 0 : n.contains("sl-code-menu-wrapper")) || ((i = a.classList) == null ? void 0 : i.contains("sl-code-picker-popover")));
         }
       ) || (this._isCodePickerOpen = !1, t = !0)), this._isEmojiPickerOpen && (r.some(
         (a) => {
-          var i, n;
-          return a instanceof HTMLElement && (((i = a.classList) == null ? void 0 : i.contains("sl-emoji-wrapper")) || ((n = a.classList) == null ? void 0 : n.contains("sl-emoji-popover")));
+          var n, i;
+          return a instanceof HTMLElement && (((n = a.classList) == null ? void 0 : n.contains("sl-emoji-wrapper")) || ((i = a.classList) == null ? void 0 : i.contains("sl-emoji-popover")));
         }
       ) || (this._isEmojiPickerOpen = !1, t = !0)), t && this.render();
     });
@@ -3127,7 +3127,7 @@ class be extends HTMLElement {
             g: parseInt(M[2], 10),
             b: parseInt(M[3], 10)
           } : null;
-        }, t = window.getComputedStyle(document.documentElement), r = window.getComputedStyle(document.body), o = this.parentElement || document.body, a = window.getComputedStyle(o), i = ($) => {
+        }, t = window.getComputedStyle(document.documentElement), r = window.getComputedStyle(document.body), o = this.parentElement || document.body, a = window.getComputedStyle(o), n = ($) => {
           for (const M of $) {
             const C = a.getPropertyValue(M).trim() || r.getPropertyValue(M).trim() || t.getPropertyValue(M).trim();
             if (C) {
@@ -3137,7 +3137,7 @@ class be extends HTMLElement {
           }
           return null;
         };
-        let n = i([
+        let i = n([
           "--sl-bg",
           "--page-bg",
           "--color-bg",
@@ -3147,19 +3147,19 @@ class be extends HTMLElement {
           "--body-bg",
           "--bg"
         ]);
-        if (!n) {
+        if (!i) {
           let $ = this;
           for (; $; ) {
             const M = window.getComputedStyle($).backgroundColor, C = e(M);
             if (C) {
-              n = C;
+              i = C;
               break;
             }
             $ = $.parentElement;
           }
         }
-        n || (n = e(r.backgroundColor) || e(t.backgroundColor) || { r: 255, g: 255, b: 255 });
-        let l = i([
+        i || (i = e(r.backgroundColor) || e(t.backgroundColor) || { r: 255, g: 255, b: 255 });
+        let l = n([
           "--sl-text",
           "--page-text",
           "--color-text",
@@ -3179,7 +3179,7 @@ class be extends HTMLElement {
             $ = $.parentElement;
           }
         }
-        let s = i([
+        let s = n([
           "--sl-accent",
           "--page-accent",
           "--color-accent",
@@ -3192,16 +3192,16 @@ class be extends HTMLElement {
           const $ = document.querySelector("a");
           $ && (s = e(window.getComputedStyle($).color));
         }
-        const c = document.documentElement.classList.contains("dark") || document.body.classList.contains("dark") || document.documentElement.getAttribute("data-theme") === "dark" || document.body.getAttribute("data-theme") === "dark" || document.body.getAttribute("data-page-theme") === "midnight" || document.body.getAttribute("data-page-theme") === "slate" || document.body.getAttribute("data-page-theme") === "terminal", b = 0.2126 * n.r + 0.7152 * n.g + 0.0722 * n.b, g = c || b < 128;
+        const c = document.documentElement.classList.contains("dark") || document.body.classList.contains("dark") || document.documentElement.getAttribute("data-theme") === "dark" || document.body.getAttribute("data-theme") === "dark" || document.body.getAttribute("data-page-theme") === "midnight" || document.body.getAttribute("data-page-theme") === "slate" || document.body.getAttribute("data-page-theme") === "terminal", b = 0.2126 * i.r + 0.7152 * i.g + 0.0722 * i.b, g = c || b < 128;
         l || (l = g ? { r: 230, g: 237, b: 243 } : { r: 28, g: 25, b: 23 }), s || (s = g ? { r: 88, g: 166, b: 255 } : { r: 146, g: 64, b: 14 });
         let w, v, k, _, T, z, A;
         if (g) {
-          const $ = Math.min(255, Math.round(n.r + 15)), M = Math.min(255, Math.round(n.g + 18)), C = Math.min(255, Math.round(n.b + 22));
+          const $ = Math.min(255, Math.round(i.r + 15)), M = Math.min(255, Math.round(i.g + 18)), C = Math.min(255, Math.round(i.b + 22));
           w = `rgb(${$}, ${M}, ${C})`, v = "rgba(0, 0, 0, 0.35)", k = "rgba(255, 255, 255, 0.12)", _ = `rgba(${l.r}, ${l.g}, ${l.b}, 0.62)`, T = `rgb(${Math.min(255, s.r + 30)}, ${Math.min(255, s.g + 30)}, ${Math.min(255, s.b + 30)})`, z = `rgba(${s.r}, ${s.g}, ${s.b}, 0.16)`, A = `rgba(${s.r}, ${s.g}, ${s.b}, 0.35)`;
         } else
           w = "rgba(255, 255, 255, 0.96)", v = "rgba(0, 0, 0, 0.035)", k = "rgba(0, 0, 0, 0.12)", _ = `rgba(${l.r}, ${l.g}, ${l.b}, 0.65)`, T = `rgb(${s.r}, ${s.g}, ${s.b})`, z = `rgba(${s.r}, ${s.g}, ${s.b}, 0.12)`, A = `rgba(${s.r}, ${s.g}, ${s.b}, 0.28)`;
         const j = `rgb(${s.r}, ${s.g}, ${s.b})`;
-        this.style.setProperty("--sl-bg", `rgb(${n.r}, ${n.g}, ${n.b})`), this.style.setProperty("--sl-surface", w), this.style.setProperty("--sl-tab-bg", v), this.style.setProperty("--sl-border", k), this.style.setProperty("--sl-text", `rgb(${l.r}, ${l.g}, ${l.b})`), this.style.setProperty("--sl-text-muted", _), this.style.setProperty("--sl-accent", j), this.style.setProperty("--sl-accent-hover", j), this.style.setProperty("--sl-mention-color", T), this.style.setProperty("--sl-mention-bg", z), this.style.setProperty("--sl-mention-border", A);
+        this.style.setProperty("--sl-bg", `rgb(${i.r}, ${i.g}, ${i.b})`), this.style.setProperty("--sl-surface", w), this.style.setProperty("--sl-tab-bg", v), this.style.setProperty("--sl-border", k), this.style.setProperty("--sl-text", `rgb(${l.r}, ${l.g}, ${l.b})`), this.style.setProperty("--sl-text-muted", _), this.style.setProperty("--sl-accent", j), this.style.setProperty("--sl-accent-hover", j), this.style.setProperty("--sl-mention-color", T), this.style.setProperty("--sl-mention-bg", z), this.style.setProperty("--sl-mention-border", A);
       } catch (e) {
         console.warn("🍃 [ScatterLeaf] Erro ao auto-computar paleta do tema:", e);
       }
@@ -3317,11 +3317,11 @@ Do you want to simulate a local test login (@rnt-rez)?`
       }
       return;
     }
-    const e = encodeURIComponent(window.location.origin + window.location.pathname), t = encodeURIComponent("read:user"), r = `https://github.com/login/oauth/authorize?client_id=${this._clientId}&scope=${t}&redirect_uri=${e}`, o = 600, a = 700, i = window.screen.width / 2 - o / 2, n = window.screen.height / 2 - a / 2;
+    const e = encodeURIComponent(window.location.origin + window.location.pathname), t = encodeURIComponent("read:user"), r = `https://github.com/login/oauth/authorize?client_id=${this._clientId}&scope=${t}&redirect_uri=${e}`, o = 600, a = 700, n = window.screen.width / 2 - o / 2, i = window.screen.height / 2 - a / 2;
     window.open(
       r,
       "scatterleaf-oauth-popup",
-      `width=${o},height=${a},top=${n},left=${i},scrollbars=yes,status=yes`
+      `width=${o},height=${a},top=${i},left=${n},scrollbars=yes,status=yes`
     );
   }
   /**
@@ -3356,9 +3356,9 @@ Do you want to simulate a local test login (@rnt-rez)?`
         o.discussion && (this._discussionId = o.discussion.id), this._comments = (o.comments || []).map((a) => ({
           ...a,
           originalLang: a.originalLang || this.detectTextLanguage(a.body),
-          replies: (a.replies || []).map((i) => ({
-            ...i,
-            originalLang: i.originalLang || this.detectTextLanguage(i.body)
+          replies: (a.replies || []).map((n) => ({
+            ...n,
+            originalLang: n.originalLang || this.detectTextLanguage(n.body)
           }))
         })), this._isBrokerConnected = !0;
       }
@@ -3713,8 +3713,8 @@ Do you want to simulate a local test login (@rnt-rez)?`
     const t = [], r = "___SL_CODE_BLOCK_";
     let a = e.replace(
       /```([a-zA-Z0-9_-]*)\r?\n?([\s\S]*?)```/g,
-      (i, n, l) => {
-        const s = (n || "code").trim().toLowerCase(), w = l.replace(/^\n+|\n+$/g, "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").split(/\r?\n/).map(
+      (n, i, l) => {
+        const s = (i || "code").trim().toLowerCase(), w = l.replace(/^\n+|\n+$/g, "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").split(/\r?\n/).map(
           (z, A) => `<span class="sl-code-line"><span class="sl-line-num">${A + 1}</span><span class="sl-line-code">${z || " "}</span></span>`
         ).join(`
 `), v = this.currentLang === "pt" ? "Copiar" : "Copy", k = this.currentLang === "pt" ? "Copiar código" : "Copy code", _ = `
@@ -3737,9 +3737,9 @@ Do you want to simulate a local test login (@rnt-rez)?`
     ).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     return a = a.replace(/`([^`]+)`/g, '<code class="sl-inline-code">$1</code>'), a = a.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>"), a = a.replace(/__([^_]+)__/g, "<strong>$1</strong>"), a = a.replace(/\*([^*]+)\*/g, "<em>$1</em>"), a = a.replace(/_([^_]+)_/g, "<em>$1</em>"), a = a.replace(/~~([^~]+)~~/g, "<del>$1</del>"), a = a.replace(
       /!\[([^\]]*)\]\(((?:https?:\/\/|data:image\/)[^\s)]+)\)/g,
-      (i, n, l) => {
+      (n, i, l) => {
         const s = K(l);
-        return s.safe ? `<img src="${l}" alt="${n}" class="sl-embedded-img" loading="lazy" />` : `<span class="sl-blocked-media-notice" title="${s.reason || "Conteúdo potencialmente sensível"}">⚠️ [Mídia bloqueada: filtro de conteúdo sensível / link não seguro]</span>`;
+        return s.safe ? `<img src="${l}" alt="${i}" class="sl-embedded-img" loading="lazy" />` : `<span class="sl-blocked-media-notice" title="${s.reason || "Conteúdo potencialmente sensível"}">⚠️ [Mídia bloqueada: filtro de conteúdo sensível / link não seguro]</span>`;
       }
     ), a = a.replace(
       /\[([^\]]+)\]\(([^)]+)\)/g,
@@ -3750,9 +3750,9 @@ Do you want to simulate a local test login (@rnt-rez)?`
     ), a = a.replace(
       /@([a-zA-Z0-9-_]+)/g,
       '<a href="https://github.com/$1" target="_blank" rel="noopener noreferrer" class="sl-mention">@$1</a>'
-    ), a = a.replace(/\n\n/g, "</p><p>"), a = a.replace(/\n/g, "<br />"), t.forEach((i, n) => {
-      const l = `${r}${n}___`;
-      a = a.replace(new RegExp(`<p>\\s*${l}\\s*<\\/p>`, "g"), i), a = a.replace(new RegExp(l, "g"), i);
+    ), a = a.replace(/\n\n/g, "</p><p>"), a = a.replace(/\n/g, "<br />"), t.forEach((n, i) => {
+      const l = `${r}${i}___`;
+      a = a.replace(new RegExp(`<p>\\s*${l}\\s*<\\/p>`, "g"), n), a = a.replace(new RegExp(l, "g"), n);
     }), `<p>${a}</p>`;
   }
   /**
@@ -3768,30 +3768,30 @@ Do you want to simulate a local test login (@rnt-rez)?`
     const r = typeof navigator < "u" && navigator.language ? navigator.language : this.currentLang === "pt" ? "pt-BR" : "en-US", o = new Intl.DateTimeFormat(r, {
       dateStyle: "medium",
       timeStyle: "short"
-    }).format(t), a = Math.floor((Date.now() - t.getTime()) / 1e3), i = this.currentLang, n = i === "pt", l = i === "es";
+    }).format(t), a = Math.floor((Date.now() - t.getTime()) / 1e3), n = this.currentLang, i = n === "pt", l = n === "es";
     if (a < 60)
       return {
-        relative: n ? "agora mesmo" : l ? "ahora mismo" : "just now",
+        relative: i ? "agora mesmo" : l ? "ahora mismo" : "just now",
         full: o
       };
     if (a < 3600) {
       const c = Math.floor(a / 60);
       return {
-        relative: n ? `há ${c} ${c === 1 ? "minuto" : "minutos"}` : l ? `hace ${c} ${c === 1 ? "minuto" : "minutos"}` : `${c} ${c === 1 ? "minute" : "minutes"} ago`,
+        relative: i ? `há ${c} ${c === 1 ? "minuto" : "minutos"}` : l ? `hace ${c} ${c === 1 ? "minuto" : "minutos"}` : `${c} ${c === 1 ? "minute" : "minutes"} ago`,
         full: o
       };
     }
     if (a < 86400) {
       const c = Math.floor(a / 3600);
       return {
-        relative: n ? `há ${c} ${c === 1 ? "hora" : "horas"}` : l ? `hace ${c} ${c === 1 ? "hora" : "horas"}` : `${c} ${c === 1 ? "hour" : "hours"} ago`,
+        relative: i ? `há ${c} ${c === 1 ? "hora" : "horas"}` : l ? `hace ${c} ${c === 1 ? "hora" : "horas"}` : `${c} ${c === 1 ? "hour" : "hours"} ago`,
         full: o
       };
     }
     if (a < 604800) {
       const c = Math.floor(a / 86400);
       return {
-        relative: n ? `há ${c} ${c === 1 ? "dia" : "dias"}` : l ? `hace ${c} ${c === 1 ? "día" : "días"}` : `${c} ${c === 1 ? "day" : "days"} ago`,
+        relative: i ? `há ${c} ${c === 1 ? "dia" : "dias"}` : l ? `hace ${c} ${c === 1 ? "día" : "días"}` : `${c} ${c === 1 ? "day" : "days"} ago`,
         full: o
       };
     }
@@ -3806,8 +3806,8 @@ Do you want to simulate a local test login (@rnt-rez)?`
    */
   detectTextLanguage(e) {
     if (!e || e.trim().length === 0) return this._lang;
-    const t = e.toLowerCase().replace(/[*_`#]/g, "").replace(/https?:\/\/\S+/g, "").replace(/@\w+/g, ""), r = (t.match(/\b(o|a|os|as|de|do|da|em|um|uma|para|com|não|que|isso|este|esta|muito|bom|bem|projeto|comentário|genial|manteiga|artigo|leitura)\b/g) || []).length * 2 + (t.match(/[ãõéêáàçíú]/g) || []).length * 3, o = (t.match(/\b(the|and|this|is|that|with|for|you|have|not|but|from|are|was|they|will|all|would|there|what|out|about|who|get|which|go|me|when|make|can|like|time|no|just|know|take|people|into|year|your|good|some|could|them|see|other|than|then|now|look|only|come|its|over|think|also|back|after|use|two|how|our|work|first|well|way|even|new|want|because|any|these|give|day|most|us|welcome|native|having|scroll|stutter)\b/g) || []).length * 2, a = (t.match(/\b(el|la|los|las|de|del|en|un|una|por|con|para|esto|este|esta|muy|bien|es|son|pero|como|más|sus|le|ya|o|fue|ha|sí|porque|cuando|sin|sobre|ser|tiene|también|me|hasta|hay|donde|quien|desde|todo|nos|durante|todos|uno|les|ni|contra|otros|ese|eso|ante|ellos|mí|antes|algunos|qué|unos|yo|otro|otras|otra|él|tanto|esa|estos|mucho|quienes|nada|muchos|cual|poco|ella|estar|estas|algunas|algo|nosotros|queda|excelente|artículos)\b/g) || []).length * 2 + (t.match(/[¿¡ñ]/g) || []).length * 4, i = (t.match(/\b(le|la|les|de|du|des|en|et|un|une|pour|avec|dans|que|qui|est|sont|sur|ce|cette|ces|mais|ou|donc|or|ni|car|très|bien)\b/g) || []).length * 2 + (t.match(/[œçèêàâôûëï]/g) || []).length * 3, n = Math.max(r, o, a, i);
-    return n < 2 ? this.currentLang : n === r ? "pt" : n === o ? "en" : n === a ? "es" : n === i ? "fr" : this.currentLang;
+    const t = e.toLowerCase().replace(/[*_`#]/g, "").replace(/https?:\/\/\S+/g, "").replace(/@\w+/g, ""), r = (t.match(/\b(o|a|os|as|de|do|da|em|um|uma|para|com|não|que|isso|este|esta|muito|bom|bem|projeto|comentário|genial|manteiga|artigo|leitura)\b/g) || []).length * 2 + (t.match(/[ãõéêáàçíú]/g) || []).length * 3, o = (t.match(/\b(the|and|this|is|that|with|for|you|have|not|but|from|are|was|they|will|all|would|there|what|out|about|who|get|which|go|me|when|make|can|like|time|no|just|know|take|people|into|year|your|good|some|could|them|see|other|than|then|now|look|only|come|its|over|think|also|back|after|use|two|how|our|work|first|well|way|even|new|want|because|any|these|give|day|most|us|welcome|native|having|scroll|stutter)\b/g) || []).length * 2, a = (t.match(/\b(el|la|los|las|de|del|en|un|una|por|con|para|esto|este|esta|muy|bien|es|son|pero|como|más|sus|le|ya|o|fue|ha|sí|porque|cuando|sin|sobre|ser|tiene|también|me|hasta|hay|donde|quien|desde|todo|nos|durante|todos|uno|les|ni|contra|otros|ese|eso|ante|ellos|mí|antes|algunos|qué|unos|yo|otro|otras|otra|él|tanto|esa|estos|mucho|quienes|nada|muchos|cual|poco|ella|estar|estas|algunas|algo|nosotros|queda|excelente|artículos)\b/g) || []).length * 2 + (t.match(/[¿¡ñ]/g) || []).length * 4, n = (t.match(/\b(le|la|les|de|du|des|en|et|un|une|pour|avec|dans|que|qui|est|sont|sur|ce|cette|ces|mais|ou|donc|or|ni|car|très|bien)\b/g) || []).length * 2 + (t.match(/[œçèêàâôûëï]/g) || []).length * 3, i = Math.max(r, o, a, n);
+    return i < 2 ? this.currentLang : i === r ? "pt" : i === o ? "en" : i === a ? "es" : i === n ? "fr" : this.currentLang;
   }
   getVisitorLang() {
     return this.currentLang;
@@ -3847,7 +3847,7 @@ Do you want to simulate a local test login (@rnt-rez)?`
       r.isShowingTranslation = !0, this.render();
       return;
     }
-    const o = this.currentLang, a = o === "pt", n = a ? "pt" : o === "es" ? "es" : "en", c = a ? {
+    const o = this.currentLang, a = o === "pt", i = a ? "pt" : o === "es" ? "es" : "en", c = a ? {
       1: "Welcome to **ScatterLeaf**! 🍃 This is a native comment rendered directly via Shadow DOM, with zero iframes and Markdown support.",
       "1-1": "@rnt-rez Isso é genial! Ter Shadow DOM nativo deixa a rolagem suave como manteiga, sem nenhum engasgo de iframe.",
       "1-2": "@sarah-eng Exactly! Page scrolling does not suffer from visual jumping caused by iframe resizing.",
@@ -3865,7 +3865,7 @@ Do you want to simulate a local test login (@rnt-rez)?`
     this._isTranslatingId = e, this.render();
     try {
       const b = r.originalLang || this.detectTextLanguage(r.body), g = r.body.replace(/[#*`_~]/g, ""), v = await (await fetch(
-        `https://api.mymemory.translated.net/get?q=${encodeURIComponent(g.slice(0, 500))}&langpair=${b}|${n}`
+        `https://api.mymemory.translated.net/get?q=${encodeURIComponent(g.slice(0, 500))}&langpair=${b}|${i}`
       )).json();
       v && v.responseData && v.responseData.translatedText ? r.translatedBody = v.responseData.translatedText : r.translatedBody = a ? `[Tradução]: ${r.body}` : `[Translation]: ${r.body}`;
     } catch (b) {
@@ -3886,7 +3886,7 @@ Do you want to simulate a local test login (@rnt-rez)?`
       return;
     }
     window.speechSynthesis.cancel(), this._speakingId = e, this.render();
-    const o = t.replace(/[*_`#]/g, "").replace(/https?:\/\/\S+/g, "link"), a = new SpeechSynthesisUtterance(o), n = r && {
+    const a = t.replace(/```[\s\S]*?(?:```|$)|~~~[\s\S]*?(?:~~~|$)/g, "").replace(/[*_`#]/g, "").replace(/https?:\/\/\S+/g, "link").replace(/\s+/g, " ").trim() || (this._lang === "pt" ? "Este comentário contém apenas um bloco de código." : "This comment contains only a code block."), n = new SpeechSynthesisUtterance(a), l = r && {
       pt: "pt-BR",
       en: "en-US",
       es: "es-ES",
@@ -3894,24 +3894,24 @@ Do you want to simulate a local test login (@rnt-rez)?`
       de: "de-DE",
       it: "it-IT"
     }[r] || r || (this._lang === "pt" ? "pt-BR" : "en-US");
-    if (a.lang = n, "speechSynthesis" in window) {
-      const l = window.speechSynthesis.getVoices(), s = n.slice(0, 2).toLowerCase(), c = l.find(
-        (b) => b.lang.replace("_", "-").toLowerCase().startsWith(s)
+    if (n.lang = l, "speechSynthesis" in window) {
+      const s = window.speechSynthesis.getVoices(), c = l.slice(0, 2).toLowerCase(), b = s.find(
+        (g) => g.lang.replace("_", "-").toLowerCase().startsWith(c)
       );
-      c && (a.voice = c);
+      b && (n.voice = b);
     }
-    a.rate = 1, a.onend = () => {
+    n.rate = 1, n.onend = () => {
       this._speakingId = null, this.render();
-    }, a.onerror = () => {
+    }, n.onerror = () => {
       this._speakingId = null, this.render();
-    }, window.speechSynthesis.speak(a);
+    }, window.speechSynthesis.speak(n);
   }
   render() {
     if (!this.shadowRoot) return;
     const e = this._comments.reduce(
-      (a, i) => {
-        var n;
-        return a + 1 + (((n = i.replies) == null ? void 0 : n.length) || 0);
+      (a, n) => {
+        var i;
+        return a + 1 + (((i = n.replies) == null ? void 0 : i.length) || 0);
       },
       0
     ), t = this.currentLang === "pt" ? "Comentários" : "Comments", r = this.renderComposer(), o = this._isLoading ? `<div style="text-align: center; padding: 2.5rem; color: var(--sl-text-muted);">
@@ -3952,7 +3952,7 @@ Do you want to simulate a local test login (@rnt-rez)?`
    */
   renderMediaModal() {
     var c, b, g, w, v, k;
-    const e = this.currentLang === "pt", t = e ? "Inserir GIF" : "Insert GIF", r = e ? "Filtro Anti-NSFW ativo: URLs e arquivos locais passam por validação estrita de segurança, integridade binária e conteúdo sensível." : "Anti-NSFW filter active: URLs and local files undergo strict security, binary integrity, and sensitive content checks.", o = e ? "URL do GIF (HTTPS obrigatório):" : "GIF URL (Strict HTTPS):", a = e ? "Descrição do GIF / Alt text (Opcional):" : "GIF description / Alt text (Optional):", i = e ? "Cancelar" : "Cancel", n = e ? "Inserir GIF" : "Insert GIF", l = ee(), s = !!(this._mediaModalFile && this._mediaModalFileDataUrl);
+    const e = this.currentLang === "pt", t = e ? "Inserir GIF" : "Insert GIF", r = e ? "Filtro Anti-NSFW ativo: URLs e arquivos locais passam por validação estrita de segurança, integridade binária e conteúdo sensível." : "Anti-NSFW filter active: URLs and local files undergo strict security, binary integrity, and sensitive content checks.", o = e ? "URL do GIF (HTTPS obrigatório):" : "GIF URL (Strict HTTPS):", a = e ? "Descrição do GIF / Alt text (Opcional):" : "GIF description / Alt text (Optional):", n = e ? "Cancelar" : "Cancel", i = e ? "Inserir GIF" : "Insert GIF", l = ee(), s = !!(this._mediaModalFile && this._mediaModalFileDataUrl);
     return `
       <div class="sl-modal-backdrop" id="media-modal-backdrop">
         <div class="sl-modal-box" role="dialog" aria-modal="true" aria-labelledby="sl-media-modal-title">
@@ -4086,11 +4086,11 @@ Do you want to simulate a local test login (@rnt-rez)?`
 
           <div class="sl-modal-footer">
             <button type="button" class="sl-btn sl-btn-secondary" id="btn-cancel-media-modal">
-              ${i}
+              ${n}
             </button>
             <button type="button" class="sl-btn sl-btn-primary" id="btn-confirm-media-modal">
               <span>🖼️</span>
-              <span>${n}</span>
+              <span>${i}</span>
             </button>
           </div>
         </div>
@@ -4126,15 +4126,15 @@ Do you want to simulate a local test login (@rnt-rez)?`
     var z, A, j, $;
     const t = (z = this.shadowRoot) == null ? void 0 : z.getElementById("composer-textarea");
     if (!t) return;
-    const r = ((A = this._savedComposerSelection) == null ? void 0 : A.start) ?? t.selectionStart ?? this._composerText.length, o = ((j = this._savedComposerSelection) == null ? void 0 : j.end) ?? t.selectionEnd ?? this._composerText.length, i = t.value.substring(r, o) || (this.currentLang === "pt" ? "// Seu código aqui" : "// Your code here"), n = t.value.substring(0, r), l = t.value.substring(o), s = n.length > 0 && !n.endsWith(`
+    const r = ((A = this._savedComposerSelection) == null ? void 0 : A.start) ?? t.selectionStart ?? this._composerText.length, o = ((j = this._savedComposerSelection) == null ? void 0 : j.end) ?? t.selectionEnd ?? this._composerText.length, n = t.value.substring(r, o) || (this.currentLang === "pt" ? "// Seu código aqui" : "// Your code here"), i = t.value.substring(0, r), l = t.value.substring(o), s = i.length > 0 && !i.endsWith(`
 `), c = l.length > 0 && !l.startsWith(`
 `), b = s ? `
 ` : "", w = `${b}\`\`\`${e}
-${i}
+${n}
 \`\`\`${c ? `
-` : ""}`, v = n + w + l;
+` : ""}`, v = i + w + l;
     this._composerText = v, this._isCodePickerOpen = !1, this._savedComposerSelection = null;
-    const k = n.length + b.length + 3 + e.length + 1, _ = k + i.length;
+    const k = i.length + b.length + 3 + e.length + 1, _ = k + n.length;
     this.render();
     const T = ($ = this.shadowRoot) == null ? void 0 : $.getElementById("composer-textarea");
     T && (T.focus(), T.setSelectionRange(k, _), T.style.height = "auto", T.style.height = `${T.scrollHeight}px`);
@@ -4143,7 +4143,7 @@ ${i}
    * Renderiza a Caixa de Escrita Principal (com Abas Escreva / Prévia, Aa e Autenticação)
    */
   renderComposer() {
-    const e = this._activeTab === "write", t = this._fontMode === "monospace", r = this.currentLang === "pt" ? "Deixe uma nota ou comentário..." : "Leave a note or comment...", o = this.currentLang === "pt" ? "Escreva" : "Write", a = this.currentLang === "pt" ? "Prévia" : "Preview", i = this.currentLang === "pt" ? "Nada para pré-visualizar ainda." : "Nothing to preview yet.", n = this.currentLang === "pt" ? "Entre com GitHub" : "Sign in with GitHub", l = this.currentLang === "pt" ? "Publicar nota" : "Post note";
+    const e = this._activeTab === "write", t = this._fontMode === "monospace", r = this.currentLang === "pt" ? "Deixe uma nota ou comentário..." : "Leave a note or comment...", o = this.currentLang === "pt" ? "Escreva" : "Write", a = this.currentLang === "pt" ? "Prévia" : "Preview", n = this.currentLang === "pt" ? "Nada para pré-visualizar ainda." : "Nothing to preview yet.", i = this.currentLang === "pt" ? "Entre com GitHub" : "Sign in with GitHub", l = this.currentLang === "pt" ? "Publicar nota" : "Post note";
     return `
       <div class="sl-composer" part="composer">
         <!-- Barra de Abas e Ações (Bloco de Código </> e Controle Tipográfico Aa) -->
@@ -4172,7 +4172,7 @@ ${i}
         <!-- Área de Edição / Prévia -->
         <div class="sl-composer-body">
           ${e ? `<textarea class="sl-textarea ${t ? "sl-monospace" : ""}" id="composer-textarea" placeholder="${r}" part="textarea">${this._composerText}</textarea>` : `<div class="sl-preview-area ${t ? "sl-monospace" : ""}" part="preview-area">
-                  ${this._composerText ? this.parseMarkdown(this._composerText) : `<span class="sl-preview-empty">${i}</span>`}
+                  ${this._composerText ? this.parseMarkdown(this._composerText) : `<span class="sl-preview-empty">${n}</span>`}
                 </div>`}
         </div>
 
@@ -4213,7 +4213,7 @@ ${i}
                 <svg height="16" width="16" viewBox="0 0 16 16" aria-hidden="true">
                   <path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"></path>
                 </svg>
-                <span>${n}</span>
+                <span>${i}</span>
               </button>
             </div>
           `}
@@ -4392,11 +4392,11 @@ ${i}
               <span style="font-size: 0.68rem; opacity: 0.85;">💾 ${this.currentLang === "pt" ? "Salvo no navegador" : "Saved in browser"}</span>
             </div>
             <div class="sl-skin-tone-options">
-              ${ne.map((i) => {
-      const n = W("👊", i.modifier), l = this._selectedSkinTone === i.modifier || this._selectedSkinTone === "default" && i.modifier === "", s = this.currentLang === "pt" ? i.namePt : i.nameEn;
+              ${ne.map((n) => {
+      const i = W("👊", n.modifier), l = this._selectedSkinTone === n.modifier || this._selectedSkinTone === "default" && n.modifier === "", s = this.currentLang === "pt" ? n.namePt : n.nameEn;
       return `
-                  <button type="button" class="sl-tone-btn ${l ? "sl-tone-selected" : ""}" data-tone-mod="${i.modifier || "default"}" title="${s}">
-                    ${n}
+                  <button type="button" class="sl-tone-btn ${l ? "sl-tone-selected" : ""}" data-tone-mod="${n.modifier || "default"}" title="${s}">
+                    ${i}
                   </button>
                 `;
     }).join("")}
@@ -4406,14 +4406,14 @@ ${i}
 
         <div class="sl-emoji-scroll" id="emoji-scroll-container">
           ${e.map(
-      (i) => `
+      (n) => `
             <div class="sl-emoji-category">
-              <span class="sl-emoji-category-title">${i.name}</span>
+              <span class="sl-emoji-category-title">${n.name}</span>
               <div class="sl-emoji-grid">
-                ${i.emojis.map((n) => {
-        const l = ie.has(n), s = l ? W(n, this._selectedSkinTone) : n;
+                ${n.emojis.map((i) => {
+        const l = ie.has(i), s = l ? W(i, this._selectedSkinTone) : i;
         return `
-                      <button type="button" class="sl-emoji-item" data-emoji="${s}" data-base-emoji="${n}" data-toneable="${l ? "true" : "false"}" title="${s}">
+                      <button type="button" class="sl-emoji-item" data-emoji="${s}" data-base-emoji="${i}" data-toneable="${l ? "true" : "false"}" title="${s}">
                         ${s}
                       </button>
                     `;
@@ -4438,8 +4438,8 @@ ${i}
     if (!this.shadowRoot) return;
     const t = this.shadowRoot.getElementById("composer-textarea");
     if (!t) return;
-    const r = t.selectionStart ?? t.value.length, o = t.selectionEnd ?? t.value.length, a = t.value, i = a.substring(0, r), n = a.substring(o);
-    t.value = i + e + n, this._composerText = t.value;
+    const r = t.selectionStart ?? t.value.length, o = t.selectionEnd ?? t.value.length, a = t.value, n = a.substring(0, r), i = a.substring(o);
+    t.value = n + e + i, this._composerText = t.value;
     const l = r + e.length;
     this._isEmojiPickerOpen = !1, this.render();
     const s = this.shadowRoot.getElementById("composer-textarea");
@@ -4457,25 +4457,25 @@ ${i}
       return this._comments;
     const t = e.startsWith("@") ? e.slice(1) : e, r = t.split(/\s+/).filter(Boolean), o = [];
     for (const a of this._comments) {
-      let i = 0;
-      const n = a.author.login.toLowerCase(), l = a.body.toLowerCase();
-      if (n === t ? i += 100 : n.startsWith(t) ? i += 60 : n.includes(t) && (i += 40), l.includes(e) || l.includes(t))
-        i += 35;
+      let n = 0;
+      const i = a.author.login.toLowerCase(), l = a.body.toLowerCase();
+      if (i === t ? n += 100 : i.startsWith(t) ? n += 60 : i.includes(t) && (n += 40), l.includes(e) || l.includes(t))
+        n += 35;
       else
         for (const s of r)
-          l.includes(s) && (i += 10);
+          l.includes(s) && (n += 10);
       if (a.replies && a.replies.length > 0)
         for (const s of a.replies) {
           const c = s.author.login.toLowerCase(), b = s.body.toLowerCase();
-          if (c === t ? i += 50 : c.includes(t) && (i += 25), b.includes(e) || b.includes(t))
-            i += 20;
+          if (c === t ? n += 50 : c.includes(t) && (n += 25), b.includes(e) || b.includes(t))
+            n += 20;
           else
             for (const g of r)
-              b.includes(g) && (i += 5);
+              b.includes(g) && (n += 5);
         }
-      i > 0 && o.push({ comment: a, score: i });
+      n > 0 && o.push({ comment: a, score: n });
     }
-    return o.sort((a, i) => i.score - a.score), o.map((a) => a.comment);
+    return o.sort((a, n) => n.score - a.score), o.map((a) => a.comment);
   }
   /**
    * Renderiza a Barra de Ferramentas / Buscador acima da Lista de Comentários
@@ -4526,7 +4526,7 @@ ${i}
     }
     const r = t.length, o = Math.max(1, Math.ceil(r / this._pageSize));
     this._currentPage > o && (this._currentPage = o);
-    const a = (this._currentPage - 1) * this._pageSize, i = a + this._pageSize, n = t.slice(a, i);
+    const a = (this._currentPage - 1) * this._pageSize, n = a + this._pageSize, i = t.slice(a, n);
     let l = "";
     if (e) {
       const c = this.currentLang === "pt";
@@ -4567,7 +4567,7 @@ ${i}
     return `
       <div class="sl-list" part="list">
         ${l}
-        ${n.map((c) => this.renderCommentCard(c)).join("")}
+        ${i.map((c) => this.renderCommentCard(c)).join("")}
         ${s}
       </div>
     `;
@@ -4577,7 +4577,7 @@ ${i}
    */
   renderCommentCard(e, t = !1, r) {
     var C;
-    const o = this._repo ? this._repo.split("/")[0].toLowerCase() : "", i = e.author.isAuthor || o && e.author.login.toLowerCase() === o ? `<span class="sl-author-badge" part="author-badge">${this.currentLang === "pt" ? "Autor" : "Author"}</span>` : "", n = this._speakingId === e.id, l = this._replyingToId === e.id, s = this._editingId === e.id, c = this._openMenuId === e.id, b = n ? this.currentLang === "pt" ? "⏸️ Pausar" : "⏸️ Pause" : this.currentLang === "pt" ? "🔊 Ouvir" : "🔊 Listen", g = this.currentLang === "pt" ? "Responder" : "Reply", w = this.getVisitorLang(), v = e.originalLang || "pt", k = v !== w, _ = this.getLanguageName(v, w), T = e.isShowingTranslation && e.translatedBody ? e.translatedBody : e.body, z = this.formatDate(e.createdAt), A = !!((C = e.reactions) != null && C.find((E) => E.content === "👍" && E.viewerHasReacted)), j = this.currentLang === "pt" ? "Gostei" : "Like", $ = A ? this.currentLang === "pt" ? "Remover curtida" : "Remove like" : this.currentLang === "pt" ? "Curtir" : "Like", M = (e.reactions || []).filter((E) => E.count > 0);
+    const o = this._repo ? this._repo.split("/")[0].toLowerCase() : "", n = e.author.isAuthor || o && e.author.login.toLowerCase() === o ? `<span class="sl-author-badge" part="author-badge">${this.currentLang === "pt" ? "Autor" : "Author"}</span>` : "", i = this._speakingId === e.id, l = this._replyingToId === e.id, s = this._editingId === e.id, c = this._openMenuId === e.id, b = i ? this.currentLang === "pt" ? "⏸️ Pausar" : "⏸️ Pause" : this.currentLang === "pt" ? "🔊 Ouvir" : "🔊 Listen", g = this.currentLang === "pt" ? "Responder" : "Reply", w = this.getVisitorLang(), v = e.originalLang || "pt", k = v !== w, _ = this.getLanguageName(v, w), T = e.isShowingTranslation && e.translatedBody ? e.translatedBody : e.body, z = this.formatDate(e.createdAt), A = !!((C = e.reactions) != null && C.find((E) => E.content === "👍" && E.viewerHasReacted)), j = this.currentLang === "pt" ? "Gostei" : "Like", $ = A ? this.currentLang === "pt" ? "Remover curtida" : "Remove like" : this.currentLang === "pt" ? "Curtir" : "Like", M = (e.reactions || []).filter((E) => E.count > 0);
     return `
       <article class="sl-card ${t ? "sl-card-reply" : ""}" id="comment-${e.id}" part="card">
         <!-- Cabeçalho do Card (Avatar ancorado no topo!) -->
@@ -4590,7 +4590,7 @@ ${i}
               <a class="sl-author-name" href="${e.author.url}" target="_blank" rel="noopener noreferrer" part="author-name">
                 ${e.author.login}
               </a>
-              ${i}
+              ${n}
               <time class="sl-date" part="date" datetime="${e.createdAt}" title="${z.full}">${z.relative}</time>
               ${e.isEdited ? `<span class="sl-edited-badge">(${this.currentLang === "pt" ? "editado" : "edited"})</span>` : ""}
             </div>
@@ -4691,7 +4691,7 @@ ${i}
               </button>
             ` : ""}
 
-            <button class="sl-audio-btn ${n ? "sl-audio-playing" : ""}" data-speak-id="${e.id}" data-text="${encodeURIComponent(T)}" data-lang="${e.isShowingTranslation ? w : v}" part="audio-btn">
+            <button class="sl-audio-btn ${i ? "sl-audio-playing" : ""}" data-speak-id="${e.id}" data-text="${encodeURIComponent(T)}" data-lang="${e.isShowingTranslation ? w : v}" part="audio-btn">
               <span>${b}</span>
             </button>
           </div>
@@ -4772,12 +4772,12 @@ ${i}
         this.insertCodeBlock(x);
       });
     });
-    const i = this.shadowRoot.getElementById("btn-font-toggle");
-    i && i.addEventListener("click", () => {
+    const n = this.shadowRoot.getElementById("btn-font-toggle");
+    n && n.addEventListener("click", () => {
       this._fontMode = this._fontMode === "default" ? "monospace" : "default", this.render();
     });
-    const n = this.shadowRoot.getElementById("btn-emoji-toggle");
-    n && n.addEventListener("click", (d) => {
+    const i = this.shadowRoot.getElementById("btn-emoji-toggle");
+    i && i.addEventListener("click", (d) => {
       d.stopPropagation(), this._isEmojiPickerOpen = !this._isEmojiPickerOpen, this.render();
     });
     const l = this.shadowRoot.getElementById("emoji-scroll-container"), s = this.shadowRoot.getElementById("btn-emoji-scroll-up"), c = this.shadowRoot.getElementById("btn-emoji-scroll-down"), b = this.shadowRoot.getElementById("btn-emoji-close");
@@ -4915,7 +4915,7 @@ ${i}
       const d = (h) => {
         var f;
         const x = h.composedPath(), p = (f = this.shadowRoot) == null ? void 0 : f.getElementById("emoji-popover");
-        p && !x.includes(p) && n && !x.includes(n) && (this._isEmojiPickerOpen = !1, this.render(), document.removeEventListener("click", d));
+        p && !x.includes(p) && i && !x.includes(i) && (this._isEmojiPickerOpen = !1, this.render(), document.removeEventListener("click", d));
       };
       setTimeout(() => document.addEventListener("click", d), 0);
     }
@@ -5161,8 +5161,8 @@ ${i}
       const s = Math.ceil(this._comments.length / this._pageSize);
       this._currentPage < s && (this._currentPage++, this.render(), this.scrollListToTop());
     });
-    const i = this.shadowRoot.getElementById("sl-search-input");
-    i && (i.addEventListener("input", (s) => {
+    const n = this.shadowRoot.getElementById("sl-search-input");
+    n && (n.addEventListener("input", (s) => {
       var g;
       const c = s.target.value;
       this._searchQuery = c, this._currentPage = 1, this.render();
@@ -5172,11 +5172,11 @@ ${i}
         const w = b.value.length;
         b.setSelectionRange(w, w);
       }
-    }), i.addEventListener("keydown", (s) => {
+    }), n.addEventListener("keydown", (s) => {
       s.key === "Escape" && (this._searchQuery = "", this._currentPage = 1, this.render());
     }));
-    const n = this.shadowRoot.getElementById("sl-search-clear");
-    n && n.addEventListener("click", () => {
+    const i = this.shadowRoot.getElementById("sl-search-clear");
+    i && i.addEventListener("click", () => {
       this._searchQuery = "", this._currentPage = 1, this.render();
     });
     const l = this.shadowRoot.querySelector(".sl-search-banner-clear");
@@ -5264,9 +5264,9 @@ ${i}
           this._discussionId,
           t,
           e
-        ), i = this._comments.find((n) => n.id === e);
-        if (i) {
-          i.replies || (i.replies = []), i.replies.push({
+        ), n = this._comments.find((i) => i.id === e);
+        if (n) {
+          n.replies || (n.replies = []), n.replies.push({
             id: a.id,
             author: {
               login: a.author.login,
@@ -5329,9 +5329,9 @@ ${i}
         break;
       }
       if (a.replies) {
-        const i = a.replies.find((n) => n.id === e);
-        if (i) {
-          o(i);
+        const n = a.replies.find((i) => i.id === e);
+        if (n) {
+          o(n);
           break;
         }
       }
@@ -5349,13 +5349,13 @@ ${i}
   }
   async handleToggleReaction(e, t) {
     let r;
-    for (const n of this._comments) {
-      if (n.id === e) {
-        r = n;
+    for (const i of this._comments) {
+      if (i.id === e) {
+        r = i;
         break;
       }
-      if (n.replies) {
-        const l = n.replies.find((s) => s.id === e);
+      if (i.replies) {
+        const l = i.replies.find((s) => s.id === e);
         if (l) {
           r = l;
           break;
@@ -5364,16 +5364,16 @@ ${i}
     }
     if (!r) return;
     r.reactions || (r.reactions = []);
-    const o = r.reactions.find((n) => n.content === t), i = !!(o != null && o.viewerHasReacted) ? "remove" : "add";
-    if (i === "remove" ? o && (o.count = Math.max(0, o.count - 1), o.viewerHasReacted = !1, o.count === 0 && (r.reactions = r.reactions.filter((n) => n.content !== t))) : o ? (o.count += 1, o.viewerHasReacted = !0) : r.reactions.push({
+    const o = r.reactions.find((i) => i.content === t), n = !!(o != null && o.viewerHasReacted) ? "remove" : "add";
+    if (n === "remove" ? o && (o.count = Math.max(0, o.count - 1), o.viewerHasReacted = !1, o.count === 0 && (r.reactions = r.reactions.filter((i) => i.content !== t))) : o ? (o.count += 1, o.viewerHasReacted = !0) : r.reactions.push({
       content: t,
       count: 1,
       viewerHasReacted: !0
     }), this.render(), this._brokerClient && this._authToken)
       try {
-        await this._brokerClient.toggleReaction(e, t, i);
-      } catch (n) {
-        if (console.error(`Falha ao processar reação (${i}) via broker:`, n), i === "add") {
+        await this._brokerClient.toggleReaction(e, t, n);
+      } catch (i) {
+        if (console.error(`Falha ao processar reação (${n}) via broker:`, i), n === "add") {
           const l = r.reactions.find((s) => s.content === t);
           l && (l.count = Math.max(0, l.count - 1), l.viewerHasReacted = !1, l.count === 0 && (r.reactions = r.reactions.filter((s) => s.content !== t)));
         } else {
