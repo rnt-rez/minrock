@@ -81,32 +81,41 @@ button, input, textarea, select {
   margin-top: 0.25rem;
   margin-bottom: 1.25rem;
   gap: 0.75rem;
+  min-height: 36px;
 }
 
 .sl-toolbar-actions {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
+  gap: 0.75rem;
+  height: 36px;
 }
 
 .sl-toolbar-count {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
   font-size: 0.85rem;
   font-weight: 500;
   color: var(--sl-text-muted);
   white-space: nowrap;
   letter-spacing: -0.01em;
   user-select: none;
+  line-height: 1;
 }
 
 .sl-sort-btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
+  justify-content: center;
+  gap: 0.4rem;
   background: var(--sl-surface);
   border: 1px solid var(--sl-border);
   border-radius: 6px;
-  padding: 0.25rem 0.6rem;
-  font-size: 0.78rem;
+  height: 36px;
+  box-sizing: border-box;
+  padding: 0 0.75rem;
+  font-size: 0.8rem;
   font-weight: 500;
   font-family: inherit;
   color: var(--sl-text-muted);
@@ -114,6 +123,7 @@ button, input, textarea, select {
   transition: all 0.15s ease;
   white-space: nowrap;
   user-select: none;
+  line-height: 1;
 }
 
 .sl-sort-btn:hover {
