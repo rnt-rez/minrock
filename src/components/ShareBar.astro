@@ -235,6 +235,8 @@ const socialLinks = [
 </div>
 
 <script>
+  let activeKeydownHandler: ((e: KeyboardEvent) => void) | null = null;
+
   function setupShareModal() {
     const triggerBtn = document.getElementById('open-share-modal');
     const backdrop = document.getElementById('share-modal-backdrop');
@@ -294,13 +296,18 @@ const socialLinks = [
       if (e.target === backdrop) closeModal();
     };
 
-    const handleKeyDown = (e: KeyboardEvent) => {
+    // Remove previous keydown handler if it exists
+    if (activeKeydownHandler) {
+      document.removeEventListener('keydown', activeKeydownHandler);
+      activeKeydownHandler = null;
+    }
+
+    activeKeydownHandler = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && backdrop.classList.contains('open')) {
         closeModal();
       }
     };
-    document.removeEventListener('keydown', handleKeyDown);
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keydown', activeKeydownHandler);
 
     // Copy action with instant feedback
     if (copyBtn && urlInput) {
@@ -341,8 +348,17 @@ const socialLinks = [
     }
   }
 
-  setupShareModal();
-  document.addEventListener('astro:after-swap', setupShareModal);
+  // Astro page-load fires on initial load and after every View Transition swap
+  document.addEventListener('astro:page-load', setupShareModal);
+
+  // Immediate cleanup before DOM replacement
+  document.addEventListener('astro:before-swap', () => {
+    if (activeKeydownHandler) {
+      document.removeEventListener('keydown', activeKeydownHandler);
+      activeKeydownHandler = null;
+    }
+    document.body.style.overflow = '';
+  });
 </script>
 
 <style>

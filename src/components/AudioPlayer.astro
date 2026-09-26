@@ -111,7 +111,16 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
 </div>
 
 <script>
+  let activeStickyObserver: IntersectionObserver | null = null;
+  let audioPlayerGlobalInitialized = false;
+
   function setupAudioPlayer() {
+    // Teardown previous observer if present
+    if (activeStickyObserver) {
+      activeStickyObserver.disconnect();
+      activeStickyObserver = null;
+    }
+
     const root = document.getElementById('audio-player-root');
     if (!root) return;
 
@@ -408,10 +417,6 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
       }
     });
 
-    // Cleanup on navigation or page change
-    window.addEventListener('beforeunload', () => synth.cancel());
-    document.addEventListener('astro:before-swap', () => synth.cancel());
-
     updateProgress();
 
     // Sentinel & IntersectionObserver for Sticky detection
@@ -423,7 +428,7 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
       root.parentNode?.insertBefore(sentinel, root);
     }
 
-    const stickyObserver = new IntersectionObserver(([entry]) => {
+    activeStickyObserver = new IntersectionObserver(([entry]) => {
       const isActive = root?.classList.contains('is-active-player') ?? false;
       const isScrolledPast = !entry.isIntersecting && entry.boundingClientRect.top <= 64;
       const shouldBeSticky = isActive && isScrolledPast;
@@ -440,11 +445,26 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
       }
     }, { threshold: [0, 1] });
 
-    stickyObserver.observe(sentinel);
+    activeStickyObserver.observe(sentinel);
   }
 
-  setupAudioPlayer();
-  document.addEventListener('astro:after-swap', setupAudioPlayer);
+  // Astro page-load fires on initial load and after every View Transition swap
+  document.addEventListener('astro:page-load', setupAudioPlayer);
+
+  // Global teardown listeners registered only once
+  if (!audioPlayerGlobalInitialized) {
+    audioPlayerGlobalInitialized = true;
+    window.addEventListener('beforeunload', () => {
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+    });
+    document.addEventListener('astro:before-swap', () => {
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      if (activeStickyObserver) {
+        activeStickyObserver.disconnect();
+        activeStickyObserver = null;
+      }
+    });
+  }
 </script>
 
 <style>
