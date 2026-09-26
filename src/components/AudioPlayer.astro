@@ -448,8 +448,10 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
     activeStickyObserver.observe(sentinel);
   }
 
-  // Astro page-load fires on initial load and after every View Transition swap
+  // Initial run and page navigation hooks
+  setupAudioPlayer();
   document.addEventListener('astro:page-load', setupAudioPlayer);
+  document.addEventListener('astro:after-swap', setupAudioPlayer);
 
   // Global teardown listeners registered only once
   if (!audioPlayerGlobalInitialized) {

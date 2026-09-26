@@ -180,8 +180,10 @@ const filtered = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
     requestScrollSpyUpdate();
   }
 
-  // Astro page-load fires on initial load and after every View Transition swap
+  // Initial run and page navigation hooks
+  initTOCScrollspy();
   document.addEventListener('astro:page-load', initTOCScrollspy);
+  document.addEventListener('astro:after-swap', initTOCScrollspy);
 
   // Immediate cleanup before DOM replacement
   document.addEventListener('astro:before-swap', () => {
