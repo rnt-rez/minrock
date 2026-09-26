@@ -114,7 +114,7 @@ export const siteConfig: SiteConfig = {
     clientId: 'Iv23liZHApvnx6e6wtMJ',
     // Default to empty string ('') for Astro Themes showcase (enables built-in mock demo comments).
     // Users can connect their own Cloudflare Edge Broker Worker URL via PUBLIC_SCATTERLEAF_BROKER.
-    broker: '',
+    broker: (typeof process !== 'undefined' && process.env?.PUBLIC_SCATTERLEAF_BROKER) || (import.meta as any).env?.PUBLIC_SCATTERLEAF_BROKER || '',
     features: {
       images: true
     }
