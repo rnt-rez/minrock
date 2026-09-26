@@ -1,7 +1,7 @@
-var _e = Object.defineProperty;
-var ke = (M, f, e) => f in M ? _e(M, f, { enumerable: !0, configurable: !0, writable: !0, value: e }) : M[f] = e;
-var h = (M, f, e) => ke(M, typeof f != "symbol" ? f + "" : f, e);
-const Ee = `
+var Le = Object.defineProperty;
+var Ce = (M, f, e) => f in M ? Le(M, f, { enumerable: !0, configurable: !0, writable: !0, value: e }) : M[f] = e;
+var h = (M, f, e) => Ce(M, typeof f != "symbol" ? f + "" : f, e);
+const Se = `
 :host {
   display: block;
   font-family: var(--sl-font, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
@@ -3291,12 +3291,12 @@ button, input, textarea, select {
   white-space: nowrap;
 }
 `;
-class pe extends Error {
+class be extends Error {
   constructor(f = "Sessão expirada ou credenciais inválidas. Faça login novamente.") {
     super(f), this.name = "ScatterAuthError";
   }
 }
-class $e {
+class Me {
   constructor(f, e) {
     h(this, "baseUrl");
     h(this, "getToken");
@@ -3310,7 +3310,7 @@ class $e {
   }
   async handleResponseError(f, e) {
     const t = await f.json().catch(() => ({})), o = t.error || t.error_description || `${e}: HTTP ${f.status}`;
-    throw f.status === 401 || typeof o == "string" && /bad credentials|unauthorized|sessão expirada/i.test(o) ? new pe(o) : new Error(o);
+    throw f.status === 401 || typeof o == "string" && /bad credentials|unauthorized|sessão expirada/i.test(o) ? new be(o) : new Error(o);
   }
   /**
    * Auto-Discovery de IDs do repositório e categoria no GitHub
@@ -3329,13 +3329,13 @@ class $e {
    * Leitura de discussões e comentários com cache de borda
    */
   async fetchDiscussions(f, e) {
-    const o = this.getToken() ? `&_t=${Date.now()}` : "", a = await fetch(
+    const o = this.getToken() ? `&_t=${Date.now()}` : "", s = await fetch(
       `${this.baseUrl}/api/discussions?repo=${encodeURIComponent(f)}&term=${encodeURIComponent(e)}${o}`,
       {
         headers: this.getAuthHeaders()
       }
     );
-    return a.ok || await this.handleResponseError(a, "Falha ao carregar discussões"), await a.json();
+    return s.ok || await this.handleResponseError(s, "Falha ao carregar discussões"), await s.json();
   }
   /**
    * Troca segura de código OAuth por token de acesso
@@ -3347,8 +3347,8 @@ class $e {
       body: JSON.stringify({ code: f, redirect_uri: e })
     });
     if (!t.ok) {
-      const a = await t.json().catch(() => ({}));
-      throw new Error(a.error_description || a.error || `Erro ao trocar código: HTTP ${t.status}`);
+      const s = await t.json().catch(() => ({}));
+      throw new Error(s.error_description || s.error || `Erro ao trocar código: HTTP ${t.status}`);
     }
     const o = await t.json();
     if (!o.access_token)
@@ -3366,7 +3366,7 @@ class $e {
       }
     });
     if (!e.ok)
-      throw e.status === 401 ? new pe("Credenciais inválidas ao carregar perfil do GitHub.") : new Error(`Falha ao obter perfil do usuário: HTTP ${e.status}`);
+      throw e.status === 401 ? new be("Credenciais inválidas ao carregar perfil do GitHub.") : new Error(`Falha ao obter perfil do usuário: HTTP ${e.status}`);
     const t = await e.json();
     return {
       login: t.login,
@@ -3379,23 +3379,23 @@ class $e {
    * Criação de nova discussão no GitHub
    */
   async createDiscussion(f, e, t, o) {
-    const a = await fetch(`${this.baseUrl}/api/discussions`, {
+    const s = await fetch(`${this.baseUrl}/api/discussions`, {
       method: "POST",
       headers: this.getAuthHeaders(),
       body: JSON.stringify({ repositoryId: f, categoryId: e, title: t, body: o })
     });
-    return a.ok || await this.handleResponseError(a, "Erro ao criar discussão"), await a.json();
+    return s.ok || await this.handleResponseError(s, "Erro ao criar discussão"), await s.json();
   }
   /**
    * Envio de comentário ou réplica
    */
   async addComment(f, e, t, o) {
-    const a = await fetch(`${this.baseUrl}/api/comments`, {
+    const s = await fetch(`${this.baseUrl}/api/comments`, {
       method: "POST",
       headers: this.getAuthHeaders(),
       body: JSON.stringify({ discussionId: f, body: e, replyToId: t, repo: o })
     });
-    return a.ok || await this.handleResponseError(a, "Erro ao enviar comentário"), await a.json();
+    return s.ok || await this.handleResponseError(s, "Erro ao enviar comentário"), await s.json();
   }
   /**
    * Edição in-place de comentário
@@ -3431,12 +3431,12 @@ class $e {
    * Aplica restrição a um usuário (ban ou restrict_media)
    */
   async setModeration(f, e, t, o) {
-    const a = await fetch(`${this.baseUrl}/api/moderation`, {
+    const s = await fetch(`${this.baseUrl}/api/moderation`, {
       method: "POST",
       headers: this.getAuthHeaders(),
       body: JSON.stringify({ repo: f, username: e, action: t, reason: o })
     });
-    a.ok || await this.handleResponseError(a, "Erro ao aplicar moderação");
+    s.ok || await this.handleResponseError(s, "Erro ao aplicar moderação");
   }
   /**
    * Remove restrição de um usuário
@@ -3453,7 +3453,7 @@ class $e {
    * Adiciona ou remove reação de emoji
    */
   async toggleReaction(f, e, t) {
-    const a = {
+    const s = {
       "👍": "THUMBS_UP",
       "❤️": "HEART",
       "🚀": "ROCKET",
@@ -3471,19 +3471,19 @@ class $e {
     }[e] || e, r = await fetch(`${this.baseUrl}/api/reactions`, {
       method: "POST",
       headers: this.getAuthHeaders(),
-      body: JSON.stringify({ subjectId: f, content: a, action: t })
+      body: JSON.stringify({ subjectId: f, content: s, action: t })
     });
     return r.ok || await this.handleResponseError(r, "Erro ao atualizar reação"), await r.json();
   }
 }
-const fe = "scatterleaf_skin_tone", Le = [
+const we = "scatterleaf_skin_tone", Te = [
   { id: "default", namePt: "Padrão (Amarelo)", nameEn: "Default (Yellow)", modifier: "", swatch: "🟡" },
   { id: "light", namePt: "Tom Claro", nameEn: "Light Skin Tone", modifier: "🏻", swatch: "🏻" },
   { id: "medium-light", namePt: "Tom Médio-Claro", nameEn: "Medium-Light Skin Tone", modifier: "🏼", swatch: "🏼" },
   { id: "medium", namePt: "Tom Médio", nameEn: "Medium Skin Tone", modifier: "🏽", swatch: "🏽" },
   { id: "medium-dark", namePt: "Tom Médio-Escuro", nameEn: "Medium-Dark Skin Tone", modifier: "🏾", swatch: "🏾" },
   { id: "dark", namePt: "Tom Escuro", nameEn: "Dark Skin Tone", modifier: "🏿", swatch: "🏿" }
-], Ce = /* @__PURE__ */ new Set([
+], Ie = /* @__PURE__ */ new Set([
   "👍",
   "👎",
   "👏",
@@ -3524,7 +3524,7 @@ const fe = "scatterleaf_skin_tone", Le = [
   "🧙‍♂️",
   "🧙‍♀️"
 ]);
-function ie(M, f) {
+function ne(M, f) {
   if (!f || f === "default") return M;
   if (M.includes("‍")) {
     const t = M.split("‍");
@@ -3532,14 +3532,14 @@ function ie(M, f) {
   }
   return M.replace(/[\u{1F3FB}-\u{1F3FF}]/gu, "").replace(/\uFE0F/g, "") + f;
 }
-const Se = [
+const Ae = [
   { symbol: "👍", namePt: "Gostei", nameEn: "Like" },
   { symbol: "❤️", namePt: "Amei", nameEn: "Love" },
   { symbol: "🚀", namePt: "Sensacional", nameEn: "Rocket" },
   { symbol: "🎉", namePt: "Parabéns", nameEn: "Celebrate" },
   { symbol: "😄", namePt: "Divertido", nameEn: "Laugh" },
   { symbol: "👀", namePt: "De olho", nameEn: "Eyes" }
-], Me = [
+], Re = [
   { id: "typescript", name: "TypeScript" },
   { id: "javascript", name: "JavaScript" },
   { id: "python", name: "Python" },
@@ -3550,36 +3550,7 @@ const Se = [
   { id: "sql", name: "SQL" },
   { id: "rust", name: "Rust" },
   { id: "go", name: "Go" }
-], de = "scatterleaf_recent_gifs";
-function ne() {
-  try {
-    const M = localStorage.getItem(de);
-    return M ? JSON.parse(M) : [];
-  } catch {
-    return [];
-  }
-}
-function ve(M, f) {
-  try {
-    const e = ne().filter((t) => t.url !== M);
-    e.unshift({ url: M, alt: f || "", timestamp: Date.now() }), localStorage.setItem(de, JSON.stringify(e.slice(0, 24)));
-  } catch {
-  }
-}
-function Te(M) {
-  try {
-    const f = ne().filter((e) => e.url !== M);
-    localStorage.setItem(de, JSON.stringify(f));
-  } catch {
-  }
-}
-function Ie() {
-  try {
-    localStorage.removeItem(de);
-  } catch {
-  }
-}
-const ce = "scatterleaf_recent_images";
+], ce = "scatterleaf_recent_gifs";
 function le() {
   try {
     const M = localStorage.getItem(ce);
@@ -3588,27 +3559,56 @@ function le() {
     return [];
   }
 }
-function xe(M, f) {
+function _e(M, f) {
   try {
     const e = le().filter((t) => t.url !== M);
     e.unshift({ url: M, alt: f || "", timestamp: Date.now() }), localStorage.setItem(ce, JSON.stringify(e.slice(0, 24)));
   } catch {
   }
 }
-function Ae(M) {
+function Pe(M) {
   try {
     const f = le().filter((e) => e.url !== M);
     localStorage.setItem(ce, JSON.stringify(f));
   } catch {
   }
 }
-function Re() {
+function Be() {
   try {
     localStorage.removeItem(ce);
   } catch {
   }
 }
-const Pe = [
+const he = "scatterleaf_recent_images";
+function de() {
+  try {
+    const M = localStorage.getItem(he);
+    return M ? JSON.parse(M) : [];
+  } catch {
+    return [];
+  }
+}
+function ke(M, f) {
+  try {
+    const e = de().filter((t) => t.url !== M);
+    e.unshift({ url: M, alt: f || "", timestamp: Date.now() }), localStorage.setItem(he, JSON.stringify(e.slice(0, 24)));
+  } catch {
+  }
+}
+function je(M) {
+  try {
+    const f = de().filter((e) => e.url !== M);
+    localStorage.setItem(he, JSON.stringify(f));
+  } catch {
+  }
+}
+function ze() {
+  try {
+    localStorage.removeItem(he);
+  } catch {
+  }
+}
+const Oe = [
   "pornhub.com",
   "xvideos.com",
   "xnxx.com",
@@ -3637,7 +3637,7 @@ const Pe = [
   "bestgore.fun",
   "kaotic.com",
   "motherless.com"
-], Be = [
+], Ue = [
   "porn",
   "xxx",
   "hentai",
@@ -3662,7 +3662,7 @@ const Pe = [
   "escort",
   "sex"
 ];
-function V(M) {
+function X(M) {
   if (!M || typeof M != "string")
     return { safe: !1, reason: "URL inválida ou ausente." };
   const f = M.trim();
@@ -3677,14 +3677,14 @@ function V(M) {
   } catch {
     return { safe: !1, reason: "Formato de URL inválido." };
   }
-  const t = e.hostname.toLowerCase(), o = e.pathname.toLowerCase(), a = e.search.toLowerCase(), r = t + o + a;
-  for (const i of Pe)
+  const t = e.hostname.toLowerCase(), o = e.pathname.toLowerCase(), s = e.search.toLowerCase(), r = t + o + s;
+  for (const i of Oe)
     if (t === i || t.endsWith("." + i))
       return {
         safe: !1,
         reason: "Domínio bloqueado pelo filtro de conteúdo sensível / adulto."
       };
-  for (const i of Be)
+  for (const i of Ue)
     if (new RegExp(`(^|[-_/.?&=])${i}([-_/.?&=]|$)`, "i").test(r))
       return {
         safe: !1,
@@ -3692,7 +3692,7 @@ function V(M) {
       };
   return { safe: !0 };
 }
-class je extends HTMLElement {
+class He extends HTMLElement {
   constructor() {
     super();
     h(this, "_repo", "");
@@ -3786,13 +3786,13 @@ class je extends HTMLElement {
         }
       ) || (this._openMenuId = null, t = !0)), this._isCodePickerOpen && (o.some(
         (r) => {
-          var i, s;
-          return r instanceof HTMLElement && (((i = r.classList) == null ? void 0 : i.contains("sl-code-menu-wrapper")) || ((s = r.classList) == null ? void 0 : s.contains("sl-code-picker-popover")));
+          var i, a;
+          return r instanceof HTMLElement && (((i = r.classList) == null ? void 0 : i.contains("sl-code-menu-wrapper")) || ((a = r.classList) == null ? void 0 : a.contains("sl-code-picker-popover")));
         }
       ) || (this._isCodePickerOpen = !1, t = !0)), this._isEmojiPickerOpen && (o.some(
         (r) => {
-          var i, s;
-          return r instanceof HTMLElement && (((i = r.classList) == null ? void 0 : i.contains("sl-emoji-wrapper")) || ((s = r.classList) == null ? void 0 : s.contains("sl-emoji-popover")));
+          var i, a;
+          return r instanceof HTMLElement && (((i = r.classList) == null ? void 0 : i.contains("sl-emoji-wrapper")) || ((a = r.classList) == null ? void 0 : a.contains("sl-emoji-popover")));
         }
       ) || (this._isEmojiPickerOpen = !1, t = !0)), t && this.render();
     });
@@ -3939,8 +3939,8 @@ class je extends HTMLElement {
       else if (e === "input-position" && (o === "top" || o === "bottom"))
         this._inputPosition = o;
       else if (e === "page-size" && o) {
-        const a = parseInt(o, 10);
-        this._pageSize = !isNaN(a) && a > 0 ? a : 10, this._currentPage = 1;
+        const s = parseInt(o, 10);
+        this._pageSize = !isNaN(s) && s > 0 ? s : 10, this._currentPage = 1;
       } else e === "title" ? this._title = o || "" : e === "term" ? this._term = o || "" : e === "order" ? this._order = o === "newest" ? "newest" : "oldest" : e === "hide-reactions" || e === "reactions" ? this._hideReactions = this.hasAttribute("hide-reactions") || this.getAttribute("reactions") === "false" : e === "hide-skin-tone" || e === "skin-tone" ? this._hideSkinTone = this.hasAttribute("hide-skin-tone") || this.getAttribute("skin-tone") === "false" : e === "hide-sorting" || e === "sorting" ? this._hideSorting = this.hasAttribute("hide-sorting") || this.getAttribute("sorting") === "false" : e === "hide-code-scroll" || e === "code-scroll" ? this._hideCodeScroll = this.hasAttribute("hide-code-scroll") || this.getAttribute("code-scroll") === "false" : e === "hide-preview" || e === "preview" ? this._hidePreview = this.hasAttribute("hide-preview") || this.getAttribute("preview") === "false" : e === "hide-search" || e === "search" ? this._hideSearch = this.hasAttribute("hide-search") || this.getAttribute("search") === "false" : e === "enable-moderation" || e === "moderation" ? (this._enableModeration = this.hasAttribute("enable-moderation") || this.getAttribute("moderation") === "true", this.isConnected && this._enableModeration && this._isOwner() && this.loadModerationList()) : (e === "enable-images" || e === "images") && (this._enableImages = this.hasAttribute("enable-images") || this.getAttribute("images") === "true");
       this.render();
     }
@@ -3962,7 +3962,7 @@ class je extends HTMLElement {
   initSkinTonePreference() {
     if (!(typeof window > "u"))
       try {
-        const e = localStorage.getItem(fe);
+        const e = localStorage.getItem(we);
         e !== null && (this._selectedSkinTone = e);
       } catch (e) {
         console.warn("🍃 [ScatterLeaf] localStorage inacessível para skin tones:", e);
@@ -3971,7 +3971,7 @@ class je extends HTMLElement {
   saveSkinTonePreference(e) {
     if (this._selectedSkinTone = e, typeof window < "u")
       try {
-        localStorage.setItem(fe, e);
+        localStorage.setItem(we, e);
       } catch (t) {
         console.warn("🍃 [ScatterLeaf] Erro ao salvar skin tone em localStorage:", t);
       }
@@ -3999,31 +3999,31 @@ class je extends HTMLElement {
           if (!$ || $ === "transparent" || $ === "rgba(0, 0, 0, 0)")
             return null;
           if ($.startsWith("#")) {
-            let A = $.slice(1);
-            if ((A.length === 3 || A.length === 4) && (A = A.split("").map((F) => F + F).join("")), A.length >= 6)
+            let P = $.slice(1);
+            if ((P.length === 3 || P.length === 4) && (P = P.split("").map((D) => D + D).join("")), P.length >= 6)
               return {
-                r: parseInt(A.substring(0, 2), 16),
-                g: parseInt(A.substring(2, 4), 16),
-                b: parseInt(A.substring(4, 6), 16)
+                r: parseInt(P.substring(0, 2), 16),
+                g: parseInt(P.substring(2, 4), 16),
+                b: parseInt(P.substring(4, 6), 16)
               };
           }
-          const j = $.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/i);
-          return j ? {
-            r: parseInt(j[1], 10),
-            g: parseInt(j[2], 10),
-            b: parseInt(j[3], 10)
+          const B = $.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/i);
+          return B ? {
+            r: parseInt(B[1], 10),
+            g: parseInt(B[2], 10),
+            b: parseInt(B[3], 10)
           } : null;
-        }, t = window.getComputedStyle(document.documentElement), o = window.getComputedStyle(document.body), a = this.parentElement || document.body, r = window.getComputedStyle(a), i = ($) => {
-          for (const j of $) {
-            const A = r.getPropertyValue(j).trim() || o.getPropertyValue(j).trim() || t.getPropertyValue(j).trim();
-            if (A) {
-              const F = e(A);
-              if (F) return F;
+        }, t = window.getComputedStyle(document.documentElement), o = window.getComputedStyle(document.body), s = this.parentElement || document.body, r = window.getComputedStyle(s), i = ($) => {
+          for (const B of $) {
+            const P = r.getPropertyValue(B).trim() || o.getPropertyValue(B).trim() || t.getPropertyValue(B).trim();
+            if (P) {
+              const D = e(P);
+              if (D) return D;
             }
           }
           return null;
         };
-        let s = i([
+        let a = i([
           "--sl-bg",
           "--page-bg",
           "--color-bg",
@@ -4033,18 +4033,18 @@ class je extends HTMLElement {
           "--body-bg",
           "--bg"
         ]);
-        if (!s) {
+        if (!a) {
           let $ = this;
           for (; $; ) {
-            const j = window.getComputedStyle($).backgroundColor, A = e(j);
-            if (A) {
-              s = A;
+            const B = window.getComputedStyle($).backgroundColor, P = e(B);
+            if (P) {
+              a = P;
               break;
             }
             $ = $.parentElement;
           }
         }
-        s || (s = e(o.backgroundColor) || e(t.backgroundColor) || { r: 255, g: 255, b: 255 });
+        a || (a = e(o.backgroundColor) || e(t.backgroundColor) || { r: 255, g: 255, b: 255 });
         let d = i([
           "--sl-text",
           "--page-text",
@@ -4057,9 +4057,9 @@ class je extends HTMLElement {
         if (!d) {
           let $ = this;
           for (; $; ) {
-            const j = window.getComputedStyle($).color, A = e(j);
-            if (A) {
-              d = A;
+            const B = window.getComputedStyle($).color, P = e(B);
+            if (P) {
+              d = P;
               break;
             }
             $ = $.parentElement;
@@ -4078,16 +4078,16 @@ class je extends HTMLElement {
           const $ = document.querySelector("a");
           $ && (l = e(window.getComputedStyle($).color));
         }
-        const b = document.documentElement.classList.contains("dark") || document.body.classList.contains("dark") || document.documentElement.getAttribute("data-theme") === "dark" || document.body.getAttribute("data-theme") === "dark" || document.body.getAttribute("data-page-theme") === "midnight" || document.body.getAttribute("data-page-theme") === "slate" || document.body.getAttribute("data-page-theme") === "terminal", T = 0.2126 * s.r + 0.7152 * s.g + 0.0722 * s.b, g = b || T < 128;
+        const b = document.documentElement.classList.contains("dark") || document.body.classList.contains("dark") || document.documentElement.getAttribute("data-theme") === "dark" || document.body.getAttribute("data-theme") === "dark" || document.body.getAttribute("data-page-theme") === "midnight" || document.body.getAttribute("data-page-theme") === "slate" || document.body.getAttribute("data-page-theme") === "terminal", T = 0.2126 * a.r + 0.7152 * a.g + 0.0722 * a.b, g = b || T < 128;
         d || (d = g ? { r: 230, g: 237, b: 243 } : { r: 28, g: 25, b: 23 }), l || (l = g ? { r: 88, g: 166, b: 255 } : { r: 146, g: 64, b: 14 });
-        let k, w, _, L, x, I, B;
+        let k, w, _, L, y, I, j;
         if (g) {
-          const $ = Math.min(255, Math.round(s.r + 15)), j = Math.min(255, Math.round(s.g + 18)), A = Math.min(255, Math.round(s.b + 22));
-          k = `rgb(${$}, ${j}, ${A})`, w = "rgba(0, 0, 0, 0.35)", _ = "rgba(255, 255, 255, 0.12)", L = `rgba(${d.r}, ${d.g}, ${d.b}, 0.62)`, x = `rgb(${Math.min(255, l.r + 30)}, ${Math.min(255, l.g + 30)}, ${Math.min(255, l.b + 30)})`, I = `rgba(${l.r}, ${l.g}, ${l.b}, 0.16)`, B = `rgba(${l.r}, ${l.g}, ${l.b}, 0.35)`;
+          const $ = Math.min(255, Math.round(a.r + 15)), B = Math.min(255, Math.round(a.g + 18)), P = Math.min(255, Math.round(a.b + 22));
+          k = `rgb(${$}, ${B}, ${P})`, w = "rgba(0, 0, 0, 0.35)", _ = "rgba(255, 255, 255, 0.12)", L = `rgba(${d.r}, ${d.g}, ${d.b}, 0.62)`, y = `rgb(${Math.min(255, l.r + 30)}, ${Math.min(255, l.g + 30)}, ${Math.min(255, l.b + 30)})`, I = `rgba(${l.r}, ${l.g}, ${l.b}, 0.16)`, j = `rgba(${l.r}, ${l.g}, ${l.b}, 0.35)`;
         } else
-          k = "rgba(255, 255, 255, 0.96)", w = "rgba(0, 0, 0, 0.035)", _ = "rgba(0, 0, 0, 0.12)", L = `rgba(${d.r}, ${d.g}, ${d.b}, 0.65)`, x = `rgb(${l.r}, ${l.g}, ${l.b})`, I = `rgba(${l.r}, ${l.g}, ${l.b}, 0.12)`, B = `rgba(${l.r}, ${l.g}, ${l.b}, 0.28)`;
-        const D = `rgb(${l.r}, ${l.g}, ${l.b})`;
-        this.style.setProperty("--sl-bg", `rgb(${s.r}, ${s.g}, ${s.b})`), this.style.setProperty("--sl-surface", k), this.style.setProperty("--sl-tab-bg", w), this.style.setProperty("--sl-border", _), this.style.setProperty("--sl-text", `rgb(${d.r}, ${d.g}, ${d.b})`), this.style.setProperty("--sl-text-muted", L), this.style.setProperty("--sl-accent", D), this.style.setProperty("--sl-accent-hover", D), this.style.setProperty("--sl-mention-color", x), this.style.setProperty("--sl-mention-bg", I), this.style.setProperty("--sl-mention-border", B), g ? (this.style.setProperty("--sl-btn-primary-bg", "#1f6feb"), this.style.setProperty("--sl-btn-primary-hover", "#388bfd")) : (this.style.setProperty("--sl-btn-primary-bg", D), this.style.setProperty("--sl-btn-primary-hover", D));
+          k = "rgba(255, 255, 255, 0.96)", w = "rgba(0, 0, 0, 0.035)", _ = "rgba(0, 0, 0, 0.12)", L = `rgba(${d.r}, ${d.g}, ${d.b}, 0.65)`, y = `rgb(${l.r}, ${l.g}, ${l.b})`, I = `rgba(${l.r}, ${l.g}, ${l.b}, 0.12)`, j = `rgba(${l.r}, ${l.g}, ${l.b}, 0.28)`;
+        const H = `rgb(${l.r}, ${l.g}, ${l.b})`;
+        this.style.setProperty("--sl-bg", `rgb(${a.r}, ${a.g}, ${a.b})`), this.style.setProperty("--sl-surface", k), this.style.setProperty("--sl-tab-bg", w), this.style.setProperty("--sl-border", _), this.style.setProperty("--sl-text", `rgb(${d.r}, ${d.g}, ${d.b})`), this.style.setProperty("--sl-text-muted", L), this.style.setProperty("--sl-accent", H), this.style.setProperty("--sl-accent-hover", H), this.style.setProperty("--sl-mention-color", y), this.style.setProperty("--sl-mention-bg", I), this.style.setProperty("--sl-mention-border", j), g ? (this.style.setProperty("--sl-btn-primary-bg", "#1f6feb"), this.style.setProperty("--sl-btn-primary-hover", "#388bfd")) : (this.style.setProperty("--sl-btn-primary-bg", H), this.style.setProperty("--sl-btn-primary-hover", H));
       } catch (e) {
         console.warn("🍃 [ScatterLeaf] Erro ao auto-computar paleta do tema:", e);
       }
@@ -4123,7 +4123,7 @@ class je extends HTMLElement {
     ].forEach((t) => this.style.removeProperty(t));
   }
   initBrokerClient() {
-    this._broker ? this._brokerClient = new $e(this._broker, () => this._authToken) : (this._brokerClient = null, this._isBrokerConnected = !1);
+    this._broker ? this._brokerClient = new Me(this._broker, () => this._authToken) : (this._brokerClient = null, this._isBrokerConnected = !1);
   }
   /**
    * Recupera sessão de autenticação prévia salva no sessionStorage
@@ -4169,10 +4169,10 @@ class je extends HTMLElement {
     }
     try {
       this._isLoading = !0, this.render();
-      const t = window.location.origin + window.location.pathname, o = await this._brokerClient.exchangeOAuthCode(e, t), a = await this._brokerClient.fetchGitHubUserProfile(o);
-      this._authToken = o, this._currentUser = a, sessionStorage.setItem("scatterleaf_token", o), sessionStorage.setItem("scatterleaf_user", JSON.stringify(a)), await this.loadComments(), this._enableModeration && this._isOwner() && await this.loadModerationList(), this._isLoading = !1, this.render(), this.dispatchEvent(
+      const t = window.location.origin + window.location.pathname, o = await this._brokerClient.exchangeOAuthCode(e, t), s = await this._brokerClient.fetchGitHubUserProfile(o);
+      this._authToken = o, this._currentUser = s, sessionStorage.setItem("scatterleaf_token", o), sessionStorage.setItem("scatterleaf_user", JSON.stringify(s)), await this.loadComments(), this._enableModeration && this._isOwner() && await this.loadModerationList(), this._isLoading = !1, this.render(), this.dispatchEvent(
         new CustomEvent("scatterleaf-login", {
-          detail: { user: a },
+          detail: { user: s },
           bubbles: !0,
           composed: !0
         })
@@ -4205,11 +4205,11 @@ Do you want to simulate a local test login (@demo-reader)?`
       }
       return;
     }
-    const e = encodeURIComponent(window.location.origin + window.location.pathname), t = encodeURIComponent("read:user"), o = `https://github.com/login/oauth/authorize?client_id=${this._clientId}&scope=${t}&redirect_uri=${e}`, a = 600, r = 700, i = window.screen.width / 2 - a / 2, s = window.screen.height / 2 - r / 2;
+    const e = encodeURIComponent(window.location.origin + window.location.pathname), t = encodeURIComponent("read:user"), o = `https://github.com/login/oauth/authorize?client_id=${this._clientId}&scope=${t}&redirect_uri=${e}`, s = 600, r = 700, i = window.screen.width / 2 - s / 2, a = window.screen.height / 2 - r / 2;
     window.open(
       o,
       "scatterleaf-oauth-popup",
-      `width=${a},height=${r},top=${s},left=${i},scrollbars=yes,status=yes`
+      `width=${s},height=${r},top=${a},left=${i},scrollbars=yes,status=yes`
     );
   }
   /**
@@ -4227,7 +4227,7 @@ Do you want to simulate a local test login (@demo-reader)?`
    * Identifica se um erro lançado é decorrente de falha de autenticação/token expirado
    */
   isAuthError(e) {
-    return e instanceof pe ? !0 : e instanceof Error ? /bad credentials|unauthorized|sessão expirada|http 401/i.test(e.message) : !1;
+    return e instanceof be ? !0 : e instanceof Error ? /bad credentials|unauthorized|sessão expirada|http 401/i.test(e.message) : !1;
   }
   /**
    * Trata expiração de token (HTTP 401 / Bad credentials).
@@ -4331,8 +4331,8 @@ Do you want to simulate a local test login (@demo-reader)?`
       if (this._brokerClient || this.initBrokerClient(), this._brokerClient) {
         const t = await this._brokerClient.discover(this._repo, this._category);
         this._repositoryId = t.repositoryId, this._categoryId = ((e = t.defaultCategory) == null ? void 0 : e.id) || null;
-        const o = this.getCurrentTerm(), a = await this._brokerClient.fetchDiscussions(this._repo, o);
-        a.discussion && (this._discussionId = a.discussion.id), this._comments = (a.comments || []).map((r) => ({
+        const o = this.getCurrentTerm(), s = await this._brokerClient.fetchDiscussions(this._repo, o);
+        s.discussion && (this._discussionId = s.discussion.id), this._comments = (s.comments || []).map((r) => ({
           ...r,
           originalLang: r.originalLang || this.detectTextLanguage(r.body),
           replies: (r.replies || []).map((i) => ({
@@ -4350,8 +4350,8 @@ Do you want to simulate a local test login (@demo-reader)?`
     }
   }
   loadMockComments() {
-    const e = this.currentLang, t = e === "pt", o = e === "es", a = this.getCurrentTerm().toLowerCase();
-    if (a.includes("obsidian")) {
+    const e = this.currentLang, t = e === "pt", o = e === "es", s = this.getCurrentTerm().toLowerCase();
+    if (s.includes("obsidian")) {
       this._comments = [
         {
           id: "obs-1",
@@ -4416,7 +4416,7 @@ Do you want to simulate a local test login (@demo-reader)?`
       ];
       return;
     }
-    if (a.includes("writing-technical-articles")) {
+    if (s.includes("writing-technical-articles")) {
       this._comments = [
         {
           id: "write-1",
@@ -4694,17 +4694,17 @@ Do you want to simulate a local test login (@demo-reader)?`
     const t = [], o = "SLCODEBLOCKTOKEN";
     let r = e.replace(
       /```([a-zA-Z0-9_-]*)\r?\n?([\s\S]*?)```/g,
-      (i, s, d) => {
-        const l = (s || "code").trim().toLowerCase(), g = d.replace(/^\n+|\n+$/g, "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").split(/\r?\n/), k = g.map(
-          (N, W) => `<span class="sl-code-line"><span class="sl-line-num">${W + 1}</span><span class="sl-line-code">${N || " "}</span></span>`
-        ).join(""), w = g.length > 20, _ = this.currentLang === "pt", L = _ ? "Copiar" : "Copy", x = _ ? "Copiar código" : "Copy code", I = _ ? "Rolar para cima" : "Scroll up", B = _ ? "Rolar para baixo" : "Scroll down", D = w ? `${l} · ${g.length} ${_ ? "linhas" : "lines"}` : l, $ = _ ? `Mostrar todas as ${g.length} linhas` : `Show all ${g.length} lines`, j = w && !this._hideCodeScroll ? `
+      (i, a, d) => {
+        const l = (a || "code").trim().toLowerCase(), g = d.replace(/^\n+|\n+$/g, "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").split(/\r?\n/), k = g.map(
+          (N, J) => `<span class="sl-code-line"><span class="sl-line-num">${J + 1}</span><span class="sl-line-code">${N || " "}</span></span>`
+        ).join(""), w = g.length > 20, _ = this.currentLang === "pt", L = _ ? "Copiar" : "Copy", y = _ ? "Copiar código" : "Copy code", I = _ ? "Rolar para cima" : "Scroll up", j = _ ? "Rolar para baixo" : "Scroll down", H = w ? `${l} · ${g.length} ${_ ? "linhas" : "lines"}` : l, $ = _ ? `Mostrar todas as ${g.length} linhas` : `Show all ${g.length} lines`, B = w && !this._hideCodeScroll ? `
             <div class="sl-code-scroll-controls" aria-label="${_ ? "Navegação do código" : "Code navigation"}">
               <button type="button" class="sl-code-scroll-btn sl-scroll-up" title="${I}" aria-label="${I}">
                 <svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor">
                   <path d="M8 3.5a.75.75 0 0 1 .53.22l4.5 4.5a.75.75 0 0 1-1.06 1.06L8 5.31 4.03 9.28a.75.75 0 0 1-1.06-1.06l4.5-4.5A.75.75 0 0 1 8 3.5Z"/>
                 </svg>
               </button>
-              <button type="button" class="sl-code-scroll-btn sl-scroll-down" title="${B}" aria-label="${B}">
+              <button type="button" class="sl-code-scroll-btn sl-scroll-down" title="${j}" aria-label="${j}">
                 <svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor">
                   <path d="M8 12.5a.75.75 0 0 1-.53-.22l-4.5-4.5a.75.75 0 0 1 1.06-1.06L8 10.69l3.97-3.97a.75.75 0 1 1 1.06 1.06l-4.5 4.5a.75.75 0 0 1-.53.22Z"/>
                 </svg>
@@ -4716,11 +4716,11 @@ Do you want to simulate a local test login (@demo-reader)?`
                 <span class="sl-expand-text">${$}</span>
               </button>
             </div>
-          ` : "", A = `
+          ` : "", P = `
           <div class="sl-code-block ${w ? "sl-code-block-long sl-collapsed" : ""}" data-lang="${l}">
             <div class="sl-code-header">
-              <span class="sl-code-badge">${D}</span>
-              <button type="button" class="sl-code-copy-btn" title="${x}" aria-label="${x}">
+              <span class="sl-code-badge">${H}</span>
+              <button type="button" class="sl-code-copy-btn" title="${y}" aria-label="${y}">
                 <svg class="sl-copy-icon" viewBox="0 0 16 16" width="14" height="14" fill="currentColor">
                   <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path>
                   <path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
@@ -4729,17 +4729,17 @@ Do you want to simulate a local test login (@demo-reader)?`
               </button>
             </div>
             <pre class="sl-code-pre"><code class="sl-code-body">${k}</code></pre>
-            ${j}
+            ${B}
           </div>
-        `.trim(), F = t.length;
-        return t.push(A), `${o}${F}ENDTOKEN`;
+        `.trim(), D = t.length;
+        return t.push(P), `${o}${D}ENDTOKEN`;
       }
     ).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     return r = r.replace(/`([^`]+)`/g, '<code class="sl-inline-code">$1</code>'), r = r.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>"), r = r.replace(/__([^_]+)__/g, "<strong>$1</strong>"), r = r.replace(/\*([^*]+)\*/g, "<em>$1</em>"), r = r.replace(/_([^_]+)_/g, "<em>$1</em>"), r = r.replace(/~~([^~]+)~~/g, "<del>$1</del>"), r = r.replace(
       /!\[([^\]]*)\]\(((?:https?:\/\/|data:image\/)[^\s)]+)\)/g,
-      (i, s, d) => {
-        const l = V(d);
-        return l.safe ? `<img src="${d}" alt="${s}" class="sl-embedded-img" loading="lazy" />` : `<span class="sl-blocked-media-notice" title="${l.reason || "Conteúdo potencialmente sensível"}">⚠️ [Mídia bloqueada: filtro de conteúdo sensível / link não seguro]</span>`;
+      (i, a, d) => {
+        const l = X(d);
+        return l.safe ? `<img src="${d}" alt="${a}" class="sl-embedded-img" loading="lazy" />` : `<span class="sl-blocked-media-notice" title="${l.reason || "Conteúdo potencialmente sensível"}">⚠️ [Mídia bloqueada: filtro de conteúdo sensível / link não seguro]</span>`;
       }
     ), r = r.replace(
       /\[([^\]]+)\]\(([^)]+)\)/g,
@@ -4750,8 +4750,8 @@ Do you want to simulate a local test login (@demo-reader)?`
     ), r = r.replace(
       /@([a-zA-Z0-9-_]+)/g,
       '<a href="https://github.com/$1" target="_blank" rel="noopener noreferrer" class="sl-mention">@$1</a>'
-    ), r = r.replace(/\n\n/g, "</p><p>"), r = r.replace(/\n/g, "<br />"), t.forEach((i, s) => {
-      const d = `${o}${s}ENDTOKEN`;
+    ), r = r.replace(/\n\n/g, "</p><p>"), r = r.replace(/\n/g, "<br />"), t.forEach((i, a) => {
+      const d = `${o}${a}ENDTOKEN`;
       r = r.replace(new RegExp(`<p>\\s*${d}\\s*<\\/p>`, "g"), i), r = r.replace(new RegExp(d, "g"), i);
     }), `<p>${r}</p>`;
   }
@@ -4765,49 +4765,49 @@ Do you want to simulate a local test login (@demo-reader)?`
     const t = new Date(e);
     if (isNaN(t.getTime()))
       return { relative: e, full: e };
-    const o = typeof navigator < "u" && navigator.language ? navigator.language : this.currentLang === "pt" ? "pt-BR" : "en-US", a = new Intl.DateTimeFormat(o, {
+    const o = typeof navigator < "u" && navigator.language ? navigator.language : this.currentLang === "pt" ? "pt-BR" : "en-US", s = new Intl.DateTimeFormat(o, {
       dateStyle: "medium",
       timeStyle: "short"
-    }).format(t), r = Math.floor((Date.now() - t.getTime()) / 1e3), i = this.currentLang, s = i === "pt", d = i === "es";
+    }).format(t), r = Math.floor((Date.now() - t.getTime()) / 1e3), i = this.currentLang, a = i === "pt", d = i === "es";
     if (r < 60)
       return {
-        relative: s ? "agora mesmo" : d ? "ahora mismo" : "just now",
-        full: a
+        relative: a ? "agora mesmo" : d ? "ahora mismo" : "just now",
+        full: s
       };
     if (r < 3600) {
       const b = Math.floor(r / 60);
       return {
-        relative: s ? `há ${b} ${b === 1 ? "minuto" : "minutos"}` : d ? `hace ${b} ${b === 1 ? "minuto" : "minutos"}` : `${b} ${b === 1 ? "minute" : "minutes"} ago`,
-        full: a
+        relative: a ? `há ${b} ${b === 1 ? "minuto" : "minutos"}` : d ? `hace ${b} ${b === 1 ? "minuto" : "minutos"}` : `${b} ${b === 1 ? "minute" : "minutes"} ago`,
+        full: s
       };
     }
     if (r < 86400) {
       const b = Math.floor(r / 3600);
       return {
-        relative: s ? `há ${b} ${b === 1 ? "hora" : "horas"}` : d ? `hace ${b} ${b === 1 ? "hora" : "horas"}` : `${b} ${b === 1 ? "hour" : "hours"} ago`,
-        full: a
+        relative: a ? `há ${b} ${b === 1 ? "hora" : "horas"}` : d ? `hace ${b} ${b === 1 ? "hora" : "horas"}` : `${b} ${b === 1 ? "hour" : "hours"} ago`,
+        full: s
       };
     }
     if (r < 604800) {
       const b = Math.floor(r / 86400);
       return {
-        relative: s ? `há ${b} ${b === 1 ? "dia" : "dias"}` : d ? `hace ${b} ${b === 1 ? "día" : "días"}` : `${b} ${b === 1 ? "day" : "days"} ago`,
-        full: a
+        relative: a ? `há ${b} ${b === 1 ? "dia" : "dias"}` : d ? `hace ${b} ${b === 1 ? "día" : "días"}` : `${b} ${b === 1 ? "day" : "days"} ago`,
+        full: s
       };
     }
     return { relative: new Intl.DateTimeFormat(o, {
       day: "2-digit",
       month: "2-digit",
       year: "numeric"
-    }).format(t), full: a };
+    }).format(t), full: s };
   }
   /**
    * Detector heurístico ultrarrápido de idioma do texto do comentário (para voz poliglota e tradução)
    */
   detectTextLanguage(e) {
     if (!e || e.trim().length === 0) return this._lang;
-    const t = e.toLowerCase().replace(/[*_`#]/g, "").replace(/https?:\/\/\S+/g, "").replace(/@\w+/g, ""), o = (t.match(/\b(o|a|os|as|de|do|da|em|um|uma|para|com|não|que|isso|este|esta|muito|bom|bem|projeto|comentário|genial|manteiga|artigo|leitura)\b/g) || []).length * 2 + (t.match(/[ãõéêáàçíú]/g) || []).length * 3, a = (t.match(/\b(the|and|this|is|that|with|for|you|have|not|but|from|are|was|they|will|all|would|there|what|out|about|who|get|which|go|me|when|make|can|like|time|no|just|know|take|people|into|year|your|good|some|could|them|see|other|than|then|now|look|only|come|its|over|think|also|back|after|use|two|how|our|work|first|well|way|even|new|want|because|any|these|give|day|most|us|welcome|native|having|scroll|stutter)\b/g) || []).length * 2, r = (t.match(/\b(el|la|los|las|de|del|en|un|una|por|con|para|esto|este|esta|muy|bien|es|son|pero|como|más|sus|le|ya|o|fue|ha|sí|porque|cuando|sin|sobre|ser|tiene|también|me|hasta|hay|donde|quien|desde|todo|nos|durante|todos|uno|les|ni|contra|otros|ese|eso|ante|ellos|mí|antes|algunos|qué|unos|yo|otro|otras|otra|él|tanto|esa|estos|mucho|quienes|nada|muchos|cual|poco|ella|estar|estas|algunas|algo|nosotros|queda|excelente|artículos)\b/g) || []).length * 2 + (t.match(/[¿¡ñ]/g) || []).length * 4, i = (t.match(/\b(le|la|les|de|du|des|en|et|un|une|pour|avec|dans|que|qui|est|sont|sur|ce|cette|ces|mais|ou|donc|or|ni|car|très|bien)\b/g) || []).length * 2 + (t.match(/[œçèêàâôûëï]/g) || []).length * 3, s = Math.max(o, a, r, i);
-    return s < 2 ? this.currentLang : s === o ? "pt" : s === a ? "en" : s === r ? "es" : s === i ? "fr" : this.currentLang;
+    const t = e.toLowerCase().replace(/[*_`#]/g, "").replace(/https?:\/\/\S+/g, "").replace(/@\w+/g, ""), o = (t.match(/\b(o|a|os|as|de|do|da|em|um|uma|para|com|não|que|isso|este|esta|muito|bom|bem|projeto|comentário|genial|manteiga|artigo|leitura)\b/g) || []).length * 2 + (t.match(/[ãõéêáàçíú]/g) || []).length * 3, s = (t.match(/\b(the|and|this|is|that|with|for|you|have|not|but|from|are|was|they|will|all|would|there|what|out|about|who|get|which|go|me|when|make|can|like|time|no|just|know|take|people|into|year|your|good|some|could|them|see|other|than|then|now|look|only|come|its|over|think|also|back|after|use|two|how|our|work|first|well|way|even|new|want|because|any|these|give|day|most|us|welcome|native|having|scroll|stutter)\b/g) || []).length * 2, r = (t.match(/\b(el|la|los|las|de|del|en|un|una|por|con|para|esto|este|esta|muy|bien|es|son|pero|como|más|sus|le|ya|o|fue|ha|sí|porque|cuando|sin|sobre|ser|tiene|también|me|hasta|hay|donde|quien|desde|todo|nos|durante|todos|uno|les|ni|contra|otros|ese|eso|ante|ellos|mí|antes|algunos|qué|unos|yo|otro|otras|otra|él|tanto|esa|estos|mucho|quienes|nada|muchos|cual|poco|ella|estar|estas|algunas|algo|nosotros|queda|excelente|artículos)\b/g) || []).length * 2 + (t.match(/[¿¡ñ]/g) || []).length * 4, i = (t.match(/\b(le|la|les|de|du|des|en|et|un|une|pour|avec|dans|que|qui|est|sont|sur|ce|cette|ces|mais|ou|donc|or|ni|car|très|bien)\b/g) || []).length * 2 + (t.match(/[œçèêàâôûëï]/g) || []).length * 3, a = Math.max(o, s, r, i);
+    return a < 2 ? this.currentLang : a === o ? "pt" : a === s ? "en" : a === r ? "es" : a === i ? "fr" : this.currentLang;
   }
   getVisitorLang() {
     return this.currentLang;
@@ -4847,7 +4847,7 @@ Do you want to simulate a local test login (@demo-reader)?`
       o.isShowingTranslation = !0, this.render();
       return;
     }
-    const a = this.currentLang, r = a === "pt", s = r ? "pt" : a === "es" ? "es" : "en", b = r ? {
+    const s = this.currentLang, r = s === "pt", a = r ? "pt" : s === "es" ? "es" : "en", b = r ? {
       1: "Welcome to **ScatterLeaf**! 🍃 This is a native comment rendered directly via Shadow DOM, with zero iframes and Markdown support.",
       "1-1": "@vault-author Isso é genial! Ter Shadow DOM nativo deixa a rolagem suave como manteiga, sem nenhum engasgo de iframe.",
       "1-2": "@sarah-eng Exactly! Page scrolling does not suffer from visual jumping caused by iframe resizing.",
@@ -4865,7 +4865,7 @@ Do you want to simulate a local test login (@demo-reader)?`
     this._isTranslatingId = e, this.render();
     try {
       const T = o.originalLang || this.detectTextLanguage(o.body), g = o.body.replace(/[#*`_~]/g, ""), w = await (await fetch(
-        `https://api.mymemory.translated.net/get?q=${encodeURIComponent(g.slice(0, 500))}&langpair=${T}|${s}`
+        `https://api.mymemory.translated.net/get?q=${encodeURIComponent(g.slice(0, 500))}&langpair=${T}|${a}`
       )).json();
       w && w.responseData && w.responseData.translatedText ? o.translatedBody = w.responseData.translatedText : o.translatedBody = r ? `[Tradução]: ${o.body}` : `[Translation]: ${o.body}`;
     } catch (T) {
@@ -4910,16 +4910,16 @@ Do you want to simulate a local test login (@demo-reader)?`
     if (!this.shadowRoot) return;
     const e = this._comments.reduce(
       (r, i) => {
-        var s;
-        return r + 1 + (((s = i.replies) == null ? void 0 : s.length) || 0);
+        var a;
+        return r + 1 + (((a = i.replies) == null ? void 0 : a.length) || 0);
       },
       0
-    ), t = this.currentLang === "pt" ? "Comentários" : "Comments", o = this.renderComposer(), a = this._isLoading ? `<div style="text-align: center; padding: 2.5rem; color: var(--sl-text-muted);">
+    ), t = this.currentLang === "pt" ? "Comentários" : "Comments", o = this.renderComposer(), s = this._isLoading ? `<div style="text-align: center; padding: 2.5rem; color: var(--sl-text-muted);">
            <span style="font-size: 1.5rem; display: block; margin-bottom: 0.5rem; animation: spin 1s infinite linear;">🍃</span>
            ${this.currentLang === "pt" ? "Carregando notas na brisa..." : "Floating notes in the breeze..."}
          </div>` : this.renderCommentsList();
     this.shadowRoot.innerHTML = `
-      <style>${Ee}</style>
+      <style>${Se}</style>
       <div class="sl-container" part="container">
         <header class="sl-header" part="header">
           <div class="sl-header-left">
@@ -4942,7 +4942,7 @@ Do you want to simulate a local test login (@demo-reader)?`
         ${this._inputPosition === "top" ? o : ""}
         ${this.renderCommentsToolbar()}
         ${this.renderModerationBar()}
-        ${a}
+        ${s}
         ${this._inputPosition === "bottom" ? o : ""}
       </div>
       ${this._isMediaModalOpen ? this.renderMediaModal() : ""}
@@ -4954,7 +4954,7 @@ Do you want to simulate a local test login (@demo-reader)?`
    * Renderiza o Modal Seguro de Inserção de GIFs (Anti-NSFW)
    */
   renderMediaModal() {
-    const e = this.currentLang === "pt", t = e ? "Inserir GIF" : "Insert GIF", o = e ? "Filtro Anti-NSFW ativo: URLs passam por validação estrita de segurança e integridade." : "Anti-NSFW filter active: URLs undergo strict security and integrity checks.", a = e ? "URL do GIF (HTTPS obrigatório):" : "GIF URL (Strict HTTPS):", r = e ? "Descrição do GIF / Alt text (Opcional):" : "GIF description / Alt text (Optional):", i = e ? "Cancelar" : "Cancel", s = e ? "Inserir GIF" : "Insert GIF", d = ne();
+    const e = this.currentLang === "pt", t = e ? "Inserir GIF" : "Insert GIF", o = e ? "Filtro Anti-NSFW ativo: URLs passam por validação estrita de segurança e integridade." : "Anti-NSFW filter active: URLs undergo strict security and integrity checks.", s = e ? "URL do GIF (HTTPS obrigatório):" : "GIF URL (Strict HTTPS):", r = e ? "Descrição do GIF / Alt text (Opcional):" : "GIF description / Alt text (Optional):", i = e ? "Cancelar" : "Cancel", a = e ? "Inserir GIF" : "Insert GIF", d = le();
     return `
       <div class="sl-modal-backdrop" id="media-modal-backdrop">
         <div class="sl-modal-box" role="dialog" aria-modal="true" aria-labelledby="sl-media-modal-title">
@@ -4973,7 +4973,7 @@ Do you want to simulate a local test login (@demo-reader)?`
 
             <!-- Inserção por URL segura -->
             <div class="sl-modal-input-group">
-              <label class="sl-modal-label" for="media-url-input">${a}</label>
+              <label class="sl-modal-label" for="media-url-input">${s}</label>
               <input
                 type="url"
                 class="sl-modal-input"
@@ -5059,7 +5059,7 @@ Do you want to simulate a local test login (@demo-reader)?`
             </button>
             <button type="button" class="sl-btn sl-btn-primary" id="btn-confirm-media-modal">
               <span>🖼️</span>
-              <span>${s}</span>
+              <span>${a}</span>
             </button>
           </div>
         </div>
@@ -5070,7 +5070,7 @@ Do you want to simulate a local test login (@demo-reader)?`
    * Renderiza o Modal Seguro de Inserção de Imagens (Apenas via URL HTTPS)
    */
   renderImageModal() {
-    const e = this.currentLang === "pt", t = e ? "Inserir imagem" : "Insert image", o = e ? "Filtro Anti-NSFW ativo: Insira um link direto HTTPS seguro da sua imagem (Imgur, Cloudinary, GitHub, etc.)." : "Anti-NSFW filter active: Enter a secure HTTPS direct link to your image (Imgur, Cloudinary, GitHub, etc.).", a = e ? "URL da Imagem (HTTPS obrigatório):" : "Image URL (Strict HTTPS):", r = e ? "Descrição da Imagem / Alt text (Opcional):" : "Image description / Alt text (Optional):", i = e ? "Cancelar" : "Cancel", s = e ? "Inserir Imagem" : "Insert Image", d = le();
+    const e = this.currentLang === "pt", t = e ? "Inserir imagem" : "Insert image", o = e ? "Filtro Anti-NSFW ativo: Insira um link direto HTTPS seguro da sua imagem (Imgur, Cloudinary, GitHub, etc.)." : "Anti-NSFW filter active: Enter a secure HTTPS direct link to your image (Imgur, Cloudinary, GitHub, etc.).", s = e ? "URL da Imagem (HTTPS obrigatório):" : "Image URL (Strict HTTPS):", r = e ? "Descrição da Imagem / Alt text (Opcional):" : "Image description / Alt text (Optional):", i = e ? "Cancelar" : "Cancel", a = e ? "Inserir Imagem" : "Insert Image", d = de();
     return `
       <div class="sl-modal-backdrop" id="image-modal-backdrop">
         <div class="sl-modal-box" role="dialog" aria-modal="true" aria-labelledby="sl-image-modal-title">
@@ -5089,7 +5089,7 @@ Do you want to simulate a local test login (@demo-reader)?`
 
             <!-- Inserção por URL segura -->
             <div class="sl-modal-input-group">
-              <label class="sl-modal-label" for="image-url-input">${a}</label>
+              <label class="sl-modal-label" for="image-url-input">${s}</label>
               <input
                 type="url"
                 class="sl-modal-input"
@@ -5175,7 +5175,7 @@ Do you want to simulate a local test login (@demo-reader)?`
             </button>
             <button type="button" class="sl-btn sl-btn-primary" id="btn-confirm-image-modal">
               <span>📷</span>
-              <span>${s}</span>
+              <span>${a}</span>
             </button>
           </div>
         </div>
@@ -5186,7 +5186,7 @@ Do you want to simulate a local test login (@demo-reader)?`
    * Renderiza a visualização imersiva do Mini-Lightbox Nativo (Zoom & Pan)
    */
   renderLightbox() {
-    const e = this.currentLang === "pt", t = e ? "Aproximar zoom (+)" : "Zoom in (+)", o = e ? "Afastar zoom (-)" : "Zoom out (-)", a = e ? "Redefinir zoom (1:1)" : "Reset zoom (1:1)", r = e ? "Fechar visualização (Esc)" : "Close view (Esc)", i = Math.round(this._lightboxScale * 100);
+    const e = this.currentLang === "pt", t = e ? "Aproximar zoom (+)" : "Zoom in (+)", o = e ? "Afastar zoom (-)" : "Zoom out (-)", s = e ? "Redefinir zoom (1:1)" : "Reset zoom (1:1)", r = e ? "Fechar visualização (Esc)" : "Close view (Esc)", i = Math.round(this._lightboxScale * 100);
     return `
       <div class="sl-lightbox-backdrop" id="sl-lightbox-backdrop" role="dialog" aria-modal="true" aria-label="${e ? "Visualizador de Imagem" : "Image Viewer"}">
         <div class="sl-lightbox-toolbar">
@@ -5199,7 +5199,7 @@ Do you want to simulate a local test login (@demo-reader)?`
             <button type="button" class="sl-lightbox-btn" id="sl-lightbox-zoom-in" title="${t}" aria-label="${t}">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
             </button>
-            <button type="button" class="sl-lightbox-btn" id="sl-lightbox-reset" title="${a}" aria-label="${a}">
+            <button type="button" class="sl-lightbox-btn" id="sl-lightbox-reset" title="${s}" aria-label="${s}">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
             </button>
             <button type="button" class="sl-lightbox-btn sl-lightbox-btn-close" id="sl-lightbox-close" title="${r}" aria-label="${r}">
@@ -5237,8 +5237,8 @@ Do you want to simulate a local test login (@demo-reader)?`
     this._lightboxScale = 1, this._lightboxTranslateX = 0, this._lightboxTranslateY = 0, this.updateLightboxTransform();
   }
   updateLightboxTransform(e = !1) {
-    var a, r;
-    const t = (a = this.shadowRoot) == null ? void 0 : a.getElementById("sl-lightbox-img"), o = (r = this.shadowRoot) == null ? void 0 : r.getElementById("sl-lightbox-badge");
+    var s, r;
+    const t = (s = this.shadowRoot) == null ? void 0 : s.getElementById("sl-lightbox-img"), o = (r = this.shadowRoot) == null ? void 0 : r.getElementById("sl-lightbox-badge");
     t && (e ? t.classList.add("sl-panning") : t.classList.remove("sl-panning"), this._lightboxScale > 1.05 ? t.classList.add("sl-zoomed") : t.classList.remove("sl-zoomed"), t.style.transform = `translate(${this._lightboxTranslateX}px, ${this._lightboxTranslateY}px) scale(${this._lightboxScale})`, o && (o.textContent = `${Math.round(this._lightboxScale * 100)}%`));
   }
   /**
@@ -5250,7 +5250,7 @@ Do you want to simulate a local test login (@demo-reader)?`
       <div class="sl-code-picker-popover" role="menu" aria-label="${t}">
         <div class="sl-code-picker-title">${t}</div>
         <div class="sl-code-lang-grid">
-          ${Me.map(
+          ${Re.map(
       (o) => `
             <button type="button" class="sl-code-lang-btn" data-lang="${o.id}" role="menuitem" title="${o.name}">
               <span class="sl-code-lang-name">${o.name}</span>
@@ -5267,34 +5267,34 @@ Do you want to simulate a local test login (@demo-reader)?`
    * Suporta seleção prévia do usuário ou template com placeholder pré-selecionado
    */
   insertCodeBlock(e = "typescript") {
-    var I, B, D, $;
+    var I, j, H, $;
     const t = (I = this.shadowRoot) == null ? void 0 : I.getElementById("composer-textarea");
     if (!t) return;
-    const o = ((B = this._savedComposerSelection) == null ? void 0 : B.start) ?? t.selectionStart ?? this._composerText.length, a = ((D = this._savedComposerSelection) == null ? void 0 : D.end) ?? t.selectionEnd ?? this._composerText.length, i = t.value.substring(o, a) || (this.currentLang === "pt" ? "// Seu código aqui" : "// Your code here"), s = t.value.substring(0, o), d = t.value.substring(a), l = s.length > 0 && !s.endsWith(`
+    const o = ((j = this._savedComposerSelection) == null ? void 0 : j.start) ?? t.selectionStart ?? this._composerText.length, s = ((H = this._savedComposerSelection) == null ? void 0 : H.end) ?? t.selectionEnd ?? this._composerText.length, i = t.value.substring(o, s) || (this.currentLang === "pt" ? "// Seu código aqui" : "// Your code here"), a = t.value.substring(0, o), d = t.value.substring(s), l = a.length > 0 && !a.endsWith(`
 `), b = d.length > 0 && !d.startsWith(`
 `), T = l ? `
 ` : "", k = `${T}\`\`\`${e}
 ${i}
 \`\`\`${b ? `
-` : ""}`, w = s + k + d;
+` : ""}`, w = a + k + d;
     this._composerText = w, this._isCodePickerOpen = !1, this._savedComposerSelection = null;
-    const _ = s.length + T.length + 3 + e.length + 1, L = _ + i.length;
+    const _ = a.length + T.length + 3 + e.length + 1, L = _ + i.length;
     this.render();
-    const x = ($ = this.shadowRoot) == null ? void 0 : $.getElementById("composer-textarea");
-    x && (x.focus(), x.setSelectionRange(_, L), x.style.height = "auto", x.style.height = `${x.scrollHeight}px`);
+    const y = ($ = this.shadowRoot) == null ? void 0 : $.getElementById("composer-textarea");
+    y && (y.focus(), y.setSelectionRange(_, L), y.style.height = "auto", y.style.height = `${y.scrollHeight}px`);
   }
   /**
    * Renderiza a Caixa de Escrita Principal (com Abas Escreva / Prévia, Aa e Autenticação)
    */
   renderComposer() {
-    const e = this._hidePreview ? !0 : this._activeTab === "write", t = this._fontMode === "monospace", o = this.currentLang === "pt" ? "Deixe uma nota ou comentário..." : "Leave a note or comment...", a = this.currentLang === "pt" ? "Escreva" : "Write", r = this.currentLang === "pt" ? "Prévia" : "Preview", i = this.currentLang === "pt" ? "Nada para pré-visualizar ainda." : "Nothing to preview yet.", s = this.currentLang === "pt" ? "Entre com GitHub" : "Sign in with GitHub", d = this.currentLang === "pt" ? "Publicar nota" : "Post note";
+    const e = this._hidePreview ? !0 : this._activeTab === "write", t = this._fontMode === "monospace", o = this.currentLang === "pt" ? "Deixe uma nota ou comentário..." : "Leave a note or comment...", s = this.currentLang === "pt" ? "Escreva" : "Write", r = this.currentLang === "pt" ? "Prévia" : "Preview", i = this.currentLang === "pt" ? "Nada para pré-visualizar ainda." : "Nothing to preview yet.", a = this.currentLang === "pt" ? "Entre com GitHub" : "Sign in with GitHub", d = this.currentLang === "pt" ? "Publicar nota" : "Post note";
     return `
       <div class="sl-composer" part="composer">
         <!-- Barra de Abas e Ações (Bloco de Código </> e Controle Tipográfico Aa) -->
         <div class="sl-composer-tabs">
           <div class="sl-tabs-group" role="tablist">
             <button class="sl-tab ${e ? "sl-tab-active" : ""}" id="tab-write" role="tab" aria-selected="${e}">
-              ${a}
+              ${s}
             </button>
             ${this._hidePreview ? "" : `
               <button class="sl-tab ${e ? "" : "sl-tab-active"}" id="tab-preview" role="tab" aria-selected="${!e}">
@@ -5359,7 +5359,7 @@ ${i}
                 <svg height="16" width="16" viewBox="0 0 16 16" aria-hidden="true">
                   <path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"></path>
                 </svg>
-                <span>${s}</span>
+                <span>${a}</span>
               </button>
             </div>
           `}
@@ -5514,7 +5514,7 @@ ${i}
           "🎯"
         ]
       }
-    ], t = this.currentLang === "pt" ? "Inserir GIF" : "Insert GIF", o = this.currentLang === "pt" ? "Emojis & Ícones" : "Emojis & Icons", a = ie("👊", this._selectedSkinTone), r = this.currentLang === "pt" ? "Tom de pele (clique para escolher)" : "Skin tone (click to choose)";
+    ], t = this.currentLang === "pt" ? "Inserir GIF" : "Insert GIF", o = this.currentLang === "pt" ? "Emojis & Ícones" : "Emojis & Icons", s = ne("👊", this._selectedSkinTone), r = this.currentLang === "pt" ? "Tom de pele (clique para escolher)" : "Skin tone (click to choose)";
     return `
       <div class="sl-emoji-popover" id="emoji-popover" part="emoji-popover">
         <div class="sl-emoji-header">
@@ -5522,7 +5522,7 @@ ${i}
             <span class="sl-emoji-title">${o}</span>
             ${this._hideSkinTone ? "" : `
               <button type="button" class="sl-skin-tone-toggle-btn ${this._isSkinTonePanelOpen ? "sl-tone-active" : ""}" id="btn-skin-tone-toggle" title="${r}">
-                <span>${a}</span>
+                <span>${s}</span>
               </button>
             `}
           </div>
@@ -5540,11 +5540,11 @@ ${i}
               <span style="font-size: 0.68rem; opacity: 0.85;">💾 ${this.currentLang === "pt" ? "Salvo no navegador" : "Saved in browser"}</span>
             </div>
             <div class="sl-skin-tone-options">
-              ${Le.map((i) => {
-      const s = ie("👊", i.modifier), d = this._selectedSkinTone === i.modifier || this._selectedSkinTone === "default" && i.modifier === "", l = this.currentLang === "pt" ? i.namePt : i.nameEn;
+              ${Te.map((i) => {
+      const a = ne("👊", i.modifier), d = this._selectedSkinTone === i.modifier || this._selectedSkinTone === "default" && i.modifier === "", l = this.currentLang === "pt" ? i.namePt : i.nameEn;
       return `
                   <button type="button" class="sl-tone-btn ${d ? "sl-tone-selected" : ""}" data-tone-mod="${i.modifier || "default"}" title="${l}">
-                    ${s}
+                    ${a}
                   </button>
                 `;
     }).join("")}
@@ -5558,10 +5558,10 @@ ${i}
             <div class="sl-emoji-category">
               <span class="sl-emoji-category-title">${i.name}</span>
               <div class="sl-emoji-grid">
-                ${i.emojis.map((s) => {
-        const d = Ce.has(s), l = d ? ie(s, this._selectedSkinTone) : s;
+                ${i.emojis.map((a) => {
+        const d = Ie.has(a), l = d ? ne(a, this._selectedSkinTone) : a;
         return `
-                      <button type="button" class="sl-emoji-item" data-emoji="${l}" data-base-emoji="${s}" data-toneable="${d ? "true" : "false"}" title="${l}">
+                      <button type="button" class="sl-emoji-item" data-emoji="${l}" data-base-emoji="${a}" data-toneable="${d ? "true" : "false"}" title="${l}">
                         ${l}
                       </button>
                     `;
@@ -5592,8 +5592,8 @@ ${i}
     if (!this.shadowRoot) return;
     const t = this.shadowRoot.getElementById("composer-textarea");
     if (!t) return;
-    const o = t.selectionStart ?? t.value.length, a = t.selectionEnd ?? t.value.length, r = t.value, i = r.substring(0, o), s = r.substring(a);
-    t.value = i + e + s, this._composerText = t.value;
+    const o = t.selectionStart ?? t.value.length, s = t.selectionEnd ?? t.value.length, r = t.value, i = r.substring(0, o), a = r.substring(s);
+    t.value = i + e + a, this._composerText = t.value;
     const d = o + e.length;
     this._isEmojiPickerOpen = !1, this.render();
     const l = this.shadowRoot.getElementById("composer-textarea");
@@ -5611,27 +5611,27 @@ ${i}
     if (!e)
       t = [...this._comments];
     else {
-      const o = e.startsWith("@") ? e.slice(1) : e, a = o.split(/\s+/).filter(Boolean), r = [];
+      const o = e.startsWith("@") ? e.slice(1) : e, s = o.split(/\s+/).filter(Boolean), r = [];
       for (const i of this._comments) {
-        let s = 0;
+        let a = 0;
         const d = i.author.login.toLowerCase(), l = i.body.toLowerCase();
-        if (d === o ? s += 100 : d.startsWith(o) ? s += 60 : d.includes(o) && (s += 40), l.includes(e) || l.includes(o))
-          s += 35;
+        if (d === o ? a += 100 : d.startsWith(o) ? a += 60 : d.includes(o) && (a += 40), l.includes(e) || l.includes(o))
+          a += 35;
         else
-          for (const b of a)
-            l.includes(b) && (s += 10);
+          for (const b of s)
+            l.includes(b) && (a += 10);
         if (i.replies && i.replies.length > 0)
           for (const b of i.replies) {
             const T = b.author.login.toLowerCase(), g = b.body.toLowerCase();
-            if (T === o ? s += 50 : T.includes(o) && (s += 25), g.includes(e) || g.includes(o))
-              s += 20;
+            if (T === o ? a += 50 : T.includes(o) && (a += 25), g.includes(e) || g.includes(o))
+              a += 20;
             else
-              for (const k of a)
-                g.includes(k) && (s += 5);
+              for (const k of s)
+                g.includes(k) && (a += 5);
           }
-        s > 0 && r.push({ comment: i, score: s });
+        a > 0 && r.push({ comment: i, score: a });
       }
-      r.sort((i, s) => s.score - i.score), t = r.map((i) => i.comment);
+      r.sort((i, a) => a.score - i.score), t = r.map((i) => i.comment);
     }
     return e || (t = this.sortComments(t, this._order)), t;
   }
@@ -5640,11 +5640,11 @@ ${i}
    * priorizando comentários fixados pelo autor (pinned) no topo da discussão.
    */
   sortComments(e, t) {
-    const o = [], a = [];
+    const o = [], s = [];
     for (const i of e)
-      !!(i.isPinned || i.body.includes("<!-- sl:pinned -->") || i.body.includes("<!-- pinned -->")) ? o.push(i) : a.push(i);
-    const r = a.every((i) => i.createdAt && !isNaN(Date.parse(i.createdAt)));
-    return t === "newest" ? r ? a.sort((i, s) => Date.parse(s.createdAt) - Date.parse(i.createdAt)) : a.reverse() : r && a.sort((i, s) => Date.parse(i.createdAt) - Date.parse(s.createdAt)), [...o, ...a];
+      !!(i.isPinned || i.body.includes("<!-- sl:pinned -->") || i.body.includes("<!-- pinned -->")) ? o.push(i) : s.push(i);
+    const r = s.every((i) => i.createdAt && !isNaN(Date.parse(i.createdAt)));
+    return t === "newest" ? r ? s.sort((i, a) => Date.parse(a.createdAt) - Date.parse(i.createdAt)) : s.reverse() : r && s.sort((i, a) => Date.parse(i.createdAt) - Date.parse(a.createdAt)), [...o, ...s];
   }
   /**
    * Renderiza a Barra de Moderação do Proprietário do Repositório (quando enable-moderation ativo)
@@ -5652,25 +5652,25 @@ ${i}
   renderModerationBar() {
     if (!this._enableModeration || !this._isOwner())
       return "";
-    const e = this.currentLang === "pt", t = this.currentLang === "es", o = e ? "Painel de Moderação KV (Proprietário)" : t ? "Panel de Moderación KV (Propietario)" : "KV Moderation Bar (Repo Owner)", a = e ? "Atualizar lista de moderação" : "Refresh moderation list", r = e ? "Recolher painel de moderação" : "Collapse moderation panel", i = e ? "Expandir painel de moderação" : "Expand moderation panel", s = this._moderatedUsers.filter((x) => x.action === "ban"), d = this._moderatedUsers.filter((x) => x.action === "restrict_media"), l = this._expandedModCategory === "ban", b = this._expandedModCategory === "media", T = `sl-mod-pill ${s.length > 0 ? "sl-mod-pill-ban-active" : "sl-mod-pill-neutral"} ${l ? "sl-mod-pill-open" : ""}`, g = `sl-mod-pill ${d.length > 0 ? "sl-mod-pill-media-active" : "sl-mod-pill-neutral"} ${b ? "sl-mod-pill-open" : ""}`, k = e ? "Banidos" : t ? "Bloqueados" : "Banned", w = e ? "Sem Mídia" : t ? "Sin Medios" : "No Media";
+    const e = this.currentLang === "pt", t = this.currentLang === "es", o = e ? "Painel de Moderação KV (Proprietário)" : t ? "Panel de Moderación KV (Propietario)" : "KV Moderation Bar (Repo Owner)", s = e ? "Atualizar lista de moderação" : "Refresh moderation list", r = e ? "Recolher painel de moderação" : "Collapse moderation panel", i = e ? "Expandir painel de moderação" : "Expand moderation panel", a = this._moderatedUsers.filter((y) => y.action === "ban"), d = this._moderatedUsers.filter((y) => y.action === "restrict_media"), l = this._expandedModCategory === "ban", b = this._expandedModCategory === "media", T = `sl-mod-pill ${a.length > 0 ? "sl-mod-pill-ban-active" : "sl-mod-pill-neutral"} ${l ? "sl-mod-pill-open" : ""}`, g = `sl-mod-pill ${d.length > 0 ? "sl-mod-pill-media-active" : "sl-mod-pill-neutral"} ${b ? "sl-mod-pill-open" : ""}`, k = e ? "Banidos" : t ? "Bloqueados" : "Banned", w = e ? "Sem Mídia" : t ? "Sin Medios" : "No Media";
     let _ = "";
     if (this._expandedModCategory !== null) {
-      const x = this._expandedModCategory === "ban" ? s : d, I = this._expandedModCategory === "ban", B = I ? e ? "Nenhum usuário banido. Para restringir alguém, use o menu ••• no comentário dele." : t ? "Ningún usuario bloqueado. Para restringir a alguien, usa el menú ••• en su comentario." : "No banned users. To restrict someone, use the ••• menu on their comment." : e ? "Nenhum usuário com mídia restrita. Para restringir mídia, use o menu ••• no comentário dele." : t ? "Ningún usuario sin medios. Para restringir medios, usa el menú ••• en su comentario." : "No media-restricted users. To restrict media, use the ••• menu on their comment.";
-      x.length === 0 ? _ = `
+      const y = this._expandedModCategory === "ban" ? a : d, I = this._expandedModCategory === "ban", j = I ? e ? "Nenhum usuário banido. Para restringir alguém, use o menu ••• no comentário dele." : t ? "Ningún usuario bloqueado. Para restringir a alguien, usa el menú ••• en su comentario." : "No banned users. To restrict someone, use the ••• menu on their comment." : e ? "Nenhum usuário com mídia restrita. Para restringir mídia, use o menu ••• no comentário dele." : t ? "Ningún usuario sin medios. Para restringir medios, usa el menú ••• en su comentario." : "No media-restricted users. To restrict media, use the ••• menu on their comment.";
+      y.length === 0 ? _ = `
           <div class="sl-mod-drawer">
-            <span class="sl-mod-empty-text">${B}</span>
+            <span class="sl-mod-empty-text">${j}</span>
           </div>
         ` : _ = `
           <div class="sl-mod-drawer">
-            ${x.map(($) => {
-        const j = I ? "sl-mod-chip-ban" : "sl-mod-chip-media", A = I ? k : w, F = e ? `Remover moderação de @${$.username}` : `Remove moderation for @${$.username}`;
+            ${y.map(($) => {
+        const B = I ? "sl-mod-chip-ban" : "sl-mod-chip-media", P = I ? k : w, D = e ? `Remover moderação de @${$.username}` : `Remove moderation for @${$.username}`;
         return `
-              <div class="sl-mod-chip ${j}">
+              <div class="sl-mod-chip ${B}">
                 <span class="sl-mod-chip-user" title="@${this.escapeHtml($.username)}">@${this.escapeHtml($.username)}</span>
-                <span class="sl-mod-chip-action">${A}</span>
+                <span class="sl-mod-chip-action">${P}</span>
                 <button type="button" class="sl-mod-chip-remove" data-user="${this.escapeHtml(
           $.username
-        )}" title="${F}" aria-label="${F}">✕</button>
+        )}" title="${D}" aria-label="${D}">✕</button>
               </div>
             `;
       }).join("")}
@@ -5681,7 +5681,7 @@ ${i}
         <div class="sl-mod-subcard">
           <div class="sl-mod-pills" role="tablist">
             <button type="button" class="${T}" id="sl-mod-pill-ban" aria-expanded="${l}">
-              <span>🚫 ${k} (${s.length})</span>
+              <span>🚫 ${k} (${a.length})</span>
               <span class="sl-mod-pill-arrow">${l ? "▲" : "▼"}</span>
             </button>
             <button type="button" class="${g}" id="sl-mod-pill-media" aria-expanded="${b}">
@@ -5702,7 +5702,7 @@ ${i}
             <span>🛡️ ${o}</span>
           </div>
           <div class="sl-mod-bar-actions">
-            <button type="button" class="sl-mod-refresh-btn" id="sl-mod-refresh" title="${a}" ${this._isModerationLoading ? "disabled" : ""}>
+            <button type="button" class="sl-mod-refresh-btn" id="sl-mod-refresh" title="${s}" ${this._isModerationLoading ? "disabled" : ""}>
               ${this._isModerationLoading ? "⌛" : "🔄"}
             </button>
             <button type="button" class="sl-mod-toggle-btn" id="sl-mod-toggle-collapse" aria-expanded="${!this._isModerationCollapsed}" title="${this._isModerationCollapsed ? i : r}">
@@ -5722,10 +5722,10 @@ ${i}
   renderCommentsToolbar() {
     if (this._comments.length === 0 && !this._searchQuery || this._hideSearch && this._hideSorting && !this._searchQuery)
       return "";
-    const e = this.currentLang === "pt", t = this._comments.length, o = this.getFilteredComments().length, a = this._searchQuery.trim().length > 0;
+    const e = this.currentLang === "pt", t = this._comments.length, o = this.getFilteredComments().length, s = this._searchQuery.trim().length > 0;
     let r = "";
-    a ? r = e ? `${o} de ${t} encontrados` : `${o} of ${t} found` : r = `${t} ${e ? t === 1 ? "comentário" : "comentários" : t === 1 ? "comment" : "comments"}`;
-    const i = this._order === "newest" ? e ? "Mais recentes" : "Newest first" : e ? "Mais antigos" : "Oldest first", s = this._order === "newest" ? e ? "Ordenado por mais recentes. Clique para mais antigos." : "Sorted by newest. Click for oldest." : e ? "Ordenado por mais antigos. Clique para mais recentes." : "Sorted by oldest. Click for newest.", d = this._hideSearch ? "" : `
+    s ? r = e ? `${o} de ${t} encontrados` : `${o} of ${t} found` : r = `${t} ${e ? t === 1 ? "comentário" : "comentários" : t === 1 ? "comment" : "comments"}`;
+    const i = this._order === "newest" ? e ? "Mais recentes" : "Newest first" : e ? "Mais antigos" : "Oldest first", a = this._order === "newest" ? e ? "Ordenado por mais recentes. Clique para mais antigos." : "Sorted by newest. Click for oldest." : e ? "Ordenado por mais antigos. Clique para mais recentes." : "Sorted by oldest. Click for newest.", d = this._hideSearch ? "" : `
         <div class="sl-search-wrapper" part="search-wrapper">
           <svg class="sl-search-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <circle cx="11" cy="11" r="8"></circle>
@@ -5745,7 +5745,7 @@ ${i}
           ${this._searchQuery ? `<button type="button" class="sl-search-clear-btn" id="sl-search-clear" part="search-clear-btn" title="${e ? "Limpar busca (Esc)" : "Clear search (Esc)"}">✕</button>` : `<kbd class="sl-search-kbd" title="${e ? "Pressione / para buscar" : "Press / to search"}">/</kbd>`}
         </div>
       `, l = this._hideSorting ? "" : `
-        <button type="button" class="sl-sort-btn" id="btn-sort-toggle" part="sort-btn" title="${s}" aria-label="${s}">
+        <button type="button" class="sl-sort-btn" id="btn-sort-toggle" part="sort-btn" title="${a}" aria-label="${a}">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="m3 16 4 4 4-4"/>
             <path d="M7 20V4"/>
@@ -5787,9 +5787,9 @@ ${i}
         </div>
       `;
     }
-    const o = t.length, a = Math.max(1, Math.ceil(o / this._pageSize));
-    this._currentPage > a && (this._currentPage = a);
-    const r = (this._currentPage - 1) * this._pageSize, i = r + this._pageSize, s = t.slice(r, i);
+    const o = t.length, s = Math.max(1, Math.ceil(o / this._pageSize));
+    this._currentPage > s && (this._currentPage = s);
+    const r = (this._currentPage - 1) * this._pageSize, i = r + this._pageSize, a = t.slice(r, i);
     let d = "";
     if (e) {
       const b = this.currentLang === "pt";
@@ -5802,9 +5802,9 @@ ${i}
     }
     let l = "";
     if (o > this._pageSize) {
-      const b = this.currentLang === "pt", T = b ? "‹ Anterior" : "‹ Previous", g = b ? "Próxima ›" : "Next ›", k = b ? `Página ${this._currentPage} de ${a} • ${o} comentários` : `Page ${this._currentPage} of ${a} • ${o} comments`;
+      const b = this.currentLang === "pt", T = b ? "‹ Anterior" : "‹ Previous", g = b ? "Próxima ›" : "Next ›", k = b ? `Página ${this._currentPage} de ${s} • ${o} comentários` : `Page ${this._currentPage} of ${s} • ${o} comments`;
       let w = "";
-      for (let _ = 1; _ <= a; _++) {
+      for (let _ = 1; _ <= s; _++) {
         const L = _ === this._currentPage;
         w += `
           <button class="sl-page-btn ${L ? "sl-page-active" : ""}" data-page="${_}" part="page-btn" ${L ? 'aria-current="page"' : ""}>
@@ -5819,7 +5819,7 @@ ${i}
               ${T}
             </button>
             ${w}
-            <button class="sl-page-btn sl-page-nav-btn btn-next-page" part="page-btn-next" ${this._currentPage >= a ? "disabled" : ""}>
+            <button class="sl-page-btn sl-page-nav-btn btn-next-page" part="page-btn-next" ${this._currentPage >= s ? "disabled" : ""}>
               ${g}
             </button>
           </div>
@@ -5830,7 +5830,7 @@ ${i}
     return `
       <div class="sl-list" part="list">
         ${d}
-        ${s.map((b) => this.renderCommentCard(b)).join("")}
+        ${a.map((b) => this.renderCommentCard(b)).join("")}
         ${l}
       </div>
     `;
@@ -5839,10 +5839,10 @@ ${i}
    * Renderiza um Card de Comentário Individual
    */
   renderCommentCard(e, t = !1, o) {
-    var Q, H, Y;
-    const a = this._repo ? this._repo.split("/")[0].toLowerCase() : "", i = e.author.isAuthor || a && e.author.login.toLowerCase() === a ? `<span class="sl-author-badge" part="author-badge">${this.currentLang === "pt" ? "Autor" : "Author"}</span>` : "", s = !t && !!(e.isPinned || e.body.includes("<!-- sl:pinned -->") || e.body.includes("<!-- pinned -->")), d = s ? `<span class="sl-pinned-badge" part="pinned-badge" title="${this.currentLang === "pt" ? "Comentário fixado no topo pelo autor" : "Comment pinned to top by author"}"><span>📌</span><span>${this.currentLang === "pt" ? "Fixado pelo autor" : "Pinned by author"}</span></span>` : "", l = !!(this._currentUser && a && this._currentUser.login.toLowerCase() === a), b = this._speakingId === e.id, T = this._replyingToId === e.id, g = this._editingId === e.id, k = this._openMenuId === e.id, w = b ? this.currentLang === "pt" ? "⏸️ Pausar" : "⏸️ Pause" : this.currentLang === "pt" ? "🔊 Ouvir" : "🔊 Listen", _ = this.currentLang === "pt" ? "Responder" : "Reply", L = this.getVisitorLang(), x = e.originalLang || "pt", I = x !== L, B = this.getLanguageName(x, L), $ = (e.isShowingTranslation && e.translatedBody ? e.translatedBody : e.body).replace(/<!--\s*sl:pinned\s*-->\r?\n?/g, "").replace(/<!--\s*pinned\s*-->\r?\n?/g, ""), j = this.formatDate(e.createdAt), A = !!((Q = e.reactions) != null && Q.find((z) => z.content === "👍" && z.viewerHasReacted)), F = this.currentLang === "pt" ? "Gostei" : "Like", N = A ? this.currentLang === "pt" ? "Remover curtida" : "Remove like" : this.currentLang === "pt" ? "Curtir" : "Like", W = (e.reactions || []).filter((z) => z.count > 0);
+    var ee, pe, ge, ue;
+    const s = this._repo ? this._repo.split("/")[0].toLowerCase() : "", i = e.author.isAuthor || s && e.author.login.toLowerCase() === s ? `<span class="sl-author-badge" part="author-badge">${this.currentLang === "pt" ? "Autor" : "Author"}</span>` : "", a = !t && !!(e.isPinned || e.body.includes("<!-- sl:pinned -->") || e.body.includes("<!-- pinned -->")), d = a ? `<span class="sl-pinned-badge" part="pinned-badge" title="${this.currentLang === "pt" ? "Comentário fixado no topo pelo autor" : "Comment pinned to top by author"}"><span>📌</span><span>${this.currentLang === "pt" ? "Fixado pelo autor" : "Pinned by author"}</span></span>` : "", l = !!(this._currentUser && s && this._currentUser.login.toLowerCase() === s), b = !!(this._currentUser && ((ee = e.author) != null && ee.login) && this._currentUser.login.toLowerCase() === e.author.login.toLowerCase()), T = b, g = b || l, k = this._speakingId === e.id, w = this._replyingToId === e.id, _ = this._editingId === e.id, L = this._openMenuId === e.id, y = k ? this.currentLang === "pt" ? "⏸️ Pausar" : "⏸️ Pause" : this.currentLang === "pt" ? "🔊 Ouvir" : "🔊 Listen", I = this.currentLang === "pt" ? "Responder" : "Reply", j = this.getVisitorLang(), H = e.originalLang || "pt", $ = H !== j, B = this.getLanguageName(H, j), D = (e.isShowingTranslation && e.translatedBody ? e.translatedBody : e.body).replace(/<!--\s*sl:pinned\s*-->\r?\n?/g, "").replace(/<!--\s*pinned\s*-->\r?\n?/g, ""), N = this.formatDate(e.createdAt), J = !!((pe = e.reactions) != null && pe.find((z) => z.content === "👍" && z.viewerHasReacted)), Q = this.currentLang === "pt" ? "Gostei" : "Like", F = J ? this.currentLang === "pt" ? "Remover curtida" : "Remove like" : this.currentLang === "pt" ? "Curtir" : "Like", Y = (e.reactions || []).filter((z) => z.count > 0);
     return `
-      <article class="sl-card ${t ? "sl-card-reply" : ""} ${s ? "sl-card-pinned" : ""}" id="comment-${e.id}" part="card">
+      <article class="sl-card ${t ? "sl-card-reply" : ""} ${a ? "sl-card-pinned" : ""}" id="comment-${e.id}" part="card">
         <!-- Cabeçalho do Card (Avatar ancorado no topo!) -->
         <div class="sl-card-header">
           <div class="sl-author-info">
@@ -5855,7 +5855,7 @@ ${i}
               </a>
               ${i}
               ${d}
-              <time class="sl-date" part="date" datetime="${e.createdAt}" title="${j.full}">${j.relative}</time>
+              <time class="sl-date" part="date" datetime="${e.createdAt}" title="${N.full}">${N.relative}</time>
               ${e.isEdited ? `<span class="sl-edited-badge">(${this.currentLang === "pt" ? "editado" : "edited"})</span>` : ""}
             </div>
           </div>
@@ -5865,27 +5865,31 @@ ${i}
             <button class="sl-menu-btn" data-menu-id="${e.id}" aria-label="${this.currentLang === "pt" ? "Opções do comentário" : "Comment options"}">
               •••
             </button>
-            ${k ? `
+            ${L ? `
               <div class="sl-dropdown-menu" part="dropdown-menu">
                 ${l && !t ? `
                   <button class="sl-dropdown-item btn-toggle-pin" data-comment-id="${e.id}">
                     <span>📌</span>
-                    <span>${s ? this.currentLang === "pt" ? "Desafixar do topo" : "Unpin from top" : this.currentLang === "pt" ? "Fixar no topo" : "Pin to top"}</span>
+                    <span>${a ? this.currentLang === "pt" ? "Desafixar do topo" : "Unpin from top" : this.currentLang === "pt" ? "Fixar no topo" : "Pin to top"}</span>
                   </button>
                 ` : ""}
-                <button class="sl-dropdown-item btn-edit" data-comment-id="${e.id}">
-                  <span>✏️</span>
-                  <span>${this.currentLang === "pt" ? "Editar" : "Edit"}</span>
-                </button>
+                ${T ? `
+                  <button class="sl-dropdown-item btn-edit" data-comment-id="${e.id}">
+                    <span>✏️</span>
+                    <span>${this.currentLang === "pt" ? "Editar" : "Edit"}</span>
+                  </button>
+                ` : ""}
                 <button class="sl-dropdown-item btn-copy-link" data-comment-id="${e.id}">
                   <span>🔗</span>
                   <span>${this.currentLang === "pt" ? "Copiar link" : "Copy link"}</span>
                 </button>
-                <button class="sl-dropdown-item sl-dropdown-danger btn-delete" data-comment-id="${e.id}">
-                  <span>🗑️</span>
-                  <span>${this.currentLang === "pt" ? "Excluir" : "Delete"}</span>
-                </button>
-                ${this._enableModeration && l && ((H = e.author) != null && H.login) && ((Y = this._currentUser) != null && Y.login) && e.author.login.toLowerCase() !== this._currentUser.login.toLowerCase() ? `
+                ${g ? `
+                  <button class="sl-dropdown-item sl-dropdown-danger btn-delete" data-comment-id="${e.id}">
+                    <span>🗑️</span>
+                    <span>${this.currentLang === "pt" ? "Excluir" : "Delete"}</span>
+                  </button>
+                ` : ""}
+                ${this._enableModeration && l && ((ge = e.author) != null && ge.login) && ((ue = this._currentUser) != null && ue.login) && e.author.login.toLowerCase() !== this._currentUser.login.toLowerCase() ? `
                   <button class="sl-dropdown-item btn-mod-restrict-media" data-user="${this.escapeHtml(e.author.login)}">
                     <span>🚫</span>
                     <span>${this.currentLang === "pt" ? "Restringir Mídia" : "Restrict Media"}</span>
@@ -5901,7 +5905,7 @@ ${i}
         </div>
 
         <!-- Corpo do Comentário ou Editor In-Place -->
-        ${g ? `
+        ${_ ? `
           <div class="sl-edit-mode">
             <textarea class="sl-textarea" id="edit-textarea-${e.id}">${e.body.replace(/<!--\s*sl:pinned\s*-->\r?\n?/g, "").replace(/<!--\s*pinned\s*-->\r?\n?/g, "")}</textarea>
             <div class="sl-edit-actions">
@@ -5915,7 +5919,7 @@ ${i}
           </div>
         ` : `
           <div class="sl-card-body" part="card-body">
-            ${e.isShowingTranslation ? this.parseMarkdown($) : e.bodyHtml || this.parseMarkdown($)}
+            ${e.isShowingTranslation ? this.parseMarkdown(D) : e.bodyHtml || this.parseMarkdown(D)}
           </div>
         `}
 
@@ -5925,18 +5929,18 @@ ${i}
             ${this._hideReactions ? "" : `
             <!-- Gatilho de Reação Universal (Gostei / Like) -->
             <div class="sl-reaction-container" data-comment-id="${e.id}">
-              <button type="button" class="sl-reaction-trigger-btn" data-comment-id="${e.id}" data-emoji="👍" part="reaction-trigger-btn" title="${N}">
+              <button type="button" class="sl-reaction-trigger-btn" data-comment-id="${e.id}" data-emoji="👍" part="reaction-trigger-btn" title="${F}">
                 <span>👍</span>
-                <span>${F}</span>
+                <span>${Q}</span>
               </button>
 
               <!-- Popover Flutuante com 6 Emojis Animados -->
               <div class="sl-reaction-popover" role="toolbar" aria-label="Reações">
-                ${Se.map((z) => {
-      var Z;
+                ${Ae.map((z) => {
+      var V;
       const K = this.currentLang === "pt" ? z.namePt : z.nameEn;
       return `
-                    <button type="button" class="sl-reaction-picker-item ${!!((Z = e.reactions) != null && Z.find((ee) => ee.content === z.symbol && ee.viewerHasReacted)) ? "sl-reacted" : ""}" data-comment-id="${e.id}" data-emoji="${z.symbol}" data-tooltip="${K}" title="${K}" aria-label="${K}">
+                    <button type="button" class="sl-reaction-picker-item ${!!((V = e.reactions) != null && V.find((te) => te.content === z.symbol && te.viewerHasReacted)) ? "sl-reacted" : ""}" data-comment-id="${e.id}" data-emoji="${z.symbol}" data-tooltip="${K}" title="${K}" aria-label="${K}">
                       ${z.symbol}
                     </button>
                   `;
@@ -5945,9 +5949,9 @@ ${i}
             </div>
 
             <!-- Resumo / Badges de Reações Recebidas -->
-            ${W.length > 0 ? `
+            ${Y.length > 0 ? `
               <div class="sl-reactions-summary">
-                ${W.map(
+                ${Y.map(
       (z) => `
                   <button type="button" class="sl-reaction-badge ${z.viewerHasReacted ? "sl-reacted" : ""}" data-comment-id="${e.id}" data-emoji="${z.content}" title="${z.viewerHasReacted ? this.currentLang === "pt" ? "Remover sua reação" : "Remove your reaction" : this.currentLang === "pt" ? "Reagir com " + z.content : "React with " + z.content}">
                     <span>${z.content}</span>
@@ -5961,26 +5965,26 @@ ${i}
 
             <button class="sl-reply-btn" data-reply-to="${e.id}" data-parent-id="${o || e.id}" part="reply-btn">
               <span>↩️</span>
-              <span>${_}</span>
+              <span>${I}</span>
             </button>
           </div>
 
           <div class="sl-actions-right">
-            ${I ? `
+            ${$ ? `
               <button class="sl-translate-btn btn-toggle-translate ${e.isShowingTranslation ? "sl-translated" : ""}" data-comment-id="${e.id}" part="translate-btn" title="${e.isShowingTranslation ? this.currentLang === "pt" ? "Ver original" : "See original" : this.currentLang === "pt" ? "Traduzir comentário" : "Translate comment"}">
                 <span>${this._isTranslatingId === e.id ? "⏳" : e.isShowingTranslation ? "✨" : "🌐"}</span>
                 <span>${this._isTranslatingId === e.id ? this.currentLang === "pt" ? "Traduzindo..." : "Translating..." : e.isShowingTranslation ? this.currentLang === "pt" ? `Traduzido do ${B} • Ver original` : `Translated from ${B} • See original` : this.currentLang === "pt" ? `Publicado em ${B} • Traduzir` : `Published in ${B} • Translate`}</span>
               </button>
             ` : ""}
 
-            <button class="sl-audio-btn ${b ? "sl-audio-playing" : ""}" data-speak-id="${e.id}" data-text="${encodeURIComponent($)}" data-lang="${e.isShowingTranslation ? L : x}" part="audio-btn">
-              <span>${w}</span>
+            <button class="sl-audio-btn ${k ? "sl-audio-playing" : ""}" data-speak-id="${e.id}" data-text="${encodeURIComponent(D)}" data-lang="${e.isShowingTranslation ? j : H}" part="audio-btn">
+              <span>${y}</span>
             </button>
           </div>
         </div>
 
         <!-- Formulário de Resposta Aninhada Inline -->
-        ${T ? `
+        ${w ? `
           <div class="sl-inline-composer">
             <textarea id="reply-textarea-${e.id}" placeholder="${this.currentLang === "pt" ? `Respondendo para @${e.author.login}...` : `Replying to @${e.author.login}...`}">${this._replyText}</textarea>
             <div class="sl-inline-footer">
@@ -5996,14 +6000,14 @@ ${i}
 
         <!-- Respostas Aninhadas (Threads Estilo LinkedIn com Linha Guia) -->
         ${!t && e.replies && e.replies.length > 0 ? (() => {
-      const z = e.replies.length, K = this._expandedThreads.has(e.id), he = K || z <= 2 ? e.replies : e.replies.slice(0, 2), Z = z - 2;
+      const z = e.replies.length, K = this._expandedThreads.has(e.id), me = K || z <= 2 ? e.replies : e.replies.slice(0, 2), V = z - 2;
       return `
                   <div class="sl-thread">
-                    ${he.map((ee) => this.renderCommentCard(ee, !0, e.id)).join("")}
+                    ${me.map((te) => this.renderCommentCard(te, !0, e.id)).join("")}
                     ${z > 2 ? `
                       <button class="sl-thread-toggle-btn" data-thread-id="${e.id}" part="thread-toggle-btn">
                         <span>${K ? "▴" : "💬"}</span>
-                        <span>${K ? this.currentLang === "pt" ? "Recolher respostas" : "Collapse replies" : this.currentLang === "pt" ? `Ver mais ${Z} resposta${Z > 1 ? "s" : ""} ▾` : `View ${Z} more repl${Z > 1 ? "ies" : "y"} ▾`}</span>
+                        <span>${K ? this.currentLang === "pt" ? "Recolher respostas" : "Collapse replies" : this.currentLang === "pt" ? `Ver mais ${V} resposta${V > 1 ? "s" : ""} ▾` : `View ${V} more repl${V > 1 ? "ies" : "y"} ▾`}</span>
                       </button>
                     ` : ""}
                   </div>
@@ -6034,18 +6038,18 @@ ${i}
     }), t && t.addEventListener("click", () => {
       o && (this._composerText = o.value), this._activeTab = "preview", this.render();
     });
-    const a = this.shadowRoot.getElementById("btn-sort-toggle");
-    a && a.addEventListener("click", () => {
+    const s = this.shadowRoot.getElementById("btn-sort-toggle");
+    s && s.addEventListener("click", () => {
       this._order = this._order === "oldest" ? "newest" : "oldest", this._currentPage = 1, this.render();
     });
     const r = this.shadowRoot.getElementById("btn-code-toggle");
     r && r.addEventListener("click", (n) => {
-      var y;
+      var x;
       n.stopPropagation();
-      const p = (y = this.shadowRoot) == null ? void 0 : y.getElementById("composer-textarea");
+      const p = (x = this.shadowRoot) == null ? void 0 : x.getElementById("composer-textarea");
       if (p) {
-        const c = p.selectionStart ?? this._composerText.length, m = p.selectionEnd ?? this._composerText.length;
-        if (this._savedComposerSelection = { start: c, end: m }, m > c && p.value.substring(c, m).trim().length > 0) {
+        const c = p.selectionStart ?? this._composerText.length, u = p.selectionEnd ?? this._composerText.length;
+        if (this._savedComposerSelection = { start: c, end: u }, u > c && p.value.substring(c, u).trim().length > 0) {
           this.insertCodeBlock("typescript");
           return;
         }
@@ -6054,12 +6058,12 @@ ${i}
     }), this.shadowRoot.querySelectorAll(".sl-code-lang-btn").forEach((n) => {
       n.addEventListener("click", (p) => {
         p.stopPropagation();
-        const y = n.getAttribute("data-lang") || "typescript";
-        this.insertCodeBlock(y);
+        const x = n.getAttribute("data-lang") || "typescript";
+        this.insertCodeBlock(x);
       });
     });
-    const s = this.shadowRoot.getElementById("btn-font-toggle");
-    s && s.addEventListener("click", () => {
+    const a = this.shadowRoot.getElementById("btn-font-toggle");
+    a && a.addEventListener("click", () => {
       this._fontMode = this._fontMode === "default" ? "monospace" : "default", this.render();
     });
     const d = this.shadowRoot.getElementById("btn-emoji-toggle");
@@ -6080,11 +6084,11 @@ ${i}
     }), this.shadowRoot.querySelectorAll(".sl-tone-btn").forEach((n) => {
       n.addEventListener("click", (p) => {
         p.stopPropagation();
-        const y = n.dataset.toneMod || "default", c = y === "default" ? "default" : y;
+        const x = n.dataset.toneMod || "default", c = x === "default" ? "default" : x;
         this.saveSkinTonePreference(c);
-        const m = this._activeTonePickerEmoji;
-        if (this._isSkinTonePanelOpen = !1, this._activeTonePickerEmoji = null, m) {
-          const E = ie(m, c === "default" ? "" : c);
+        const u = this._activeTonePickerEmoji;
+        if (this._isSkinTonePanelOpen = !1, this._activeTonePickerEmoji = null, u) {
+          const E = ne(u, c === "default" ? "" : c);
           this.insertTextAtCursor(E);
         } else
           this.render();
@@ -6092,67 +6096,67 @@ ${i}
     }), this.shadowRoot.querySelectorAll(".sl-emoji-item").forEach((n) => {
       n.addEventListener("click", (p) => {
         p.stopPropagation();
-        const y = n.dataset.toneable === "true", c = n.dataset.baseEmoji, m = n.dataset.emoji;
-        if (y && c && this._selectedSkinTone === null) {
+        const x = n.dataset.toneable === "true", c = n.dataset.baseEmoji, u = n.dataset.emoji;
+        if (x && c && this._selectedSkinTone === null) {
           this._activeTonePickerEmoji = c, this._isSkinTonePanelOpen = !0, this.render();
           return;
         }
-        m && this.insertTextAtCursor(m);
+        u && this.insertTextAtCursor(u);
       });
     });
     const L = this.shadowRoot.getElementById("btn-insert-gif");
     L && L.addEventListener("click", (n) => {
       n.stopPropagation(), this._isEmojiPickerOpen = !1, this._isMediaModalOpen = !0, this._isManagingRecentGifs = !1, this._isConfirmingClearGifs = !1, this._mediaModalUrl = "", this._mediaModalAlt = "", this._mediaModalError = null, this._mediaModalSuccess = null, this.render();
     });
-    const x = this.shadowRoot.getElementById("btn-insert-image");
-    if (x && x.addEventListener("click", (n) => {
+    const y = this.shadowRoot.getElementById("btn-insert-image");
+    if (y && y.addEventListener("click", (n) => {
       n.stopPropagation(), this._isEmojiPickerOpen = !1, this._isImageModalOpen = !0, this._isManagingRecentImages = !1, this._isConfirmingClearImages = !1, this._imageModalUrl = "", this._imageModalAlt = "", this._imageModalError = null, this._imageModalSuccess = null, this.render();
     }), this._isMediaModalOpen) {
-      const n = this.shadowRoot.getElementById("media-modal-backdrop"), p = this.shadowRoot.getElementById("btn-close-media-modal"), y = this.shadowRoot.getElementById("btn-cancel-media-modal"), c = this.shadowRoot.getElementById("btn-confirm-media-modal"), m = this.shadowRoot.getElementById("media-url-input"), E = this.shadowRoot.getElementById("media-alt-input"), v = this.shadowRoot.getElementById("media-url-preview-card"), O = this.shadowRoot.getElementById("media-url-preview-img"), C = this.shadowRoot.getElementById("media-modal-error-box"), R = this.shadowRoot.getElementById("media-modal-error-text"), U = this.currentLang === "pt", q = (u) => {
-        this._mediaModalUrl = u;
-        const S = u.trim();
+      const n = this.shadowRoot.getElementById("media-modal-backdrop"), p = this.shadowRoot.getElementById("btn-close-media-modal"), x = this.shadowRoot.getElementById("btn-cancel-media-modal"), c = this.shadowRoot.getElementById("btn-confirm-media-modal"), u = this.shadowRoot.getElementById("media-url-input"), E = this.shadowRoot.getElementById("media-alt-input"), v = this.shadowRoot.getElementById("media-url-preview-card"), O = this.shadowRoot.getElementById("media-url-preview-img"), C = this.shadowRoot.getElementById("media-modal-error-box"), A = this.shadowRoot.getElementById("media-modal-error-text"), U = this.currentLang === "pt", q = (m) => {
+        this._mediaModalUrl = m;
+        const S = m.trim();
         if (S.length > 0) {
-          const P = V(S);
-          P.safe ? (this._mediaModalError = null, C && (C.style.display = "none"), v && (v.style.display = "flex"), O && (O.style.display = "block", O.src = S)) : (this._mediaModalError = P.reason || (U ? "Link inválido." : "Invalid link."), v && (v.style.display = "none"), R && (R.textContent = this._mediaModalError), C && (C.style.display = "flex"));
+          const R = X(S);
+          R.safe ? (this._mediaModalError = null, C && (C.style.display = "none"), v && (v.style.display = "flex"), O && (O.style.display = "block", O.src = S)) : (this._mediaModalError = R.reason || (U ? "Link inválido." : "Invalid link."), v && (v.style.display = "none"), A && (A.textContent = this._mediaModalError), C && (C.style.display = "flex"));
         } else
           this._mediaModalError = null, v && (v.style.display = "none"), C && (C.style.display = "none");
-      }, J = () => {
+      }, W = () => {
         this._isMediaModalOpen = !1, this._isManagingRecentGifs = !1, this._isConfirmingClearGifs = !1, this._mediaModalUrl = "", this._mediaModalAlt = "", this._mediaModalError = null, this._mediaModalSuccess = null, this.render();
       };
-      p && p.addEventListener("click", J), y && y.addEventListener("click", J), n && n.addEventListener("click", (u) => {
-        u.target === n && J();
-      }), m && (m.addEventListener("keydown", (u) => {
-        u.stopPropagation();
-      }), m.addEventListener("input", () => {
-        q(m.value);
-      }), m.addEventListener("paste", () => {
-        setTimeout(() => q(m.value), 0);
-      })), E && (E.addEventListener("keydown", (u) => {
-        u.stopPropagation();
+      p && p.addEventListener("click", W), x && x.addEventListener("click", W), n && n.addEventListener("click", (m) => {
+        m.target === n && W();
+      }), u && (u.addEventListener("keydown", (m) => {
+        m.stopPropagation();
+      }), u.addEventListener("input", () => {
+        q(u.value);
+      }), u.addEventListener("paste", () => {
+        setTimeout(() => q(u.value), 0);
+      })), E && (E.addEventListener("keydown", (m) => {
+        m.stopPropagation();
       }), E.addEventListener("input", () => {
         this._mediaModalAlt = E.value;
       }));
-      const X = this.shadowRoot.getElementById("btn-save-gif-collection");
-      X && X.addEventListener("click", (u) => {
-        u.stopPropagation();
-        const S = (m ? m.value : this._mediaModalUrl).trim(), P = (E ? E.value : this._mediaModalAlt).trim() || "GIF";
+      const Z = this.shadowRoot.getElementById("btn-save-gif-collection");
+      Z && Z.addEventListener("click", (m) => {
+        m.stopPropagation();
+        const S = (u ? u.value : this._mediaModalUrl).trim(), R = (E ? E.value : this._mediaModalAlt).trim() || "GIF";
         if (!S) {
-          this._mediaModalError = U ? "Por favor, insira a URL do GIF antes de salvar." : "Please enter a GIF URL before saving.", R && (R.textContent = this._mediaModalError), C && (C.style.display = "flex");
+          this._mediaModalError = U ? "Por favor, insira a URL do GIF antes de salvar." : "Please enter a GIF URL before saving.", A && (A.textContent = this._mediaModalError), C && (C.style.display = "flex");
           return;
         }
-        const G = V(S);
+        const G = X(S);
         if (!G.safe) {
-          this._mediaModalError = G.reason || (U ? "URL inválida ou não segura." : "Invalid or unsafe URL."), R && (R.textContent = this._mediaModalError), C && (C.style.display = "flex");
+          this._mediaModalError = G.reason || (U ? "URL inválida ou não segura." : "Invalid or unsafe URL."), A && (A.textContent = this._mediaModalError), C && (C.style.display = "flex");
           return;
         }
-        ve(S, P), this._mediaModalUrl = "", this._mediaModalAlt = "", this._mediaModalError = null, this._mediaModalSuccess = U ? "GIF salvo na sua coleção!" : "GIF saved to collection!", this.render(), setTimeout(() => {
+        _e(S, R), this._mediaModalUrl = "", this._mediaModalAlt = "", this._mediaModalError = null, this._mediaModalSuccess = U ? "GIF salvo na sua coleção!" : "GIF saved to collection!", this.render(), setTimeout(() => {
           this._isMediaModalOpen && this._mediaModalSuccess && (this._mediaModalSuccess = null, this.render());
         }, 2500);
-      }), this.shadowRoot.querySelectorAll(".sl-recent-gif-item").forEach((u) => {
-        let S = null, P = !1;
-        u.addEventListener("touchstart", () => {
-          P = !1, S = setTimeout(() => {
-            if (!P) {
+      }), this.shadowRoot.querySelectorAll(".sl-recent-gif-item").forEach((m) => {
+        let S = null, R = !1;
+        m.addEventListener("touchstart", () => {
+          R = !1, S = setTimeout(() => {
+            if (!R) {
               if (this._isManagingRecentGifs = !0, "vibrate" in navigator)
                 try {
                   navigator.vibrate(50);
@@ -6161,100 +6165,100 @@ ${i}
               this.render();
             }
           }, 450);
-        }, { passive: !0 }), u.addEventListener("touchmove", () => {
-          P = !0, S && clearTimeout(S);
-        }, { passive: !0 }), u.addEventListener("touchend", () => {
+        }, { passive: !0 }), m.addEventListener("touchmove", () => {
+          R = !0, S && clearTimeout(S);
+        }, { passive: !0 }), m.addEventListener("touchend", () => {
           S && clearTimeout(S);
-        }), u.addEventListener("click", () => {
+        }), m.addEventListener("click", () => {
           if (this._isManagingRecentGifs)
             return;
-          const G = u.getAttribute("data-url") || "", se = u.getAttribute("data-alt") || "";
-          m && (m.value = G), E && (E.value = se), this._mediaModalAlt = se, q(G);
+          const G = m.getAttribute("data-url") || "", ie = m.getAttribute("data-alt") || "";
+          u && (u.value = G), E && (E.value = ie), this._mediaModalAlt = ie, q(G);
         });
       });
-      const te = this.shadowRoot.getElementById("btn-manage-recent-gifs");
-      te && te.addEventListener("click", (u) => {
-        u.stopPropagation(), this._isManagingRecentGifs = !this._isManagingRecentGifs, this.render();
-      }), this.shadowRoot.querySelectorAll(".sl-btn-delete-recent-gif").forEach((u) => {
-        u.addEventListener("click", (S) => {
+      const oe = this.shadowRoot.getElementById("btn-manage-recent-gifs");
+      oe && oe.addEventListener("click", (m) => {
+        m.stopPropagation(), this._isManagingRecentGifs = !this._isManagingRecentGifs, this.render();
+      }), this.shadowRoot.querySelectorAll(".sl-btn-delete-recent-gif").forEach((m) => {
+        m.addEventListener("click", (S) => {
           S.stopPropagation();
-          const P = u.getAttribute("data-url") || "";
-          P && (Te(P), ne().length === 0 && (this._isManagingRecentGifs = !1), this.render());
+          const R = m.getAttribute("data-url") || "";
+          R && (Pe(R), le().length === 0 && (this._isManagingRecentGifs = !1), this.render());
         });
       });
-      const oe = this.shadowRoot.getElementById("btn-clear-recent-gifs");
-      oe && oe.addEventListener("click", (u) => {
-        u.stopPropagation(), this._isConfirmingClearGifs = !0, this.render();
+      const re = this.shadowRoot.getElementById("btn-clear-recent-gifs");
+      re && re.addEventListener("click", (m) => {
+        m.stopPropagation(), this._isConfirmingClearGifs = !0, this.render();
       });
-      const re = this.shadowRoot.getElementById("btn-confirm-clear-gifs-yes");
-      re && re.addEventListener("click", (u) => {
-        u.stopPropagation(), Ie(), this._isConfirmingClearGifs = !1, this._isManagingRecentGifs = !1, this.render();
+      const se = this.shadowRoot.getElementById("btn-confirm-clear-gifs-yes");
+      se && se.addEventListener("click", (m) => {
+        m.stopPropagation(), Be(), this._isConfirmingClearGifs = !1, this._isManagingRecentGifs = !1, this.render();
       });
       const ae = this.shadowRoot.getElementById("btn-confirm-clear-gifs-no");
-      ae && ae.addEventListener("click", (u) => {
-        u.stopPropagation(), this._isConfirmingClearGifs = !1, this.render();
+      ae && ae.addEventListener("click", (m) => {
+        m.stopPropagation(), this._isConfirmingClearGifs = !1, this.render();
       }), c && c.addEventListener("click", () => {
-        const u = (m ? m.value : this._mediaModalUrl).trim(), S = (E ? E.value : this._mediaModalAlt).trim() || "GIF";
-        if (!u) {
-          this._mediaModalError = U ? "Por favor, insira a URL do GIF." : "Please enter a GIF URL.", R && (R.textContent = this._mediaModalError), C && (C.style.display = "flex"), v && (v.style.display = "none");
+        const m = (u ? u.value : this._mediaModalUrl).trim(), S = (E ? E.value : this._mediaModalAlt).trim() || "GIF";
+        if (!m) {
+          this._mediaModalError = U ? "Por favor, insira a URL do GIF." : "Please enter a GIF URL.", A && (A.textContent = this._mediaModalError), C && (C.style.display = "flex"), v && (v.style.display = "none");
           return;
         }
-        const P = V(u);
-        if (!P.safe) {
-          this._mediaModalError = P.reason || (U ? "URL inválida ou não segura." : "Invalid or unsafe URL."), R && (R.textContent = this._mediaModalError), C && (C.style.display = "flex"), v && (v.style.display = "none");
+        const R = X(m);
+        if (!R.safe) {
+          this._mediaModalError = R.reason || (U ? "URL inválida ou não segura." : "Invalid or unsafe URL."), A && (A.textContent = this._mediaModalError), C && (C.style.display = "flex"), v && (v.style.display = "none");
           return;
         }
-        ve(u, S);
-        const G = `![${S}](${u})`;
+        _e(m, S);
+        const G = `![${S}](${m})`;
         this._isMediaModalOpen = !1, this._isManagingRecentGifs = !1, this._isConfirmingClearGifs = !1, this._mediaModalUrl = "", this._mediaModalAlt = "", this._mediaModalError = null, this._mediaModalSuccess = null, this.insertTextAtCursor(G);
       });
     }
     if (this._isImageModalOpen) {
-      const n = this.shadowRoot.getElementById("image-modal-backdrop"), p = this.shadowRoot.getElementById("btn-close-image-modal"), y = this.shadowRoot.getElementById("btn-cancel-image-modal"), c = this.shadowRoot.getElementById("btn-confirm-image-modal"), m = this.shadowRoot.getElementById("image-url-input"), E = this.shadowRoot.getElementById("image-alt-input"), v = this.shadowRoot.getElementById("image-url-preview-card"), O = this.shadowRoot.getElementById("image-url-preview-img"), C = this.shadowRoot.getElementById("image-modal-error-box"), R = this.shadowRoot.getElementById("image-modal-error-text"), U = this.currentLang === "pt", q = (u) => {
-        this._imageModalUrl = u;
-        const S = u.trim();
+      const n = this.shadowRoot.getElementById("image-modal-backdrop"), p = this.shadowRoot.getElementById("btn-close-image-modal"), x = this.shadowRoot.getElementById("btn-cancel-image-modal"), c = this.shadowRoot.getElementById("btn-confirm-image-modal"), u = this.shadowRoot.getElementById("image-url-input"), E = this.shadowRoot.getElementById("image-alt-input"), v = this.shadowRoot.getElementById("image-url-preview-card"), O = this.shadowRoot.getElementById("image-url-preview-img"), C = this.shadowRoot.getElementById("image-modal-error-box"), A = this.shadowRoot.getElementById("image-modal-error-text"), U = this.currentLang === "pt", q = (m) => {
+        this._imageModalUrl = m;
+        const S = m.trim();
         if (S.length > 0) {
-          const P = V(S);
-          P.safe ? (this._imageModalError = null, C && (C.style.display = "none"), v && (v.style.display = "flex"), O && (O.style.display = "block", O.src = S)) : (this._imageModalError = P.reason || (U ? "Link inválido." : "Invalid link."), v && (v.style.display = "none"), R && (R.textContent = this._imageModalError), C && (C.style.display = "flex"));
+          const R = X(S);
+          R.safe ? (this._imageModalError = null, C && (C.style.display = "none"), v && (v.style.display = "flex"), O && (O.style.display = "block", O.src = S)) : (this._imageModalError = R.reason || (U ? "Link inválido." : "Invalid link."), v && (v.style.display = "none"), A && (A.textContent = this._imageModalError), C && (C.style.display = "flex"));
         } else
           this._imageModalError = null, v && (v.style.display = "none"), C && (C.style.display = "none");
-      }, J = () => {
+      }, W = () => {
         this._isImageModalOpen = !1, this._isManagingRecentImages = !1, this._isConfirmingClearImages = !1, this._imageModalUrl = "", this._imageModalAlt = "", this._imageModalError = null, this._imageModalSuccess = null, this.render();
       };
-      p && p.addEventListener("click", J), y && y.addEventListener("click", J), n && n.addEventListener("click", (u) => {
-        u.target === n && J();
-      }), m && (m.addEventListener("keydown", (u) => {
-        u.stopPropagation();
-      }), m.addEventListener("input", () => {
-        q(m.value);
-      }), m.addEventListener("paste", () => {
-        setTimeout(() => q(m.value), 0);
-      })), E && (E.addEventListener("keydown", (u) => {
-        u.stopPropagation();
+      p && p.addEventListener("click", W), x && x.addEventListener("click", W), n && n.addEventListener("click", (m) => {
+        m.target === n && W();
+      }), u && (u.addEventListener("keydown", (m) => {
+        m.stopPropagation();
+      }), u.addEventListener("input", () => {
+        q(u.value);
+      }), u.addEventListener("paste", () => {
+        setTimeout(() => q(u.value), 0);
+      })), E && (E.addEventListener("keydown", (m) => {
+        m.stopPropagation();
       }), E.addEventListener("input", () => {
         this._imageModalAlt = E.value;
       }));
-      const X = this.shadowRoot.getElementById("btn-save-image-collection");
-      X && X.addEventListener("click", (u) => {
-        u.stopPropagation();
-        const S = (m ? m.value : this._imageModalUrl).trim(), P = (E ? E.value : this._imageModalAlt).trim() || (U ? "Imagem" : "Image");
+      const Z = this.shadowRoot.getElementById("btn-save-image-collection");
+      Z && Z.addEventListener("click", (m) => {
+        m.stopPropagation();
+        const S = (u ? u.value : this._imageModalUrl).trim(), R = (E ? E.value : this._imageModalAlt).trim() || (U ? "Imagem" : "Image");
         if (!S) {
-          this._imageModalError = U ? "Por favor, insira a URL da imagem antes de salvar." : "Please enter an image URL before saving.", R && (R.textContent = this._imageModalError), C && (C.style.display = "flex");
+          this._imageModalError = U ? "Por favor, insira a URL da imagem antes de salvar." : "Please enter an image URL before saving.", A && (A.textContent = this._imageModalError), C && (C.style.display = "flex");
           return;
         }
-        const G = V(S);
+        const G = X(S);
         if (!G.safe) {
-          this._imageModalError = G.reason || (U ? "URL inválida ou não segura." : "Invalid or unsafe URL."), R && (R.textContent = this._imageModalError), C && (C.style.display = "flex");
+          this._imageModalError = G.reason || (U ? "URL inválida ou não segura." : "Invalid or unsafe URL."), A && (A.textContent = this._imageModalError), C && (C.style.display = "flex");
           return;
         }
-        xe(S, P), this._imageModalUrl = "", this._imageModalAlt = "", this._imageModalError = null, this._imageModalSuccess = U ? "Imagem salva na sua coleção!" : "Image saved to collection!", this.render(), setTimeout(() => {
+        ke(S, R), this._imageModalUrl = "", this._imageModalAlt = "", this._imageModalError = null, this._imageModalSuccess = U ? "Imagem salva na sua coleção!" : "Image saved to collection!", this.render(), setTimeout(() => {
           this._isImageModalOpen && this._imageModalSuccess && (this._imageModalSuccess = null, this.render());
         }, 2500);
-      }), this.shadowRoot.querySelectorAll(".sl-recent-image-item").forEach((u) => {
-        let S = null, P = !1;
-        u.addEventListener("touchstart", () => {
-          P = !1, S = setTimeout(() => {
-            if (!P) {
+      }), this.shadowRoot.querySelectorAll(".sl-recent-image-item").forEach((m) => {
+        let S = null, R = !1;
+        m.addEventListener("touchstart", () => {
+          R = !1, S = setTimeout(() => {
+            if (!R) {
               if (this._isManagingRecentImages = !0, "vibrate" in navigator)
                 try {
                   navigator.vibrate(50);
@@ -6263,59 +6267,59 @@ ${i}
               this.render();
             }
           }, 450);
-        }, { passive: !0 }), u.addEventListener("touchmove", () => {
-          P = !0, S && clearTimeout(S);
-        }, { passive: !0 }), u.addEventListener("touchend", () => {
+        }, { passive: !0 }), m.addEventListener("touchmove", () => {
+          R = !0, S && clearTimeout(S);
+        }, { passive: !0 }), m.addEventListener("touchend", () => {
           S && clearTimeout(S);
-        }), u.addEventListener("click", () => {
+        }), m.addEventListener("click", () => {
           if (this._isManagingRecentImages)
             return;
-          const G = u.getAttribute("data-url") || "", se = u.getAttribute("data-alt") || "";
-          m && (m.value = G), E && (E.value = se), this._imageModalAlt = se, q(G);
+          const G = m.getAttribute("data-url") || "", ie = m.getAttribute("data-alt") || "";
+          u && (u.value = G), E && (E.value = ie), this._imageModalAlt = ie, q(G);
         });
       });
-      const te = this.shadowRoot.getElementById("btn-manage-recent-images");
-      te && te.addEventListener("click", (u) => {
-        u.stopPropagation(), this._isManagingRecentImages = !this._isManagingRecentImages, this.render();
-      }), this.shadowRoot.querySelectorAll(".sl-btn-delete-recent-image").forEach((u) => {
-        u.addEventListener("click", (S) => {
+      const oe = this.shadowRoot.getElementById("btn-manage-recent-images");
+      oe && oe.addEventListener("click", (m) => {
+        m.stopPropagation(), this._isManagingRecentImages = !this._isManagingRecentImages, this.render();
+      }), this.shadowRoot.querySelectorAll(".sl-btn-delete-recent-image").forEach((m) => {
+        m.addEventListener("click", (S) => {
           S.stopPropagation();
-          const P = u.getAttribute("data-url") || "";
-          P && (Ae(P), le().length === 0 && (this._isManagingRecentImages = !1), this.render());
+          const R = m.getAttribute("data-url") || "";
+          R && (je(R), de().length === 0 && (this._isManagingRecentImages = !1), this.render());
         });
       });
-      const oe = this.shadowRoot.getElementById("btn-clear-recent-images");
-      oe && oe.addEventListener("click", (u) => {
-        u.stopPropagation(), this._isConfirmingClearImages = !0, this.render();
+      const re = this.shadowRoot.getElementById("btn-clear-recent-images");
+      re && re.addEventListener("click", (m) => {
+        m.stopPropagation(), this._isConfirmingClearImages = !0, this.render();
       });
-      const re = this.shadowRoot.getElementById("btn-confirm-clear-images-yes");
-      re && re.addEventListener("click", (u) => {
-        u.stopPropagation(), Re(), this._isConfirmingClearImages = !1, this._isManagingRecentImages = !1, this.render();
+      const se = this.shadowRoot.getElementById("btn-confirm-clear-images-yes");
+      se && se.addEventListener("click", (m) => {
+        m.stopPropagation(), ze(), this._isConfirmingClearImages = !1, this._isManagingRecentImages = !1, this.render();
       });
       const ae = this.shadowRoot.getElementById("btn-confirm-clear-images-no");
-      ae && ae.addEventListener("click", (u) => {
-        u.stopPropagation(), this._isConfirmingClearImages = !1, this.render();
+      ae && ae.addEventListener("click", (m) => {
+        m.stopPropagation(), this._isConfirmingClearImages = !1, this.render();
       }), c && c.addEventListener("click", () => {
-        const u = (m ? m.value : this._imageModalUrl).trim(), S = (E ? E.value : this._imageModalAlt).trim() || (U ? "Imagem" : "Image");
-        if (!u) {
-          this._imageModalError = U ? "Por favor, insira a URL da imagem." : "Please enter an image URL.", R && (R.textContent = this._imageModalError), C && (C.style.display = "flex"), v && (v.style.display = "none");
+        const m = (u ? u.value : this._imageModalUrl).trim(), S = (E ? E.value : this._imageModalAlt).trim() || (U ? "Imagem" : "Image");
+        if (!m) {
+          this._imageModalError = U ? "Por favor, insira a URL da imagem." : "Please enter an image URL.", A && (A.textContent = this._imageModalError), C && (C.style.display = "flex"), v && (v.style.display = "none");
           return;
         }
-        const P = V(u);
-        if (!P.safe) {
-          this._imageModalError = P.reason || (U ? "URL inválida ou não segura." : "Invalid or unsafe URL."), R && (R.textContent = this._imageModalError), C && (C.style.display = "flex"), v && (v.style.display = "none");
+        const R = X(m);
+        if (!R.safe) {
+          this._imageModalError = R.reason || (U ? "URL inválida ou não segura." : "Invalid or unsafe URL."), A && (A.textContent = this._imageModalError), C && (C.style.display = "flex"), v && (v.style.display = "none");
           return;
         }
-        xe(u, S);
-        const G = `![${S}](${u})`;
+        ke(m, S);
+        const G = `![${S}](${m})`;
         this._isImageModalOpen = !1, this._isManagingRecentImages = !1, this._isConfirmingClearImages = !1, this._imageModalUrl = "", this._imageModalAlt = "", this._imageModalError = null, this._imageModalSuccess = null, this.insertTextAtCursor(G);
       });
     }
     if (this._isEmojiPickerOpen) {
       const n = (p) => {
-        var m;
-        const y = p.composedPath(), c = (m = this.shadowRoot) == null ? void 0 : m.getElementById("emoji-popover");
-        c && !y.includes(c) && d && !y.includes(d) && (this._isEmojiPickerOpen = !1, this.render(), document.removeEventListener("click", n));
+        var u;
+        const x = p.composedPath(), c = (u = this.shadowRoot) == null ? void 0 : u.getElementById("emoji-popover");
+        c && !x.includes(c) && d && !x.includes(d) && (this._isEmojiPickerOpen = !1, this.render(), document.removeEventListener("click", n));
       };
       setTimeout(() => document.addEventListener("click", n), 0);
     }
@@ -6323,12 +6327,12 @@ ${i}
     I && I.addEventListener("click", () => {
       this.loginWithGitHub();
     });
-    const B = this.shadowRoot.getElementById("btn-logout");
-    B && B.addEventListener("click", () => {
+    const j = this.shadowRoot.getElementById("btn-logout");
+    j && j.addEventListener("click", () => {
       this.logout();
     });
-    const D = this.shadowRoot.getElementById("btn-submit");
-    D && D.addEventListener("click", async () => {
+    const H = this.shadowRoot.getElementById("btn-submit");
+    H && H.addEventListener("click", async () => {
       const n = this._composerText.trim();
       if (!n) {
         alert(
@@ -6343,8 +6347,8 @@ ${i}
           this.loginWithGitHub();
           return;
         }
-        const y = p.currentTarget, c = y.getAttribute("data-comment-id"), m = y.getAttribute("data-emoji") || "👍";
-        c && await this.handleToggleReaction(c, m);
+        const x = p.currentTarget, c = x.getAttribute("data-comment-id"), u = x.getAttribute("data-emoji") || "👍";
+        c && await this.handleToggleReaction(c, u);
       });
     }), this.shadowRoot.querySelectorAll(".sl-reaction-picker-item").forEach((n) => {
       n.addEventListener("click", async (p) => {
@@ -6352,8 +6356,8 @@ ${i}
           this.loginWithGitHub();
           return;
         }
-        const y = p.currentTarget, c = y.getAttribute("data-comment-id"), m = y.getAttribute("data-emoji"), E = y.closest(".sl-reaction-container");
-        E == null || E.classList.remove("sl-popover-open"), c && m && await this.handleToggleReaction(c, m);
+        const x = p.currentTarget, c = x.getAttribute("data-comment-id"), u = x.getAttribute("data-emoji"), E = x.closest(".sl-reaction-container");
+        E == null || E.classList.remove("sl-popover-open"), c && u && await this.handleToggleReaction(c, u);
       });
     }), this.shadowRoot.querySelectorAll(".sl-reaction-badge").forEach((n) => {
       n.addEventListener("click", async (p) => {
@@ -6361,8 +6365,8 @@ ${i}
           this.loginWithGitHub();
           return;
         }
-        const y = p.currentTarget, c = y.getAttribute("data-comment-id"), m = y.getAttribute("data-emoji");
-        c && m && await this.handleToggleReaction(c, m);
+        const x = p.currentTarget, c = x.getAttribute("data-comment-id"), u = x.getAttribute("data-emoji");
+        c && u && await this.handleToggleReaction(c, u);
       });
     }), this.shadowRoot.querySelectorAll(".sl-reaction-container").forEach((n) => {
       n.addEventListener("mouseenter", () => {
@@ -6374,7 +6378,7 @@ ${i}
       });
     }), this.shadowRoot.querySelectorAll(".sl-reply-btn:not(.btn-toggle-translate)").forEach((n) => {
       n.addEventListener("click", (p) => {
-        var m;
+        var u;
         const c = p.currentTarget.getAttribute("data-reply-to");
         if (!this._currentUser) {
           this.loginWithGitHub();
@@ -6390,7 +6394,7 @@ ${i}
             E = v.author.login;
           else
             for (const O of this._comments) {
-              const C = (m = O.replies) == null ? void 0 : m.find((R) => R.id === c);
+              const C = (u = O.replies) == null ? void 0 : u.find((A) => A.id === c);
               if (C) {
                 E = C.author.login;
                 break;
@@ -6408,10 +6412,10 @@ ${i}
     }), this.shadowRoot.querySelectorAll(".btn-send-reply").forEach((n) => {
       n.addEventListener("click", async (p) => {
         var O;
-        const y = p.currentTarget, c = y.getAttribute("data-comment-id"), m = y.getAttribute("data-parent-id") || c, E = (O = this.shadowRoot) == null ? void 0 : O.getElementById(`reply-textarea-${c}`);
+        const x = p.currentTarget, c = x.getAttribute("data-comment-id"), u = x.getAttribute("data-parent-id") || c, E = (O = this.shadowRoot) == null ? void 0 : O.getElementById(`reply-textarea-${c}`);
         if (!E) return;
         const v = E.value.trim();
-        !v || !m || await this.handlePostReply(m, v);
+        !v || !u || await this.handlePostReply(u, v);
       });
     }), this.shadowRoot.querySelectorAll(".btn-cancel-reply").forEach((n) => {
       n.addEventListener("click", () => {
@@ -6424,9 +6428,9 @@ ${i}
       });
     }), this.shadowRoot.querySelectorAll(".sl-audio-btn").forEach((n) => {
       n.addEventListener("click", (p) => {
-        const y = p.currentTarget, c = y.getAttribute("data-speak-id"), m = y.getAttribute("data-text"), E = y.getAttribute("data-lang") || void 0;
-        if (c && m) {
-          const v = decodeURIComponent(m);
+        const x = p.currentTarget, c = x.getAttribute("data-speak-id"), u = x.getAttribute("data-text"), E = x.getAttribute("data-lang") || void 0;
+        if (c && u) {
+          const v = decodeURIComponent(u);
           this.toggleSpeak(c, v, E);
         }
       });
@@ -6453,9 +6457,9 @@ ${i}
     }), this.shadowRoot.querySelectorAll(".btn-save-edit").forEach((n) => {
       n.addEventListener("click", async (p) => {
         var v;
-        const c = p.currentTarget.getAttribute("data-comment-id"), m = (v = this.shadowRoot) == null ? void 0 : v.getElementById(`edit-textarea-${c}`);
-        if (!m || !c) return;
-        const E = m.value.trim();
+        const c = p.currentTarget.getAttribute("data-comment-id"), u = (v = this.shadowRoot) == null ? void 0 : v.getElementById(`edit-textarea-${c}`);
+        if (!u || !c) return;
+        const E = u.value.trim();
         E && await this.handleSaveEdit(c, E);
       });
     }), this.shadowRoot.querySelectorAll(".btn-cancel-edit").forEach((n) => {
@@ -6467,32 +6471,32 @@ ${i}
         p.stopPropagation();
         const c = p.currentTarget.getAttribute("data-comment-id");
         if (!c) return;
-        const m = this.currentLang === "pt" ? "Tem certeza que deseja excluir esta nota?" : "Are you sure you want to delete this note?";
-        confirm(m) && await this.handleDelete(c);
+        const u = this.currentLang === "pt" ? "Tem certeza que deseja excluir esta nota?" : "Are you sure you want to delete this note?";
+        confirm(u) && await this.handleDelete(c);
       });
     }), this.shadowRoot.querySelectorAll(".btn-mod-restrict-media").forEach((n) => {
       n.addEventListener("click", async (p) => {
         p.stopPropagation();
         const c = p.currentTarget.getAttribute("data-user");
         if (!c) return;
-        const m = this.currentLang === "pt" ? `Deseja realmente remover a permissão de mídia de @${c}?` : this.currentLang === "es" ? `¿Deseas quitar el permiso de medios a @${c}?` : `Are you sure you want to restrict media for @${c}?`;
-        confirm(m) && (this._openMenuId = null, this.render(), await this.handleSetModeration(c, "restrict_media"));
+        const u = this.currentLang === "pt" ? `Deseja realmente remover a permissão de mídia de @${c}?` : this.currentLang === "es" ? `¿Deseas quitar el permiso de medios a @${c}?` : `Are you sure you want to restrict media for @${c}?`;
+        confirm(u) && (this._openMenuId = null, this.render(), await this.handleSetModeration(c, "restrict_media"));
       });
     }), this.shadowRoot.querySelectorAll(".btn-mod-ban").forEach((n) => {
       n.addEventListener("click", async (p) => {
         p.stopPropagation();
         const c = p.currentTarget.getAttribute("data-user");
         if (!c) return;
-        const m = this.currentLang === "pt" ? `Deseja realmente banir o usuário @${c} dos comentários?` : this.currentLang === "es" ? `¿Deseas bloquear al usuario @${c} de los comentarios?` : `Are you sure you want to ban @${c} from commenting?`;
-        confirm(m) && (this._openMenuId = null, this.render(), await this.handleSetModeration(c, "ban"));
+        const u = this.currentLang === "pt" ? `Deseja realmente banir o usuário @${c} dos comentários?` : this.currentLang === "es" ? `¿Deseas bloquear al usuario @${c} de los comentarios?` : `Are you sure you want to ban @${c} from commenting?`;
+        confirm(u) && (this._openMenuId = null, this.render(), await this.handleSetModeration(c, "ban"));
       });
     });
-    const ge = this.shadowRoot.getElementById("sl-mod-refresh");
-    ge && ge.addEventListener("click", async (n) => {
+    const fe = this.shadowRoot.getElementById("sl-mod-refresh");
+    fe && fe.addEventListener("click", async (n) => {
       n.stopPropagation(), await this.loadModerationList();
     });
-    const me = this.shadowRoot.getElementById("sl-mod-toggle-collapse");
-    me && me.addEventListener("click", (n) => {
+    const ve = this.shadowRoot.getElementById("sl-mod-toggle-collapse");
+    ve && ve.addEventListener("click", (n) => {
       n.stopPropagation(), this._isModerationCollapsed = !this._isModerationCollapsed;
       try {
         localStorage.setItem("sl_mod_collapsed", String(this._isModerationCollapsed));
@@ -6500,12 +6504,12 @@ ${i}
       }
       this.render();
     });
-    const ue = this.shadowRoot.getElementById("sl-mod-pill-ban");
-    ue && ue.addEventListener("click", (n) => {
+    const xe = this.shadowRoot.getElementById("sl-mod-pill-ban");
+    xe && xe.addEventListener("click", (n) => {
       n.stopPropagation(), this._expandedModCategory = this._expandedModCategory === "ban" ? null : "ban", this.render();
     });
-    const be = this.shadowRoot.getElementById("sl-mod-pill-media");
-    if (be && be.addEventListener("click", (n) => {
+    const ye = this.shadowRoot.getElementById("sl-mod-pill-media");
+    if (ye && ye.addEventListener("click", (n) => {
       n.stopPropagation(), this._expandedModCategory = this._expandedModCategory === "media" ? null : "media", this.render();
     }), this.shadowRoot.querySelectorAll(".sl-mod-chip-remove").forEach((n) => {
       n.addEventListener("click", async (p) => {
@@ -6516,8 +6520,8 @@ ${i}
     }), this.shadowRoot.querySelectorAll(".btn-copy-link").forEach((n) => {
       n.addEventListener("click", (p) => {
         p.stopPropagation();
-        const c = p.currentTarget.getAttribute("data-comment-id"), m = `${window.location.href.split("#")[0]}#comment-${c}`;
-        navigator.clipboard.writeText(m).then(() => {
+        const c = p.currentTarget.getAttribute("data-comment-id"), u = `${window.location.href.split("#")[0]}#comment-${c}`;
+        navigator.clipboard.writeText(u).then(() => {
           alert(
             this.currentLang === "pt" ? "Link copiado para a área de transferência!" : "Link copied to clipboard!"
           );
@@ -6528,16 +6532,16 @@ ${i}
     ).forEach((n) => {
       n.addEventListener("click", (p) => {
         p.preventDefault(), p.stopPropagation();
-        const y = n.getAttribute("src") || "", c = n.getAttribute("alt") || "";
-        y && this.openLightbox(y, c);
+        const x = n.getAttribute("src") || "", c = n.getAttribute("alt") || "";
+        x && this.openLightbox(x, c);
       });
     }), this._lightboxOpen) {
-      const n = this.shadowRoot.getElementById("sl-lightbox-stage"), p = this.shadowRoot.getElementById("sl-lightbox-img"), y = this.shadowRoot.getElementById("sl-lightbox-close"), c = this.shadowRoot.getElementById("sl-lightbox-zoom-in"), m = this.shadowRoot.getElementById("sl-lightbox-zoom-out"), E = this.shadowRoot.getElementById("sl-lightbox-reset");
-      y && y.addEventListener("click", (v) => {
+      const n = this.shadowRoot.getElementById("sl-lightbox-stage"), p = this.shadowRoot.getElementById("sl-lightbox-img"), x = this.shadowRoot.getElementById("sl-lightbox-close"), c = this.shadowRoot.getElementById("sl-lightbox-zoom-in"), u = this.shadowRoot.getElementById("sl-lightbox-zoom-out"), E = this.shadowRoot.getElementById("sl-lightbox-reset");
+      x && x.addEventListener("click", (v) => {
         v.stopPropagation(), this.closeLightbox();
       }), c && c.addEventListener("click", (v) => {
         v.stopPropagation(), this.setLightboxZoom(this._lightboxScale + 0.3);
-      }), m && m.addEventListener("click", (v) => {
+      }), u && u.addEventListener("click", (v) => {
         v.stopPropagation(), this.setLightboxZoom(this._lightboxScale - 0.3);
       }), E && E.addEventListener("click", (v) => {
         v.stopPropagation(), this.resetLightboxTransform();
@@ -6556,9 +6560,9 @@ ${i}
       }), p.addEventListener("mousedown", (v) => {
         if (v.button !== 0) return;
         v.preventDefault(), this._isDraggingImage = !0, this._dragStartX = v.clientX, this._dragStartY = v.clientY, this._dragStartTx = this._lightboxTranslateX, this._dragStartTy = this._lightboxTranslateY, this.updateLightboxTransform(!0);
-        const O = (R) => {
+        const O = (A) => {
           if (!this._isDraggingImage) return;
-          const U = R.clientX - this._dragStartX, q = R.clientY - this._dragStartY;
+          const U = A.clientX - this._dragStartX, q = A.clientY - this._dragStartY;
           this._lightboxTranslateX = this._dragStartTx + U, this._lightboxTranslateY = this._dragStartTy + q, this.updateLightboxTransform(!0);
         }, C = () => {
           this._isDraggingImage = !1, this.updateLightboxTransform(!1), window.removeEventListener("mousemove", O), window.removeEventListener("mouseup", C);
@@ -6570,12 +6574,12 @@ ${i}
           this._isDraggingImage = !0, this._dragStartX = O.clientX, this._dragStartY = O.clientY, this._dragStartTx = this._lightboxTranslateX, this._dragStartTy = this._lightboxTranslateY, this.updateLightboxTransform(!0);
           const C = (U) => {
             if (!this._isDraggingImage || U.touches.length !== 1) return;
-            const q = U.touches[0], J = q.clientX - this._dragStartX, X = q.clientY - this._dragStartY;
-            this._lightboxTranslateX = this._dragStartTx + J, this._lightboxTranslateY = this._dragStartTy + X, this.updateLightboxTransform(!0);
-          }, R = () => {
-            this._isDraggingImage = !1, this.updateLightboxTransform(!1), window.removeEventListener("touchmove", C), window.removeEventListener("touchend", R);
+            const q = U.touches[0], W = q.clientX - this._dragStartX, Z = q.clientY - this._dragStartY;
+            this._lightboxTranslateX = this._dragStartTx + W, this._lightboxTranslateY = this._dragStartTy + Z, this.updateLightboxTransform(!0);
+          }, A = () => {
+            this._isDraggingImage = !1, this.updateLightboxTransform(!1), window.removeEventListener("touchmove", C), window.removeEventListener("touchend", A);
           };
-          window.addEventListener("touchmove", C, { passive: !0 }), window.addEventListener("touchend", R);
+          window.addEventListener("touchmove", C, { passive: !0 }), window.addEventListener("touchend", A);
         }
       }, { passive: !0 }));
     }
@@ -6597,48 +6601,48 @@ ${i}
       let _ = "code";
       const L = g.closest('[class*="highlight-source-"]');
       if (L) {
-        const H = L.className.match(/highlight-source-([a-zA-Z0-9_-]+)/);
-        H && H[1] && (_ = H[1]);
+        const F = L.className.match(/highlight-source-([a-zA-Z0-9_-]+)/);
+        F && F[1] && (_ = F[1]);
       } else if (g.getAttribute("lang"))
         _ = g.getAttribute("lang") || "code";
       else if (k.className) {
-        const H = k.className.match(/(?:language|lang)-([a-zA-Z0-9_-]+)/);
-        H && H[1] && (_ = H[1]);
+        const F = k.className.match(/(?:language|lang)-([a-zA-Z0-9_-]+)/);
+        F && F[1] && (_ = F[1]);
       }
-      const x = w.split(/\r?\n/), I = x.length > 20, B = this.currentLang === "pt", D = B ? "Copiar" : "Copy", $ = B ? "Copiar código" : "Copy code", j = B ? "Rolar para cima" : "Scroll up", A = B ? "Rolar para baixo" : "Scroll down", F = I ? `${_} · ${x.length} ${B ? "linhas" : "lines"}` : _, N = document.createElement("div");
+      const y = w.split(/\r?\n/), I = y.length > 20, j = this.currentLang === "pt", H = j ? "Copiar" : "Copy", $ = j ? "Copiar código" : "Copy code", B = j ? "Rolar para cima" : "Scroll up", P = j ? "Rolar para baixo" : "Scroll down", D = I ? `${_} · ${y.length} ${j ? "linhas" : "lines"}` : _, N = document.createElement("div");
       N.className = `sl-code-block ${I ? "sl-code-block-long sl-collapsed" : ""}`, N.setAttribute("data-lang", _);
-      const W = document.createElement("div");
-      if (W.className = "sl-code-header", W.innerHTML = `
-        <span class="sl-code-badge">${F}</span>
+      const J = document.createElement("div");
+      if (J.className = "sl-code-header", J.innerHTML = `
+        <span class="sl-code-badge">${D}</span>
         <button type="button" class="sl-code-copy-btn" title="${$}" aria-label="${$}">
           <svg class="sl-copy-icon" viewBox="0 0 16 16" width="14" height="14" fill="currentColor">
             <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path>
             <path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
           </svg>
-          <span class="sl-copy-text">${D}</span>
+          <span class="sl-copy-text">${H}</span>
         </button>
-      `, k.querySelector(".sl-code-line") || (k.innerHTML = x.map((H, Y) => {
-        const z = H.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        return `<span class="sl-code-line"><span class="sl-line-num">${Y + 1}</span><span class="sl-line-code">${z || " "}</span></span>`;
-      }).join("")), (Q = g.parentNode) == null || Q.insertBefore(N, g), N.appendChild(W), N.appendChild(g), g.classList.add("sl-code-pre"), k.classList.add("sl-code-body"), I && !this._hideCodeScroll) {
-        const H = document.createElement("div");
-        H.className = "sl-code-scroll-controls", H.setAttribute("aria-label", B ? "Navegação do código" : "Code navigation"), H.innerHTML = `
-          <button type="button" class="sl-code-scroll-btn sl-scroll-up" title="${j}" aria-label="${j}">
+      `, k.querySelector(".sl-code-line") || (k.innerHTML = y.map((F, Y) => {
+        const ee = F.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        return `<span class="sl-code-line"><span class="sl-line-num">${Y + 1}</span><span class="sl-line-code">${ee || " "}</span></span>`;
+      }).join("")), (Q = g.parentNode) == null || Q.insertBefore(N, g), N.appendChild(J), N.appendChild(g), g.classList.add("sl-code-pre"), k.classList.add("sl-code-body"), I && !this._hideCodeScroll) {
+        const F = document.createElement("div");
+        F.className = "sl-code-scroll-controls", F.setAttribute("aria-label", j ? "Navegação do código" : "Code navigation"), F.innerHTML = `
+          <button type="button" class="sl-code-scroll-btn sl-scroll-up" title="${B}" aria-label="${B}">
             <svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor">
               <path d="M8 3.5a.75.75 0 0 1 .53.22l4.5 4.5a.75.75 0 0 1-1.06 1.06L8 5.31 4.03 9.28a.75.75 0 0 1-1.06-1.06l4.5-4.5A.75.75 0 0 1 8 3.5Z"/>
             </svg>
           </button>
-          <button type="button" class="sl-code-scroll-btn sl-scroll-down" title="${A}" aria-label="${A}">
+          <button type="button" class="sl-code-scroll-btn sl-scroll-down" title="${P}" aria-label="${P}">
             <svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor">
               <path d="M8 12.5a.75.75 0 0 1-.53-.22l-4.5-4.5a.75.75 0 0 1 1.06-1.06L8 10.69l3.97-3.97a.75.75 0 1 1 1.06 1.06l-4.5 4.5a.75.75 0 0 1-.53.22Z"/>
             </svg>
           </button>
-        `, N.appendChild(H);
+        `, N.appendChild(F);
         const Y = document.createElement("div");
         Y.className = "sl-code-expand-bar", Y.innerHTML = `
-          <button type="button" class="sl-code-expand-btn" data-lines="${x.length}">
+          <button type="button" class="sl-code-expand-btn" data-lines="${y.length}">
             <span>↕</span>
-            <span class="sl-expand-text">${B ? `Mostrar todas as ${x.length} linhas` : `Show all ${x.length} lines`}</span>
+            <span class="sl-expand-text">${j ? `Mostrar todas as ${y.length} linhas` : `Show all ${y.length} lines`}</span>
           </button>
         `, N.appendChild(Y);
       }
@@ -6650,17 +6654,17 @@ ${i}
         const _ = w.querySelectorAll(".sl-line-code");
         let L = "";
         if (_.length > 0)
-          L = Array.from(_).map((x) => x.textContent || "").join(`
+          L = Array.from(_).map((y) => y.textContent || "").join(`
 `);
         else {
-          const x = w.querySelector("pre");
-          L = (x == null ? void 0 : x.textContent) || "";
+          const y = w.querySelector("pre");
+          L = (y == null ? void 0 : y.textContent) || "";
         }
         try {
           await navigator.clipboard.writeText(L);
-          const x = g.querySelector(".sl-copy-text"), I = x ? x.textContent : "";
-          g.classList.add("sl-copied"), x && (x.textContent = this.currentLang === "pt" ? "Copiado!" : "Copied!"), setTimeout(() => {
-            g.classList.remove("sl-copied"), x && I && (x.textContent = I);
+          const y = g.querySelector(".sl-copy-text"), I = y ? y.textContent : "";
+          g.classList.add("sl-copied"), y && (y.textContent = this.currentLang === "pt" ? "Copiado!" : "Copied!"), setTimeout(() => {
+            g.classList.remove("sl-copied"), y && I && (y.textContent = I);
           }, 2e3);
         } catch {
         }
@@ -6677,8 +6681,8 @@ ${i}
       const k = g.querySelector(".sl-code-pre"), w = g.querySelector(".sl-scroll-up"), _ = g.querySelector(".sl-scroll-down");
       if (!k || !w || !_) return;
       const L = () => {
-        const x = k.scrollTop <= 2, I = k.scrollTop + k.clientHeight >= k.scrollHeight - 4;
-        w.classList.toggle("sl-disabled", x), _.classList.toggle("sl-disabled", I);
+        const y = k.scrollTop <= 2, I = k.scrollTop + k.clientHeight >= k.scrollHeight - 4;
+        w.classList.toggle("sl-disabled", y), _.classList.toggle("sl-disabled", I);
       };
       k.addEventListener("scroll", L, { passive: !0 }), L();
     }), this.shadowRoot.querySelectorAll(".sl-code-expand-btn").forEach((g) => {
@@ -6686,8 +6690,8 @@ ${i}
         k.stopPropagation();
         const w = g.closest(".sl-code-block-long");
         if (!w) return;
-        const _ = w.classList.contains("sl-collapsed"), L = g.getAttribute("data-lines") || "", x = g.querySelector(".sl-expand-text"), I = this.currentLang === "pt";
-        _ ? (w.classList.remove("sl-collapsed"), w.classList.add("sl-expanded"), x && (x.textContent = I ? "Minimizar código" : "Collapse code")) : (w.classList.remove("sl-expanded"), w.classList.add("sl-collapsed"), x && (x.textContent = I ? `Mostrar todas as ${L} linhas` : `Show all ${L} lines`), w.scrollIntoView({ behavior: "smooth", block: "nearest" }));
+        const _ = w.classList.contains("sl-collapsed"), L = g.getAttribute("data-lines") || "", y = g.querySelector(".sl-expand-text"), I = this.currentLang === "pt";
+        _ ? (w.classList.remove("sl-collapsed"), w.classList.add("sl-expanded"), y && (y.textContent = I ? "Minimizar código" : "Collapse code")) : (w.classList.remove("sl-expanded"), w.classList.add("sl-collapsed"), y && (y.textContent = I ? `Mostrar todas as ${L} linhas` : `Show all ${L} lines`), w.scrollIntoView({ behavior: "smooth", block: "nearest" }));
       });
     }), this.shadowRoot.querySelectorAll(".sl-page-btn[data-page]").forEach((g) => {
       g.addEventListener("click", (k) => {
@@ -6697,8 +6701,8 @@ ${i}
         L !== this._currentPage && (this._currentPage = L, this.render(), this.scrollListToTop());
       });
     });
-    const s = this.shadowRoot.querySelector(".btn-prev-page");
-    s && s.addEventListener("click", () => {
+    const a = this.shadowRoot.querySelector(".btn-prev-page");
+    a && a.addEventListener("click", () => {
       this._currentPage > 1 && (this._currentPage--, this.render(), this.scrollListToTop());
     });
     const d = this.shadowRoot.querySelector(".btn-next-page");
@@ -6746,53 +6750,53 @@ ${i}
     if (this._brokerClient && this._authToken)
       try {
         if (!this._discussionId && this._repositoryId && this._categoryId) {
-          const a = this._title.trim() || (typeof document < "u" ? document.title.replace(/\s*[-|·].*$/, "").trim() : "") || this.getCurrentTerm(), r = typeof window < "u" ? window.location.href : "", i = r ? `Discussão para o artigo: **[${a}](${r})**
+          const s = this._title.trim() || (typeof document < "u" ? document.title.replace(/\s*[-|·].*$/, "").trim() : "") || this.getCurrentTerm(), r = typeof window < "u" ? window.location.href : "", i = r ? `Discussão para o artigo: **[${s}](${r})**
 
-_Comentários gerenciados nativamente pelo [ScatterLeaf](https://github.com/rnt-rez/scatterleaf)._` : void 0, s = await this._brokerClient.createDiscussion(
+_Comentários gerenciados nativamente pelo [ScatterLeaf](https://github.com/rnt-rez/scatterleaf)._` : void 0, a = await this._brokerClient.createDiscussion(
             this._repositoryId,
             this._categoryId,
-            a,
+            s,
             i
           );
-          this._discussionId = s.id;
+          this._discussionId = a.id;
         }
         if (this._discussionId) {
-          const a = await this._brokerClient.addComment(
+          const s = await this._brokerClient.addComment(
             this._discussionId,
             e,
             void 0,
             this._repo
           ), r = {
-            id: a.id,
+            id: s.id,
             author: {
-              login: a.author.login,
-              avatarUrl: a.author.avatarUrl,
-              url: a.author.url,
+              login: s.author.login,
+              avatarUrl: s.author.avatarUrl,
+              url: s.author.url,
               isAuthor: !0
             },
-            body: a.body,
-            bodyHtml: a.bodyHTML,
+            body: s.body,
+            bodyHtml: s.bodyHTML,
             createdAt: this.currentLang === "pt" ? "agora mesmo" : "just now",
             originalLang: this.detectTextLanguage(e),
             reactions: [],
             replies: []
           };
           this._comments.unshift(r), this._currentPage = 1, this._composerText = "", this._activeTab = "write", this.render(), setTimeout(() => {
-            const i = this._comments.findIndex((s) => s.id === r.id);
+            const i = this._comments.findIndex((a) => a.id === r.id);
             if (i !== -1) {
-              const [s] = this._comments.splice(i, 1);
-              this._comments.push(s), this.render();
+              const [a] = this._comments.splice(i, 1);
+              this._comments.push(a), this.render();
             }
           }, 5e3);
           return;
         }
-      } catch (a) {
-        if (console.error("Falha ao enviar comentário via broker:", a), this.isAuthError(a)) {
+      } catch (s) {
+        if (console.error("Falha ao enviar comentário via broker:", s), this.isAuthError(s)) {
           this.handleExpiredSession(!1);
           return;
         }
         alert(
-          (a == null ? void 0 : a.message) || (this._lang === "pt" ? "Erro ao enviar comentário." : "Failed to post comment.")
+          (s == null ? void 0 : s.message) || (this._lang === "pt" ? "Erro ao enviar comentário." : "Failed to post comment.")
         );
         return;
       }
@@ -6811,9 +6815,9 @@ _Comentários gerenciados nativamente pelo [ScatterLeaf](https://github.com/rnt-
       replies: []
     };
     this._comments.unshift(o), this._currentPage = 1, this._composerText = "", this._activeTab = "write", this.render(), setTimeout(() => {
-      const a = this._comments.findIndex((r) => r.id === o.id);
-      if (a !== -1) {
-        const [r] = this._comments.splice(a, 1);
+      const s = this._comments.findIndex((r) => r.id === o.id);
+      if (s !== -1) {
+        const [r] = this._comments.splice(s, 1);
         this._comments.push(r), this.render();
       }
     }, 5e3), this.dispatchEvent(
@@ -6837,7 +6841,7 @@ _Comentários gerenciados nativamente pelo [ScatterLeaf](https://github.com/rnt-
           t,
           e,
           this._repo
-        ), i = this._comments.find((s) => s.id === e);
+        ), i = this._comments.find((a) => a.id === e);
         if (i) {
           i.replies || (i.replies = []), i.replies.push({
             id: r.id,
@@ -6866,9 +6870,9 @@ _Comentários gerenciados nativamente pelo [ScatterLeaf](https://github.com/rnt-
         );
         return;
       }
-    const a = this._comments.find((r) => r.id === e);
-    if (a) {
-      a.replies || (a.replies = []);
+    const s = this._comments.find((r) => r.id === e);
+    if (s) {
+      s.replies || (s.replies = []);
       const r = {
         id: `${e}-${Date.now()}`,
         author: {
@@ -6883,7 +6887,7 @@ _Comentários gerenciados nativamente pelo [ScatterLeaf](https://github.com/rnt-
         reactions: [],
         parentId: e
       };
-      a.replies.push(r), this._expandedThreads.add(e), this._replyingToId = null, this._replyText = "", this.render(), this.dispatchEvent(
+      s.replies.push(r), this._expandedThreads.add(e), this._replyingToId = null, this._replyText = "", this.render(), this.dispatchEvent(
         new CustomEvent("reply-added", {
           detail: r,
           bubbles: !0,
@@ -6907,20 +6911,20 @@ _Comentários gerenciados nativamente pelo [ScatterLeaf](https://github.com/rnt-
         );
         return;
       }
-    const a = (r) => {
-      const i = !!(r.isPinned || r.body.includes("<!-- sl:pinned -->") || r.body.includes("<!-- pinned -->")), s = t.replace(/<!--\s*sl:pinned\s*-->\r?\n?/g, "").replace(/<!--\s*pinned\s*-->\r?\n?/g, "");
+    const s = (r) => {
+      const i = !!(r.isPinned || r.body.includes("<!-- sl:pinned -->") || r.body.includes("<!-- pinned -->")), a = t.replace(/<!--\s*sl:pinned\s*-->\r?\n?/g, "").replace(/<!--\s*pinned\s*-->\r?\n?/g, "");
       r.body = i ? `<!-- sl:pinned -->
-${s}` : s, r.isEdited = !0, r.bodyHtml = (o == null ? void 0 : o.bodyHTML) || void 0, r.translatedBody = void 0, r.isShowingTranslation = !1;
+${a}` : a, r.isEdited = !0, r.bodyHtml = (o == null ? void 0 : o.bodyHTML) || void 0, r.translatedBody = void 0, r.isShowingTranslation = !1;
     };
     for (const r of this._comments) {
       if (r.id === e) {
-        a(r);
+        s(r);
         break;
       }
       if (r.replies) {
-        const i = r.replies.find((s) => s.id === e);
+        const i = r.replies.find((a) => a.id === e);
         if (i) {
-          a(i);
+          s(i);
           break;
         }
       }
@@ -6928,6 +6932,12 @@ ${s}` : s, r.isEdited = !0, r.bodyHtml = (o == null ? void 0 : o.bodyHTML) || vo
     this._editingId = null, this.render();
   }
   async handleDelete(e) {
+    if (!this._currentUser || !this._authToken) {
+      alert(
+        this.currentLang === "pt" ? "Você precisa estar conectado para excluir comentários." : "You must be signed in to delete comments."
+      );
+      return;
+    }
     if (this._brokerClient && this._authToken)
       try {
         await this._brokerClient.deleteComment(e);
@@ -6936,20 +6946,24 @@ ${s}` : s, r.isEdited = !0, r.bodyHtml = (o == null ? void 0 : o.bodyHTML) || vo
           this.handleExpiredSession(!1);
           return;
         }
+        alert(
+          (t == null ? void 0 : t.message) || (this.currentLang === "pt" ? "Erro ao excluir comentário." : "Failed to delete comment.")
+        );
+        return;
       }
     this._comments = this._comments.filter((t) => t.id === e ? !1 : (t.replies && (t.replies = t.replies.filter((o) => o.id !== e)), !0)), this._openMenuId = null, this.render();
   }
   async handleTogglePin(e) {
-    const t = this._comments.find((s) => s.id === e);
+    const t = this._comments.find((a) => a.id === e);
     if (!t) return;
-    const a = !(!t.parentId && !!(t.isPinned || t.body.includes("<!-- sl:pinned -->") || t.body.includes("<!-- pinned -->"))), r = t.body.replace(/<!--\s*sl:pinned\s*-->\r?\n?/g, "").replace(/<!--\s*pinned\s*-->\r?\n?/g, ""), i = a ? `<!-- sl:pinned -->
+    const s = !(!t.parentId && !!(t.isPinned || t.body.includes("<!-- sl:pinned -->") || t.body.includes("<!-- pinned -->"))), r = t.body.replace(/<!--\s*sl:pinned\s*-->\r?\n?/g, "").replace(/<!--\s*pinned\s*-->\r?\n?/g, ""), i = s ? `<!-- sl:pinned -->
 ${r}` : r;
-    if (t.isPinned = a, t.body = i, this._openMenuId = null, this.render(), this._brokerClient && this._authToken)
+    if (t.isPinned = s, t.body = i, this._openMenuId = null, this.render(), this._brokerClient && this._authToken)
       try {
-        const s = await this._brokerClient.updateComment(e, i);
-        s != null && s.bodyHTML && (t.bodyHtml = s.bodyHTML);
-      } catch (s) {
-        if (console.error("Falha ao atualizar fixação do comentário via broker:", s), this.isAuthError(s)) {
+        const a = await this._brokerClient.updateComment(e, i);
+        a != null && a.bodyHTML && (t.bodyHtml = a.bodyHTML);
+      } catch (a) {
+        if (console.error("Falha ao atualizar fixação do comentário via broker:", a), this.isAuthError(a)) {
           this.handleExpiredSession(!1);
           return;
         }
@@ -6957,13 +6971,13 @@ ${r}` : r;
   }
   async handleToggleReaction(e, t) {
     let o;
-    for (const s of this._comments) {
-      if (s.id === e) {
-        o = s;
+    for (const a of this._comments) {
+      if (a.id === e) {
+        o = a;
         break;
       }
-      if (s.replies) {
-        const d = s.replies.find((l) => l.id === e);
+      if (a.replies) {
+        const d = a.replies.find((l) => l.id === e);
         if (d) {
           o = d;
           break;
@@ -6972,23 +6986,23 @@ ${r}` : r;
     }
     if (!o) return;
     o.reactions || (o.reactions = []);
-    const a = o.reactions.find((s) => s.content === t), i = !!(a != null && a.viewerHasReacted) ? "remove" : "add";
-    if (i === "remove" ? a && (a.count = Math.max(0, a.count - 1), a.viewerHasReacted = !1, a.count === 0 && (o.reactions = o.reactions.filter((s) => s.content !== t))) : a ? (a.count += 1, a.viewerHasReacted = !0) : o.reactions.push({
+    const s = o.reactions.find((a) => a.content === t), i = !!(s != null && s.viewerHasReacted) ? "remove" : "add";
+    if (i === "remove" ? s && (s.count = Math.max(0, s.count - 1), s.viewerHasReacted = !1, s.count === 0 && (o.reactions = o.reactions.filter((a) => a.content !== t))) : s ? (s.count += 1, s.viewerHasReacted = !0) : o.reactions.push({
       content: t,
       count: 1,
       viewerHasReacted: !0
     }), this.render(), this._brokerClient && this._authToken)
       try {
         await this._brokerClient.toggleReaction(e, t, i);
-      } catch (s) {
-        if (console.error(`Falha ao processar reação (${i}) via broker:`, s), i === "add") {
+      } catch (a) {
+        if (console.error(`Falha ao processar reação (${i}) via broker:`, a), i === "add") {
           const d = o.reactions.find((l) => l.content === t);
           d && (d.count = Math.max(0, d.count - 1), d.viewerHasReacted = !1, d.count === 0 && (o.reactions = o.reactions.filter((l) => l.content !== t)));
         } else {
           const d = o.reactions.find((l) => l.content === t);
           d ? (d.count += 1, d.viewerHasReacted = !0) : o.reactions.push({ content: t, count: 1, viewerHasReacted: !0 });
         }
-        if (this.isAuthError(s)) {
+        if (this.isAuthError(a)) {
           this.handleExpiredSession(!1);
           return;
         }
@@ -6996,8 +7010,8 @@ ${r}` : r;
       }
   }
 }
-typeof window < "u" && !customElements.get("scatter-leaf") && customElements.define("scatter-leaf", je);
+typeof window < "u" && !customElements.get("scatter-leaf") && customElements.define("scatter-leaf", He);
 export {
-  je as ScatterLeaf
+  He as ScatterLeaf
 };
 //# sourceMappingURL=scatterleaf.js.map
