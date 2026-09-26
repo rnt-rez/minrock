@@ -1,6 +1,6 @@
 var Le = Object.defineProperty;
 var Ce = (M, f, e) => f in M ? Le(M, f, { enumerable: !0, configurable: !0, writable: !0, value: e }) : M[f] = e;
-var h = (M, f, e) => Ce(M, typeof f != "symbol" ? f + "" : f, e);
+var c = (M, f, e) => Ce(M, typeof f != "symbol" ? f + "" : f, e);
 const Se = `
 :host {
   display: block;
@@ -3298,8 +3298,8 @@ class be extends Error {
 }
 class Me {
   constructor(f, e) {
-    h(this, "baseUrl");
-    h(this, "getToken");
+    c(this, "baseUrl");
+    c(this, "getToken");
     this.baseUrl = f.replace(/\/+$/, ""), this.getToken = e;
   }
   getAuthHeaders() {
@@ -3662,7 +3662,7 @@ const Oe = [
   "escort",
   "sex"
 ];
-function X(M) {
+function Z(M) {
   if (!M || typeof M != "string")
     return { safe: !1, reason: "URL inválida ou ausente." };
   const f = M.trim();
@@ -3695,88 +3695,95 @@ function X(M) {
 class He extends HTMLElement {
   constructor() {
     super();
-    h(this, "_repo", "");
-    h(this, "_category", "General");
-    h(this, "_theme", "cream");
-    h(this, "_lang", "pt");
-    h(this, "_inputPosition", "top");
-    h(this, "_broker", "");
-    h(this, "_clientId", "Iv23liZHApvnx6e6wtMJ");
-    h(this, "_pageSize", 10);
-    h(this, "_currentPage", 1);
-    h(this, "_title", "");
-    h(this, "_term", "");
+    c(this, "_repo", "");
+    c(this, "_category", "General");
+    c(this, "_theme", "cream");
+    c(this, "_lang", "pt");
+    c(this, "_inputPosition", "top");
+    c(this, "_broker", "");
+    c(this, "_clientId", "Iv23liZHApvnx6e6wtMJ");
+    c(this, "_pageSize", 10);
+    c(this, "_currentPage", 1);
+    c(this, "_title", "");
+    c(this, "_term", "");
     // Feature Flags & Ordenação
-    h(this, "_order", "oldest");
-    h(this, "_hideReactions", !1);
-    h(this, "_hideSkinTone", !1);
-    h(this, "_hideSorting", !1);
-    h(this, "_hideCodeScroll", !1);
-    h(this, "_hidePreview", !1);
-    h(this, "_hideSearch", !1);
-    h(this, "_enableModeration", !1);
-    h(this, "_enableImages", !1);
-    h(this, "_moderatedUsers", []);
-    h(this, "_isModerationLoading", !1);
-    h(this, "_expandedModCategory", null);
-    h(this, "_isModerationCollapsed", !1);
-    h(this, "_comments", []);
-    h(this, "_isLoading", !1);
-    h(this, "_isBrokerConnected", !1);
+    c(this, "_order", "oldest");
+    c(this, "_hideReactions", !1);
+    c(this, "_hideSkinTone", !1);
+    c(this, "_hideSorting", !1);
+    c(this, "_hideCodeScroll", !1);
+    c(this, "_hidePreview", !1);
+    c(this, "_hideSearch", !1);
+    c(this, "_enableModeration", !1);
+    c(this, "_enableImages", !1);
+    c(this, "_moderatedUsers", []);
+    c(this, "_isModerationLoading", !1);
+    c(this, "_expandedModCategory", null);
+    c(this, "_isModerationCollapsed", !1);
+    c(this, "_comments", []);
+    c(this, "_isLoading", !1);
+    c(this, "_isBrokerConnected", !1);
     // Sessão de Autenticação
-    h(this, "_currentUser", null);
-    h(this, "_authToken", null);
-    h(this, "_brokerClient", null);
-    h(this, "_discussionId", null);
-    h(this, "_repositoryId", null);
-    h(this, "_categoryId", null);
+    c(this, "_currentUser", null);
+    c(this, "_authToken", null);
+    c(this, "_brokerClient", null);
+    c(this, "_discussionId", null);
+    c(this, "_repositoryId", null);
+    c(this, "_categoryId", null);
     // Estados de Interface do Editor e Interações
-    h(this, "_activeTab", "write");
-    h(this, "_fontMode", "default");
-    h(this, "_composerText", "");
-    h(this, "_replyingToId", null);
-    h(this, "_replyText", "");
-    h(this, "_expandedThreads", /* @__PURE__ */ new Set());
-    h(this, "_searchQuery", "");
-    h(this, "_editingId", null);
-    h(this, "_openMenuId", null);
-    h(this, "_speakingId", null);
-    h(this, "_isEmojiPickerOpen", !1);
-    h(this, "_isCodePickerOpen", !1);
-    h(this, "_savedComposerSelection", null);
-    h(this, "_isTranslatingId", null);
-    h(this, "_selectedSkinTone", null);
-    h(this, "_isSkinTonePanelOpen", !1);
-    h(this, "_activeTonePickerEmoji", null);
-    h(this, "_themeObserver", null);
+    c(this, "_activeTab", "write");
+    c(this, "_fontMode", "default");
+    c(this, "_composerText", "");
+    c(this, "_replyingToId", null);
+    c(this, "_replyText", "");
+    c(this, "_expandedThreads", /* @__PURE__ */ new Set());
+    c(this, "_searchQuery", "");
+    c(this, "_editingId", null);
+    c(this, "_openMenuId", null);
+    c(this, "_speakingId", null);
+    c(this, "_isEmojiPickerOpen", !1);
+    c(this, "_isCodePickerOpen", !1);
+    c(this, "_savedComposerSelection", null);
+    c(this, "_isTranslatingId", null);
+    c(this, "_selectedSkinTone", null);
+    c(this, "_isSkinTonePanelOpen", !1);
+    c(this, "_activeTonePickerEmoji", null);
+    c(this, "_themeObserver", null);
+    c(this, "_colorSchemeQuery", null);
+    c(this, "_handleColorSchemeChange", () => {
+      this._theme === "auto" && this.detectAndApplyAutoPalette();
+    });
+    c(this, "_handleOAuthMessage", async (e) => {
+      e.data && e.data.type === "scatterleaf-oauth-code" && e.data.code && await this.exchangeOAuthCode(e.data.code);
+    });
     // Modal de Inserção de GIFs (Anti-NSFW)
-    h(this, "_isMediaModalOpen", !1);
-    h(this, "_isManagingRecentGifs", !1);
-    h(this, "_isConfirmingClearGifs", !1);
-    h(this, "_mediaModalUrl", "");
-    h(this, "_mediaModalAlt", "");
-    h(this, "_mediaModalSuccess", null);
+    c(this, "_isMediaModalOpen", !1);
+    c(this, "_isManagingRecentGifs", !1);
+    c(this, "_isConfirmingClearGifs", !1);
+    c(this, "_mediaModalUrl", "");
+    c(this, "_mediaModalAlt", "");
+    c(this, "_mediaModalSuccess", null);
     // Modal de Inserção de Imagens (Apenas via URL HTTPS)
-    h(this, "_isImageModalOpen", !1);
-    h(this, "_isManagingRecentImages", !1);
-    h(this, "_isConfirmingClearImages", !1);
-    h(this, "_imageModalUrl", "");
-    h(this, "_imageModalAlt", "");
-    h(this, "_imageModalSuccess", null);
+    c(this, "_isImageModalOpen", !1);
+    c(this, "_isManagingRecentImages", !1);
+    c(this, "_isConfirmingClearImages", !1);
+    c(this, "_imageModalUrl", "");
+    c(this, "_imageModalAlt", "");
+    c(this, "_imageModalSuccess", null);
     // Estado do Mini-Lightbox Nativo (Zoom & Pan de Imagens)
-    h(this, "_lightboxOpen", !1);
-    h(this, "_lightboxImgSrc", "");
-    h(this, "_lightboxImgAlt", "");
-    h(this, "_lightboxScale", 1);
-    h(this, "_lightboxTranslateX", 0);
-    h(this, "_lightboxTranslateY", 0);
-    h(this, "_isDraggingImage", !1);
-    h(this, "_dragStartX", 0);
-    h(this, "_dragStartY", 0);
-    h(this, "_dragStartTx", 0);
-    h(this, "_dragStartTy", 0);
+    c(this, "_lightboxOpen", !1);
+    c(this, "_lightboxImgSrc", "");
+    c(this, "_lightboxImgAlt", "");
+    c(this, "_lightboxScale", 1);
+    c(this, "_lightboxTranslateX", 0);
+    c(this, "_lightboxTranslateY", 0);
+    c(this, "_isDraggingImage", !1);
+    c(this, "_dragStartX", 0);
+    c(this, "_dragStartY", 0);
+    c(this, "_dragStartTx", 0);
+    c(this, "_dragStartTy", 0);
     // Fechamento de menus ao clicar fora do componente no document ou tecla Escape
-    h(this, "_handleDocumentClick", (e) => {
+    c(this, "_handleDocumentClick", (e) => {
       let t = !1;
       const o = e.composedPath();
       this._openMenuId && (o.some(
@@ -3796,7 +3803,7 @@ class He extends HTMLElement {
         }
       ) || (this._isEmojiPickerOpen = !1, t = !0)), t && this.render();
     });
-    h(this, "_handleDocumentKeydown", (e) => {
+    c(this, "_handleDocumentKeydown", (e) => {
       var t;
       if (e.key === "/" && !e.ctrlKey && !e.metaKey && !e.altKey) {
         const o = document.activeElement;
@@ -3814,8 +3821,8 @@ class He extends HTMLElement {
         this._openMenuId && (this._openMenuId = null, o = !0), this._isCodePickerOpen && (this._isCodePickerOpen = !1, o = !0), this._isEmojiPickerOpen && (this._isEmojiPickerOpen = !1, o = !0), this._isMediaModalOpen && (this._isMediaModalOpen = !1, o = !0), this._isImageModalOpen && (this._isImageModalOpen = !1, o = !0), this._searchQuery && (this._searchQuery = "", this._currentPage = 1, o = !0), o && this.render();
       }
     });
-    h(this, "_mediaModalError", null);
-    h(this, "_imageModalError", null);
+    c(this, "_mediaModalError", null);
+    c(this, "_imageModalError", null);
     this.attachShadow({ mode: "open" });
   }
   static get observedAttributes() {
@@ -3920,12 +3927,12 @@ class He extends HTMLElement {
     this.initAuthSession(), this.setupOAuthListener(), this.checkUrlForOAuthCode(), document.addEventListener("click", this._handleDocumentClick), document.addEventListener("keydown", this._handleDocumentKeydown), this._theme === "auto" && (this.detectAndApplyAutoPalette(), this.setupAutoThemeObserver()), this.loadComments(), this._enableModeration && this._isOwner() && this.loadModerationList(), this.render();
   }
   disconnectedCallback() {
-    document.removeEventListener("click", this._handleDocumentClick), document.removeEventListener("keydown", this._handleDocumentKeydown), this._themeObserver && (this._themeObserver.disconnect(), this._themeObserver = null);
+    document.removeEventListener("click", this._handleDocumentClick), document.removeEventListener("keydown", this._handleDocumentKeydown), window.removeEventListener("message", this._handleOAuthMessage), this._colorSchemeQuery && (this._colorSchemeQuery.removeEventListener("change", this._handleColorSchemeChange), this._colorSchemeQuery = null), this._themeObserver && (this._themeObserver.disconnect(), this._themeObserver = null);
   }
   attributeChangedCallback(e, t, o) {
     if (t !== o) {
       if (e === "theme" && o)
-        this._theme = o, this._theme === "auto" ? (this.detectAndApplyAutoPalette(), this.setupAutoThemeObserver()) : (this._themeObserver && (this._themeObserver.disconnect(), this._themeObserver = null), this.clearAutoPaletteProperties());
+        this._theme = o, this._theme === "auto" ? (this.detectAndApplyAutoPalette(), this.setupAutoThemeObserver()) : (this._themeObserver && (this._themeObserver.disconnect(), this._themeObserver = null), this._colorSchemeQuery && (this._colorSchemeQuery.removeEventListener("change", this._handleColorSchemeChange), this._colorSchemeQuery = null), this.clearAutoPaletteProperties());
       else if (e === "repo" && o)
         this._repo = o, this.loadComments();
       else if (e === "category" && o)
@@ -4078,16 +4085,16 @@ class He extends HTMLElement {
           const $ = document.querySelector("a");
           $ && (l = e(window.getComputedStyle($).color));
         }
-        const b = document.documentElement.classList.contains("dark") || document.body.classList.contains("dark") || document.documentElement.getAttribute("data-theme") === "dark" || document.body.getAttribute("data-theme") === "dark" || document.body.getAttribute("data-page-theme") === "midnight" || document.body.getAttribute("data-page-theme") === "slate" || document.body.getAttribute("data-page-theme") === "terminal", T = 0.2126 * a.r + 0.7152 * a.g + 0.0722 * a.b, g = b || T < 128;
-        d || (d = g ? { r: 230, g: 237, b: 243 } : { r: 28, g: 25, b: 23 }), l || (l = g ? { r: 88, g: 166, b: 255 } : { r: 146, g: 64, b: 14 });
-        let k, w, _, L, y, I, j;
-        if (g) {
+        const b = document.documentElement.classList.contains("dark") || document.body.classList.contains("dark") || document.documentElement.getAttribute("data-theme") === "dark" || document.body.getAttribute("data-theme") === "dark" || document.body.getAttribute("data-page-theme") === "midnight" || document.body.getAttribute("data-page-theme") === "slate" || document.body.getAttribute("data-page-theme") === "terminal", T = 0.2126 * a.r + 0.7152 * a.g + 0.0722 * a.b, p = b || T < 128;
+        d || (d = p ? { r: 230, g: 237, b: 243 } : { r: 28, g: 25, b: 23 }), l || (l = p ? { r: 88, g: 166, b: 255 } : { r: 146, g: 64, b: 14 });
+        let k, y, w, L, x, I, j;
+        if (p) {
           const $ = Math.min(255, Math.round(a.r + 15)), B = Math.min(255, Math.round(a.g + 18)), P = Math.min(255, Math.round(a.b + 22));
-          k = `rgb(${$}, ${B}, ${P})`, w = "rgba(0, 0, 0, 0.35)", _ = "rgba(255, 255, 255, 0.12)", L = `rgba(${d.r}, ${d.g}, ${d.b}, 0.62)`, y = `rgb(${Math.min(255, l.r + 30)}, ${Math.min(255, l.g + 30)}, ${Math.min(255, l.b + 30)})`, I = `rgba(${l.r}, ${l.g}, ${l.b}, 0.16)`, j = `rgba(${l.r}, ${l.g}, ${l.b}, 0.35)`;
+          k = `rgb(${$}, ${B}, ${P})`, y = "rgba(0, 0, 0, 0.35)", w = "rgba(255, 255, 255, 0.12)", L = `rgba(${d.r}, ${d.g}, ${d.b}, 0.62)`, x = `rgb(${Math.min(255, l.r + 30)}, ${Math.min(255, l.g + 30)}, ${Math.min(255, l.b + 30)})`, I = `rgba(${l.r}, ${l.g}, ${l.b}, 0.16)`, j = `rgba(${l.r}, ${l.g}, ${l.b}, 0.35)`;
         } else
-          k = "rgba(255, 255, 255, 0.96)", w = "rgba(0, 0, 0, 0.035)", _ = "rgba(0, 0, 0, 0.12)", L = `rgba(${d.r}, ${d.g}, ${d.b}, 0.65)`, y = `rgb(${l.r}, ${l.g}, ${l.b})`, I = `rgba(${l.r}, ${l.g}, ${l.b}, 0.12)`, j = `rgba(${l.r}, ${l.g}, ${l.b}, 0.28)`;
+          k = "rgba(255, 255, 255, 0.96)", y = "rgba(0, 0, 0, 0.035)", w = "rgba(0, 0, 0, 0.12)", L = `rgba(${d.r}, ${d.g}, ${d.b}, 0.65)`, x = `rgb(${l.r}, ${l.g}, ${l.b})`, I = `rgba(${l.r}, ${l.g}, ${l.b}, 0.12)`, j = `rgba(${l.r}, ${l.g}, ${l.b}, 0.28)`;
         const H = `rgb(${l.r}, ${l.g}, ${l.b})`;
-        this.style.setProperty("--sl-bg", `rgb(${a.r}, ${a.g}, ${a.b})`), this.style.setProperty("--sl-surface", k), this.style.setProperty("--sl-tab-bg", w), this.style.setProperty("--sl-border", _), this.style.setProperty("--sl-text", `rgb(${d.r}, ${d.g}, ${d.b})`), this.style.setProperty("--sl-text-muted", L), this.style.setProperty("--sl-accent", H), this.style.setProperty("--sl-accent-hover", H), this.style.setProperty("--sl-mention-color", y), this.style.setProperty("--sl-mention-bg", I), this.style.setProperty("--sl-mention-border", j), g ? (this.style.setProperty("--sl-btn-primary-bg", "#1f6feb"), this.style.setProperty("--sl-btn-primary-hover", "#388bfd")) : (this.style.setProperty("--sl-btn-primary-bg", H), this.style.setProperty("--sl-btn-primary-hover", H));
+        this.style.setProperty("--sl-bg", `rgb(${a.r}, ${a.g}, ${a.b})`), this.style.setProperty("--sl-surface", k), this.style.setProperty("--sl-tab-bg", y), this.style.setProperty("--sl-border", w), this.style.setProperty("--sl-text", `rgb(${d.r}, ${d.g}, ${d.b})`), this.style.setProperty("--sl-text-muted", L), this.style.setProperty("--sl-accent", H), this.style.setProperty("--sl-accent-hover", H), this.style.setProperty("--sl-mention-color", x), this.style.setProperty("--sl-mention-bg", I), this.style.setProperty("--sl-mention-border", j), p ? (this.style.setProperty("--sl-btn-primary-bg", "#1f6feb"), this.style.setProperty("--sl-btn-primary-hover", "#388bfd")) : (this.style.setProperty("--sl-btn-primary-bg", H), this.style.setProperty("--sl-btn-primary-hover", H));
       } catch (e) {
         console.warn("🍃 [ScatterLeaf] Erro ao auto-computar paleta do tema:", e);
       }
@@ -4101,9 +4108,7 @@ class He extends HTMLElement {
     }), this._themeObserver.observe(document.body, {
       attributes: !0,
       attributeFilter: ["class", "data-theme", "data-page-theme", "style"]
-    }), window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
-      this._theme === "auto" && this.detectAndApplyAutoPalette();
-    }));
+    }), window.matchMedia && (this._colorSchemeQuery && this._colorSchemeQuery.removeEventListener("change", this._handleColorSchemeChange), this._colorSchemeQuery = window.matchMedia("(prefers-color-scheme: dark)"), this._colorSchemeQuery.addEventListener("change", this._handleColorSchemeChange)));
   }
   clearAutoPaletteProperties() {
     [
@@ -4140,9 +4145,7 @@ class He extends HTMLElement {
    * Escuta mensagens de retorno do popup OAuth
    */
   setupOAuthListener() {
-    window.addEventListener("message", async (e) => {
-      e.data && e.data.type === "scatterleaf-oauth-code" && e.data.code && await this.exchangeOAuthCode(e.data.code);
-    });
+    window.removeEventListener("message", this._handleOAuthMessage), window.addEventListener("message", this._handleOAuthMessage);
   }
   /**
    * Suporte para retorno por redirecionamento direto com ?code=...
@@ -4691,10 +4694,10 @@ Do you want to simulate a local test login (@demo-reader)?`
     let r = e.replace(
       /```([a-zA-Z0-9_-]*)\r?\n?([\s\S]*?)```/g,
       (i, a, d) => {
-        const l = (a || "code").trim().toLowerCase(), g = d.replace(/^\n+|\n+$/g, "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").split(/\r?\n/), k = g.map(
-          (N, J) => `<span class="sl-code-line"><span class="sl-line-num">${J + 1}</span><span class="sl-line-code">${N || " "}</span></span>`
-        ).join(""), w = g.length > 20, _ = this.currentLang === "pt", L = _ ? "Copiar" : "Copy", y = _ ? "Copiar código" : "Copy code", I = _ ? "Rolar para cima" : "Scroll up", j = _ ? "Rolar para baixo" : "Scroll down", H = w ? `${l} · ${g.length} ${_ ? "linhas" : "lines"}` : l, $ = _ ? `Mostrar todas as ${g.length} linhas` : `Show all ${g.length} lines`, B = w && !this._hideCodeScroll ? `
-            <div class="sl-code-scroll-controls" aria-label="${_ ? "Navegação do código" : "Code navigation"}">
+        const l = (a || "code").trim().toLowerCase(), p = d.replace(/^\n+|\n+$/g, "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").split(/\r?\n/), k = p.map(
+          (N, Q) => `<span class="sl-code-line"><span class="sl-line-num">${Q + 1}</span><span class="sl-line-code">${N || " "}</span></span>`
+        ).join(""), y = p.length > 20, w = this.currentLang === "pt", L = w ? "Copiar" : "Copy", x = w ? "Copiar código" : "Copy code", I = w ? "Rolar para cima" : "Scroll up", j = w ? "Rolar para baixo" : "Scroll down", H = y ? `${l} · ${p.length} ${w ? "linhas" : "lines"}` : l, $ = w ? `Mostrar todas as ${p.length} linhas` : `Show all ${p.length} lines`, B = y && !this._hideCodeScroll ? `
+            <div class="sl-code-scroll-controls" aria-label="${w ? "Navegação do código" : "Code navigation"}">
               <button type="button" class="sl-code-scroll-btn sl-scroll-up" title="${I}" aria-label="${I}">
                 <svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor">
                   <path d="M8 3.5a.75.75 0 0 1 .53.22l4.5 4.5a.75.75 0 0 1-1.06 1.06L8 5.31 4.03 9.28a.75.75 0 0 1-1.06-1.06l4.5-4.5A.75.75 0 0 1 8 3.5Z"/>
@@ -4707,16 +4710,16 @@ Do you want to simulate a local test login (@demo-reader)?`
               </button>
             </div>
             <div class="sl-code-expand-bar">
-              <button type="button" class="sl-code-expand-btn" data-lines="${g.length}">
+              <button type="button" class="sl-code-expand-btn" data-lines="${p.length}">
                 <span>↕</span>
                 <span class="sl-expand-text">${$}</span>
               </button>
             </div>
           ` : "", P = `
-          <div class="sl-code-block ${w ? "sl-code-block-long sl-collapsed" : ""}" data-lang="${l}">
+          <div class="sl-code-block ${y ? "sl-code-block-long sl-collapsed" : ""}" data-lang="${l}">
             <div class="sl-code-header">
               <span class="sl-code-badge">${H}</span>
-              <button type="button" class="sl-code-copy-btn" title="${y}" aria-label="${y}">
+              <button type="button" class="sl-code-copy-btn" title="${x}" aria-label="${x}">
                 <svg class="sl-copy-icon" viewBox="0 0 16 16" width="14" height="14" fill="currentColor">
                   <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path>
                   <path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
@@ -4734,7 +4737,7 @@ Do you want to simulate a local test login (@demo-reader)?`
     return r = r.replace(/`([^`]+)`/g, '<code class="sl-inline-code">$1</code>'), r = r.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>"), r = r.replace(/__([^_]+)__/g, "<strong>$1</strong>"), r = r.replace(/\*([^*]+)\*/g, "<em>$1</em>"), r = r.replace(/_([^_]+)_/g, "<em>$1</em>"), r = r.replace(/~~([^~]+)~~/g, "<del>$1</del>"), r = r.replace(
       /!\[([^\]]*)\]\(((?:https?:\/\/|data:image\/)[^\s)]+)\)/g,
       (i, a, d) => {
-        const l = X(d);
+        const l = Z(d);
         return l.safe ? `<img src="${d}" alt="${a}" class="sl-embedded-img" loading="lazy" />` : `<span class="sl-blocked-media-notice" title="${l.reason || "Conteúdo potencialmente sensível"}">⚠️ [Mídia bloqueada: filtro de conteúdo sensível / link não seguro]</span>`;
       }
     ), r = r.replace(
@@ -4825,10 +4828,10 @@ Do you want to simulate a local test login (@demo-reader)?`
   }
   async toggleTranslate(e) {
     const t = (T) => {
-      for (const g of T) {
-        if (g.id === e) return g;
-        if (g.replies) {
-          const k = t(g.replies);
+      for (const p of T) {
+        if (p.id === e) return p;
+        if (p.replies) {
+          const k = t(p.replies);
           if (k) return k;
         }
       }
@@ -4860,10 +4863,10 @@ Do you want to simulate a local test login (@demo-reader)?`
     }
     this._isTranslatingId = e, this.render();
     try {
-      const T = o.originalLang || this.detectTextLanguage(o.body), g = o.body.replace(/[#*`_~]/g, ""), w = await (await fetch(
-        `https://api.mymemory.translated.net/get?q=${encodeURIComponent(g.slice(0, 500))}&langpair=${T}|${a}`
+      const T = o.originalLang || this.detectTextLanguage(o.body), p = o.body.replace(/[#*`_~]/g, ""), y = await (await fetch(
+        `https://api.mymemory.translated.net/get?q=${encodeURIComponent(p.slice(0, 500))}&langpair=${T}|${a}`
       )).json();
-      w && w.responseData && w.responseData.translatedText ? o.translatedBody = w.responseData.translatedText : o.translatedBody = r ? `[Tradução]: ${o.body}` : `[Translation]: ${o.body}`;
+      y && y.responseData && y.responseData.translatedText ? o.translatedBody = y.responseData.translatedText : o.translatedBody = r ? `[Tradução]: ${o.body}` : `[Translation]: ${o.body}`;
     } catch (T) {
       console.warn("🍃 [ScatterLeaf] Erro na tradução automática:", T), o.translatedBody = r ? `[Tradução]: ${o.body}` : `[Translation]: ${o.body}`;
     } finally {
@@ -4892,7 +4895,7 @@ Do you want to simulate a local test login (@demo-reader)?`
     }[o] || o || (this._lang === "pt" ? "pt-BR" : "en-US");
     if (i.lang = d, "speechSynthesis" in window) {
       const l = window.speechSynthesis.getVoices(), b = d.slice(0, 2).toLowerCase(), T = l.find(
-        (g) => g.lang.replace("_", "-").toLowerCase().startsWith(b)
+        (p) => p.lang.replace("_", "-").toLowerCase().startsWith(b)
       );
       T && (i.voice = T);
     }
@@ -5272,12 +5275,12 @@ Do you want to simulate a local test login (@demo-reader)?`
 ` : "", k = `${T}\`\`\`${e}
 ${i}
 \`\`\`${b ? `
-` : ""}`, w = a + k + d;
-    this._composerText = w, this._isCodePickerOpen = !1, this._savedComposerSelection = null;
-    const _ = a.length + T.length + 3 + e.length + 1, L = _ + i.length;
+` : ""}`, y = a + k + d;
+    this._composerText = y, this._isCodePickerOpen = !1, this._savedComposerSelection = null;
+    const w = a.length + T.length + 3 + e.length + 1, L = w + i.length;
     this.render();
-    const y = ($ = this.shadowRoot) == null ? void 0 : $.getElementById("composer-textarea");
-    y && (y.focus(), y.setSelectionRange(_, L), y.style.height = "auto", y.style.height = `${y.scrollHeight}px`);
+    const x = ($ = this.shadowRoot) == null ? void 0 : $.getElementById("composer-textarea");
+    x && (x.focus(), x.setSelectionRange(w, L), x.style.height = "auto", x.style.height = `${x.scrollHeight}px`);
   }
   /**
    * Renderiza a Caixa de Escrita Principal (com Abas Escreva / Prévia, Aa e Autenticação)
@@ -5618,12 +5621,12 @@ ${i}
             l.includes(b) && (a += 10);
         if (i.replies && i.replies.length > 0)
           for (const b of i.replies) {
-            const T = b.author.login.toLowerCase(), g = b.body.toLowerCase();
-            if (T === o ? a += 50 : T.includes(o) && (a += 25), g.includes(e) || g.includes(o))
+            const T = b.author.login.toLowerCase(), p = b.body.toLowerCase();
+            if (T === o ? a += 50 : T.includes(o) && (a += 25), p.includes(e) || p.includes(o))
               a += 20;
             else
               for (const k of s)
-                g.includes(k) && (a += 5);
+                p.includes(k) && (a += 5);
           }
         a > 0 && r.push({ comment: i, score: a });
       }
@@ -5648,18 +5651,18 @@ ${i}
   renderModerationBar() {
     if (!this._enableModeration || !this._isOwner())
       return "";
-    const e = this.currentLang === "pt", t = this.currentLang === "es", o = e ? "Painel de Moderação KV (Proprietário)" : t ? "Panel de Moderación KV (Propietario)" : "KV Moderation Bar (Repo Owner)", s = e ? "Atualizar lista de moderação" : "Refresh moderation list", r = e ? "Recolher painel de moderação" : "Collapse moderation panel", i = e ? "Expandir painel de moderação" : "Expand moderation panel", a = this._moderatedUsers.filter((y) => y.action === "ban"), d = this._moderatedUsers.filter((y) => y.action === "restrict_media"), l = this._expandedModCategory === "ban", b = this._expandedModCategory === "media", T = `sl-mod-pill ${a.length > 0 ? "sl-mod-pill-ban-active" : "sl-mod-pill-neutral"} ${l ? "sl-mod-pill-open" : ""}`, g = `sl-mod-pill ${d.length > 0 ? "sl-mod-pill-media-active" : "sl-mod-pill-neutral"} ${b ? "sl-mod-pill-open" : ""}`, k = e ? "Banidos" : t ? "Bloqueados" : "Banned", w = e ? "Sem Mídia" : t ? "Sin Medios" : "No Media";
-    let _ = "";
+    const e = this.currentLang === "pt", t = this.currentLang === "es", o = e ? "Painel de Moderação KV (Proprietário)" : t ? "Panel de Moderación KV (Propietario)" : "KV Moderation Bar (Repo Owner)", s = e ? "Atualizar lista de moderação" : "Refresh moderation list", r = e ? "Recolher painel de moderação" : "Collapse moderation panel", i = e ? "Expandir painel de moderação" : "Expand moderation panel", a = this._moderatedUsers.filter((x) => x.action === "ban"), d = this._moderatedUsers.filter((x) => x.action === "restrict_media"), l = this._expandedModCategory === "ban", b = this._expandedModCategory === "media", T = `sl-mod-pill ${a.length > 0 ? "sl-mod-pill-ban-active" : "sl-mod-pill-neutral"} ${l ? "sl-mod-pill-open" : ""}`, p = `sl-mod-pill ${d.length > 0 ? "sl-mod-pill-media-active" : "sl-mod-pill-neutral"} ${b ? "sl-mod-pill-open" : ""}`, k = e ? "Banidos" : t ? "Bloqueados" : "Banned", y = e ? "Sem Mídia" : t ? "Sin Medios" : "No Media";
+    let w = "";
     if (this._expandedModCategory !== null) {
-      const y = this._expandedModCategory === "ban" ? a : d, I = this._expandedModCategory === "ban", j = I ? e ? "Nenhum usuário banido. Para restringir alguém, use o menu ••• no comentário dele." : t ? "Ningún usuario bloqueado. Para restringir a alguien, usa el menú ••• en su comentario." : "No banned users. To restrict someone, use the ••• menu on their comment." : e ? "Nenhum usuário com mídia restrita. Para restringir mídia, use o menu ••• no comentário dele." : t ? "Ningún usuario sin medios. Para restringir medios, usa el menú ••• en su comentario." : "No media-restricted users. To restrict media, use the ••• menu on their comment.";
-      y.length === 0 ? _ = `
+      const x = this._expandedModCategory === "ban" ? a : d, I = this._expandedModCategory === "ban", j = I ? e ? "Nenhum usuário banido. Para restringir alguém, use o menu ••• no comentário dele." : t ? "Ningún usuario bloqueado. Para restringir a alguien, usa el menú ••• en su comentario." : "No banned users. To restrict someone, use the ••• menu on their comment." : e ? "Nenhum usuário com mídia restrita. Para restringir mídia, use o menu ••• no comentário dele." : t ? "Ningún usuario sin medios. Para restringir medios, usa el menú ••• en su comentario." : "No media-restricted users. To restrict media, use the ••• menu on their comment.";
+      x.length === 0 ? w = `
           <div class="sl-mod-drawer">
             <span class="sl-mod-empty-text">${j}</span>
           </div>
-        ` : _ = `
+        ` : w = `
           <div class="sl-mod-drawer">
-            ${y.map(($) => {
-        const B = I ? "sl-mod-chip-ban" : "sl-mod-chip-media", P = I ? k : w, D = e ? `Remover moderação de @${$.username}` : `Remove moderation for @${$.username}`;
+            ${x.map(($) => {
+        const B = I ? "sl-mod-chip-ban" : "sl-mod-chip-media", P = I ? k : y, D = e ? `Remover moderação de @${$.username}` : `Remove moderation for @${$.username}`;
         return `
               <div class="sl-mod-chip ${B}">
                 <span class="sl-mod-chip-user" title="@${this.escapeHtml($.username)}">@${this.escapeHtml($.username)}</span>
@@ -5680,12 +5683,12 @@ ${i}
               <span>🚫 ${k} (${a.length})</span>
               <span class="sl-mod-pill-arrow">${l ? "▲" : "▼"}</span>
             </button>
-            <button type="button" class="${g}" id="sl-mod-pill-media" aria-expanded="${b}">
-              <span>🔇 ${w} (${d.length})</span>
+            <button type="button" class="${p}" id="sl-mod-pill-media" aria-expanded="${b}">
+              <span>🔇 ${y} (${d.length})</span>
               <span class="sl-mod-pill-arrow">${b ? "▲" : "▼"}</span>
             </button>
           </div>
-          ${_}
+          ${w}
         </div>
       `;
     return `
@@ -5798,13 +5801,13 @@ ${i}
     }
     let l = "";
     if (o > this._pageSize) {
-      const b = this.currentLang === "pt", T = b ? "‹ Anterior" : "‹ Previous", g = b ? "Próxima ›" : "Next ›", k = b ? `Página ${this._currentPage} de ${s} • ${o} comentários` : `Page ${this._currentPage} of ${s} • ${o} comments`;
-      let w = "";
-      for (let _ = 1; _ <= s; _++) {
-        const L = _ === this._currentPage;
-        w += `
-          <button class="sl-page-btn ${L ? "sl-page-active" : ""}" data-page="${_}" part="page-btn" ${L ? 'aria-current="page"' : ""}>
-            ${_}
+      const b = this.currentLang === "pt", T = b ? "‹ Anterior" : "‹ Previous", p = b ? "Próxima ›" : "Next ›", k = b ? `Página ${this._currentPage} de ${s} • ${o} comentários` : `Page ${this._currentPage} of ${s} • ${o} comments`;
+      let y = "";
+      for (let w = 1; w <= s; w++) {
+        const L = w === this._currentPage;
+        y += `
+          <button class="sl-page-btn ${L ? "sl-page-active" : ""}" data-page="${w}" part="page-btn" ${L ? 'aria-current="page"' : ""}>
+            ${w}
           </button>
         `;
       }
@@ -5814,9 +5817,9 @@ ${i}
             <button class="sl-page-btn sl-page-nav-btn btn-prev-page" part="page-btn-prev" ${this._currentPage <= 1 ? "disabled" : ""}>
               ${T}
             </button>
-            ${w}
+            ${y}
             <button class="sl-page-btn sl-page-nav-btn btn-next-page" part="page-btn-next" ${this._currentPage >= s ? "disabled" : ""}>
-              ${g}
+              ${p}
             </button>
           </div>
           <span class="sl-pagination-info" part="pagination-info">${k}</span>
@@ -5836,7 +5839,7 @@ ${i}
    */
   renderCommentCard(e, t = !1, o) {
     var ee, pe, ge, me;
-    const s = this._repo ? this._repo.split("/")[0].toLowerCase() : "", i = e.author.isAuthor || s && e.author.login.toLowerCase() === s ? `<span class="sl-author-badge" part="author-badge">${this.currentLang === "pt" ? "Autor" : "Author"}</span>` : "", a = !t && !!(e.isPinned || e.body.includes("<!-- sl:pinned -->") || e.body.includes("<!-- pinned -->")), d = a ? `<span class="sl-pinned-badge" part="pinned-badge" title="${this.currentLang === "pt" ? "Comentário fixado no topo pelo autor" : "Comment pinned to top by author"}"><span>📌</span><span>${this.currentLang === "pt" ? "Fixado pelo autor" : "Pinned by author"}</span></span>` : "", l = !!(this._currentUser && s && this._currentUser.login.toLowerCase() === s), b = !!(this._currentUser && ((ee = e.author) != null && ee.login) && this._currentUser.login.toLowerCase() === e.author.login.toLowerCase()), T = b, g = b || l, k = this._speakingId === e.id, w = this._replyingToId === e.id, _ = this._editingId === e.id, L = this._openMenuId === e.id, y = k ? this.currentLang === "pt" ? "⏸️ Pausar" : "⏸️ Pause" : this.currentLang === "pt" ? "🔊 Ouvir" : "🔊 Listen", I = this.currentLang === "pt" ? "Responder" : "Reply", j = this.getVisitorLang(), H = e.originalLang || "pt", $ = H !== j, B = this.getLanguageName(H, j), D = (e.isShowingTranslation && e.translatedBody ? e.translatedBody : e.body).replace(/<!--\s*sl:pinned\s*-->\r?\n?/g, "").replace(/<!--\s*pinned\s*-->\r?\n?/g, ""), N = this.formatDate(e.createdAt), J = !!((pe = e.reactions) != null && pe.find((z) => z.content === "👍" && z.viewerHasReacted)), Q = this.currentLang === "pt" ? "Gostei" : "Like", F = J ? this.currentLang === "pt" ? "Remover curtida" : "Remove like" : this.currentLang === "pt" ? "Curtir" : "Like", Y = (e.reactions || []).filter((z) => z.count > 0);
+    const s = this._repo ? this._repo.split("/")[0].toLowerCase() : "", i = e.author.isAuthor || s && e.author.login.toLowerCase() === s ? `<span class="sl-author-badge" part="author-badge">${this.currentLang === "pt" ? "Autor" : "Author"}</span>` : "", a = !t && !!(e.isPinned || e.body.includes("<!-- sl:pinned -->") || e.body.includes("<!-- pinned -->")), d = a ? `<span class="sl-pinned-badge" part="pinned-badge" title="${this.currentLang === "pt" ? "Comentário fixado no topo pelo autor" : "Comment pinned to top by author"}"><span>📌</span><span>${this.currentLang === "pt" ? "Fixado pelo autor" : "Pinned by author"}</span></span>` : "", l = !!(this._currentUser && s && this._currentUser.login.toLowerCase() === s), b = !!(this._currentUser && ((ee = e.author) != null && ee.login) && this._currentUser.login.toLowerCase() === e.author.login.toLowerCase()), T = b, p = b || l, k = this._speakingId === e.id, y = this._replyingToId === e.id, w = this._editingId === e.id, L = this._openMenuId === e.id, x = k ? this.currentLang === "pt" ? "⏸️ Pausar" : "⏸️ Pause" : this.currentLang === "pt" ? "🔊 Ouvir" : "🔊 Listen", I = this.currentLang === "pt" ? "Responder" : "Reply", j = this.getVisitorLang(), H = e.originalLang || "pt", $ = H !== j, B = this.getLanguageName(H, j), D = (e.isShowingTranslation && e.translatedBody ? e.translatedBody : e.body).replace(/<!--\s*sl:pinned\s*-->\r?\n?/g, "").replace(/<!--\s*pinned\s*-->\r?\n?/g, ""), N = this.formatDate(e.createdAt), Q = !!((pe = e.reactions) != null && pe.find((z) => z.content === "👍" && z.viewerHasReacted)), X = this.currentLang === "pt" ? "Gostei" : "Like", F = Q ? this.currentLang === "pt" ? "Remover curtida" : "Remove like" : this.currentLang === "pt" ? "Curtir" : "Like", Y = (e.reactions || []).filter((z) => z.count > 0);
     return `
       <article class="sl-card ${t ? "sl-card-reply" : ""} ${a ? "sl-card-pinned" : ""}" id="comment-${e.id}" part="card">
         <!-- Cabeçalho do Card (Avatar ancorado no topo!) -->
@@ -5879,7 +5882,7 @@ ${i}
                   <span>🔗</span>
                   <span>${this.currentLang === "pt" ? "Copiar link" : "Copy link"}</span>
                 </button>
-                ${g ? `
+                ${p ? `
                   <button class="sl-dropdown-item sl-dropdown-danger btn-delete" data-comment-id="${e.id}">
                     <span>🗑️</span>
                     <span>${this.currentLang === "pt" ? "Excluir" : "Delete"}</span>
@@ -5901,7 +5904,7 @@ ${i}
         </div>
 
         <!-- Corpo do Comentário ou Editor In-Place -->
-        ${_ ? `
+        ${w ? `
           <div class="sl-edit-mode">
             <textarea class="sl-textarea" id="edit-textarea-${e.id}">${e.body.replace(/<!--\s*sl:pinned\s*-->\r?\n?/g, "").replace(/<!--\s*pinned\s*-->\r?\n?/g, "")}</textarea>
             <div class="sl-edit-actions">
@@ -5927,16 +5930,16 @@ ${i}
             <div class="sl-reaction-container" data-comment-id="${e.id}">
               <button type="button" class="sl-reaction-trigger-btn" data-comment-id="${e.id}" data-emoji="👍" part="reaction-trigger-btn" title="${F}">
                 <span>👍</span>
-                <span>${Q}</span>
+                <span>${X}</span>
               </button>
 
               <!-- Popover Flutuante com 6 Emojis Animados -->
               <div class="sl-reaction-popover" role="toolbar" aria-label="Reações">
                 ${Ae.map((z) => {
-      var V;
-      const K = this.currentLang === "pt" ? z.namePt : z.nameEn;
+      var K;
+      const J = this.currentLang === "pt" ? z.namePt : z.nameEn;
       return `
-                    <button type="button" class="sl-reaction-picker-item ${!!((V = e.reactions) != null && V.find((te) => te.content === z.symbol && te.viewerHasReacted)) ? "sl-reacted" : ""}" data-comment-id="${e.id}" data-emoji="${z.symbol}" data-tooltip="${K}" title="${K}" aria-label="${K}">
+                    <button type="button" class="sl-reaction-picker-item ${!!((K = e.reactions) != null && K.find((te) => te.content === z.symbol && te.viewerHasReacted)) ? "sl-reacted" : ""}" data-comment-id="${e.id}" data-emoji="${z.symbol}" data-tooltip="${J}" title="${J}" aria-label="${J}">
                       ${z.symbol}
                     </button>
                   `;
@@ -5974,13 +5977,13 @@ ${i}
             ` : ""}
 
             <button class="sl-audio-btn ${k ? "sl-audio-playing" : ""}" data-speak-id="${e.id}" data-text="${encodeURIComponent(D)}" data-lang="${e.isShowingTranslation ? j : H}" part="audio-btn">
-              <span>${y}</span>
+              <span>${x}</span>
             </button>
           </div>
         </div>
 
         <!-- Formulário de Resposta Aninhada Inline -->
-        ${w ? `
+        ${y ? `
           <div class="sl-inline-composer">
             <textarea id="reply-textarea-${e.id}" placeholder="${this.currentLang === "pt" ? `Respondendo para @${e.author.login}...` : `Replying to @${e.author.login}...`}">${this._replyText}</textarea>
             <div class="sl-inline-footer">
@@ -5996,14 +5999,14 @@ ${i}
 
         <!-- Respostas Aninhadas (Threads Estilo LinkedIn com Linha Guia) -->
         ${!t && e.replies && e.replies.length > 0 ? (() => {
-      const z = e.replies.length, K = this._expandedThreads.has(e.id), ue = K || z <= 2 ? e.replies : e.replies.slice(0, 2), V = z - 2;
+      const z = e.replies.length, J = this._expandedThreads.has(e.id), ue = J || z <= 2 ? e.replies : e.replies.slice(0, 2), K = z - 2;
       return `
                   <div class="sl-thread">
                     ${ue.map((te) => this.renderCommentCard(te, !0, e.id)).join("")}
                     ${z > 2 ? `
                       <button class="sl-thread-toggle-btn" data-thread-id="${e.id}" part="thread-toggle-btn">
-                        <span>${K ? "▴" : "💬"}</span>
-                        <span>${K ? this.currentLang === "pt" ? "Recolher respostas" : "Collapse replies" : this.currentLang === "pt" ? `Ver mais ${V} resposta${V > 1 ? "s" : ""} ▾` : `View ${V} more repl${V > 1 ? "ies" : "y"} ▾`}</span>
+                        <span>${J ? "▴" : "💬"}</span>
+                        <span>${J ? this.currentLang === "pt" ? "Recolher respostas" : "Collapse replies" : this.currentLang === "pt" ? `Ver mais ${K} resposta${K > 1 ? "s" : ""} ▾` : `View ${K} more repl${K > 1 ? "ies" : "y"} ▾`}</span>
                       </button>
                     ` : ""}
                   </div>
@@ -6040,22 +6043,22 @@ ${i}
     });
     const r = this.shadowRoot.getElementById("btn-code-toggle");
     r && r.addEventListener("click", (n) => {
-      var x;
+      var _;
       n.stopPropagation();
-      const p = (x = this.shadowRoot) == null ? void 0 : x.getElementById("composer-textarea");
-      if (p) {
-        const c = p.selectionStart ?? this._composerText.length, m = p.selectionEnd ?? this._composerText.length;
-        if (this._savedComposerSelection = { start: c, end: m }, m > c && p.value.substring(c, m).trim().length > 0) {
+      const g = (_ = this.shadowRoot) == null ? void 0 : _.getElementById("composer-textarea");
+      if (g) {
+        const h = g.selectionStart ?? this._composerText.length, u = g.selectionEnd ?? this._composerText.length;
+        if (this._savedComposerSelection = { start: h, end: u }, u > h && g.value.substring(h, u).trim().length > 0) {
           this.insertCodeBlock("typescript");
           return;
         }
       }
       this._isCodePickerOpen = !this._isCodePickerOpen, this.render();
     }), this.shadowRoot.querySelectorAll(".sl-code-lang-btn").forEach((n) => {
-      n.addEventListener("click", (p) => {
-        p.stopPropagation();
-        const x = n.getAttribute("data-lang") || "typescript";
-        this.insertCodeBlock(x);
+      n.addEventListener("click", (g) => {
+        g.stopPropagation();
+        const _ = n.getAttribute("data-lang") || "typescript";
+        this.insertCodeBlock(_);
       });
     });
     const a = this.shadowRoot.getElementById("btn-font-toggle");
@@ -6066,81 +6069,81 @@ ${i}
     d && d.addEventListener("click", (n) => {
       n.stopPropagation(), this._isEmojiPickerOpen = !this._isEmojiPickerOpen, this.render();
     });
-    const l = this.shadowRoot.getElementById("emoji-scroll-container"), b = this.shadowRoot.getElementById("btn-emoji-scroll-up"), T = this.shadowRoot.getElementById("btn-emoji-scroll-down"), g = this.shadowRoot.getElementById("btn-emoji-close");
+    const l = this.shadowRoot.getElementById("emoji-scroll-container"), b = this.shadowRoot.getElementById("btn-emoji-scroll-up"), T = this.shadowRoot.getElementById("btn-emoji-scroll-down"), p = this.shadowRoot.getElementById("btn-emoji-close");
     b && l && b.addEventListener("click", (n) => {
       n.stopPropagation(), l.scrollBy({ top: -90, behavior: "smooth" });
     }), T && l && T.addEventListener("click", (n) => {
       n.stopPropagation(), l.scrollBy({ top: 90, behavior: "smooth" });
-    }), g && g.addEventListener("click", (n) => {
+    }), p && p.addEventListener("click", (n) => {
       n.stopPropagation(), this._isEmojiPickerOpen = !1, this.render();
     });
     const k = this.shadowRoot.getElementById("btn-skin-tone-toggle");
     k && k.addEventListener("click", (n) => {
       n.stopPropagation(), this._isSkinTonePanelOpen = !this._isSkinTonePanelOpen, this._activeTonePickerEmoji = null, this.render();
     }), this.shadowRoot.querySelectorAll(".sl-tone-btn").forEach((n) => {
-      n.addEventListener("click", (p) => {
-        p.stopPropagation();
-        const x = n.dataset.toneMod || "default", c = x === "default" ? "default" : x;
-        this.saveSkinTonePreference(c);
-        const m = this._activeTonePickerEmoji;
-        if (this._isSkinTonePanelOpen = !1, this._activeTonePickerEmoji = null, m) {
-          const E = ne(m, c === "default" ? "" : c);
+      n.addEventListener("click", (g) => {
+        g.stopPropagation();
+        const _ = n.dataset.toneMod || "default", h = _ === "default" ? "default" : _;
+        this.saveSkinTonePreference(h);
+        const u = this._activeTonePickerEmoji;
+        if (this._isSkinTonePanelOpen = !1, this._activeTonePickerEmoji = null, u) {
+          const E = ne(u, h === "default" ? "" : h);
           this.insertTextAtCursor(E);
         } else
           this.render();
       });
     }), this.shadowRoot.querySelectorAll(".sl-emoji-item").forEach((n) => {
-      n.addEventListener("click", (p) => {
-        p.stopPropagation();
-        const x = n.dataset.toneable === "true", c = n.dataset.baseEmoji, m = n.dataset.emoji;
-        if (x && c && this._selectedSkinTone === null) {
-          this._activeTonePickerEmoji = c, this._isSkinTonePanelOpen = !0, this.render();
+      n.addEventListener("click", (g) => {
+        g.stopPropagation();
+        const _ = n.dataset.toneable === "true", h = n.dataset.baseEmoji, u = n.dataset.emoji;
+        if (_ && h && this._selectedSkinTone === null) {
+          this._activeTonePickerEmoji = h, this._isSkinTonePanelOpen = !0, this.render();
           return;
         }
-        m && this.insertTextAtCursor(m);
+        u && this.insertTextAtCursor(u);
       });
     });
     const L = this.shadowRoot.getElementById("btn-insert-gif");
     L && L.addEventListener("click", (n) => {
       n.stopPropagation(), this._isEmojiPickerOpen = !1, this._isMediaModalOpen = !0, this._isManagingRecentGifs = !1, this._isConfirmingClearGifs = !1, this._mediaModalUrl = "", this._mediaModalAlt = "", this._mediaModalError = null, this._mediaModalSuccess = null, this.render();
     });
-    const y = this.shadowRoot.getElementById("btn-insert-image");
-    if (y && y.addEventListener("click", (n) => {
+    const x = this.shadowRoot.getElementById("btn-insert-image");
+    if (x && x.addEventListener("click", (n) => {
       n.stopPropagation(), this._isEmojiPickerOpen = !1, this._isImageModalOpen = !0, this._isManagingRecentImages = !1, this._isConfirmingClearImages = !1, this._imageModalUrl = "", this._imageModalAlt = "", this._imageModalError = null, this._imageModalSuccess = null, this.render();
     }), this._isMediaModalOpen) {
-      const n = this.shadowRoot.getElementById("media-modal-backdrop"), p = this.shadowRoot.getElementById("btn-close-media-modal"), x = this.shadowRoot.getElementById("btn-cancel-media-modal"), c = this.shadowRoot.getElementById("btn-confirm-media-modal"), m = this.shadowRoot.getElementById("media-url-input"), E = this.shadowRoot.getElementById("media-alt-input"), v = this.shadowRoot.getElementById("media-url-preview-card"), O = this.shadowRoot.getElementById("media-url-preview-img"), C = this.shadowRoot.getElementById("media-modal-error-box"), A = this.shadowRoot.getElementById("media-modal-error-text"), U = this.currentLang === "pt", q = (u) => {
-        this._mediaModalUrl = u;
-        const S = u.trim();
+      const n = this.shadowRoot.getElementById("media-modal-backdrop"), g = this.shadowRoot.getElementById("btn-close-media-modal"), _ = this.shadowRoot.getElementById("btn-cancel-media-modal"), h = this.shadowRoot.getElementById("btn-confirm-media-modal"), u = this.shadowRoot.getElementById("media-url-input"), E = this.shadowRoot.getElementById("media-alt-input"), v = this.shadowRoot.getElementById("media-url-preview-card"), O = this.shadowRoot.getElementById("media-url-preview-img"), C = this.shadowRoot.getElementById("media-modal-error-box"), A = this.shadowRoot.getElementById("media-modal-error-text"), U = this.currentLang === "pt", q = (m) => {
+        this._mediaModalUrl = m;
+        const S = m.trim();
         if (S.length > 0) {
-          const R = X(S);
+          const R = Z(S);
           R.safe ? (this._mediaModalError = null, C && (C.style.display = "none"), v && (v.style.display = "flex"), O && (O.style.display = "block", O.src = S)) : (this._mediaModalError = R.reason || (U ? "Link inválido." : "Invalid link."), v && (v.style.display = "none"), A && (A.textContent = this._mediaModalError), C && (C.style.display = "flex"));
         } else
           this._mediaModalError = null, v && (v.style.display = "none"), C && (C.style.display = "none");
       }, W = () => {
         this._isMediaModalOpen = !1, this._isManagingRecentGifs = !1, this._isConfirmingClearGifs = !1, this._mediaModalUrl = "", this._mediaModalAlt = "", this._mediaModalError = null, this._mediaModalSuccess = null, this.render();
       };
-      p && p.addEventListener("click", W), x && x.addEventListener("click", W), n && n.addEventListener("click", (u) => {
-        u.target === n && W();
-      }), m && (m.addEventListener("keydown", (u) => {
-        u.stopPropagation();
-      }), m.addEventListener("input", () => {
-        q(m.value);
-      }), m.addEventListener("paste", () => {
-        setTimeout(() => q(m.value), 0);
-      })), E && (E.addEventListener("keydown", (u) => {
-        u.stopPropagation();
+      g && g.addEventListener("click", W), _ && _.addEventListener("click", W), n && n.addEventListener("click", (m) => {
+        m.target === n && W();
+      }), u && (u.addEventListener("keydown", (m) => {
+        m.stopPropagation();
+      }), u.addEventListener("input", () => {
+        q(u.value);
+      }), u.addEventListener("paste", () => {
+        setTimeout(() => q(u.value), 0);
+      })), E && (E.addEventListener("keydown", (m) => {
+        m.stopPropagation();
       }), E.addEventListener("input", () => {
         this._mediaModalAlt = E.value;
       }));
-      const Z = this.shadowRoot.getElementById("btn-save-gif-collection");
-      Z && Z.addEventListener("click", (u) => {
-        u.stopPropagation();
-        const S = (m ? m.value : this._mediaModalUrl).trim(), R = (E ? E.value : this._mediaModalAlt).trim() || "GIF";
+      const V = this.shadowRoot.getElementById("btn-save-gif-collection");
+      V && V.addEventListener("click", (m) => {
+        m.stopPropagation();
+        const S = (u ? u.value : this._mediaModalUrl).trim(), R = (E ? E.value : this._mediaModalAlt).trim() || "GIF";
         if (!S) {
           this._mediaModalError = U ? "Por favor, insira a URL do GIF antes de salvar." : "Please enter a GIF URL before saving.", A && (A.textContent = this._mediaModalError), C && (C.style.display = "flex");
           return;
         }
-        const G = X(S);
+        const G = Z(S);
         if (!G.safe) {
           this._mediaModalError = G.reason || (U ? "URL inválida ou não segura." : "Invalid or unsafe URL."), A && (A.textContent = this._mediaModalError), C && (C.style.display = "flex");
           return;
@@ -6148,9 +6151,9 @@ ${i}
         _e(S, R), this._mediaModalUrl = "", this._mediaModalAlt = "", this._mediaModalError = null, this._mediaModalSuccess = U ? "GIF salvo na sua coleção!" : "GIF saved to collection!", this.render(), setTimeout(() => {
           this._isMediaModalOpen && this._mediaModalSuccess && (this._mediaModalSuccess = null, this.render());
         }, 2500);
-      }), this.shadowRoot.querySelectorAll(".sl-recent-gif-item").forEach((u) => {
+      }), this.shadowRoot.querySelectorAll(".sl-recent-gif-item").forEach((m) => {
         let S = null, R = !1;
-        u.addEventListener("touchstart", () => {
+        m.addEventListener("touchstart", () => {
           R = !1, S = setTimeout(() => {
             if (!R) {
               if (this._isManagingRecentGifs = !0, "vibrate" in navigator)
@@ -6161,88 +6164,88 @@ ${i}
               this.render();
             }
           }, 450);
-        }, { passive: !0 }), u.addEventListener("touchmove", () => {
+        }, { passive: !0 }), m.addEventListener("touchmove", () => {
           R = !0, S && clearTimeout(S);
-        }, { passive: !0 }), u.addEventListener("touchend", () => {
+        }, { passive: !0 }), m.addEventListener("touchend", () => {
           S && clearTimeout(S);
-        }), u.addEventListener("click", () => {
+        }), m.addEventListener("click", () => {
           if (this._isManagingRecentGifs)
             return;
-          const G = u.getAttribute("data-url") || "", ie = u.getAttribute("data-alt") || "";
-          m && (m.value = G), E && (E.value = ie), this._mediaModalAlt = ie, q(G);
+          const G = m.getAttribute("data-url") || "", ie = m.getAttribute("data-alt") || "";
+          u && (u.value = G), E && (E.value = ie), this._mediaModalAlt = ie, q(G);
         });
       });
       const oe = this.shadowRoot.getElementById("btn-manage-recent-gifs");
-      oe && oe.addEventListener("click", (u) => {
-        u.stopPropagation(), this._isManagingRecentGifs = !this._isManagingRecentGifs, this.render();
-      }), this.shadowRoot.querySelectorAll(".sl-btn-delete-recent-gif").forEach((u) => {
-        u.addEventListener("click", (S) => {
+      oe && oe.addEventListener("click", (m) => {
+        m.stopPropagation(), this._isManagingRecentGifs = !this._isManagingRecentGifs, this.render();
+      }), this.shadowRoot.querySelectorAll(".sl-btn-delete-recent-gif").forEach((m) => {
+        m.addEventListener("click", (S) => {
           S.stopPropagation();
-          const R = u.getAttribute("data-url") || "";
+          const R = m.getAttribute("data-url") || "";
           R && (Pe(R), le().length === 0 && (this._isManagingRecentGifs = !1), this.render());
         });
       });
       const re = this.shadowRoot.getElementById("btn-clear-recent-gifs");
-      re && re.addEventListener("click", (u) => {
-        u.stopPropagation(), this._isConfirmingClearGifs = !0, this.render();
+      re && re.addEventListener("click", (m) => {
+        m.stopPropagation(), this._isConfirmingClearGifs = !0, this.render();
       });
       const se = this.shadowRoot.getElementById("btn-confirm-clear-gifs-yes");
-      se && se.addEventListener("click", (u) => {
-        u.stopPropagation(), Be(), this._isConfirmingClearGifs = !1, this._isManagingRecentGifs = !1, this.render();
+      se && se.addEventListener("click", (m) => {
+        m.stopPropagation(), Be(), this._isConfirmingClearGifs = !1, this._isManagingRecentGifs = !1, this.render();
       });
       const ae = this.shadowRoot.getElementById("btn-confirm-clear-gifs-no");
-      ae && ae.addEventListener("click", (u) => {
-        u.stopPropagation(), this._isConfirmingClearGifs = !1, this.render();
-      }), c && c.addEventListener("click", () => {
-        const u = (m ? m.value : this._mediaModalUrl).trim(), S = (E ? E.value : this._mediaModalAlt).trim() || "GIF";
-        if (!u) {
+      ae && ae.addEventListener("click", (m) => {
+        m.stopPropagation(), this._isConfirmingClearGifs = !1, this.render();
+      }), h && h.addEventListener("click", () => {
+        const m = (u ? u.value : this._mediaModalUrl).trim(), S = (E ? E.value : this._mediaModalAlt).trim() || "GIF";
+        if (!m) {
           this._mediaModalError = U ? "Por favor, insira a URL do GIF." : "Please enter a GIF URL.", A && (A.textContent = this._mediaModalError), C && (C.style.display = "flex"), v && (v.style.display = "none");
           return;
         }
-        const R = X(u);
+        const R = Z(m);
         if (!R.safe) {
           this._mediaModalError = R.reason || (U ? "URL inválida ou não segura." : "Invalid or unsafe URL."), A && (A.textContent = this._mediaModalError), C && (C.style.display = "flex"), v && (v.style.display = "none");
           return;
         }
-        _e(u, S);
-        const G = `![${S}](${u})`;
+        _e(m, S);
+        const G = `![${S}](${m})`;
         this._isMediaModalOpen = !1, this._isManagingRecentGifs = !1, this._isConfirmingClearGifs = !1, this._mediaModalUrl = "", this._mediaModalAlt = "", this._mediaModalError = null, this._mediaModalSuccess = null, this.insertTextAtCursor(G);
       });
     }
     if (this._isImageModalOpen) {
-      const n = this.shadowRoot.getElementById("image-modal-backdrop"), p = this.shadowRoot.getElementById("btn-close-image-modal"), x = this.shadowRoot.getElementById("btn-cancel-image-modal"), c = this.shadowRoot.getElementById("btn-confirm-image-modal"), m = this.shadowRoot.getElementById("image-url-input"), E = this.shadowRoot.getElementById("image-alt-input"), v = this.shadowRoot.getElementById("image-url-preview-card"), O = this.shadowRoot.getElementById("image-url-preview-img"), C = this.shadowRoot.getElementById("image-modal-error-box"), A = this.shadowRoot.getElementById("image-modal-error-text"), U = this.currentLang === "pt", q = (u) => {
-        this._imageModalUrl = u;
-        const S = u.trim();
+      const n = this.shadowRoot.getElementById("image-modal-backdrop"), g = this.shadowRoot.getElementById("btn-close-image-modal"), _ = this.shadowRoot.getElementById("btn-cancel-image-modal"), h = this.shadowRoot.getElementById("btn-confirm-image-modal"), u = this.shadowRoot.getElementById("image-url-input"), E = this.shadowRoot.getElementById("image-alt-input"), v = this.shadowRoot.getElementById("image-url-preview-card"), O = this.shadowRoot.getElementById("image-url-preview-img"), C = this.shadowRoot.getElementById("image-modal-error-box"), A = this.shadowRoot.getElementById("image-modal-error-text"), U = this.currentLang === "pt", q = (m) => {
+        this._imageModalUrl = m;
+        const S = m.trim();
         if (S.length > 0) {
-          const R = X(S);
+          const R = Z(S);
           R.safe ? (this._imageModalError = null, C && (C.style.display = "none"), v && (v.style.display = "flex"), O && (O.style.display = "block", O.src = S)) : (this._imageModalError = R.reason || (U ? "Link inválido." : "Invalid link."), v && (v.style.display = "none"), A && (A.textContent = this._imageModalError), C && (C.style.display = "flex"));
         } else
           this._imageModalError = null, v && (v.style.display = "none"), C && (C.style.display = "none");
       }, W = () => {
         this._isImageModalOpen = !1, this._isManagingRecentImages = !1, this._isConfirmingClearImages = !1, this._imageModalUrl = "", this._imageModalAlt = "", this._imageModalError = null, this._imageModalSuccess = null, this.render();
       };
-      p && p.addEventListener("click", W), x && x.addEventListener("click", W), n && n.addEventListener("click", (u) => {
-        u.target === n && W();
-      }), m && (m.addEventListener("keydown", (u) => {
-        u.stopPropagation();
-      }), m.addEventListener("input", () => {
-        q(m.value);
-      }), m.addEventListener("paste", () => {
-        setTimeout(() => q(m.value), 0);
-      })), E && (E.addEventListener("keydown", (u) => {
-        u.stopPropagation();
+      g && g.addEventListener("click", W), _ && _.addEventListener("click", W), n && n.addEventListener("click", (m) => {
+        m.target === n && W();
+      }), u && (u.addEventListener("keydown", (m) => {
+        m.stopPropagation();
+      }), u.addEventListener("input", () => {
+        q(u.value);
+      }), u.addEventListener("paste", () => {
+        setTimeout(() => q(u.value), 0);
+      })), E && (E.addEventListener("keydown", (m) => {
+        m.stopPropagation();
       }), E.addEventListener("input", () => {
         this._imageModalAlt = E.value;
       }));
-      const Z = this.shadowRoot.getElementById("btn-save-image-collection");
-      Z && Z.addEventListener("click", (u) => {
-        u.stopPropagation();
-        const S = (m ? m.value : this._imageModalUrl).trim(), R = (E ? E.value : this._imageModalAlt).trim() || (U ? "Imagem" : "Image");
+      const V = this.shadowRoot.getElementById("btn-save-image-collection");
+      V && V.addEventListener("click", (m) => {
+        m.stopPropagation();
+        const S = (u ? u.value : this._imageModalUrl).trim(), R = (E ? E.value : this._imageModalAlt).trim() || (U ? "Imagem" : "Image");
         if (!S) {
           this._imageModalError = U ? "Por favor, insira a URL da imagem antes de salvar." : "Please enter an image URL before saving.", A && (A.textContent = this._imageModalError), C && (C.style.display = "flex");
           return;
         }
-        const G = X(S);
+        const G = Z(S);
         if (!G.safe) {
           this._imageModalError = G.reason || (U ? "URL inválida ou não segura." : "Invalid or unsafe URL."), A && (A.textContent = this._imageModalError), C && (C.style.display = "flex");
           return;
@@ -6250,9 +6253,9 @@ ${i}
         ke(S, R), this._imageModalUrl = "", this._imageModalAlt = "", this._imageModalError = null, this._imageModalSuccess = U ? "Imagem salva na sua coleção!" : "Image saved to collection!", this.render(), setTimeout(() => {
           this._isImageModalOpen && this._imageModalSuccess && (this._imageModalSuccess = null, this.render());
         }, 2500);
-      }), this.shadowRoot.querySelectorAll(".sl-recent-image-item").forEach((u) => {
+      }), this.shadowRoot.querySelectorAll(".sl-recent-image-item").forEach((m) => {
         let S = null, R = !1;
-        u.addEventListener("touchstart", () => {
+        m.addEventListener("touchstart", () => {
           R = !1, S = setTimeout(() => {
             if (!R) {
               if (this._isManagingRecentImages = !0, "vibrate" in navigator)
@@ -6263,61 +6266,53 @@ ${i}
               this.render();
             }
           }, 450);
-        }, { passive: !0 }), u.addEventListener("touchmove", () => {
+        }, { passive: !0 }), m.addEventListener("touchmove", () => {
           R = !0, S && clearTimeout(S);
-        }, { passive: !0 }), u.addEventListener("touchend", () => {
+        }, { passive: !0 }), m.addEventListener("touchend", () => {
           S && clearTimeout(S);
-        }), u.addEventListener("click", () => {
+        }), m.addEventListener("click", () => {
           if (this._isManagingRecentImages)
             return;
-          const G = u.getAttribute("data-url") || "", ie = u.getAttribute("data-alt") || "";
-          m && (m.value = G), E && (E.value = ie), this._imageModalAlt = ie, q(G);
+          const G = m.getAttribute("data-url") || "", ie = m.getAttribute("data-alt") || "";
+          u && (u.value = G), E && (E.value = ie), this._imageModalAlt = ie, q(G);
         });
       });
       const oe = this.shadowRoot.getElementById("btn-manage-recent-images");
-      oe && oe.addEventListener("click", (u) => {
-        u.stopPropagation(), this._isManagingRecentImages = !this._isManagingRecentImages, this.render();
-      }), this.shadowRoot.querySelectorAll(".sl-btn-delete-recent-image").forEach((u) => {
-        u.addEventListener("click", (S) => {
+      oe && oe.addEventListener("click", (m) => {
+        m.stopPropagation(), this._isManagingRecentImages = !this._isManagingRecentImages, this.render();
+      }), this.shadowRoot.querySelectorAll(".sl-btn-delete-recent-image").forEach((m) => {
+        m.addEventListener("click", (S) => {
           S.stopPropagation();
-          const R = u.getAttribute("data-url") || "";
+          const R = m.getAttribute("data-url") || "";
           R && (je(R), de().length === 0 && (this._isManagingRecentImages = !1), this.render());
         });
       });
       const re = this.shadowRoot.getElementById("btn-clear-recent-images");
-      re && re.addEventListener("click", (u) => {
-        u.stopPropagation(), this._isConfirmingClearImages = !0, this.render();
+      re && re.addEventListener("click", (m) => {
+        m.stopPropagation(), this._isConfirmingClearImages = !0, this.render();
       });
       const se = this.shadowRoot.getElementById("btn-confirm-clear-images-yes");
-      se && se.addEventListener("click", (u) => {
-        u.stopPropagation(), ze(), this._isConfirmingClearImages = !1, this._isManagingRecentImages = !1, this.render();
+      se && se.addEventListener("click", (m) => {
+        m.stopPropagation(), ze(), this._isConfirmingClearImages = !1, this._isManagingRecentImages = !1, this.render();
       });
       const ae = this.shadowRoot.getElementById("btn-confirm-clear-images-no");
-      ae && ae.addEventListener("click", (u) => {
-        u.stopPropagation(), this._isConfirmingClearImages = !1, this.render();
-      }), c && c.addEventListener("click", () => {
-        const u = (m ? m.value : this._imageModalUrl).trim(), S = (E ? E.value : this._imageModalAlt).trim() || (U ? "Imagem" : "Image");
-        if (!u) {
+      ae && ae.addEventListener("click", (m) => {
+        m.stopPropagation(), this._isConfirmingClearImages = !1, this.render();
+      }), h && h.addEventListener("click", () => {
+        const m = (u ? u.value : this._imageModalUrl).trim(), S = (E ? E.value : this._imageModalAlt).trim() || (U ? "Imagem" : "Image");
+        if (!m) {
           this._imageModalError = U ? "Por favor, insira a URL da imagem." : "Please enter an image URL.", A && (A.textContent = this._imageModalError), C && (C.style.display = "flex"), v && (v.style.display = "none");
           return;
         }
-        const R = X(u);
+        const R = Z(m);
         if (!R.safe) {
           this._imageModalError = R.reason || (U ? "URL inválida ou não segura." : "Invalid or unsafe URL."), A && (A.textContent = this._imageModalError), C && (C.style.display = "flex"), v && (v.style.display = "none");
           return;
         }
-        ke(u, S);
-        const G = `![${S}](${u})`;
+        ke(m, S);
+        const G = `![${S}](${m})`;
         this._isImageModalOpen = !1, this._isManagingRecentImages = !1, this._isConfirmingClearImages = !1, this._imageModalUrl = "", this._imageModalAlt = "", this._imageModalError = null, this._imageModalSuccess = null, this.insertTextAtCursor(G);
       });
-    }
-    if (this._isEmojiPickerOpen) {
-      const n = (p) => {
-        var m;
-        const x = p.composedPath(), c = (m = this.shadowRoot) == null ? void 0 : m.getElementById("emoji-popover");
-        c && !x.includes(c) && d && !x.includes(d) && (this._isEmojiPickerOpen = !1, this.render(), document.removeEventListener("click", n));
-      };
-      setTimeout(() => document.addEventListener("click", n), 0);
     }
     const I = this.shadowRoot.getElementById("btn-login-submit");
     I && I.addEventListener("click", () => {
@@ -6338,59 +6333,59 @@ ${i}
       }
       await this.handlePostComment(n);
     }), this.shadowRoot.querySelectorAll(".sl-reaction-trigger-btn").forEach((n) => {
-      n.addEventListener("click", async (p) => {
-        if (p.stopPropagation(), !this._currentUser) {
+      n.addEventListener("click", async (g) => {
+        if (g.stopPropagation(), !this._currentUser) {
           this.loginWithGitHub();
           return;
         }
-        const x = p.currentTarget, c = x.getAttribute("data-comment-id"), m = x.getAttribute("data-emoji") || "👍";
-        c && await this.handleToggleReaction(c, m);
+        const _ = g.currentTarget, h = _.getAttribute("data-comment-id"), u = _.getAttribute("data-emoji") || "👍";
+        h && await this.handleToggleReaction(h, u);
       });
     }), this.shadowRoot.querySelectorAll(".sl-reaction-picker-item").forEach((n) => {
-      n.addEventListener("click", async (p) => {
-        if (p.stopPropagation(), !this._currentUser) {
+      n.addEventListener("click", async (g) => {
+        if (g.stopPropagation(), !this._currentUser) {
           this.loginWithGitHub();
           return;
         }
-        const x = p.currentTarget, c = x.getAttribute("data-comment-id"), m = x.getAttribute("data-emoji"), E = x.closest(".sl-reaction-container");
-        E == null || E.classList.remove("sl-popover-open"), c && m && await this.handleToggleReaction(c, m);
+        const _ = g.currentTarget, h = _.getAttribute("data-comment-id"), u = _.getAttribute("data-emoji"), E = _.closest(".sl-reaction-container");
+        E == null || E.classList.remove("sl-popover-open"), h && u && await this.handleToggleReaction(h, u);
       });
     }), this.shadowRoot.querySelectorAll(".sl-reaction-badge").forEach((n) => {
-      n.addEventListener("click", async (p) => {
-        if (p.stopPropagation(), !this._currentUser) {
+      n.addEventListener("click", async (g) => {
+        if (g.stopPropagation(), !this._currentUser) {
           this.loginWithGitHub();
           return;
         }
-        const x = p.currentTarget, c = x.getAttribute("data-comment-id"), m = x.getAttribute("data-emoji");
-        c && m && await this.handleToggleReaction(c, m);
+        const _ = g.currentTarget, h = _.getAttribute("data-comment-id"), u = _.getAttribute("data-emoji");
+        h && u && await this.handleToggleReaction(h, u);
       });
     }), this.shadowRoot.querySelectorAll(".sl-reaction-container").forEach((n) => {
       n.addEventListener("mouseenter", () => {
         n.classList.add("sl-popover-open");
       }), n.addEventListener("mouseleave", () => {
         n.classList.remove("sl-popover-open");
-      }), n.addEventListener("contextmenu", (p) => {
-        p.preventDefault(), n.classList.toggle("sl-popover-open");
+      }), n.addEventListener("contextmenu", (g) => {
+        g.preventDefault(), n.classList.toggle("sl-popover-open");
       });
     }), this.shadowRoot.querySelectorAll(".sl-reply-btn:not(.btn-toggle-translate)").forEach((n) => {
-      n.addEventListener("click", (p) => {
-        var m;
-        const c = p.currentTarget.getAttribute("data-reply-to");
+      n.addEventListener("click", (g) => {
+        var u;
+        const h = g.currentTarget.getAttribute("data-reply-to");
         if (!this._currentUser) {
           this.loginWithGitHub();
           return;
         }
-        if (this._replyingToId === c)
+        if (this._replyingToId === h)
           this._replyingToId = null, this._replyText = "";
         else {
-          this._replyingToId = c;
+          this._replyingToId = h;
           let E = "";
-          const v = this._comments.find((O) => O.id === c);
+          const v = this._comments.find((O) => O.id === h);
           if (v)
             E = v.author.login;
           else
             for (const O of this._comments) {
-              const C = (m = O.replies) == null ? void 0 : m.find((A) => A.id === c);
+              const C = (u = O.replies) == null ? void 0 : u.find((A) => A.id === h);
               if (C) {
                 E = C.author.login;
                 break;
@@ -6401,90 +6396,90 @@ ${i}
         this.render();
       });
     }), this.shadowRoot.querySelectorAll(".sl-thread-toggle-btn").forEach((n) => {
-      n.addEventListener("click", (p) => {
-        const c = p.currentTarget.getAttribute("data-thread-id");
-        c && (this._expandedThreads.has(c) ? this._expandedThreads.delete(c) : this._expandedThreads.add(c), this.render());
+      n.addEventListener("click", (g) => {
+        const h = g.currentTarget.getAttribute("data-thread-id");
+        h && (this._expandedThreads.has(h) ? this._expandedThreads.delete(h) : this._expandedThreads.add(h), this.render());
       });
     }), this.shadowRoot.querySelectorAll(".btn-send-reply").forEach((n) => {
-      n.addEventListener("click", async (p) => {
+      n.addEventListener("click", async (g) => {
         var O;
-        const x = p.currentTarget, c = x.getAttribute("data-comment-id"), m = x.getAttribute("data-parent-id") || c, E = (O = this.shadowRoot) == null ? void 0 : O.getElementById(`reply-textarea-${c}`);
+        const _ = g.currentTarget, h = _.getAttribute("data-comment-id"), u = _.getAttribute("data-parent-id") || h, E = (O = this.shadowRoot) == null ? void 0 : O.getElementById(`reply-textarea-${h}`);
         if (!E) return;
         const v = E.value.trim();
-        !v || !m || await this.handlePostReply(m, v);
+        !v || !u || await this.handlePostReply(u, v);
       });
     }), this.shadowRoot.querySelectorAll(".btn-cancel-reply").forEach((n) => {
       n.addEventListener("click", () => {
         this._replyingToId = null, this._replyText = "", this.render();
       });
     }), this.shadowRoot.querySelectorAll(".btn-toggle-translate").forEach((n) => {
-      n.addEventListener("click", (p) => {
-        const c = p.currentTarget.getAttribute("data-comment-id");
-        c && this.toggleTranslate(c);
+      n.addEventListener("click", (g) => {
+        const h = g.currentTarget.getAttribute("data-comment-id");
+        h && this.toggleTranslate(h);
       });
     }), this.shadowRoot.querySelectorAll(".sl-audio-btn").forEach((n) => {
-      n.addEventListener("click", (p) => {
-        const x = p.currentTarget, c = x.getAttribute("data-speak-id"), m = x.getAttribute("data-text"), E = x.getAttribute("data-lang") || void 0;
-        if (c && m) {
-          const v = decodeURIComponent(m);
-          this.toggleSpeak(c, v, E);
+      n.addEventListener("click", (g) => {
+        const _ = g.currentTarget, h = _.getAttribute("data-speak-id"), u = _.getAttribute("data-text"), E = _.getAttribute("data-lang") || void 0;
+        if (h && u) {
+          const v = decodeURIComponent(u);
+          this.toggleSpeak(h, v, E);
         }
       });
     }), this.shadowRoot.querySelectorAll(".sl-menu-btn").forEach((n) => {
-      n.addEventListener("click", (p) => {
-        p.stopPropagation();
-        const c = p.currentTarget.getAttribute("data-menu-id");
-        this._openMenuId = this._openMenuId === c ? null : c, this.render();
+      n.addEventListener("click", (g) => {
+        g.stopPropagation();
+        const h = g.currentTarget.getAttribute("data-menu-id");
+        this._openMenuId = this._openMenuId === h ? null : h, this.render();
       });
     }), this.shadowRoot.addEventListener("click", () => {
       this._openMenuId && (this._openMenuId = null, this.render());
     }), this.shadowRoot.querySelectorAll(".btn-toggle-pin").forEach((n) => {
-      n.addEventListener("click", async (p) => {
-        p.stopPropagation();
-        const c = p.currentTarget.getAttribute("data-comment-id");
-        c && await this.handleTogglePin(c);
+      n.addEventListener("click", async (g) => {
+        g.stopPropagation();
+        const h = g.currentTarget.getAttribute("data-comment-id");
+        h && await this.handleTogglePin(h);
       });
     }), this.shadowRoot.querySelectorAll(".btn-edit").forEach((n) => {
-      n.addEventListener("click", (p) => {
-        p.stopPropagation();
-        const c = p.currentTarget.getAttribute("data-comment-id");
-        this._editingId = c, this._openMenuId = null, this.render();
+      n.addEventListener("click", (g) => {
+        g.stopPropagation();
+        const h = g.currentTarget.getAttribute("data-comment-id");
+        this._editingId = h, this._openMenuId = null, this.render();
       });
     }), this.shadowRoot.querySelectorAll(".btn-save-edit").forEach((n) => {
-      n.addEventListener("click", async (p) => {
+      n.addEventListener("click", async (g) => {
         var v;
-        const c = p.currentTarget.getAttribute("data-comment-id"), m = (v = this.shadowRoot) == null ? void 0 : v.getElementById(`edit-textarea-${c}`);
-        if (!m || !c) return;
-        const E = m.value.trim();
-        E && await this.handleSaveEdit(c, E);
+        const h = g.currentTarget.getAttribute("data-comment-id"), u = (v = this.shadowRoot) == null ? void 0 : v.getElementById(`edit-textarea-${h}`);
+        if (!u || !h) return;
+        const E = u.value.trim();
+        E && await this.handleSaveEdit(h, E);
       });
     }), this.shadowRoot.querySelectorAll(".btn-cancel-edit").forEach((n) => {
       n.addEventListener("click", () => {
         this._editingId = null, this.render();
       });
     }), this.shadowRoot.querySelectorAll(".btn-delete").forEach((n) => {
-      n.addEventListener("click", async (p) => {
-        p.stopPropagation();
-        const c = p.currentTarget.getAttribute("data-comment-id");
-        if (!c) return;
-        const m = this.currentLang === "pt" ? "Tem certeza que deseja excluir esta nota?" : "Are you sure you want to delete this note?";
-        confirm(m) && await this.handleDelete(c);
+      n.addEventListener("click", async (g) => {
+        g.stopPropagation();
+        const h = g.currentTarget.getAttribute("data-comment-id");
+        if (!h) return;
+        const u = this.currentLang === "pt" ? "Tem certeza que deseja excluir esta nota?" : "Are you sure you want to delete this note?";
+        confirm(u) && await this.handleDelete(h);
       });
     }), this.shadowRoot.querySelectorAll(".btn-mod-restrict-media").forEach((n) => {
-      n.addEventListener("click", async (p) => {
-        p.stopPropagation();
-        const c = p.currentTarget.getAttribute("data-user");
-        if (!c) return;
-        const m = this.currentLang === "pt" ? `Deseja realmente remover a permissão de mídia de @${c}?` : this.currentLang === "es" ? `¿Deseas quitar el permiso de medios a @${c}?` : `Are you sure you want to restrict media for @${c}?`;
-        confirm(m) && (this._openMenuId = null, this.render(), await this.handleSetModeration(c, "restrict_media"));
+      n.addEventListener("click", async (g) => {
+        g.stopPropagation();
+        const h = g.currentTarget.getAttribute("data-user");
+        if (!h) return;
+        const u = this.currentLang === "pt" ? `Deseja realmente remover a permissão de mídia de @${h}?` : this.currentLang === "es" ? `¿Deseas quitar el permiso de medios a @${h}?` : `Are you sure you want to restrict media for @${h}?`;
+        confirm(u) && (this._openMenuId = null, this.render(), await this.handleSetModeration(h, "restrict_media"));
       });
     }), this.shadowRoot.querySelectorAll(".btn-mod-ban").forEach((n) => {
-      n.addEventListener("click", async (p) => {
-        p.stopPropagation();
-        const c = p.currentTarget.getAttribute("data-user");
-        if (!c) return;
-        const m = this.currentLang === "pt" ? `Deseja realmente banir o usuário @${c} dos comentários?` : this.currentLang === "es" ? `¿Deseas bloquear al usuario @${c} de los comentarios?` : `Are you sure you want to ban @${c} from commenting?`;
-        confirm(m) && (this._openMenuId = null, this.render(), await this.handleSetModeration(c, "ban"));
+      n.addEventListener("click", async (g) => {
+        g.stopPropagation();
+        const h = g.currentTarget.getAttribute("data-user");
+        if (!h) return;
+        const u = this.currentLang === "pt" ? `Deseja realmente banir o usuário @${h} dos comentários?` : this.currentLang === "es" ? `¿Deseas bloquear al usuario @${h} de los comentarios?` : `Are you sure you want to ban @${h} from commenting?`;
+        confirm(u) && (this._openMenuId = null, this.render(), await this.handleSetModeration(h, "ban"));
       });
     });
     const fe = this.shadowRoot.getElementById("sl-mod-refresh");
@@ -6508,16 +6503,16 @@ ${i}
     if (ye && ye.addEventListener("click", (n) => {
       n.stopPropagation(), this._expandedModCategory = this._expandedModCategory === "media" ? null : "media", this.render();
     }), this.shadowRoot.querySelectorAll(".sl-mod-chip-remove").forEach((n) => {
-      n.addEventListener("click", async (p) => {
-        p.stopPropagation();
-        const c = p.currentTarget.getAttribute("data-user");
-        c && await this.handleRemoveModeration(c);
+      n.addEventListener("click", async (g) => {
+        g.stopPropagation();
+        const h = g.currentTarget.getAttribute("data-user");
+        h && await this.handleRemoveModeration(h);
       });
     }), this.shadowRoot.querySelectorAll(".btn-copy-link").forEach((n) => {
-      n.addEventListener("click", (p) => {
-        p.stopPropagation();
-        const c = p.currentTarget.getAttribute("data-comment-id"), m = `${window.location.href.split("#")[0]}#comment-${c}`;
-        navigator.clipboard.writeText(m).then(() => {
+      n.addEventListener("click", (g) => {
+        g.stopPropagation();
+        const h = g.currentTarget.getAttribute("data-comment-id"), u = `${window.location.href.split("#")[0]}#comment-${h}`;
+        navigator.clipboard.writeText(u).then(() => {
           alert(
             this.currentLang === "pt" ? "Link copiado para a área de transferência!" : "Link copied to clipboard!"
           );
@@ -6526,18 +6521,18 @@ ${i}
     }), this.shadowRoot.querySelectorAll(
       ".sl-card-body img:not(.sl-emoji-inline), .sl-preview-area img:not(.sl-emoji-inline)"
     ).forEach((n) => {
-      n.addEventListener("click", (p) => {
-        p.preventDefault(), p.stopPropagation();
-        const x = n.getAttribute("src") || "", c = n.getAttribute("alt") || "";
-        x && this.openLightbox(x, c);
+      n.addEventListener("click", (g) => {
+        g.preventDefault(), g.stopPropagation();
+        const _ = n.getAttribute("src") || "", h = n.getAttribute("alt") || "";
+        _ && this.openLightbox(_, h);
       });
     }), this._lightboxOpen) {
-      const n = this.shadowRoot.getElementById("sl-lightbox-stage"), p = this.shadowRoot.getElementById("sl-lightbox-img"), x = this.shadowRoot.getElementById("sl-lightbox-close"), c = this.shadowRoot.getElementById("sl-lightbox-zoom-in"), m = this.shadowRoot.getElementById("sl-lightbox-zoom-out"), E = this.shadowRoot.getElementById("sl-lightbox-reset");
-      x && x.addEventListener("click", (v) => {
+      const n = this.shadowRoot.getElementById("sl-lightbox-stage"), g = this.shadowRoot.getElementById("sl-lightbox-img"), _ = this.shadowRoot.getElementById("sl-lightbox-close"), h = this.shadowRoot.getElementById("sl-lightbox-zoom-in"), u = this.shadowRoot.getElementById("sl-lightbox-zoom-out"), E = this.shadowRoot.getElementById("sl-lightbox-reset");
+      _ && _.addEventListener("click", (v) => {
         v.stopPropagation(), this.closeLightbox();
-      }), c && c.addEventListener("click", (v) => {
+      }), h && h.addEventListener("click", (v) => {
         v.stopPropagation(), this.setLightboxZoom(this._lightboxScale + 0.3);
-      }), m && m.addEventListener("click", (v) => {
+      }), u && u.addEventListener("click", (v) => {
         v.stopPropagation(), this.setLightboxZoom(this._lightboxScale - 0.3);
       }), E && E.addEventListener("click", (v) => {
         v.stopPropagation(), this.resetLightboxTransform();
@@ -6551,9 +6546,9 @@ ${i}
           this.setLightboxZoom(this._lightboxScale + O);
         },
         { passive: !1 }
-      )), p && (p.addEventListener("dblclick", (v) => {
+      )), g && (g.addEventListener("dblclick", (v) => {
         v.stopPropagation(), this._lightboxScale > 1.2 ? this.resetLightboxTransform() : this.setLightboxZoom(2);
-      }), p.addEventListener("mousedown", (v) => {
+      }), g.addEventListener("mousedown", (v) => {
         if (v.button !== 0) return;
         v.preventDefault(), this._isDraggingImage = !0, this._dragStartX = v.clientX, this._dragStartY = v.clientY, this._dragStartTx = this._lightboxTranslateX, this._dragStartTy = this._lightboxTranslateY, this.updateLightboxTransform(!0);
         const O = (A) => {
@@ -6564,14 +6559,14 @@ ${i}
           this._isDraggingImage = !1, this.updateLightboxTransform(!1), window.removeEventListener("mousemove", O), window.removeEventListener("mouseup", C);
         };
         window.addEventListener("mousemove", O), window.addEventListener("mouseup", C);
-      }), p.addEventListener("touchstart", (v) => {
+      }), g.addEventListener("touchstart", (v) => {
         if (v.touches.length === 1) {
           const O = v.touches[0];
           this._isDraggingImage = !0, this._dragStartX = O.clientX, this._dragStartY = O.clientY, this._dragStartTx = this._lightboxTranslateX, this._dragStartTy = this._lightboxTranslateY, this.updateLightboxTransform(!0);
           const C = (U) => {
             if (!this._isDraggingImage || U.touches.length !== 1) return;
-            const q = U.touches[0], W = q.clientX - this._dragStartX, Z = q.clientY - this._dragStartY;
-            this._lightboxTranslateX = this._dragStartTx + W, this._lightboxTranslateY = this._dragStartTy + Z, this.updateLightboxTransform(!0);
+            const q = U.touches[0], W = q.clientX - this._dragStartX, V = q.clientY - this._dragStartY;
+            this._lightboxTranslateX = this._dragStartTx + W, this._lightboxTranslateY = this._dragStartTy + V, this.updateLightboxTransform(!0);
           }, A = () => {
             this._isDraggingImage = !1, this.updateLightboxTransform(!1), window.removeEventListener("touchmove", C), window.removeEventListener("touchend", A);
           };
@@ -6589,26 +6584,26 @@ ${i}
     if (!this.shadowRoot) return;
     this.shadowRoot.querySelectorAll(
       ".sl-card-body pre, .sl-preview-area pre"
-    ).forEach((g) => {
-      var Q;
-      if (g.closest(".sl-code-block")) return;
-      const k = g.querySelector("code") || g, w = k.textContent || "";
-      if (!w.trim()) return;
-      let _ = "code";
-      const L = g.closest('[class*="highlight-source-"]');
+    ).forEach((p) => {
+      var X;
+      if (p.closest(".sl-code-block")) return;
+      const k = p.querySelector("code") || p, y = k.textContent || "";
+      if (!y.trim()) return;
+      let w = "code";
+      const L = p.closest('[class*="highlight-source-"]');
       if (L) {
         const F = L.className.match(/highlight-source-([a-zA-Z0-9_-]+)/);
-        F && F[1] && (_ = F[1]);
-      } else if (g.getAttribute("lang"))
-        _ = g.getAttribute("lang") || "code";
+        F && F[1] && (w = F[1]);
+      } else if (p.getAttribute("lang"))
+        w = p.getAttribute("lang") || "code";
       else if (k.className) {
         const F = k.className.match(/(?:language|lang)-([a-zA-Z0-9_-]+)/);
-        F && F[1] && (_ = F[1]);
+        F && F[1] && (w = F[1]);
       }
-      const y = w.split(/\r?\n/), I = y.length > 20, j = this.currentLang === "pt", H = j ? "Copiar" : "Copy", $ = j ? "Copiar código" : "Copy code", B = j ? "Rolar para cima" : "Scroll up", P = j ? "Rolar para baixo" : "Scroll down", D = I ? `${_} · ${y.length} ${j ? "linhas" : "lines"}` : _, N = document.createElement("div");
-      N.className = `sl-code-block ${I ? "sl-code-block-long sl-collapsed" : ""}`, N.setAttribute("data-lang", _);
-      const J = document.createElement("div");
-      if (J.className = "sl-code-header", J.innerHTML = `
+      const x = y.split(/\r?\n/), I = x.length > 20, j = this.currentLang === "pt", H = j ? "Copiar" : "Copy", $ = j ? "Copiar código" : "Copy code", B = j ? "Rolar para cima" : "Scroll up", P = j ? "Rolar para baixo" : "Scroll down", D = I ? `${w} · ${x.length} ${j ? "linhas" : "lines"}` : w, N = document.createElement("div");
+      N.className = `sl-code-block ${I ? "sl-code-block-long sl-collapsed" : ""}`, N.setAttribute("data-lang", w);
+      const Q = document.createElement("div");
+      if (Q.className = "sl-code-header", Q.innerHTML = `
         <span class="sl-code-badge">${D}</span>
         <button type="button" class="sl-code-copy-btn" title="${$}" aria-label="${$}">
           <svg class="sl-copy-icon" viewBox="0 0 16 16" width="14" height="14" fill="currentColor">
@@ -6617,10 +6612,10 @@ ${i}
           </svg>
           <span class="sl-copy-text">${H}</span>
         </button>
-      `, k.querySelector(".sl-code-line") || (k.innerHTML = y.map((F, Y) => {
+      `, k.querySelector(".sl-code-line") || (k.innerHTML = x.map((F, Y) => {
         const ee = F.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         return `<span class="sl-code-line"><span class="sl-line-num">${Y + 1}</span><span class="sl-line-code">${ee || " "}</span></span>`;
-      }).join("")), (Q = g.parentNode) == null || Q.insertBefore(N, g), N.appendChild(J), N.appendChild(g), g.classList.add("sl-code-pre"), k.classList.add("sl-code-body"), I && !this._hideCodeScroll) {
+      }).join("")), (X = p.parentNode) == null || X.insertBefore(N, p), N.appendChild(Q), N.appendChild(p), p.classList.add("sl-code-pre"), k.classList.add("sl-code-body"), I && !this._hideCodeScroll) {
         const F = document.createElement("div");
         F.className = "sl-code-scroll-controls", F.setAttribute("aria-label", j ? "Navegação do código" : "Code navigation"), F.innerHTML = `
           <button type="button" class="sl-code-scroll-btn sl-scroll-up" title="${B}" aria-label="${B}">
@@ -6636,64 +6631,64 @@ ${i}
         `, N.appendChild(F);
         const Y = document.createElement("div");
         Y.className = "sl-code-expand-bar", Y.innerHTML = `
-          <button type="button" class="sl-code-expand-btn" data-lines="${y.length}">
+          <button type="button" class="sl-code-expand-btn" data-lines="${x.length}">
             <span>↕</span>
-            <span class="sl-expand-text">${j ? `Mostrar todas as ${y.length} linhas` : `Show all ${y.length} lines`}</span>
+            <span class="sl-expand-text">${j ? `Mostrar todas as ${x.length} linhas` : `Show all ${x.length} lines`}</span>
           </button>
         `, N.appendChild(Y);
       }
-    }), this.shadowRoot.querySelectorAll(".sl-code-copy-btn").forEach((g) => {
-      g.addEventListener("click", async (k) => {
+    }), this.shadowRoot.querySelectorAll(".sl-code-copy-btn").forEach((p) => {
+      p.addEventListener("click", async (k) => {
         k.stopPropagation();
-        const w = g.closest(".sl-code-block");
-        if (!w) return;
-        const _ = w.querySelectorAll(".sl-line-code");
+        const y = p.closest(".sl-code-block");
+        if (!y) return;
+        const w = y.querySelectorAll(".sl-line-code");
         let L = "";
-        if (_.length > 0)
-          L = Array.from(_).map((y) => y.textContent || "").join(`
+        if (w.length > 0)
+          L = Array.from(w).map((x) => x.textContent || "").join(`
 `);
         else {
-          const y = w.querySelector("pre");
-          L = (y == null ? void 0 : y.textContent) || "";
+          const x = y.querySelector("pre");
+          L = (x == null ? void 0 : x.textContent) || "";
         }
         try {
           await navigator.clipboard.writeText(L);
-          const y = g.querySelector(".sl-copy-text"), I = y ? y.textContent : "";
-          g.classList.add("sl-copied"), y && (y.textContent = this.currentLang === "pt" ? "Copiado!" : "Copied!"), setTimeout(() => {
-            g.classList.remove("sl-copied"), y && I && (y.textContent = I);
+          const x = p.querySelector(".sl-copy-text"), I = x ? x.textContent : "";
+          p.classList.add("sl-copied"), x && (x.textContent = this.currentLang === "pt" ? "Copiado!" : "Copied!"), setTimeout(() => {
+            p.classList.remove("sl-copied"), x && I && (x.textContent = I);
           }, 2e3);
         } catch {
         }
       });
-    }), this.shadowRoot.querySelectorAll(".sl-code-scroll-btn").forEach((g) => {
-      g.addEventListener("click", (k) => {
+    }), this.shadowRoot.querySelectorAll(".sl-code-scroll-btn").forEach((p) => {
+      p.addEventListener("click", (k) => {
         k.stopPropagation();
-        const w = g.closest(".sl-code-block"), _ = w == null ? void 0 : w.querySelector(".sl-code-pre");
-        if (!_) return;
-        const L = g.classList.contains("sl-scroll-down");
-        _.scrollBy({ top: L ? 160 : -160, behavior: "smooth" });
+        const y = p.closest(".sl-code-block"), w = y == null ? void 0 : y.querySelector(".sl-code-pre");
+        if (!w) return;
+        const L = p.classList.contains("sl-scroll-down");
+        w.scrollBy({ top: L ? 160 : -160, behavior: "smooth" });
       });
-    }), this.shadowRoot.querySelectorAll(".sl-code-block-long").forEach((g) => {
-      const k = g.querySelector(".sl-code-pre"), w = g.querySelector(".sl-scroll-up"), _ = g.querySelector(".sl-scroll-down");
-      if (!k || !w || !_) return;
+    }), this.shadowRoot.querySelectorAll(".sl-code-block-long").forEach((p) => {
+      const k = p.querySelector(".sl-code-pre"), y = p.querySelector(".sl-scroll-up"), w = p.querySelector(".sl-scroll-down");
+      if (!k || !y || !w) return;
       const L = () => {
-        const y = k.scrollTop <= 2, I = k.scrollTop + k.clientHeight >= k.scrollHeight - 4;
-        w.classList.toggle("sl-disabled", y), _.classList.toggle("sl-disabled", I);
+        const x = k.scrollTop <= 2, I = k.scrollTop + k.clientHeight >= k.scrollHeight - 4;
+        y.classList.toggle("sl-disabled", x), w.classList.toggle("sl-disabled", I);
       };
       k.addEventListener("scroll", L, { passive: !0 }), L();
-    }), this.shadowRoot.querySelectorAll(".sl-code-expand-btn").forEach((g) => {
-      g.addEventListener("click", (k) => {
+    }), this.shadowRoot.querySelectorAll(".sl-code-expand-btn").forEach((p) => {
+      p.addEventListener("click", (k) => {
         k.stopPropagation();
-        const w = g.closest(".sl-code-block-long");
-        if (!w) return;
-        const _ = w.classList.contains("sl-collapsed"), L = g.getAttribute("data-lines") || "", y = g.querySelector(".sl-expand-text"), I = this.currentLang === "pt";
-        _ ? (w.classList.remove("sl-collapsed"), w.classList.add("sl-expanded"), y && (y.textContent = I ? "Minimizar código" : "Collapse code")) : (w.classList.remove("sl-expanded"), w.classList.add("sl-collapsed"), y && (y.textContent = I ? `Mostrar todas as ${L} linhas` : `Show all ${L} lines`), w.scrollIntoView({ behavior: "smooth", block: "nearest" }));
+        const y = p.closest(".sl-code-block-long");
+        if (!y) return;
+        const w = y.classList.contains("sl-collapsed"), L = p.getAttribute("data-lines") || "", x = p.querySelector(".sl-expand-text"), I = this.currentLang === "pt";
+        w ? (y.classList.remove("sl-collapsed"), y.classList.add("sl-expanded"), x && (x.textContent = I ? "Minimizar código" : "Collapse code")) : (y.classList.remove("sl-expanded"), y.classList.add("sl-collapsed"), x && (x.textContent = I ? `Mostrar todas as ${L} linhas` : `Show all ${L} lines`), y.scrollIntoView({ behavior: "smooth", block: "nearest" }));
       });
-    }), this.shadowRoot.querySelectorAll(".sl-page-btn[data-page]").forEach((g) => {
-      g.addEventListener("click", (k) => {
-        const _ = k.currentTarget.getAttribute("data-page");
-        if (!_) return;
-        const L = parseInt(_, 10);
+    }), this.shadowRoot.querySelectorAll(".sl-page-btn[data-page]").forEach((p) => {
+      p.addEventListener("click", (k) => {
+        const w = k.currentTarget.getAttribute("data-page");
+        if (!w) return;
+        const L = parseInt(w, 10);
         L !== this._currentPage && (this._currentPage = L, this.render(), this.scrollListToTop());
       });
     });
@@ -6703,22 +6698,22 @@ ${i}
     });
     const d = this.shadowRoot.querySelector(".btn-next-page");
     d && d.addEventListener("click", () => {
-      const g = Math.ceil(this._comments.length / this._pageSize);
-      this._currentPage < g && (this._currentPage++, this.render(), this.scrollListToTop());
+      const p = Math.ceil(this._comments.length / this._pageSize);
+      this._currentPage < p && (this._currentPage++, this.render(), this.scrollListToTop());
     });
     const l = this.shadowRoot.getElementById("sl-search-input");
-    l && (l.addEventListener("input", (g) => {
-      var _;
-      const k = g.target.value;
+    l && (l.addEventListener("input", (p) => {
+      var w;
+      const k = p.target.value;
       this._searchQuery = k, this._currentPage = 1, this.render();
-      const w = (_ = this.shadowRoot) == null ? void 0 : _.getElementById("sl-search-input");
-      if (w) {
-        w.focus();
-        const L = w.value.length;
-        w.setSelectionRange(L, L);
+      const y = (w = this.shadowRoot) == null ? void 0 : w.getElementById("sl-search-input");
+      if (y) {
+        y.focus();
+        const L = y.value.length;
+        y.setSelectionRange(L, L);
       }
-    }), l.addEventListener("keydown", (g) => {
-      g.key === "Escape" && (this._searchQuery = "", this._currentPage = 1, this.render());
+    }), l.addEventListener("keydown", (p) => {
+      p.key === "Escape" && (this._searchQuery = "", this._currentPage = 1, this.render());
     }));
     const b = this.shadowRoot.getElementById("sl-search-clear");
     b && b.addEventListener("click", () => {
