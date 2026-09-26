@@ -112,8 +112,14 @@ export const siteConfig: SiteConfig = {
     theme: 'auto',
     lang: 'auto',
     clientId: 'Iv23liZHApvnx6e6wtMJ',
-    // Default to empty string ('') for Astro Themes showcase (enables built-in mock demo comments).
-    // Users can connect their own Cloudflare Edge Broker Worker URL via PUBLIC_SCATTERLEAF_BROKER.
+    // 🍃 DEFAULT: Showcase Mode (broker: '')
+    // Out of the box, broker defaults to '' (empty). ScatterLeaf runs in an interactive,
+    // safe sandbox with simulated mock comments in browser memory — zero external setup,
+    // zero tokens, and zero spam posted to your GitHub repository.
+    //
+    // 🚀 TO ENABLE LIVE DISCUSSIONS:
+    // Deploy your Cloudflare Edge Broker Worker and supply its URL via the
+    // PUBLIC_SCATTERLEAF_BROKER environment variable (e.g. in Vercel / Cloudflare project settings).
     broker: (typeof process !== 'undefined' && process.env?.PUBLIC_SCATTERLEAF_BROKER) || (import.meta as any).env?.PUBLIC_SCATTERLEAF_BROKER || '',
     features: {
       images: true

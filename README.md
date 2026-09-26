@@ -146,13 +146,31 @@ Your content goes here...
 
 Minrock respects your digital sovereignty: comments are 100% optional, zero-bloat, and cleanly encapsulated inside [`src/components/Comments.astro`](src/components/Comments.astro).
 
-* **Zero-Setup Showcase Mode (Default):** Leaving `broker: ''` enables the instant interactive demo mode with realistic mock notes, sound TTS, and reactions. Ideal for evaluating the theme without creating external infrastructure.
-* **To Enable Live Discussions via ScatterLeaf:** 
-  1. Enable GitHub Discussions on your public repository.
-  2. Update `comments.repo` with your own repository name (`your-username/your-repo`).
-  3. *(Optional)* For live in-page reader comments, provide your Cloudflare Edge Broker URL and GitHub OAuth Client ID (see the [ScatterLeaf Guide](https://github.com/rnt-rez/scatterleaf)).
-* **To Use Any Other Solution:** You have complete freedom! Simply open [`src/components/Comments.astro`](src/components/Comments.astro) and paste your preferred widget or script. Zero vendor lock-in.
-* **To Disable Comments Completely:** Set `comments.enabled = false` in `src/config/site.ts`. When disabled, Astro completely eliminates all comment HTML and script tags at build time (0 bytes of JS, 0 network requests).
+> [!NOTE]
+> **🍃 Zero-Setup Showcase Mode (Default):**  
+> Out of the box, Minrock runs in **Showcase Mode**. It renders a realistic, interactive playground in browser memory with sound TTS, language translation, code blocks, and reactions. Visitors can fully experience the comments interface **safely in memory without posting spam or creating discussions in your GitHub repository**.
+
+| Mode | Configuration in `site.ts` | What Readers Experience |
+| :--- | :--- | :--- |
+| **1. Showcase / Demo (Default)** | `broker: ''` | **Interactive Sandbox:** Full simulated comments in browser memory. Zero external setup, zero risk of spam. |
+| **2. Live Production** | `broker: 'https://...'` | **Live Sync:** Real-time reader discussions backed by GitHub Discussions via Cloudflare Edge Broker. |
+| **3. Completely Disabled** | `comments.enabled = false` | **Zero Overhead:** Astro completely eliminates all comment HTML, CSS, and scripts at build time (0 KB JS). |
+
+#### 🚀 How to Enable Live Discussions (When You Are Ready)
+
+To connect your own real-time GitHub Discussions:
+1. **Enable GitHub Discussions** on your public GitHub repository under `Settings > Features > Discussions`.
+2. **Set your repository** in [`src/config/site.ts`](src/config/site.ts):
+   ```ts
+   comments: {
+     repo: 'your-username/your-repo',
+     // ...
+   }
+   ```
+3. **Connect your Broker:** Deploy the lightweight Cloudflare Worker from [ScatterLeaf](https://github.com/rnt-rez/scatterleaf) and provide your broker URL via the `PUBLIC_SCATTERLEAF_BROKER` environment variable (e.g. in your Vercel or Cloudflare Pages project settings).
+
+#### 🕊️ Total Freedom & Alternative Solutions
+Prefer a different provider (Giscus, Cusdis, Utterances) or a custom guestbook? Open [`src/components/Comments.astro`](src/components/Comments.astro) and replace the component slot. Zero vendor lock-in.
 
 ---
 
