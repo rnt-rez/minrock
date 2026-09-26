@@ -4280,21 +4280,17 @@ Do you want to simulate a local test login (@demo-reader)?`
       );
       return;
     }
-    const o = t === "ban" ? this.currentLang === "pt" ? "banir" : "ban" : this.currentLang === "pt" ? "restringir mídia de" : "restrict media for";
-    if (confirm(
-      this.currentLang === "pt" ? `Tem certeza que deseja ${o} @${e}?` : `Are you sure you want to ${o} @${e}?`
-    ))
-      try {
-        await this._brokerClient.setModeration(this._repo, e, t), await this.loadModerationList(), alert(
-          this.currentLang === "pt" ? `🍃 @${e} foi moderado com sucesso (${t === "ban" ? "banido" : "sem mídia"}).` : `🍃 @${e} moderated successfully (${t === "ban" ? "banned" : "media restricted"}).`
-        );
-      } catch (r) {
-        if (this.isAuthError(r)) {
-          this.handleExpiredSession(!1);
-          return;
-        }
-        alert((r == null ? void 0 : r.message) || "Erro ao moderar usuário");
+    try {
+      await this._brokerClient.setModeration(this._repo, e, t), await this.loadModerationList(), alert(
+        this.currentLang === "pt" ? `🍃 @${e} foi moderado com sucesso (${t === "ban" ? "banido" : "sem mídia"}).` : `🍃 @${e} moderated successfully (${t === "ban" ? "banned" : "media restricted"}).`
+      );
+    } catch (o) {
+      if (this.isAuthError(o)) {
+        this.handleExpiredSession(!1);
+        return;
       }
+      alert((o == null ? void 0 : o.message) || "Erro ao moderar usuário");
+    }
   }
   /**
    * Remove restrição de moderação de um usuário
@@ -5839,7 +5835,7 @@ ${i}
    * Renderiza um Card de Comentário Individual
    */
   renderCommentCard(e, t = !1, o) {
-    var ee, pe, ge, ue;
+    var ee, pe, ge, me;
     const s = this._repo ? this._repo.split("/")[0].toLowerCase() : "", i = e.author.isAuthor || s && e.author.login.toLowerCase() === s ? `<span class="sl-author-badge" part="author-badge">${this.currentLang === "pt" ? "Autor" : "Author"}</span>` : "", a = !t && !!(e.isPinned || e.body.includes("<!-- sl:pinned -->") || e.body.includes("<!-- pinned -->")), d = a ? `<span class="sl-pinned-badge" part="pinned-badge" title="${this.currentLang === "pt" ? "Comentário fixado no topo pelo autor" : "Comment pinned to top by author"}"><span>📌</span><span>${this.currentLang === "pt" ? "Fixado pelo autor" : "Pinned by author"}</span></span>` : "", l = !!(this._currentUser && s && this._currentUser.login.toLowerCase() === s), b = !!(this._currentUser && ((ee = e.author) != null && ee.login) && this._currentUser.login.toLowerCase() === e.author.login.toLowerCase()), T = b, g = b || l, k = this._speakingId === e.id, w = this._replyingToId === e.id, _ = this._editingId === e.id, L = this._openMenuId === e.id, y = k ? this.currentLang === "pt" ? "⏸️ Pausar" : "⏸️ Pause" : this.currentLang === "pt" ? "🔊 Ouvir" : "🔊 Listen", I = this.currentLang === "pt" ? "Responder" : "Reply", j = this.getVisitorLang(), H = e.originalLang || "pt", $ = H !== j, B = this.getLanguageName(H, j), D = (e.isShowingTranslation && e.translatedBody ? e.translatedBody : e.body).replace(/<!--\s*sl:pinned\s*-->\r?\n?/g, "").replace(/<!--\s*pinned\s*-->\r?\n?/g, ""), N = this.formatDate(e.createdAt), J = !!((pe = e.reactions) != null && pe.find((z) => z.content === "👍" && z.viewerHasReacted)), Q = this.currentLang === "pt" ? "Gostei" : "Like", F = J ? this.currentLang === "pt" ? "Remover curtida" : "Remove like" : this.currentLang === "pt" ? "Curtir" : "Like", Y = (e.reactions || []).filter((z) => z.count > 0);
     return `
       <article class="sl-card ${t ? "sl-card-reply" : ""} ${a ? "sl-card-pinned" : ""}" id="comment-${e.id}" part="card">
@@ -5889,7 +5885,7 @@ ${i}
                     <span>${this.currentLang === "pt" ? "Excluir" : "Delete"}</span>
                   </button>
                 ` : ""}
-                ${this._enableModeration && l && ((ge = e.author) != null && ge.login) && ((ue = this._currentUser) != null && ue.login) && e.author.login.toLowerCase() !== this._currentUser.login.toLowerCase() ? `
+                ${this._enableModeration && l && ((ge = e.author) != null && ge.login) && ((me = this._currentUser) != null && me.login) && e.author.login.toLowerCase() !== this._currentUser.login.toLowerCase() ? `
                   <button class="sl-dropdown-item btn-mod-restrict-media" data-user="${this.escapeHtml(e.author.login)}">
                     <span>🚫</span>
                     <span>${this.currentLang === "pt" ? "Restringir Mídia" : "Restrict Media"}</span>
@@ -6000,10 +5996,10 @@ ${i}
 
         <!-- Respostas Aninhadas (Threads Estilo LinkedIn com Linha Guia) -->
         ${!t && e.replies && e.replies.length > 0 ? (() => {
-      const z = e.replies.length, K = this._expandedThreads.has(e.id), me = K || z <= 2 ? e.replies : e.replies.slice(0, 2), V = z - 2;
+      const z = e.replies.length, K = this._expandedThreads.has(e.id), ue = K || z <= 2 ? e.replies : e.replies.slice(0, 2), V = z - 2;
       return `
                   <div class="sl-thread">
-                    ${me.map((te) => this.renderCommentCard(te, !0, e.id)).join("")}
+                    ${ue.map((te) => this.renderCommentCard(te, !0, e.id)).join("")}
                     ${z > 2 ? `
                       <button class="sl-thread-toggle-btn" data-thread-id="${e.id}" part="thread-toggle-btn">
                         <span>${K ? "▴" : "💬"}</span>
@@ -6048,8 +6044,8 @@ ${i}
       n.stopPropagation();
       const p = (x = this.shadowRoot) == null ? void 0 : x.getElementById("composer-textarea");
       if (p) {
-        const c = p.selectionStart ?? this._composerText.length, u = p.selectionEnd ?? this._composerText.length;
-        if (this._savedComposerSelection = { start: c, end: u }, u > c && p.value.substring(c, u).trim().length > 0) {
+        const c = p.selectionStart ?? this._composerText.length, m = p.selectionEnd ?? this._composerText.length;
+        if (this._savedComposerSelection = { start: c, end: m }, m > c && p.value.substring(c, m).trim().length > 0) {
           this.insertCodeBlock("typescript");
           return;
         }
@@ -6086,9 +6082,9 @@ ${i}
         p.stopPropagation();
         const x = n.dataset.toneMod || "default", c = x === "default" ? "default" : x;
         this.saveSkinTonePreference(c);
-        const u = this._activeTonePickerEmoji;
-        if (this._isSkinTonePanelOpen = !1, this._activeTonePickerEmoji = null, u) {
-          const E = ne(u, c === "default" ? "" : c);
+        const m = this._activeTonePickerEmoji;
+        if (this._isSkinTonePanelOpen = !1, this._activeTonePickerEmoji = null, m) {
+          const E = ne(m, c === "default" ? "" : c);
           this.insertTextAtCursor(E);
         } else
           this.render();
@@ -6096,12 +6092,12 @@ ${i}
     }), this.shadowRoot.querySelectorAll(".sl-emoji-item").forEach((n) => {
       n.addEventListener("click", (p) => {
         p.stopPropagation();
-        const x = n.dataset.toneable === "true", c = n.dataset.baseEmoji, u = n.dataset.emoji;
+        const x = n.dataset.toneable === "true", c = n.dataset.baseEmoji, m = n.dataset.emoji;
         if (x && c && this._selectedSkinTone === null) {
           this._activeTonePickerEmoji = c, this._isSkinTonePanelOpen = !0, this.render();
           return;
         }
-        u && this.insertTextAtCursor(u);
+        m && this.insertTextAtCursor(m);
       });
     });
     const L = this.shadowRoot.getElementById("btn-insert-gif");
@@ -6112,9 +6108,9 @@ ${i}
     if (y && y.addEventListener("click", (n) => {
       n.stopPropagation(), this._isEmojiPickerOpen = !1, this._isImageModalOpen = !0, this._isManagingRecentImages = !1, this._isConfirmingClearImages = !1, this._imageModalUrl = "", this._imageModalAlt = "", this._imageModalError = null, this._imageModalSuccess = null, this.render();
     }), this._isMediaModalOpen) {
-      const n = this.shadowRoot.getElementById("media-modal-backdrop"), p = this.shadowRoot.getElementById("btn-close-media-modal"), x = this.shadowRoot.getElementById("btn-cancel-media-modal"), c = this.shadowRoot.getElementById("btn-confirm-media-modal"), u = this.shadowRoot.getElementById("media-url-input"), E = this.shadowRoot.getElementById("media-alt-input"), v = this.shadowRoot.getElementById("media-url-preview-card"), O = this.shadowRoot.getElementById("media-url-preview-img"), C = this.shadowRoot.getElementById("media-modal-error-box"), A = this.shadowRoot.getElementById("media-modal-error-text"), U = this.currentLang === "pt", q = (m) => {
-        this._mediaModalUrl = m;
-        const S = m.trim();
+      const n = this.shadowRoot.getElementById("media-modal-backdrop"), p = this.shadowRoot.getElementById("btn-close-media-modal"), x = this.shadowRoot.getElementById("btn-cancel-media-modal"), c = this.shadowRoot.getElementById("btn-confirm-media-modal"), m = this.shadowRoot.getElementById("media-url-input"), E = this.shadowRoot.getElementById("media-alt-input"), v = this.shadowRoot.getElementById("media-url-preview-card"), O = this.shadowRoot.getElementById("media-url-preview-img"), C = this.shadowRoot.getElementById("media-modal-error-box"), A = this.shadowRoot.getElementById("media-modal-error-text"), U = this.currentLang === "pt", q = (u) => {
+        this._mediaModalUrl = u;
+        const S = u.trim();
         if (S.length > 0) {
           const R = X(S);
           R.safe ? (this._mediaModalError = null, C && (C.style.display = "none"), v && (v.style.display = "flex"), O && (O.style.display = "block", O.src = S)) : (this._mediaModalError = R.reason || (U ? "Link inválido." : "Invalid link."), v && (v.style.display = "none"), A && (A.textContent = this._mediaModalError), C && (C.style.display = "flex"));
@@ -6123,23 +6119,23 @@ ${i}
       }, W = () => {
         this._isMediaModalOpen = !1, this._isManagingRecentGifs = !1, this._isConfirmingClearGifs = !1, this._mediaModalUrl = "", this._mediaModalAlt = "", this._mediaModalError = null, this._mediaModalSuccess = null, this.render();
       };
-      p && p.addEventListener("click", W), x && x.addEventListener("click", W), n && n.addEventListener("click", (m) => {
-        m.target === n && W();
-      }), u && (u.addEventListener("keydown", (m) => {
-        m.stopPropagation();
-      }), u.addEventListener("input", () => {
-        q(u.value);
-      }), u.addEventListener("paste", () => {
-        setTimeout(() => q(u.value), 0);
-      })), E && (E.addEventListener("keydown", (m) => {
-        m.stopPropagation();
+      p && p.addEventListener("click", W), x && x.addEventListener("click", W), n && n.addEventListener("click", (u) => {
+        u.target === n && W();
+      }), m && (m.addEventListener("keydown", (u) => {
+        u.stopPropagation();
+      }), m.addEventListener("input", () => {
+        q(m.value);
+      }), m.addEventListener("paste", () => {
+        setTimeout(() => q(m.value), 0);
+      })), E && (E.addEventListener("keydown", (u) => {
+        u.stopPropagation();
       }), E.addEventListener("input", () => {
         this._mediaModalAlt = E.value;
       }));
       const Z = this.shadowRoot.getElementById("btn-save-gif-collection");
-      Z && Z.addEventListener("click", (m) => {
-        m.stopPropagation();
-        const S = (u ? u.value : this._mediaModalUrl).trim(), R = (E ? E.value : this._mediaModalAlt).trim() || "GIF";
+      Z && Z.addEventListener("click", (u) => {
+        u.stopPropagation();
+        const S = (m ? m.value : this._mediaModalUrl).trim(), R = (E ? E.value : this._mediaModalAlt).trim() || "GIF";
         if (!S) {
           this._mediaModalError = U ? "Por favor, insira a URL do GIF antes de salvar." : "Please enter a GIF URL before saving.", A && (A.textContent = this._mediaModalError), C && (C.style.display = "flex");
           return;
@@ -6152,9 +6148,9 @@ ${i}
         _e(S, R), this._mediaModalUrl = "", this._mediaModalAlt = "", this._mediaModalError = null, this._mediaModalSuccess = U ? "GIF salvo na sua coleção!" : "GIF saved to collection!", this.render(), setTimeout(() => {
           this._isMediaModalOpen && this._mediaModalSuccess && (this._mediaModalSuccess = null, this.render());
         }, 2500);
-      }), this.shadowRoot.querySelectorAll(".sl-recent-gif-item").forEach((m) => {
+      }), this.shadowRoot.querySelectorAll(".sl-recent-gif-item").forEach((u) => {
         let S = null, R = !1;
-        m.addEventListener("touchstart", () => {
+        u.addEventListener("touchstart", () => {
           R = !1, S = setTimeout(() => {
             if (!R) {
               if (this._isManagingRecentGifs = !0, "vibrate" in navigator)
@@ -6165,58 +6161,58 @@ ${i}
               this.render();
             }
           }, 450);
-        }, { passive: !0 }), m.addEventListener("touchmove", () => {
+        }, { passive: !0 }), u.addEventListener("touchmove", () => {
           R = !0, S && clearTimeout(S);
-        }, { passive: !0 }), m.addEventListener("touchend", () => {
+        }, { passive: !0 }), u.addEventListener("touchend", () => {
           S && clearTimeout(S);
-        }), m.addEventListener("click", () => {
+        }), u.addEventListener("click", () => {
           if (this._isManagingRecentGifs)
             return;
-          const G = m.getAttribute("data-url") || "", ie = m.getAttribute("data-alt") || "";
-          u && (u.value = G), E && (E.value = ie), this._mediaModalAlt = ie, q(G);
+          const G = u.getAttribute("data-url") || "", ie = u.getAttribute("data-alt") || "";
+          m && (m.value = G), E && (E.value = ie), this._mediaModalAlt = ie, q(G);
         });
       });
       const oe = this.shadowRoot.getElementById("btn-manage-recent-gifs");
-      oe && oe.addEventListener("click", (m) => {
-        m.stopPropagation(), this._isManagingRecentGifs = !this._isManagingRecentGifs, this.render();
-      }), this.shadowRoot.querySelectorAll(".sl-btn-delete-recent-gif").forEach((m) => {
-        m.addEventListener("click", (S) => {
+      oe && oe.addEventListener("click", (u) => {
+        u.stopPropagation(), this._isManagingRecentGifs = !this._isManagingRecentGifs, this.render();
+      }), this.shadowRoot.querySelectorAll(".sl-btn-delete-recent-gif").forEach((u) => {
+        u.addEventListener("click", (S) => {
           S.stopPropagation();
-          const R = m.getAttribute("data-url") || "";
+          const R = u.getAttribute("data-url") || "";
           R && (Pe(R), le().length === 0 && (this._isManagingRecentGifs = !1), this.render());
         });
       });
       const re = this.shadowRoot.getElementById("btn-clear-recent-gifs");
-      re && re.addEventListener("click", (m) => {
-        m.stopPropagation(), this._isConfirmingClearGifs = !0, this.render();
+      re && re.addEventListener("click", (u) => {
+        u.stopPropagation(), this._isConfirmingClearGifs = !0, this.render();
       });
       const se = this.shadowRoot.getElementById("btn-confirm-clear-gifs-yes");
-      se && se.addEventListener("click", (m) => {
-        m.stopPropagation(), Be(), this._isConfirmingClearGifs = !1, this._isManagingRecentGifs = !1, this.render();
+      se && se.addEventListener("click", (u) => {
+        u.stopPropagation(), Be(), this._isConfirmingClearGifs = !1, this._isManagingRecentGifs = !1, this.render();
       });
       const ae = this.shadowRoot.getElementById("btn-confirm-clear-gifs-no");
-      ae && ae.addEventListener("click", (m) => {
-        m.stopPropagation(), this._isConfirmingClearGifs = !1, this.render();
+      ae && ae.addEventListener("click", (u) => {
+        u.stopPropagation(), this._isConfirmingClearGifs = !1, this.render();
       }), c && c.addEventListener("click", () => {
-        const m = (u ? u.value : this._mediaModalUrl).trim(), S = (E ? E.value : this._mediaModalAlt).trim() || "GIF";
-        if (!m) {
+        const u = (m ? m.value : this._mediaModalUrl).trim(), S = (E ? E.value : this._mediaModalAlt).trim() || "GIF";
+        if (!u) {
           this._mediaModalError = U ? "Por favor, insira a URL do GIF." : "Please enter a GIF URL.", A && (A.textContent = this._mediaModalError), C && (C.style.display = "flex"), v && (v.style.display = "none");
           return;
         }
-        const R = X(m);
+        const R = X(u);
         if (!R.safe) {
           this._mediaModalError = R.reason || (U ? "URL inválida ou não segura." : "Invalid or unsafe URL."), A && (A.textContent = this._mediaModalError), C && (C.style.display = "flex"), v && (v.style.display = "none");
           return;
         }
-        _e(m, S);
-        const G = `![${S}](${m})`;
+        _e(u, S);
+        const G = `![${S}](${u})`;
         this._isMediaModalOpen = !1, this._isManagingRecentGifs = !1, this._isConfirmingClearGifs = !1, this._mediaModalUrl = "", this._mediaModalAlt = "", this._mediaModalError = null, this._mediaModalSuccess = null, this.insertTextAtCursor(G);
       });
     }
     if (this._isImageModalOpen) {
-      const n = this.shadowRoot.getElementById("image-modal-backdrop"), p = this.shadowRoot.getElementById("btn-close-image-modal"), x = this.shadowRoot.getElementById("btn-cancel-image-modal"), c = this.shadowRoot.getElementById("btn-confirm-image-modal"), u = this.shadowRoot.getElementById("image-url-input"), E = this.shadowRoot.getElementById("image-alt-input"), v = this.shadowRoot.getElementById("image-url-preview-card"), O = this.shadowRoot.getElementById("image-url-preview-img"), C = this.shadowRoot.getElementById("image-modal-error-box"), A = this.shadowRoot.getElementById("image-modal-error-text"), U = this.currentLang === "pt", q = (m) => {
-        this._imageModalUrl = m;
-        const S = m.trim();
+      const n = this.shadowRoot.getElementById("image-modal-backdrop"), p = this.shadowRoot.getElementById("btn-close-image-modal"), x = this.shadowRoot.getElementById("btn-cancel-image-modal"), c = this.shadowRoot.getElementById("btn-confirm-image-modal"), m = this.shadowRoot.getElementById("image-url-input"), E = this.shadowRoot.getElementById("image-alt-input"), v = this.shadowRoot.getElementById("image-url-preview-card"), O = this.shadowRoot.getElementById("image-url-preview-img"), C = this.shadowRoot.getElementById("image-modal-error-box"), A = this.shadowRoot.getElementById("image-modal-error-text"), U = this.currentLang === "pt", q = (u) => {
+        this._imageModalUrl = u;
+        const S = u.trim();
         if (S.length > 0) {
           const R = X(S);
           R.safe ? (this._imageModalError = null, C && (C.style.display = "none"), v && (v.style.display = "flex"), O && (O.style.display = "block", O.src = S)) : (this._imageModalError = R.reason || (U ? "Link inválido." : "Invalid link."), v && (v.style.display = "none"), A && (A.textContent = this._imageModalError), C && (C.style.display = "flex"));
@@ -6225,23 +6221,23 @@ ${i}
       }, W = () => {
         this._isImageModalOpen = !1, this._isManagingRecentImages = !1, this._isConfirmingClearImages = !1, this._imageModalUrl = "", this._imageModalAlt = "", this._imageModalError = null, this._imageModalSuccess = null, this.render();
       };
-      p && p.addEventListener("click", W), x && x.addEventListener("click", W), n && n.addEventListener("click", (m) => {
-        m.target === n && W();
-      }), u && (u.addEventListener("keydown", (m) => {
-        m.stopPropagation();
-      }), u.addEventListener("input", () => {
-        q(u.value);
-      }), u.addEventListener("paste", () => {
-        setTimeout(() => q(u.value), 0);
-      })), E && (E.addEventListener("keydown", (m) => {
-        m.stopPropagation();
+      p && p.addEventListener("click", W), x && x.addEventListener("click", W), n && n.addEventListener("click", (u) => {
+        u.target === n && W();
+      }), m && (m.addEventListener("keydown", (u) => {
+        u.stopPropagation();
+      }), m.addEventListener("input", () => {
+        q(m.value);
+      }), m.addEventListener("paste", () => {
+        setTimeout(() => q(m.value), 0);
+      })), E && (E.addEventListener("keydown", (u) => {
+        u.stopPropagation();
       }), E.addEventListener("input", () => {
         this._imageModalAlt = E.value;
       }));
       const Z = this.shadowRoot.getElementById("btn-save-image-collection");
-      Z && Z.addEventListener("click", (m) => {
-        m.stopPropagation();
-        const S = (u ? u.value : this._imageModalUrl).trim(), R = (E ? E.value : this._imageModalAlt).trim() || (U ? "Imagem" : "Image");
+      Z && Z.addEventListener("click", (u) => {
+        u.stopPropagation();
+        const S = (m ? m.value : this._imageModalUrl).trim(), R = (E ? E.value : this._imageModalAlt).trim() || (U ? "Imagem" : "Image");
         if (!S) {
           this._imageModalError = U ? "Por favor, insira a URL da imagem antes de salvar." : "Please enter an image URL before saving.", A && (A.textContent = this._imageModalError), C && (C.style.display = "flex");
           return;
@@ -6254,9 +6250,9 @@ ${i}
         ke(S, R), this._imageModalUrl = "", this._imageModalAlt = "", this._imageModalError = null, this._imageModalSuccess = U ? "Imagem salva na sua coleção!" : "Image saved to collection!", this.render(), setTimeout(() => {
           this._isImageModalOpen && this._imageModalSuccess && (this._imageModalSuccess = null, this.render());
         }, 2500);
-      }), this.shadowRoot.querySelectorAll(".sl-recent-image-item").forEach((m) => {
+      }), this.shadowRoot.querySelectorAll(".sl-recent-image-item").forEach((u) => {
         let S = null, R = !1;
-        m.addEventListener("touchstart", () => {
+        u.addEventListener("touchstart", () => {
           R = !1, S = setTimeout(() => {
             if (!R) {
               if (this._isManagingRecentImages = !0, "vibrate" in navigator)
@@ -6267,58 +6263,58 @@ ${i}
               this.render();
             }
           }, 450);
-        }, { passive: !0 }), m.addEventListener("touchmove", () => {
+        }, { passive: !0 }), u.addEventListener("touchmove", () => {
           R = !0, S && clearTimeout(S);
-        }, { passive: !0 }), m.addEventListener("touchend", () => {
+        }, { passive: !0 }), u.addEventListener("touchend", () => {
           S && clearTimeout(S);
-        }), m.addEventListener("click", () => {
+        }), u.addEventListener("click", () => {
           if (this._isManagingRecentImages)
             return;
-          const G = m.getAttribute("data-url") || "", ie = m.getAttribute("data-alt") || "";
-          u && (u.value = G), E && (E.value = ie), this._imageModalAlt = ie, q(G);
+          const G = u.getAttribute("data-url") || "", ie = u.getAttribute("data-alt") || "";
+          m && (m.value = G), E && (E.value = ie), this._imageModalAlt = ie, q(G);
         });
       });
       const oe = this.shadowRoot.getElementById("btn-manage-recent-images");
-      oe && oe.addEventListener("click", (m) => {
-        m.stopPropagation(), this._isManagingRecentImages = !this._isManagingRecentImages, this.render();
-      }), this.shadowRoot.querySelectorAll(".sl-btn-delete-recent-image").forEach((m) => {
-        m.addEventListener("click", (S) => {
+      oe && oe.addEventListener("click", (u) => {
+        u.stopPropagation(), this._isManagingRecentImages = !this._isManagingRecentImages, this.render();
+      }), this.shadowRoot.querySelectorAll(".sl-btn-delete-recent-image").forEach((u) => {
+        u.addEventListener("click", (S) => {
           S.stopPropagation();
-          const R = m.getAttribute("data-url") || "";
+          const R = u.getAttribute("data-url") || "";
           R && (je(R), de().length === 0 && (this._isManagingRecentImages = !1), this.render());
         });
       });
       const re = this.shadowRoot.getElementById("btn-clear-recent-images");
-      re && re.addEventListener("click", (m) => {
-        m.stopPropagation(), this._isConfirmingClearImages = !0, this.render();
+      re && re.addEventListener("click", (u) => {
+        u.stopPropagation(), this._isConfirmingClearImages = !0, this.render();
       });
       const se = this.shadowRoot.getElementById("btn-confirm-clear-images-yes");
-      se && se.addEventListener("click", (m) => {
-        m.stopPropagation(), ze(), this._isConfirmingClearImages = !1, this._isManagingRecentImages = !1, this.render();
+      se && se.addEventListener("click", (u) => {
+        u.stopPropagation(), ze(), this._isConfirmingClearImages = !1, this._isManagingRecentImages = !1, this.render();
       });
       const ae = this.shadowRoot.getElementById("btn-confirm-clear-images-no");
-      ae && ae.addEventListener("click", (m) => {
-        m.stopPropagation(), this._isConfirmingClearImages = !1, this.render();
+      ae && ae.addEventListener("click", (u) => {
+        u.stopPropagation(), this._isConfirmingClearImages = !1, this.render();
       }), c && c.addEventListener("click", () => {
-        const m = (u ? u.value : this._imageModalUrl).trim(), S = (E ? E.value : this._imageModalAlt).trim() || (U ? "Imagem" : "Image");
-        if (!m) {
+        const u = (m ? m.value : this._imageModalUrl).trim(), S = (E ? E.value : this._imageModalAlt).trim() || (U ? "Imagem" : "Image");
+        if (!u) {
           this._imageModalError = U ? "Por favor, insira a URL da imagem." : "Please enter an image URL.", A && (A.textContent = this._imageModalError), C && (C.style.display = "flex"), v && (v.style.display = "none");
           return;
         }
-        const R = X(m);
+        const R = X(u);
         if (!R.safe) {
           this._imageModalError = R.reason || (U ? "URL inválida ou não segura." : "Invalid or unsafe URL."), A && (A.textContent = this._imageModalError), C && (C.style.display = "flex"), v && (v.style.display = "none");
           return;
         }
-        ke(m, S);
-        const G = `![${S}](${m})`;
+        ke(u, S);
+        const G = `![${S}](${u})`;
         this._isImageModalOpen = !1, this._isManagingRecentImages = !1, this._isConfirmingClearImages = !1, this._imageModalUrl = "", this._imageModalAlt = "", this._imageModalError = null, this._imageModalSuccess = null, this.insertTextAtCursor(G);
       });
     }
     if (this._isEmojiPickerOpen) {
       const n = (p) => {
-        var u;
-        const x = p.composedPath(), c = (u = this.shadowRoot) == null ? void 0 : u.getElementById("emoji-popover");
+        var m;
+        const x = p.composedPath(), c = (m = this.shadowRoot) == null ? void 0 : m.getElementById("emoji-popover");
         c && !x.includes(c) && d && !x.includes(d) && (this._isEmojiPickerOpen = !1, this.render(), document.removeEventListener("click", n));
       };
       setTimeout(() => document.addEventListener("click", n), 0);
@@ -6347,8 +6343,8 @@ ${i}
           this.loginWithGitHub();
           return;
         }
-        const x = p.currentTarget, c = x.getAttribute("data-comment-id"), u = x.getAttribute("data-emoji") || "👍";
-        c && await this.handleToggleReaction(c, u);
+        const x = p.currentTarget, c = x.getAttribute("data-comment-id"), m = x.getAttribute("data-emoji") || "👍";
+        c && await this.handleToggleReaction(c, m);
       });
     }), this.shadowRoot.querySelectorAll(".sl-reaction-picker-item").forEach((n) => {
       n.addEventListener("click", async (p) => {
@@ -6356,8 +6352,8 @@ ${i}
           this.loginWithGitHub();
           return;
         }
-        const x = p.currentTarget, c = x.getAttribute("data-comment-id"), u = x.getAttribute("data-emoji"), E = x.closest(".sl-reaction-container");
-        E == null || E.classList.remove("sl-popover-open"), c && u && await this.handleToggleReaction(c, u);
+        const x = p.currentTarget, c = x.getAttribute("data-comment-id"), m = x.getAttribute("data-emoji"), E = x.closest(".sl-reaction-container");
+        E == null || E.classList.remove("sl-popover-open"), c && m && await this.handleToggleReaction(c, m);
       });
     }), this.shadowRoot.querySelectorAll(".sl-reaction-badge").forEach((n) => {
       n.addEventListener("click", async (p) => {
@@ -6365,8 +6361,8 @@ ${i}
           this.loginWithGitHub();
           return;
         }
-        const x = p.currentTarget, c = x.getAttribute("data-comment-id"), u = x.getAttribute("data-emoji");
-        c && u && await this.handleToggleReaction(c, u);
+        const x = p.currentTarget, c = x.getAttribute("data-comment-id"), m = x.getAttribute("data-emoji");
+        c && m && await this.handleToggleReaction(c, m);
       });
     }), this.shadowRoot.querySelectorAll(".sl-reaction-container").forEach((n) => {
       n.addEventListener("mouseenter", () => {
@@ -6378,7 +6374,7 @@ ${i}
       });
     }), this.shadowRoot.querySelectorAll(".sl-reply-btn:not(.btn-toggle-translate)").forEach((n) => {
       n.addEventListener("click", (p) => {
-        var u;
+        var m;
         const c = p.currentTarget.getAttribute("data-reply-to");
         if (!this._currentUser) {
           this.loginWithGitHub();
@@ -6394,7 +6390,7 @@ ${i}
             E = v.author.login;
           else
             for (const O of this._comments) {
-              const C = (u = O.replies) == null ? void 0 : u.find((A) => A.id === c);
+              const C = (m = O.replies) == null ? void 0 : m.find((A) => A.id === c);
               if (C) {
                 E = C.author.login;
                 break;
@@ -6412,10 +6408,10 @@ ${i}
     }), this.shadowRoot.querySelectorAll(".btn-send-reply").forEach((n) => {
       n.addEventListener("click", async (p) => {
         var O;
-        const x = p.currentTarget, c = x.getAttribute("data-comment-id"), u = x.getAttribute("data-parent-id") || c, E = (O = this.shadowRoot) == null ? void 0 : O.getElementById(`reply-textarea-${c}`);
+        const x = p.currentTarget, c = x.getAttribute("data-comment-id"), m = x.getAttribute("data-parent-id") || c, E = (O = this.shadowRoot) == null ? void 0 : O.getElementById(`reply-textarea-${c}`);
         if (!E) return;
         const v = E.value.trim();
-        !v || !u || await this.handlePostReply(u, v);
+        !v || !m || await this.handlePostReply(m, v);
       });
     }), this.shadowRoot.querySelectorAll(".btn-cancel-reply").forEach((n) => {
       n.addEventListener("click", () => {
@@ -6428,9 +6424,9 @@ ${i}
       });
     }), this.shadowRoot.querySelectorAll(".sl-audio-btn").forEach((n) => {
       n.addEventListener("click", (p) => {
-        const x = p.currentTarget, c = x.getAttribute("data-speak-id"), u = x.getAttribute("data-text"), E = x.getAttribute("data-lang") || void 0;
-        if (c && u) {
-          const v = decodeURIComponent(u);
+        const x = p.currentTarget, c = x.getAttribute("data-speak-id"), m = x.getAttribute("data-text"), E = x.getAttribute("data-lang") || void 0;
+        if (c && m) {
+          const v = decodeURIComponent(m);
           this.toggleSpeak(c, v, E);
         }
       });
@@ -6457,9 +6453,9 @@ ${i}
     }), this.shadowRoot.querySelectorAll(".btn-save-edit").forEach((n) => {
       n.addEventListener("click", async (p) => {
         var v;
-        const c = p.currentTarget.getAttribute("data-comment-id"), u = (v = this.shadowRoot) == null ? void 0 : v.getElementById(`edit-textarea-${c}`);
-        if (!u || !c) return;
-        const E = u.value.trim();
+        const c = p.currentTarget.getAttribute("data-comment-id"), m = (v = this.shadowRoot) == null ? void 0 : v.getElementById(`edit-textarea-${c}`);
+        if (!m || !c) return;
+        const E = m.value.trim();
         E && await this.handleSaveEdit(c, E);
       });
     }), this.shadowRoot.querySelectorAll(".btn-cancel-edit").forEach((n) => {
@@ -6471,24 +6467,24 @@ ${i}
         p.stopPropagation();
         const c = p.currentTarget.getAttribute("data-comment-id");
         if (!c) return;
-        const u = this.currentLang === "pt" ? "Tem certeza que deseja excluir esta nota?" : "Are you sure you want to delete this note?";
-        confirm(u) && await this.handleDelete(c);
+        const m = this.currentLang === "pt" ? "Tem certeza que deseja excluir esta nota?" : "Are you sure you want to delete this note?";
+        confirm(m) && await this.handleDelete(c);
       });
     }), this.shadowRoot.querySelectorAll(".btn-mod-restrict-media").forEach((n) => {
       n.addEventListener("click", async (p) => {
         p.stopPropagation();
         const c = p.currentTarget.getAttribute("data-user");
         if (!c) return;
-        const u = this.currentLang === "pt" ? `Deseja realmente remover a permissão de mídia de @${c}?` : this.currentLang === "es" ? `¿Deseas quitar el permiso de medios a @${c}?` : `Are you sure you want to restrict media for @${c}?`;
-        confirm(u) && (this._openMenuId = null, this.render(), await this.handleSetModeration(c, "restrict_media"));
+        const m = this.currentLang === "pt" ? `Deseja realmente remover a permissão de mídia de @${c}?` : this.currentLang === "es" ? `¿Deseas quitar el permiso de medios a @${c}?` : `Are you sure you want to restrict media for @${c}?`;
+        confirm(m) && (this._openMenuId = null, this.render(), await this.handleSetModeration(c, "restrict_media"));
       });
     }), this.shadowRoot.querySelectorAll(".btn-mod-ban").forEach((n) => {
       n.addEventListener("click", async (p) => {
         p.stopPropagation();
         const c = p.currentTarget.getAttribute("data-user");
         if (!c) return;
-        const u = this.currentLang === "pt" ? `Deseja realmente banir o usuário @${c} dos comentários?` : this.currentLang === "es" ? `¿Deseas bloquear al usuario @${c} de los comentarios?` : `Are you sure you want to ban @${c} from commenting?`;
-        confirm(u) && (this._openMenuId = null, this.render(), await this.handleSetModeration(c, "ban"));
+        const m = this.currentLang === "pt" ? `Deseja realmente banir o usuário @${c} dos comentários?` : this.currentLang === "es" ? `¿Deseas bloquear al usuario @${c} de los comentarios?` : `Are you sure you want to ban @${c} from commenting?`;
+        confirm(m) && (this._openMenuId = null, this.render(), await this.handleSetModeration(c, "ban"));
       });
     });
     const fe = this.shadowRoot.getElementById("sl-mod-refresh");
@@ -6520,8 +6516,8 @@ ${i}
     }), this.shadowRoot.querySelectorAll(".btn-copy-link").forEach((n) => {
       n.addEventListener("click", (p) => {
         p.stopPropagation();
-        const c = p.currentTarget.getAttribute("data-comment-id"), u = `${window.location.href.split("#")[0]}#comment-${c}`;
-        navigator.clipboard.writeText(u).then(() => {
+        const c = p.currentTarget.getAttribute("data-comment-id"), m = `${window.location.href.split("#")[0]}#comment-${c}`;
+        navigator.clipboard.writeText(m).then(() => {
           alert(
             this.currentLang === "pt" ? "Link copiado para a área de transferência!" : "Link copied to clipboard!"
           );
@@ -6536,12 +6532,12 @@ ${i}
         x && this.openLightbox(x, c);
       });
     }), this._lightboxOpen) {
-      const n = this.shadowRoot.getElementById("sl-lightbox-stage"), p = this.shadowRoot.getElementById("sl-lightbox-img"), x = this.shadowRoot.getElementById("sl-lightbox-close"), c = this.shadowRoot.getElementById("sl-lightbox-zoom-in"), u = this.shadowRoot.getElementById("sl-lightbox-zoom-out"), E = this.shadowRoot.getElementById("sl-lightbox-reset");
+      const n = this.shadowRoot.getElementById("sl-lightbox-stage"), p = this.shadowRoot.getElementById("sl-lightbox-img"), x = this.shadowRoot.getElementById("sl-lightbox-close"), c = this.shadowRoot.getElementById("sl-lightbox-zoom-in"), m = this.shadowRoot.getElementById("sl-lightbox-zoom-out"), E = this.shadowRoot.getElementById("sl-lightbox-reset");
       x && x.addEventListener("click", (v) => {
         v.stopPropagation(), this.closeLightbox();
       }), c && c.addEventListener("click", (v) => {
         v.stopPropagation(), this.setLightboxZoom(this._lightboxScale + 0.3);
-      }), u && u.addEventListener("click", (v) => {
+      }), m && m.addEventListener("click", (v) => {
         v.stopPropagation(), this.setLightboxZoom(this._lightboxScale - 0.3);
       }), E && E.addEventListener("click", (v) => {
         v.stopPropagation(), this.resetLightboxTransform();
