@@ -102,7 +102,6 @@ import { siteConfig } from '../config/site';
     align-items: center;
     justify-content: center;
     gap: 3px;
-    width: 34px;
     height: 34px;
     border-radius: 6px;
     border: 1px solid var(--border);
@@ -110,7 +109,7 @@ import { siteConfig } from '../config/site';
     color: var(--text-muted);
     cursor: pointer;
     transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
-    padding: 0;
+    padding: var(--header-control-button-padding);
   }
 
   .social-btn-trigger:hover {
