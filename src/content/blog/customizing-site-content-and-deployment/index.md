@@ -24,7 +24,7 @@ src/config/site.ts
 
 In this single file, you configure:
 * **Site Identity**: `title`, `tagline`, and default meta `description`.
-* **Author Details**: `author` name and canonical `siteUrl`.
+* **Author Details**: `author` name (your canonical URL is set separately with `SITE_URL`, see below).
 * **Social Links**: Your LinkedIn profile, GitHub repository, and contact email.
 * **Default Theme**: Initial color mode (`cream`, `white`, `slate`, or `midnight`).
 * **Comments Integration**: Scatterleaf GitHub Discussion credentials.
@@ -36,7 +36,6 @@ export const siteConfig: SiteConfig = {
   tagline: 'Raw ideas from your personal vault, finely polished into an ultra-fast static blog.',
   description: 'Minimalist, typography-first Astro theme.',
   author: 'Your Name',
-  siteUrl: 'https://your-domain.com',
   defaultTheme: 'cream',
   socialLinks: {
     github: 'https://github.com/your-username',
@@ -45,6 +44,9 @@ export const siteConfig: SiteConfig = {
   }
 };
 ```
+
+> [!IMPORTANT]
+> **Set your production URL with `SITE_URL`, not by editing `siteUrl`.** Your canonical URL drives the sitemap, RSS feed, canonical tags, and `llms.txt`. Set the `SITE_URL` environment variable in your host's project settings (Vercel, Cloudflare Pages, or Netlify), for example `SITE_URL=https://your-domain.com`. For local builds, put it in a `.env` file (see `.env.example`). If you leave it unset, Minrock falls back to the demo URL.
 
 Whenever you update `socialLinks` or `title`, the changes automatically propagate to your Header dropdown, Footer icons, RSS feed, and OpenGraph SEO cards.
 

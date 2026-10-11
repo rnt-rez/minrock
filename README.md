@@ -172,6 +172,15 @@ To connect your own real-time GitHub Discussions:
 #### 🕊️ Total Freedom & Alternative Solutions
 Prefer a different provider (Giscus, Cusdis, Utterances) or a custom guestbook? Open [`src/components/Comments.astro`](src/components/Comments.astro) and replace the component slot. Zero vendor lock-in.
 
+### 5. Deployment & Production URL (`SITE_URL`)
+
+Your production URL drives the sitemap, RSS feed, canonical tags, `llms.txt`, and structured data. Set it with the `SITE_URL` environment variable rather than editing the code:
+
+* **On your host:** Add `SITE_URL=https://yourdomain.com` in your Vercel, Cloudflare Pages, or Netlify project settings (Environment Variables), then redeploy.
+* **Locally:** Copy [`.env.example`](.env.example) to `.env` and set `SITE_URL`.
+
+If `SITE_URL` is not set, Minrock falls back to the demo URL (`https://minrock.vercel.app`), so remember to set it before going live.
+
 ---
 
 ## 📜 Available Scripts
