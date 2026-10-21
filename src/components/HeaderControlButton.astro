@@ -1,0 +1,215 @@
+---
+// src/components/HeaderControlButton.astro
+// Shared shell for header toolbar dropdowns (theme, language, social).
+// Owns the trigger button, chevron, floating menu, and open/close behavior.
+// Usage: pass the trigger icon via the "icon" slot and the menu items via the default slot.
+interface Props {
+  id: string;
+  triggerId: string;
+  dropdownId: string;
+  label: string;
+  title: string;
+  menuLabel: string;
+  menuHeader: string;
+  minWidth?: string;
+}
+
+const { id, triggerId, dropdownId, label, title, menuLabel, menuHeader, minWidth = '175px' } = Astro.props;
+---
+
+<div class="header-control" id={id} data-header-control>
+  <button
+    id={triggerId}
+    class="header-control-trigger"
+    aria-label={label}
+    aria-haspopup="true"
+    aria-expanded="false"
+    title={title}
+    data-header-control-trigger
+  >
+    <slot name="icon" />
+    <svg class="header-control-chevron" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+  </button>
+
+  <div
+    id={dropdownId}
+    class="header-control-dropdown"
+    role="menu"
+    aria-label={menuLabel}
+    style={`--header-control-dropdown-min-width: ${minWidth}`}
+    data-header-control-dropdown
+  >
+    <div class="header-control-dropdown-header">{menuHeader}</div>
+    <slot />
+  </div>
+</div>
+
+<style>
+  .header-control {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .header-control-trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    width: var(--header-control-button-width, 44px);
+    height: 34px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background-color: var(--bg-surface);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+    padding: var(--header-control-button-padding, 0 6px);
+  }
+
+  .header-control-trigger:hover {
+    color: var(--text);
+    background-color: var(--bg-subtle);
+    border-color: var(--accent);
+  }
+
+  .header-control-chevron {
+    opacity: 0.6;
+    margin-left: -1px;
+    transition: transform 0.15s ease;
+    flex-shrink: 0;
+  }
+
+  .header-control-trigger[aria-expanded="true"] .header-control-chevron {
+    transform: rotate(180deg);
+  }
+
+  .header-control-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    background-color: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.35rem;
+    min-width: var(--header-control-dropdown-min-width, 175px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 1000;
+    animation: headerControlDropdownFade 0.15s ease;
+  }
+
+  .header-control-dropdown.open {
+    display: block;
+  }
+
+  @keyframes headerControlDropdownFade {
+    from {
+      opacity: 0;
+      margin-top: -4px;
+    }
+    to {
+      opacity: 1;
+      margin-top: 0;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .header-control-dropdown {
+      left: 50%;
+      right: auto;
+      transform: translateX(-50%);
+      max-width: calc(100vw - 24px);
+    }
+  }
+
+  .header-control-dropdown-header {
+    font-size: 0.68rem;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+    padding: 0.25rem 0.65rem 0.35rem;
+    letter-spacing: 0.06em;
+    opacity: 0.8;
+  }
+</style>
+
+<script>
+  // Listeners are delegated on document and registered once, so they keep working
+  // after Astro swaps the DOM and don't need re-binding on astro:after-swap.
+  const CONTROL = '[data-header-control]';
+  const TRIGGER = '[data-header-control-trigger]';
+  const DROPDOWN = '[data-header-control-dropdown]';
+
+  function setOpen(control: Element, open: boolean) {
+    control.querySelector(DROPDOWN)?.classList.toggle('open', open);
+    control.querySelector(TRIGGER)?.setAttribute('aria-expanded', String(open));
+  }
+
+  function closeAll(except?: Element | null) {
+    document.querySelectorAll(CONTROL).forEach((control) => {
+      if (control !== except) setOpen(control, false);
+    });
+  }
+
+  function positionDropdown(dropdown: HTMLElement) {
+    if (window.innerWidth <= 768) {
+      dropdown.style.left = '50%';
+      dropdown.style.right = 'auto';
+      dropdown.style.transform = 'translateX(-50%)';
+
+      const rect = dropdown.getBoundingClientRect();
+      const pad = 12;
+      if (rect.left < pad) {
+        const offset = pad - rect.left;
+        dropdown.style.transform = `translateX(calc(-50% + ${offset}px))`;
+      } else if (rect.right > window.innerWidth - pad) {
+        const offset = rect.right - (window.innerWidth - pad);
+        dropdown.style.transform = `translateX(calc(-50% - ${offset}px))`;
+      }
+    } else {
+      dropdown.style.left = '';
+      dropdown.style.right = '';
+      dropdown.style.transform = '';
+    }
+  }
+
+  document.addEventListener('click', (e) => {
+    const target = e.target as Element;
+    const control = target.closest(CONTROL);
+
+    // Click outside any control closes everything
+    if (!control) {
+      closeAll();
+      return;
+    }
+
+    closeAll(control);
+
+    if (target.closest(TRIGGER)) {
+      const dropdown = control.querySelector<HTMLElement>(DROPDOWN);
+      const willOpen = !dropdown?.classList.contains('open');
+      setOpen(control, willOpen);
+      if (willOpen && dropdown) positionDropdown(dropdown);
+    } else if (target.closest('button[role="menuitem"]')) {
+      // Only button options (theme, language) close on select; link items keep the menu open
+      setOpen(control, false);
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    document.querySelectorAll<HTMLElement>(`${DROPDOWN}.open`).forEach(positionDropdown);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    const control = document.querySelector(`${CONTROL}:has(${DROPDOWN}.open)`);
+    if (!control) return;
+    setOpen(control, false);
+    control.querySelector<HTMLElement>(TRIGGER)?.focus();
+  });
+</script>
