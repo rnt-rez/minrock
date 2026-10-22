@@ -3331,6 +3331,25 @@ button.sl-pinned-badge-clickable:active {
   border: 1px solid rgba(255, 255, 255, 0.08);
   white-space: nowrap;
 }
+
+/* 9. Retro Neon (Synthwave) */
+:host([theme="neon"]) {
+  --sl-bg: #1d1040;
+  --sl-surface: #2a1a5a;
+  --sl-tab-bg: #13092b;
+  --sl-text: #f5eeff;
+  --sl-text-muted: #b8a6e0;
+  --sl-border: #3d2a78;
+  --sl-accent: #ff4fd8;
+  --sl-accent-hover: #ff8ae8;
+  --sl-accent-contrast: #13092b;
+  --sl-accent-glow: rgba(255, 79, 216, 0.3);
+  --sl-mention-color: #5ee7ff;
+  --sl-mention-bg: rgba(94, 231, 255, 0.14);
+  --sl-mention-border: rgba(94, 231, 255, 0.35);
+  --sl-btn-primary-bg: #c026a8;
+  --sl-btn-primary-hover: #a21d8e;
+}
 `;
 class fe extends Error {
   constructor(f = "Sessão expirada ou credenciais inválidas. Faça login novamente.") {
@@ -4127,7 +4146,7 @@ class De extends HTMLElement {
           const $ = document.querySelector("a");
           $ && (l = e(window.getComputedStyle($).color));
         }
-        const b = document.documentElement.classList.contains("dark") || document.body.classList.contains("dark") || document.documentElement.getAttribute("data-theme") === "dark" || document.body.getAttribute("data-theme") === "dark" || document.body.getAttribute("data-page-theme") === "midnight" || document.body.getAttribute("data-page-theme") === "slate" || document.body.getAttribute("data-page-theme") === "terminal", T = 0.2126 * s.r + 0.7152 * s.g + 0.0722 * s.b, p = b || T < 128;
+        const b = document.documentElement.classList.contains("dark") || document.body.classList.contains("dark") || document.documentElement.getAttribute("data-theme") === "dark" || document.body.getAttribute("data-theme") === "dark" || document.body.getAttribute("data-page-theme") === "midnight" || document.body.getAttribute("data-page-theme") === "slate" || document.body.getAttribute("data-page-theme") === "neon" || document.body.getAttribute("data-page-theme") === "terminal", T = 0.2126 * s.r + 0.7152 * s.g + 0.0722 * s.b, p = b || T < 128;
         d || (d = p ? { r: 230, g: 237, b: 243 } : { r: 28, g: 25, b: 23 }), l || (l = p ? { r: 88, g: 166, b: 255 } : { r: 146, g: 64, b: 14 });
         let k, y, w, L, x, A, z;
         if (p) {

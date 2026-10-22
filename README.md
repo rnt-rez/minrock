@@ -25,11 +25,12 @@
 * **💎 Pure Static Site Generation (SSG):** Pre-rendered HTML for maximum delivery speed and zero runtime server overhead.
 * **🌐 Digital Sovereignty & Personal Positioning:** Total ownership of your content in open Markdown, hosted wherever you choose at zero financial cost.
 * **✍️ Typography-First Architecture:** Tailored vertical rhythm, optimal line heights, and elegant type hierarchy designed for deep reading.
-* **🎨 4 Calibrated Color Themes:**
+* **🎨 5 Calibrated Color Themes:**
   * ☀️ **Clean White:** Crisp, modern editorial look.
   * 📜 **Warm Paper (Cream):** Eye-friendly soft palette for extended reading sessions.
   * ⚓ **Slate Navy:** Deep, focused dark mode inspired by Linear and Vercel.
   * 🌌 **Midnight:** Pure OLED black with subtle reactive neon card accents.
+  * 🪩 **Retro Neon:** Synthwave-inspired deep indigo with magenta accents.
 * **🗃️ Obsidian Vault CMS Friendly:** Native Markdown page bundles support with effortless copy-pasting of local images.
 * **🍃 ScatterLeaf Ready:** Native, iframe-free comments powered by GitHub Discussions via `<scatter-leaf>` with Cloudflare Edge Broker and Chameleon auto-theming.
 * **💻 Code Blocks with Style:** Syntax highlighting with dual dark/light parity, line numbers, and clean copy triggers.
@@ -73,7 +74,7 @@ minrock/
 │   ├── components/            # Header, Footer, ThemeToggle, ArticleCard
 │   ├── layouts/               # BaseLayout, PostLayout
 │   ├── pages/                 # index, blog, about, 404
-│   └── styles/                # Global CSS tokens and 4 color palettes
+│   └── styles/                # Global CSS tokens and 5 color palettes
 ├── astro.config.mjs           # Astro 7 configuration
 ├── package.json
 └── tsconfig.json
@@ -92,7 +93,7 @@ export const siteConfig = {
   description: 'Minimalist, typography-first Astro 7 theme for technical writers.',
   author: 'Renato Rezende',
   siteUrl: 'https://minrock.vercel.app', // Or via env: SITE_URL=https://yourdomain.com
-  defaultTheme: 'cream', // Default theme: 'white' | 'cream' | 'slate' | 'midnight'
+  defaultTheme: 'cream', // Default theme: 'white' | 'cream' | 'slate' | 'midnight' | 'neon'
   // Granular Feature Flags — "Complete by default, minimalist on demand"
   // Toggle any flag to false to completely eliminate markup, styles, and scripts during SSG build.
   features: {

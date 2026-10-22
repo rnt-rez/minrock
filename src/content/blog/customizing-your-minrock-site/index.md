@@ -10,7 +10,7 @@ In an era dominated by homogenous social feeds and cookie-cutter medium blogs, h
 
 When you install **Minrock**, you are not just adopting a static blog template—you are receiving an engineered architectural foundation. Everything under the hood is already battle-tested:
 * ⚡ **100/100 Lighthouse Performance** (pure static HTML, zero JavaScript runtime bloat)
-* 🌓 **4 Curated Theme Palettes** (White, Paper Cream, Slate Navy, OLED Midnight)
+* 🌓 **5 Curated Theme Palettes** (White, Paper Cream, Slate Navy, OLED Midnight, Retro Neon)
 * 🎧 **Accessible Built-in Voice Reader & Sticky Media Controls**
 * 🔎 **Instant Client-Side Search & Topic Filtering**
 * 📝 **Frictionless Local Obsidian Vault CMS Integration**

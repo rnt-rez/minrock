@@ -1,6 +1,6 @@
 ---
 // src/components/ThemeToggle.astro
-// Dropdown menu for Minrock themes (Clean White, Warm Paper, Slate Navy, Midnight OLED, Auto)
+// Dropdown menu for Minrock themes (Clean White, Warm Paper, Slate Navy, Midnight OLED, Retro Neon, Auto)
 ---
 
 <div class="theme-selector" id="theme-selector">
@@ -50,6 +50,14 @@
       <span class="theme-opt-left">
         <span class="theme-emoji">🌌</span>
         <span class="theme-label">Midnight OLED</span>
+      </span>
+      <svg class="theme-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+    </button>
+
+    <button class="theme-option" data-theme-val="neon" role="menuitem">
+      <span class="theme-opt-left">
+        <span class="theme-emoji">🪩</span>
+        <span class="theme-label">Retro Neon</span>
       </span>
       <svg class="theme-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
     </button>
@@ -245,6 +253,7 @@
       cream: '📜',
       slate: '⚓',
       midnight: '🌌',
+      neon: '🪩',
       auto: '💻',
     };
 

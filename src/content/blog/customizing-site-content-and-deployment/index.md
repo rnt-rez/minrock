@@ -26,7 +26,7 @@ In this single file, you configure:
 * **Site Identity**: `title`, `tagline`, and default meta `description`.
 * **Author Details**: `author` name (your canonical URL is set separately with `SITE_URL`, see below).
 * **Social Links**: Your LinkedIn profile, GitHub repository, and contact email.
-* **Default Theme**: Initial color mode (`cream`, `white`, `slate`, or `midnight`).
+* **Default Theme**: Initial color mode (`cream`, `white`, `slate`, `midnight`, or `neon`).
 * **Comments Integration**: Scatterleaf GitHub Discussion credentials.
 
 ```typescript

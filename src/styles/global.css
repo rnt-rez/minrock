@@ -62,6 +62,21 @@
   --selection: #21262d;
 }
 
+[data-theme="neon"] {
+  /* Retro Neon (Synthwave-inspired: deep indigo with magenta accents) */
+  --bg: #13092b;
+  --bg-surface: #1d1040;
+  --bg-subtle: #2a1a5a;
+  --text: #f5eeff;
+  --text-muted: #b8a6e0;
+  --border: #3d2a78;
+  --accent: #ff4fd8;
+  --accent-hover: #ff8ae8;
+  --code-bg: #0c0520;
+  --code-text: #e8dcff;
+  --selection: #5b2a9e;
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
 }
@@ -332,29 +347,34 @@ hr {
   --callout-bg: var(--bg-surface);
 }
 
-/* Dark Mode Callout Refinements (Slate & Midnight) */
+/* Dark Mode Callout Refinements (Slate, Midnight & Retro Neon) */
 [data-theme="slate"] .callout-tip,
-[data-theme="midnight"] .callout-tip {
+[data-theme="midnight"] .callout-tip,
+[data-theme="neon"] .callout-tip {
   --callout-color: #34d399;
   --callout-bg: rgba(16, 185, 129, 0.12);
 }
 
 [data-theme="slate"] .callout-important,
-[data-theme="midnight"] .callout-important {
+[data-theme="midnight"] .callout-important,
+[data-theme="neon"] .callout-important {
   --callout-color: #a78bfa;
   --callout-bg: rgba(139, 92, 246, 0.12);
 }
 
 [data-theme="slate"] .callout-warning,
-[data-theme="midnight"] .callout-warning {
+[data-theme="midnight"] .callout-warning,
+[data-theme="neon"] .callout-warning {
   --callout-color: #fbbf24;
   --callout-bg: rgba(245, 158, 11, 0.12);
 }
 
 [data-theme="slate"] .callout-caution,
 [data-theme="midnight"] .callout-caution,
+[data-theme="neon"] .callout-caution,
 [data-theme="slate"] .callout-danger,
-[data-theme="midnight"] .callout-danger {
+[data-theme="midnight"] .callout-danger,
+[data-theme="neon"] .callout-danger {
   --callout-color: #f87171;
   --callout-bg: rgba(239, 68, 68, 0.12);
 }

@@ -18,5 +18,5 @@ featured: true
 ### Highlights
 - **Pure SSG**: Compiles to 100% static HTML in under 1 second.
 - **Obsidian Plug & Play**: Pre-configured `.obsidian` vault inside `src/content/`.
-- **4 Tailored Palettes**: Clean White, Warm Paper (Cream), Slate Navy, and Midnight OLED.
+- **5 Tailored Palettes**: Clean White, Warm Paper (Cream), Slate Navy, Midnight OLED, and Retro Neon.
 - **Accessible & SEO Ready**: Full Schema.org JSON-LD and native browser speech narration.

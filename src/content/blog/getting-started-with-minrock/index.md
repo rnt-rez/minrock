@@ -80,14 +80,15 @@ Obsidian updates all plugins to their latest releases while preserving your Minr
 
 ---
 
-## Exploring the 4 Calibrated Themes
+## Exploring the 5 Calibrated Themes
 
-Minrock includes four hand-tuned color palettes accessible from the switcher in the header:
+Minrock includes five hand-tuned color palettes accessible from the switcher in the header:
 
 1. **Clean White:** Crisp editorial aesthetic designed for daytime writing.
 2. **Warm Paper (Cream):** Soft, low-contrast background inspired by classic books.
 3. **Slate Navy:** Deep navy tones tailored for developers used to modern CLI and IDE interfaces.
 4. **Midnight OLED:** True black (`#000000`) optimized for OLED displays with subtle neon highlights.
+5. **Retro Neon:** Synthwave-inspired deep indigo with magenta accents.
 
 Try switching themes using the buttons in the top navigation bar to see the typography instantly adapt.
 

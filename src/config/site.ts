@@ -34,7 +34,7 @@ export interface SiteConfig {
   description: string;
   author: string;
   siteUrl: string;
-  defaultTheme: 'white' | 'cream' | 'slate' | 'midnight';
+  defaultTheme: 'white' | 'cream' | 'slate' | 'midnight' | 'neon';
   features?: SiteFeatures;
   socialLinks: {
     github?: string;
@@ -51,7 +51,7 @@ export interface SiteConfig {
     provider: 'scatterleaf';
     repo: string;
     category?: string;
-    theme?: 'auto' | 'light' | 'dark' | 'cream' | 'midnight' | 'slate';
+    theme?: 'auto' | 'light' | 'dark' | 'cream' | 'midnight' | 'slate' | 'neon';
     lang?: string;
     broker?: string;
     clientId?: string;
