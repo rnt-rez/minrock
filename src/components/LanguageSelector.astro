@@ -305,8 +305,8 @@
     btn?.addEventListener('click', (e) => {
       e.stopPropagation();
       // Close other dropdowns if open
-      document.querySelectorAll('.theme-dropdown.open, .social-dropdown-menu.open').forEach(d => d.classList.remove('open'));
-      document.querySelectorAll('#theme-toggle-btn, #social-menu-btn').forEach(b => b.setAttribute('aria-expanded', 'false'));
+      document.querySelectorAll('.theme-dropdown.open, .font-dropdown.open, .social-dropdown-menu.open').forEach(d => d.classList.remove('open'));
+      document.querySelectorAll('#theme-toggle-btn, #font-toggle-btn, #social-menu-btn').forEach(b => b.setAttribute('aria-expanded', 'false'));
 
       const open = dropdown?.classList.toggle('open');
       btn.setAttribute('aria-expanded', String(!!open));

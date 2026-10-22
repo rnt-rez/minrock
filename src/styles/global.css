@@ -14,7 +14,20 @@
   --code-text: #e2e8f0;
   --selection: #cbd5e1;
   --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: Georgia, 'Iowan Old Style', 'Times New Roman', Times, serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+html[data-font="serif"] {
+  --font-sans: var(--font-serif);
+}
+
+html[data-font="mono"] {
+  --font-sans: var(--font-mono);
+}
+
+html[data-font="serif-headings"] :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--font-serif);
 }
 
 [data-theme="cream"] {

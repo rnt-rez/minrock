@@ -20,6 +20,8 @@ export interface SiteFeatures {
   socialShare?: boolean;
   /** Theme toggle dropdown (White, Cream, Slate, Midnight) */
   themeSwitcher?: boolean;
+  /** Font dropdown (sans serif by default, serif, serif headings only, or monospace) */
+  fontSwitcher?: boolean;
   /** Floating smooth-scroll back-to-top button */
   backToTop?: boolean;
   /** Medium-style smooth image zoom modal on click */
@@ -88,6 +90,7 @@ export const siteConfig: SiteConfig = {
     tags: true,
     socialShare: true,
     themeSwitcher: true,
+    fontSwitcher: true,
     backToTop: true,
     imageZoom: true,
     comments: true

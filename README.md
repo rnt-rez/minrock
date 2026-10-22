@@ -103,6 +103,7 @@ export const siteConfig = {
     tags: true,            // Tag badges in headers, article cards, and tag clouds
     socialShare: true,     // Notion-style share modal and trigger bar in blog posts
     themeSwitcher: true,   // Palette dropdown switcher in header
+    fontSwitcher: true,    // Font dropdown (sans / serif / serif headings / mono) in header
     backToTop: true,       // Floating smooth-scroll back-to-top button
     imageZoom: true,       // Medium-style smooth image zoom modal
     comments: true         // Interactive blog comments powered by ScatterLeaf

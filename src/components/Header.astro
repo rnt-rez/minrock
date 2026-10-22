@@ -1,6 +1,7 @@
 ---
 import { siteConfig } from '../config/site';
 import ThemeToggle from './ThemeToggle.astro';
+import FontSelector from './FontSelector.astro';
 import SocialDropdown from './SocialDropdown.astro';
 import LanguageSelector from './LanguageSelector.astro';
 
@@ -12,6 +13,7 @@ const { currentPath = Astro.url.pathname } = Astro.props;
 const features = siteConfig.features ?? {};
 const showSearch = features.search !== false;
 const showThemeSwitcher = features.themeSwitcher !== false;
+const showFontSwitcher = features.fontSwitcher !== false;
 ---
 
 <header class="site-header">
@@ -64,6 +66,7 @@ const showThemeSwitcher = features.themeSwitcher !== false;
       <div class="header-controls">
         <SocialDropdown />
         {showThemeSwitcher && <ThemeToggle />}
+        {showFontSwitcher && <FontSelector />}
         <LanguageSelector />
       </div>
     </div>

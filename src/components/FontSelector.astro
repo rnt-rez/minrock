@@ -1,0 +1,308 @@
+---
+// src/components/FontSelector.astro
+// Dropdown menu for Minrock fonts (Sans Serif, Serif for all text, Serif for headings only, Monospace).
+// Add entries to `fonts` and a matching `html[data-font="<value>"]` rule in global.css
+// to support more options.
+const fonts = [
+  { value: 'sans', label: 'Sans Serif', emoji: '🔤' },
+  { value: 'serif', label: 'Serif (All Text)', emoji: '📖' },
+  { value: 'serif-headings', label: 'Serif (Headings Only)', emoji: '📰' },
+  { value: 'mono', label: 'Monospace', emoji: '⌨️' },
+];
+---
+
+<div class="font-selector" id="font-selector">
+  <button
+    id="font-toggle-btn"
+    class="font-btn-trigger"
+    aria-label="Select font"
+    aria-haspopup="true"
+    aria-expanded="false"
+    title="Font / Fonte"
+  >
+    <span class="font-active-icon" aria-hidden="true">🖋️</span>
+    <svg class="font-chevron" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+  </button>
+
+  <!-- Floating Font Dropdown -->
+  <div id="font-dropdown" class="font-dropdown" role="menu" aria-label="Available fonts">
+    <div class="font-dropdown-header">FONT</div>
+
+    {fonts.map((font) => (
+      <button class="font-option" data-font-val={font.value} role="menuitem">
+        <span class="font-opt-left">
+          <span class="font-emoji">{font.emoji}</span>
+          <span class="font-label">{font.label}</span>
+        </span>
+        <svg class="font-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+      </button>
+    ))}
+  </div>
+</div>
+
+<style>
+  .font-selector {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .font-btn-trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    width: var(--header-control-button-width, 44px);
+    height: 34px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background-color: var(--bg-surface);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+    padding: var(--header-control-button-padding, 0 6px);
+  }
+
+  .font-btn-trigger:hover {
+    color: var(--text);
+    background-color: var(--bg-subtle);
+    border-color: var(--accent);
+  }
+
+  .font-active-icon {
+    font-size: 1rem;
+    line-height: 1;
+    width: 18px;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .font-chevron {
+    opacity: 0.6;
+    margin-left: -1px;
+    transition: transform 0.15s ease;
+    flex-shrink: 0;
+  }
+
+  .font-btn-trigger[aria-expanded="true"] .font-chevron {
+    transform: rotate(180deg);
+  }
+
+  .font-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    background-color: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.35rem;
+    min-width: 205px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 1000;
+    animation: fontDropdownFade 0.15s ease;
+  }
+
+  .font-dropdown.open {
+    display: block;
+  }
+
+  @keyframes fontDropdownFade {
+    from {
+      opacity: 0;
+      margin-top: -4px;
+    }
+    to {
+      opacity: 1;
+      margin-top: 0;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .font-dropdown {
+      left: 50%;
+      right: auto;
+      transform: translateX(-50%);
+      max-width: calc(100vw - 24px);
+    }
+  }
+
+  .font-dropdown-header {
+    font-size: 0.68rem;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+    padding: 0.25rem 0.65rem 0.35rem;
+    letter-spacing: 0.06em;
+    opacity: 0.8;
+  }
+
+  .font-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    text-align: left;
+    padding: 0.45rem 0.65rem;
+    font-size: 0.84rem;
+    font-family: var(--font-sans);
+    color: var(--text);
+    background: transparent;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.12s ease, color 0.12s ease;
+    gap: 0.5rem;
+  }
+
+  .font-opt-left {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+
+  .font-emoji {
+    font-size: 0.95rem;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+  }
+
+  .font-label {
+    font-weight: 500;
+  }
+
+  .font-option:hover {
+    background-color: var(--bg-subtle);
+    color: var(--accent);
+  }
+
+  .font-option.active {
+    color: var(--accent);
+    font-weight: 600;
+    background-color: var(--bg-subtle);
+  }
+
+  .font-check {
+    display: none;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .font-option.active .font-check {
+    display: block;
+  }
+</style>
+
+<script>
+  function setupFontSelector() {
+    const btn = document.getElementById('font-toggle-btn');
+    const dropdown = document.getElementById('font-dropdown');
+    const selector = document.getElementById('font-selector');
+
+    function updateFontUI(storedFont: string) {
+      document.querySelectorAll<HTMLButtonElement>('.font-option').forEach((opt) => {
+        if (opt.getAttribute('data-font-val') === storedFont) {
+          opt.classList.add('active');
+          opt.setAttribute('aria-selected', 'true');
+        } else {
+          opt.classList.remove('active');
+          opt.removeAttribute('aria-selected');
+        }
+      });
+    }
+
+    function applyFont(font: string) {
+      localStorage.setItem('minrock_font', font);
+      document.documentElement.setAttribute('data-font', font);
+      updateFontUI(font);
+    }
+
+    function positionDropdown() {
+      if (!dropdown) return;
+      if (window.innerWidth <= 768) {
+        dropdown.style.left = '50%';
+        dropdown.style.right = 'auto';
+        dropdown.style.transform = 'translateX(-50%)';
+
+        const rect = dropdown.getBoundingClientRect();
+        const pad = 12;
+        if (rect.left < pad) {
+          const offset = pad - rect.left;
+          dropdown.style.transform = `translateX(calc(-50% + ${offset}px))`;
+        } else if (rect.right > window.innerWidth - pad) {
+          const offset = rect.right - (window.innerWidth - pad);
+          dropdown.style.transform = `translateX(calc(-50% - ${offset}px))`;
+        }
+      } else {
+        dropdown.style.left = '';
+        dropdown.style.right = '';
+        dropdown.style.transform = '';
+      }
+    }
+
+    // Initialize UI on mount
+    updateFontUI(localStorage.getItem('minrock_font') || 'sans');
+
+    // Toggle dropdown
+    btn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      // Close other dropdowns if open
+      document.querySelectorAll('.theme-dropdown.open, .lang-dropdown.open, .social-dropdown-menu.open').forEach(d => d.classList.remove('open'));
+      document.querySelectorAll('#theme-toggle-btn, #lang-btn, #social-menu-btn').forEach(b => b.setAttribute('aria-expanded', 'false'));
+
+      const open = dropdown?.classList.toggle('open');
+      btn.setAttribute('aria-expanded', String(!!open));
+
+      if (open) {
+        positionDropdown();
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      if (dropdown?.classList.contains('open')) {
+        positionDropdown();
+      }
+    });
+
+    // Option clicks
+    document.querySelectorAll<HTMLButtonElement>('.font-option').forEach((opt) => {
+      opt.addEventListener('click', () => {
+        const val = opt.getAttribute('data-font-val');
+        if (!val) return;
+        dropdown?.classList.remove('open');
+        btn?.setAttribute('aria-expanded', 'false');
+        applyFont(val);
+      });
+    });
+
+    // Close on click outside
+    document.addEventListener('click', (e) => {
+      if (!selector?.contains(e.target as Node)) {
+        dropdown?.classList.remove('open');
+        btn?.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && dropdown?.classList.contains('open')) {
+        dropdown.classList.remove('open');
+        btn?.setAttribute('aria-expanded', 'false');
+        btn?.focus();
+      }
+    });
+  }
+
+  setupFontSelector();
+  document.addEventListener('astro:after-swap', setupFontSelector);
+</script>

@@ -28,6 +28,7 @@ const features = siteConfig.features ?? {};
 const showSearch = features.search !== false;
 const showBackToTop = features.backToTop !== false;
 const showImageZoom = features.imageZoom !== false;
+const showFontSwitcher = features.fontSwitcher !== false;
 ---
 
 <!DOCTYPE html>
@@ -64,6 +65,18 @@ const showImageZoom = features.imageZoom !== false;
         document.documentElement.setAttribute('data-theme', savedTheme);
       })();
     </script>
+    <!-- Font anti-FOUC script: applies the saved font before render -->
+    <!-- Skipped when the font switcher is disabled so stale preferences can't stick -->
+    {showFontSwitcher && (
+      <script is:inline>
+        (function () {
+          const savedFont = localStorage.getItem('minrock_font');
+          if (savedFont && savedFont !== 'sans') {
+            document.documentElement.setAttribute('data-font', savedFont);
+          }
+        })();
+      </script>
+    )}
   </head>
   <body>
     <a href="#main-content" class="skip-to-content">Skip to content</a>
