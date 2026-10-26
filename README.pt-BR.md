@@ -70,7 +70,7 @@ minrock/
 │   │   └── site.ts            # Título do blog, bio do autor, links sociais e navegação
 │   ├── content/
 │   │   └── blog/              # Seus artigos em Markdown (compatíveis com o Obsidian)
-│   ├── components/            # Header, Footer, ThemeToggle, ArticleCard
+│   ├── components/            # Header, Footer, ThemeSelector, ArticleCard
 │   ├── layouts/               # BaseLayout, PostLayout
 │   ├── pages/                 # index, blog, about, 404
 │   └── styles/                # Variáveis CSS globais e as 4 paletas cromáticas

@@ -1,11 +1,11 @@
 ---
-// src/components/ThemeToggle.astro
+// src/components/ThemeSelector.astro
 // Dropdown menu for Minrock themes (Clean White, Warm Paper, Slate Navy, Midnight OLED, Auto)
 ---
 
 <div class="theme-selector" id="theme-selector">
   <button
-    id="theme-toggle-btn"
+    id="theme-selector-btn"
     class="theme-btn-trigger"
     aria-label="Select color theme"
     aria-haspopup="true"
@@ -234,8 +234,8 @@
 </style>
 
 <script>
-  function setupThemeToggle() {
-    const btn = document.getElementById('theme-toggle-btn');
+  function setupThemeSelector() {
+    const btn = document.getElementById('theme-selector-btn');
     const dropdown = document.getElementById('theme-dropdown');
     const selector = document.getElementById('theme-selector');
     const activeIcon = document.getElementById('theme-active-icon');
@@ -372,6 +372,6 @@
     });
   }
 
-  setupThemeToggle();
-  document.addEventListener('astro:after-swap', setupThemeToggle);
+  setupThemeSelector();
+  document.addEventListener('astro:after-swap', setupThemeSelector);
 </script>
