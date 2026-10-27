@@ -7,6 +7,7 @@ Welcome to your local content management vault! Minrock is designed to provide a
 ## ⚡ Instant Writing Workflow
 
 When you open `src/content` as a vault in Obsidian:
+
 - **New Article**: Press `Ctrl / Cmd + N` (or click **+ New** in the Blog view).
 - **Pasting Images**: Press `Ctrl + V` inside any note. Screenshots and diagrams are automatically saved directly beside your post in the same folder.
 - **Publishing**: Use the Git status bar icon (or `Ctrl / Cmd + P` → `Git: Push`) to send your changes live to Vercel, Cloudflare, or GitHub.
@@ -26,6 +27,7 @@ src/content/blog/
 ```
 
 ### Why this is optimal:
+
 1. **Self-Contained**: If you delete or move the post folder, all related media files move with it (zero orphaned images).
 2. **Native Preview**: Markdown image links like `![Architecture](architecture.png)` work both inside Obsidian and on your live Astro site.
 3. **Clean URLs**: Minrock generates the route `/blog/my-awesome-post/` automatically.
@@ -36,22 +38,22 @@ src/content/blog/
 
 If you ever run the **Vault CMS Setup Wizard** (`Ctrl / Cmd + P` → `Vault CMS: Open Wizard`), use these exact settings for Minrock:
 
-| Wizard Field | Recommended Value for Minrock | Note |
-| :--- | :--- | :--- |
-| **Welcome / Preset** | `Get started` (Do not apply theme presets) | Preserves Minrock's custom design |
-| **Project Root** | `../..` | Auto-detected relative to `src/content` |
-| **Config File** | `../../astro.config.mjs` | Astro configuration file |
-| **Content Type Name** | `Blog` | Name of your primary collection |
-| **Folder** | `blog` | Directory inside `src/content/` |
-| **File Organization** | `folder` (*Folder-based*) | Creates `blog/<slug>/index.md` |
-| **Index File Name** | `index` | Entrypoint Markdown filename |
-| **Link Base Path** | `/blog/` | Route prefix on your site |
-| **Title Property** | `title` | Article headline |
-| **Date Property** | `pubDate` | Format: `YYYY-MM-DD` |
-| **Description Property**| `description` | SEO & social sharing summary |
-| **Tags Property** | `tags` | Array of topic tags (e.g. `['dev', 'tools']`) |
-| **Draft Property** | `draft` | Logic: `true-draft` (`true` hides from production) |
-| **Attachment Handling** | `Same folder as current file` | Ensures `Ctrl+V` pastes into post folder |
+| Wizard Field             | Recommended Value for Minrock              | Note                                               |
+| :----------------------- | :----------------------------------------- | :------------------------------------------------- |
+| **Welcome / Preset**     | `Get started` (Do not apply theme presets) | Preserves Minrock's custom design                  |
+| **Project Root**         | `../..`                                    | Auto-detected relative to `src/content`            |
+| **Config File**          | `../../astro.config.mjs`                   | Astro configuration file                           |
+| **Content Type Name**    | `Blog`                                     | Name of your primary collection                    |
+| **Folder**               | `blog`                                     | Directory inside `src/content/`                    |
+| **File Organization**    | `folder` (_Folder-based_)                  | Creates `blog/<slug>/index.md`                     |
+| **Index File Name**      | `index`                                    | Entrypoint Markdown filename                       |
+| **Link Base Path**       | `/blog/`                                   | Route prefix on your site                          |
+| **Title Property**       | `title`                                    | Article headline                                   |
+| **Date Property**        | `pubDate`                                  | Format: `YYYY-MM-DD`                               |
+| **Description Property** | `description`                              | SEO & social sharing summary                       |
+| **Tags Property**        | `tags`                                     | Array of topic tags (e.g. `['dev', 'tools']`)      |
+| **Draft Property**       | `draft`                                    | Logic: `true-draft` (`true` hides from production) |
+| **Attachment Handling**  | `Same folder as current file`              | Ensures `Ctrl+V` pastes into post folder           |
 
 ---
 
@@ -66,10 +68,10 @@ If you ever run the **Vault CMS Setup Wizard** (`Ctrl / Cmd + P` → `Vault CMS:
 3. **Frontmatter Template**:
    ```markdown
    ---
-   title: "Your Article Title"
-   description: "A concise summary for readers and search engines."
+   title: 'Your Article Title'
+   description: 'A concise summary for readers and search engines.'
    pubDate: 2026-09-16
-   tags: ["engineering", "design"]
+   tags: ['engineering', 'design']
    draft: false
    ---
    ```

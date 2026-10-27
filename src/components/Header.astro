@@ -27,7 +27,11 @@ const showThemeSwitcher = features.themeSwitcher !== false;
       {siteConfig.navLinks.map((link) => {
         const isActive = currentPath === link.href || (link.href !== '/' && currentPath.startsWith(link.href));
         return (
-          <a href={link.href} class:list={['nav-link', { active: isActive }]} aria-current={isActive ? 'page' : undefined}>
+          <a
+            href={link.href}
+            class:list={['nav-link', { active: isActive }]}
+            aria-current={isActive ? 'page' : undefined}
+          >
             {link.title}
           </a>
         );
@@ -38,9 +42,25 @@ const showThemeSwitcher = features.themeSwitcher !== false;
     <div class="header-actions">
       <!-- Search Trigger (Desktop) -->
       {showSearch && (
-        <button id="header-search-btn" class="search-trigger desktop-only" type="button" aria-label="Search (Ctrl + K)" title="Search (Ctrl + K)">
+        <button
+          id="header-search-btn"
+          class="search-trigger desktop-only"
+          type="button"
+          aria-label="Search (Ctrl + K)"
+          title="Search (Ctrl + K)"
+        >
           <div class="search-trigger-inner">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
               <circle cx="11" cy="11" r="8"></circle>
               <path d="m21 21-4.3-4.3"></path>
             </svg>
@@ -53,7 +73,17 @@ const showThemeSwitcher = features.themeSwitcher !== false;
       <!-- Mobile Search Button -->
       {showSearch && (
         <button id="mobile-search-btn" class="icon-btn mobile-only" type="button" aria-label="Search" title="Search">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
             <circle cx="11" cy="11" r="8"></circle>
             <path d="m21 21-4.3-4.3"></path>
           </svg>
@@ -81,7 +111,9 @@ const showThemeSwitcher = features.themeSwitcher !== false;
     background: var(--bg);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    transition: background-color 0.2s ease, border-color 0.2s ease;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease;
   }
 
   .header-inner {
@@ -119,7 +151,9 @@ const showThemeSwitcher = features.themeSwitcher !== false;
     text-decoration: none;
     padding: 0.2rem 0.35rem;
     border-radius: 4px;
-    transition: color 0.15s ease, background-color 0.15s ease;
+    transition:
+      color 0.15s ease,
+      background-color 0.15s ease;
   }
 
   .nav-link:hover {
@@ -160,7 +194,10 @@ const showThemeSwitcher = features.themeSwitcher !== false;
     color: var(--text-muted);
     cursor: pointer;
     font-size: 0.85rem;
-    transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+    transition:
+      border-color 0.15s ease,
+      background-color 0.15s ease,
+      color 0.15s ease;
   }
 
   .search-trigger-inner {

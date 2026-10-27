@@ -1,0 +1,6 @@
+dist/
+.astro/
+public/
+package-lock.json
+src/content/.obsidian/
+scripts/

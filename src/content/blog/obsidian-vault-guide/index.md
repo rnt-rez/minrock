@@ -1,10 +1,10 @@
 ---
-title: "Connecting Your Obsidian Vault to Minrock"
-description: "A complete technical walkthrough on integrating Vault CMS and Obsidian as a local, frictionless CMS for Minrock."
+title: 'Connecting Your Obsidian Vault to Minrock'
+description: 'A complete technical walkthrough on integrating Vault CMS and Obsidian as a local, frictionless CMS for Minrock.'
 pubDate: 2026-09-16
-tags: ["obsidian", "vault", "workflow", "astro"]
+tags: ['obsidian', 'vault', 'workflow', 'astro']
 draft: false
-image: "/images/vaultcms-architecture.svg"
+image: '/images/vaultcms-architecture.svg'
 ---
 
 One of the foundational architectural goals of **Minrock** is to eliminate the friction between private note-taking in [Obsidian](https://obsidian.md) and public publishing on the web.
@@ -19,7 +19,7 @@ Depending on your goals and familiarity with Obsidian, choose the path that best
 
 > [!TIP] Path 1 (Recommended / Plug & Play)
 > Minrock **already comes with the `.obsidian/` folder pre-configured** inside `src/content/`. If you simply want to write posts and publish them without any setup, you don't need to follow this manual tutorial!
-> 
+>
 > Simply open the `src/content` folder in Obsidian and press `Ctrl + N`.
 > 👉 **[Follow the Quickstart Guide (Getting Started) →](/blog/getting-started-with-minrock)**
 
@@ -43,6 +43,7 @@ This command inspects your workspace and installs the curated suite of Obsidian 
 ## Step 2: Opening the Vault in Obsidian
 
 Launch Obsidian on your computer:
+
 1. Click **"Open folder as vault"** (or **"Open"**).
 2. Navigate into your Minrock project directory and select the **`src/content`** folder.
 3. Trust the author and enable community plugins when prompted.
@@ -60,24 +61,24 @@ The default Vault CMS tutorial is built around general themes (like Axis), which
 
 Here is the exact field-by-field mapping required for Minrock:
 
-| Wizard Step | Setting Name | Minrock Value | Why This Matters |
-| :--- | :--- | :--- | :--- |
-| **1. Welcome** | Setup Mode | **`Get started`** | Never select community presets (e.g. *Slate*, *Chiri*), as they overwrite Minrock's custom layout and styles. |
-| **2. Detection** | Project Root | **`../..`** | Points 2 levels up from `src/content` to find your `package.json` and `astro.config.mjs`. |
-| **2. Detection** | Extended Types | **Disabled** | Minrock uses standard Markdown and MDX; raw data files are not needed. |
-| **3. Content Type**| Type Name | **`Blog`** | Matches your Astro content collection declared in `src/content.config.ts`. |
-| **3. Content Type**| Folder | **`blog`** | Directory path inside `src/content/`. |
-| **3. Content Type**| File Organization | **`folder` (*Folder-based*)** | Crucial: ensures every post is generated as `blog/<slug>/index.md`. |
-| **3. Content Type**| Index File Name | **`index`** | Matches Astro's page bundle convention (`index.md`). |
-| **3. Content Type**| Link Base Path | **`/blog/`** | The public URL prefix for reading posts. |
-| **4. Frontmatter** | Title Property | **`title`** | The article's main heading. |
-| **4. Frontmatter** | Date Property | **`pubDate`** | **Important:** Minrock uses `pubDate` (not `date`) formatted as `YYYY-MM-DD`. |
-| **4. Frontmatter** | Description | **`description`** | Concise meta summary used for SEO and OpenGraph cards. |
-| **4. Frontmatter** | Tags Property | **`tags`** | List of tags for categorizing articles. |
-| **4. Frontmatter** | Draft Property | **`draft`** | Logic: `true-draft` (marking `draft: true` hides the post in production). |
-| **5. Attachments** | Handling Mode | **`Same folder as current file`** | Directs `Ctrl + V` pasted screenshots into the post's own folder. |
-| **8. Deployment** | Target Platform | **`Vercel`** (or your host) | Prepares deployment hooks. |
-| **9. Git Setup** | Git Integration | **Optional / SSH** | If your repo is already authenticated with Git, you can skip token input. |
+| Wizard Step         | Setting Name      | Minrock Value                     | Why This Matters                                                                                              |
+| :------------------ | :---------------- | :-------------------------------- | :------------------------------------------------------------------------------------------------------------ |
+| **1. Welcome**      | Setup Mode        | **`Get started`**                 | Never select community presets (e.g. _Slate_, _Chiri_), as they overwrite Minrock's custom layout and styles. |
+| **2. Detection**    | Project Root      | **`../..`**                       | Points 2 levels up from `src/content` to find your `package.json` and `astro.config.mjs`.                     |
+| **2. Detection**    | Extended Types    | **Disabled**                      | Minrock uses standard Markdown and MDX; raw data files are not needed.                                        |
+| **3. Content Type** | Type Name         | **`Blog`**                        | Matches your Astro content collection declared in `src/content.config.ts`.                                    |
+| **3. Content Type** | Folder            | **`blog`**                        | Directory path inside `src/content/`.                                                                         |
+| **3. Content Type** | File Organization | **`folder` (_Folder-based_)**     | Crucial: ensures every post is generated as `blog/<slug>/index.md`.                                           |
+| **3. Content Type** | Index File Name   | **`index`**                       | Matches Astro's page bundle convention (`index.md`).                                                          |
+| **3. Content Type** | Link Base Path    | **`/blog/`**                      | The public URL prefix for reading posts.                                                                      |
+| **4. Frontmatter**  | Title Property    | **`title`**                       | The article's main heading.                                                                                   |
+| **4. Frontmatter**  | Date Property     | **`pubDate`**                     | **Important:** Minrock uses `pubDate` (not `date`) formatted as `YYYY-MM-DD`.                                 |
+| **4. Frontmatter**  | Description       | **`description`**                 | Concise meta summary used for SEO and OpenGraph cards.                                                        |
+| **4. Frontmatter**  | Tags Property     | **`tags`**                        | List of tags for categorizing articles.                                                                       |
+| **4. Frontmatter**  | Draft Property    | **`draft`**                       | Logic: `true-draft` (marking `draft: true` hides the post in production).                                     |
+| **5. Attachments**  | Handling Mode     | **`Same folder as current file`** | Directs `Ctrl + V` pasted screenshots into the post's own folder.                                             |
+| **8. Deployment**   | Target Platform   | **`Vercel`** (or your host)       | Prepares deployment hooks.                                                                                    |
+| **9. Git Setup**    | Git Integration   | **Optional / SSH**                | If your repo is already authenticated with Git, you can skip token input.                                     |
 
 ---
 
@@ -97,14 +98,18 @@ src/content/blog/
 ```
 
 ### 4.1 Seamless Inline Previews in Obsidian
-When you write in Obsidian and insert an image via standard Markdown (`![Diagram](architecture.svg)`), Obsidian resolves files relative to the current note. 
+
+When you write in Obsidian and insert an image via standard Markdown (`![Diagram](architecture.svg)`), Obsidian resolves files relative to the current note.
 If images were saved in an external `public/images/` directory outside the vault, Obsidian's live editor would display a broken image icon. With page bundles, the preview renders **instantaneously** both in Obsidian and on your live website.
 
 ### 4.2 Zero Orphaned Media Files
+
 In long-running technical blogs, deleting an obsolete article often leaves dozens of forgotten screenshots cluttering `public/`. With page bundles, each article is completely self-contained. Deleting the article folder cleanly cleans up all associated images.
 
 ### 4.3 One-Click Paste Workflow (`Ctrl + V`)
+
 To make sure Obsidian always places pasted screenshots right next to your note:
+
 1. Open Obsidian **Settings** (`Ctrl + ,`).
 2. Navigate to **Files and links** → **Default location for new attachments**.
 3. Select **"Same folder as current file"** (or type `./` in the subfolder box).
@@ -117,10 +122,10 @@ When you create a new note in Obsidian (or via `Ctrl + N` inside the Blog collec
 
 ```markdown
 ---
-title: "Your Post Title Here"
-description: "A clear, compelling summary for readers and search engines."
+title: 'Your Post Title Here'
+description: 'A clear, compelling summary for readers and search engines.'
 pubDate: 2026-09-16
-tags: ["engineering", "architecture"]
+tags: ['engineering', 'architecture']
 draft: false
 ---
 ```
@@ -131,7 +136,7 @@ When saved, Minrock's Astro engine automatically generates the clean route at `/
 
 ## Step 6: How to Update Community Plugins in Obsidian
 
-A frequent question regarding pre-bundled vaults is: *“What if the plugins become outdated?”*
+A frequent question regarding pre-bundled vaults is: _“What if the plugins become outdated?”_
 
 Upgrading community plugins in Obsidian never requires terminal commands or touching git submodules:
 

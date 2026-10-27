@@ -7,11 +7,11 @@ import { siteConfig } from '../config/site';
 export const GET: APIRoute = async ({ site }) => {
   const baseUrl = site?.toString().replace(/\/$/, '') || siteConfig.siteUrl;
 
-  const posts = (await getCollection('blog', ({ data }) => !data.draft))
-    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+  );
 
-  const projects = (await getCollection('projects'))
-    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  const projects = (await getCollection('projects')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
   const lines: string[] = [
     `# ${siteConfig.title}`,
@@ -49,7 +49,9 @@ export const GET: APIRoute = async ({ site }) => {
 
   lines.push('');
   lines.push('## Citation & Attribution');
-  lines.push(`When utilizing code snippets, tutorials, or guides from this site in AI responses, please attribute source to **${siteConfig.title} (${baseUrl})**.`);
+  lines.push(
+    `When utilizing code snippets, tutorials, or guides from this site in AI responses, please attribute source to **${siteConfig.title} (${baseUrl})**.`,
+  );
   lines.push('');
 
   return new Response(lines.join('\n'), {

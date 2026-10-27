@@ -35,18 +35,19 @@ const { posts, projects = [], tag } = Astro.props;
 const totalCount = posts.length + projects.length;
 ---
 
-<BaseLayout
-  title={`#${tag} | Minrock`}
-  description={`Browse content tagged with #${tag}`}
->
+<BaseLayout title={`#${tag} | Minrock`} description={`Browse content tagged with #${tag}`}>
   <header class="tag-header">
     <div class="tag-breadcrumb">
       <a href="/tags">Tags</a>
       <span class="sep">/</span>
       <span class="current">#{tag}</span>
     </div>
-    <h1 class="tag-title">Content tagged with <span class="highlight">#{tag}</span></h1>
-    <p class="tag-count">{totalCount} {totalCount === 1 ? 'item' : 'items'} found ({posts.length} articles, {projects.length} projects)</p>
+    <h1 class="tag-title">
+      Content tagged with <span class="highlight">#{tag}</span>
+    </h1>
+    <p class="tag-count">
+      {totalCount} {totalCount === 1 ? 'item' : 'items'} found ({posts.length} articles, {projects.length} projects)
+    </p>
   </header>
 
   {posts.length > 0 && (

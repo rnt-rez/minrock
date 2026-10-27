@@ -6,14 +6,10 @@ import { getCollection } from 'astro:content';
 import { siteConfig } from '../config/site';
 
 const allPosts = await getCollection('blog', ({ data }) => !data.draft);
-const recentPosts = allPosts
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .slice(0, 3);
+const recentPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()).slice(0, 3);
 
 const allProjects = await getCollection('projects');
-const featuredProjects = allProjects
-  .filter((p) => p.data.featured)
-  .slice(0, 2);
+const featuredProjects = allProjects.filter((p) => p.data.featured).slice(0, 2);
 
 // Aggregate tags with counts
 const tagsMap = new Map<string, number>();
@@ -22,22 +18,23 @@ for (const post of allPosts) {
     tagsMap.set(tag, (tagsMap.get(tag) ?? 0) + 1);
   }
 }
-const topTags = [...tagsMap.entries()]
-  .sort((a, b) => b[1] - a[1]);
+const topTags = [...tagsMap.entries()].sort((a, b) => b[1] - a[1]);
 ---
 
 <BaseLayout>
   <section class="hero">
-    <h1 class="hero-title">
-      Crafted for deep thinking &amp; technical writing.
-    </h1>
-    <p class="hero-subtitle">
-      {siteConfig.tagline}
-    </p>
+    <h1 class="hero-title">Crafted for deep thinking &amp; technical writing.</h1>
+    <p class="hero-subtitle">{siteConfig.tagline}</p>
     <div class="hero-actions">
-      <a href="/blog" class="btn btn-primary">Read Articles →</a>
-      <a href="/projects" class="btn btn-secondary">Explore Projects</a>
-      <a href="/about" class="btn btn-tertiary">About Minrock</a>
+      <a href="/blog" class="btn btn-primary">
+        Read Articles →
+      </a>
+      <a href="/projects" class="btn btn-secondary">
+        Explore Projects
+      </a>
+      <a href="/about" class="btn btn-tertiary">
+        About Minrock
+      </a>
     </div>
   </section>
 
@@ -45,7 +42,9 @@ const topTags = [...tagsMap.entries()]
   <section class="recent-posts">
     <div class="section-header">
       <h2 class="section-title">Latest Articles</h2>
-      <a href="/blog" class="all-link">View all ({allPosts.length}) →</a>
+      <a href="/blog" class="all-link">
+        View all ({allPosts.length}) →
+      </a>
     </div>
 
     <div class="posts-list">
@@ -60,7 +59,9 @@ const topTags = [...tagsMap.entries()]
     <section class="featured-projects">
       <div class="section-header">
         <h2 class="section-title">Featured Projects</h2>
-        <a href="/projects" class="all-link">All projects ({allProjects.length}) →</a>
+        <a href="/projects" class="all-link">
+          All projects ({allProjects.length}) →
+        </a>
       </div>
 
       <div class="projects-grid">
@@ -87,7 +88,9 @@ const topTags = [...tagsMap.entries()]
     <section class="home-tags-section">
       <div class="section-header">
         <h2 class="section-title">Explore by Topics</h2>
-        <a href="/tags" class="all-link">All tags ({topTags.length}) →</a>
+        <a href="/tags" class="all-link">
+          All tags ({topTags.length}) →
+        </a>
       </div>
 
       <div class="tags-cloud">
@@ -241,7 +244,10 @@ const topTags = [...tagsMap.entries()]
     color: var(--text);
     font-size: 0.9rem;
     text-decoration: none;
-    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease;
   }
 
   .tag-pill:hover {

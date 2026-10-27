@@ -15,7 +15,7 @@ const isEnabled = siteConfig.features?.comments !== false && Boolean(comments?.e
 {isEnabled && comments && (
   <section class="comments-area" id="comments" aria-label="Article Discussion">
     <div class="comments-divider"></div>
-    
+
     {comments.provider === 'scatterleaf' && (
       <div class="scatterleaf-wrapper">
         <div class="comments-header">
@@ -27,7 +27,8 @@ const isEnabled = siteConfig.features?.comments !== false && Boolean(comments?.e
             Iframe-free native comments powered by{' '}
             <a href="https://github.com/rnt-rez/scatterleaf" target="_blank" rel="noopener noreferrer">
               ScatterLeaf
-            </a>.
+            </a>
+            .
           </p>
         </div>
 

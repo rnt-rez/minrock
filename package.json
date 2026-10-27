@@ -40,7 +40,11 @@
     "audit:google": "node scripts/audit-google-search.mjs",
     "astro": "astro",
     "postinstall": "node scripts/sign-native-bindings.js",
-    "prepare": "husky"
+    "prepare": "husky",
+    "lint:check": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format:check": "prettier --check .",
+    "format:fix": "prettier --write ."
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",
@@ -51,8 +55,13 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
     "@types/node": "^22.13.9",
+    "eslint": "^10.13.0",
+    "eslint-plugin-astro": "^3.2.1",
     "husky": "^9.1.7",
-    "typescript": "^5.7.3"
+    "prettier": "^3.9.10",
+    "prettier-plugin-astro": "^1.1.2",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.72.0"
   },
   "allowScripts": {
     "esbuild": true

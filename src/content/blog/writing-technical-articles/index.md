@@ -1,12 +1,12 @@
 ---
-title: "Mastering Technical Writing with Clean Typography"
-description: "How Minrock handles code blocks, data tables, callouts, and type hierarchy to elevate technical prose."
+title: 'Mastering Technical Writing with Clean Typography'
+description: 'How Minrock handles code blocks, data tables, callouts, and type hierarchy to elevate technical prose.'
 pubDate: 2026-09-14
-tags: ["writing", "typography", "code"]
+tags: ['writing', 'typography', 'code']
 draft: false
 ---
 
-Technical writing is an exercise in reducing cognitive load. Every styling choice—from line length (*measure*) to heading scale—should guide the reader through complex engineering concepts without distraction.
+Technical writing is an exercise in reducing cognitive load. Every styling choice—from line length (_measure_) to heading scale—should guide the reader through complex engineering concepts without distraction.
 
 ## Precision Code Blocks
 
@@ -40,11 +40,11 @@ export class MemoryCache<T> {
 
 Data tables are essential for comparing architectures, benchmarks, and performance metrics:
 
-| Engine | Cold Start (ms) | Bundle Size (KB) | Memory Overhead |
-| :--- | :---: | :---: | :--- |
-| **Minrock SSG** | **0 ms** | **< 15 KB** | Zero runtime memory |
-| Traditional SPA | 450 ms | ~320 KB | High virtual DOM cost |
-| Server-Side SSR | 120 ms | Dynamic | Dependent on database latency |
+| Engine          | Cold Start (ms) | Bundle Size (KB) | Memory Overhead               |
+| :-------------- | :-------------: | :--------------: | :---------------------------- |
+| **Minrock SSG** |    **0 ms**     |   **< 15 KB**    | Zero runtime memory           |
+| Traditional SPA |     450 ms      |     ~320 KB      | High virtual DOM cost         |
+| Server-Side SSR |     120 ms      |     Dynamic      | Dependent on database latency |
 
 ## Editorial Quotes & Callouts
 

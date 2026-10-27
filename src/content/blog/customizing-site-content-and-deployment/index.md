@@ -1,8 +1,8 @@
 ---
-title: "Project Map & Content Customization: Where to Edit Every Section in Minrock"
-description: "A developer roadmap showing the exact files to edit for your hero banner, about page, footer, social links, and metadata, followed by instant 1-click publishing."
+title: 'Project Map & Content Customization: Where to Edit Every Section in Minrock'
+description: 'A developer roadmap showing the exact files to edit for your hero banner, about page, footer, social links, and metadata, followed by instant 1-click publishing.'
 pubDate: 2026-09-16
-tags: ["architecture", "guide", "git", "workflow", "configuration"]
+tags: ['architecture', 'guide', 'git', 'workflow', 'configuration']
 draft: false
 ---
 
@@ -23,11 +23,12 @@ src/config/site.ts
 ```
 
 In this single file, you configure:
-* **Site Identity**: `title`, `tagline`, and default meta `description`.
-* **Author Details**: `author` name (your canonical URL is set separately with `SITE_URL`, see below).
-* **Social Links**: Your LinkedIn profile, GitHub repository, and contact email.
-* **Default Theme**: Initial color mode (`cream`, `white`, `slate`, or `midnight`).
-* **Comments Integration**: Scatterleaf GitHub Discussion credentials.
+
+- **Site Identity**: `title`, `tagline`, and default meta `description`.
+- **Author Details**: `author` name (your canonical URL is set separately with `SITE_URL`, see below).
+- **Social Links**: Your LinkedIn profile, GitHub repository, and contact email.
+- **Default Theme**: Initial color mode (`cream`, `white`, `slate`, or `midnight`).
+- **Comments Integration**: Scatterleaf GitHub Discussion credentials.
 
 ```typescript
 // Example from src/config/site.ts
@@ -40,8 +41,8 @@ export const siteConfig: SiteConfig = {
   socialLinks: {
     github: 'https://github.com/your-username',
     linkedin: 'https://www.linkedin.com/in/your-profile/',
-    email: 'hello@yourdomain.com'
-  }
+    email: 'hello@yourdomain.com',
+  },
 };
 ```
 
@@ -61,9 +62,10 @@ src/pages/index.astro
 ```
 
 Inside the `<header class="hero-section">` element:
-* **The Main Title**: Customize the bold opening statement.
-* **The Bio Paragraph**: Update your current focus (e.g. *"Staff engineer writing about cloud architectures and local-first software"*).
-* **CTA Buttons**: Links pointing visitors to `/blog`, `/projects`, or your `/about` page.
+
+- **The Main Title**: Customize the bold opening statement.
+- **The Bio Paragraph**: Update your current focus (e.g. _"Staff engineer writing about cloud architectures and local-first software"_).
+- **CTA Buttons**: Links pointing visitors to `/blog`, `/projects`, or your `/about` page.
 
 ---
 
@@ -76,9 +78,10 @@ src/pages/about.astro
 ```
 
 Here you can customize:
-* **Philosophy Principles**: The four core pillars of how you build software or write notes.
-* **Tech Stack Badges**: The languages, frameworks, and tools you actively use.
-* **Connect Links**: Additional social contacts and ways people can reach you.
+
+- **Philosophy Principles**: The four core pillars of how you build software or write notes.
+- **Tech Stack Badges**: The languages, frameworks, and tools you actively use.
+- **Connect Links**: Additional social contacts and ways people can reach you.
 
 ---
 
@@ -91,16 +94,17 @@ src/components/Footer.astro
 ```
 
 Here you can customize:
-* **The Signature**: Change the creator credit and origin flag (e.g. *"Crafted with pride in Brazil 🇧🇷"*).
-* **Social Buttons**: The footer automatically pulls your links from `siteConfig.socialLinks` and renders SVGs for LinkedIn, GitHub, Email, and RSS.
+
+- **The Signature**: Change the creator credit and origin flag (e.g. _"Crafted with pride in Brazil 🇧🇷"_).
+- **Social Buttons**: The footer automatically pulls your links from `siteConfig.socialLinks` and renders SVGs for LinkedIn, GitHub, Email, and RSS.
 
 ---
 
 ## 5. Navigation Bar: `src/components/Header.astro`
 
-If you want to add a new link to the top header (like a *"Resume"* or *"Now"* page):
+If you want to add a new link to the top header (like a _"Resume"_ or _"Now"_ page):
 
-* Open `src/config/site.ts` and add your route to `navLinks`:
+- Open `src/config/site.ts` and add your route to `navLinks`:
   ```typescript
   navLinks: [
     { title: 'Home', href: '/' },
@@ -108,9 +112,10 @@ If you want to add a new link to the top header (like a *"Resume"* or *"Now"* pa
     { title: 'Projects', href: '/projects' },
     { title: 'Tags', href: '/tags' },
     { title: 'About', href: '/about' },
-    { title: 'Now', href: '/now' } // New navigation link
-  ]
+    { title: 'Now', href: '/now' }, // New navigation link
+  ];
   ```
+
 The header dynamically renders the new navigation item and preserves active link highlighting!
 
 ---
@@ -128,6 +133,6 @@ git commit -m "chore: update hero bio and social links"
 git push origin main
 ```
 
-*(Or, if you are working inside Obsidian, simply click the **Git Push (`↑`)** icon in the status bar).*
+_(Or, if you are working inside Obsidian, simply click the **Git Push (`↑`)** icon in the status bar)._
 
 Your connected host (Vercel, Cloudflare Pages, or Netlify) detects the push, compiles your static bundle, and updates your site live across global CDNs in seconds.

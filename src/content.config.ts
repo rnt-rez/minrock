@@ -13,7 +13,7 @@ const blog = defineCollection({
     draft: z.boolean().default(false),
     image: z.string().optional(),
     audio: z.boolean().default(true),
-  })
+  }),
 });
 
 const projects = defineCollection({
@@ -29,7 +29,7 @@ const projects = defineCollection({
     demoUrl: z.string().optional(),
     emoji: z.string().default('📦'),
     featured: z.boolean().default(false),
-  })
+  }),
 });
 
 export const collections = { blog, projects };

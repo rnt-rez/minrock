@@ -1,8 +1,8 @@
 ---
-title: "Getting Started with Minrock"
-description: "A quickstart guide to spinning up your blog, writing in Obsidian out of the box, and publishing in minutes."
+title: 'Getting Started with Minrock'
+description: 'A quickstart guide to spinning up your blog, writing in Obsidian out of the box, and publishing in minutes.'
 pubDate: 2026-09-15
-tags: ["minrock", "astro", "quickstart", "obsidian"]
+tags: ['minrock', 'astro', 'quickstart', 'obsidian']
 draft: false
 ---
 
@@ -45,9 +45,9 @@ Minrock comes with a **pre-configured Obsidian vault** located right inside `src
 
 **That's it!** The vault opens with Vault CMS and the Blog collection already calibrated.
 
-* **Create a Post:** Press `Ctrl / Cmd + N` (or click **+ New** in the Blog view).
-* **Paste Images:** Copy any screenshot to your clipboard and paste it (`Ctrl + V`) directly inside your note. The image is automatically saved right beside your article in `src/content/blog/<slug>/`.
-* **Instant Preview:** Save your note, and the local dev server updates `http://localhost:4321` instantly.
+- **Create a Post:** Press `Ctrl / Cmd + N` (or click **+ New** in the Blog view).
+- **Paste Images:** Copy any screenshot to your clipboard and paste it (`Ctrl + V`) directly inside your note. The image is automatically saved right beside your article in `src/content/blog/<slug>/`.
+- **Instant Preview:** Save your note, and the local dev server updates `http://localhost:4321` instantly.
 
 ---
 
@@ -59,16 +59,16 @@ Whenever you save a post in Obsidian, Minrock lets you publish directly to the w
 2. **Automagic Commit**: Obsidian automatically drafts the commit message (e.g. `Blog update 9/16/2026: 2 file(s) changed.`) and pushes the changes straight to your GitHub repository.
 3. **Continuous Deployment**: Your connected hosting provider (**Vercel**, **Cloudflare Pages**, or **Netlify**) detects the push and publishes your new article worldwide in seconds.
 
-*(Prefer the terminal? Run `git add . && git commit -m "feat: my post" && git push origin main` as usual).*
+_(Prefer the terminal? Run `git add . && git commit -m "feat: my post" && git push origin main` as usual)._
 
-* **Build Command:** `npm run build`
-* **Output Directory:** `dist`
+- **Build Command:** `npm run build`
+- **Output Directory:** `dist`
 
 ---
 
 ## Keeping Plugins Up to Date
 
-Because Minrock bundles the Obsidian configuration in `src/content/.obsidian/`, you might wonder: *“Will these plugins become outdated over time?”*
+Because Minrock bundles the Obsidian configuration in `src/content/.obsidian/`, you might wonder: _“Will these plugins become outdated over time?”_
 
 Updating them is effortless and happens directly inside Obsidian with 1 click:
 

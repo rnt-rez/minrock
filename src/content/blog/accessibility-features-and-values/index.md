@@ -1,8 +1,8 @@
 ---
-title: "Built for Everyone: Features, Accessibility, and Inclusive Values in Minrock"
-description: "A complete feature matrix of Minrock, our philosophy of radical accessibility—from neurodiverse-friendly audio to multi-language translation—and our commitment to digital inclusion."
+title: 'Built for Everyone: Features, Accessibility, and Inclusive Values in Minrock'
+description: 'A complete feature matrix of Minrock, our philosophy of radical accessibility—from neurodiverse-friendly audio to multi-language translation—and our commitment to digital inclusion.'
 pubDate: 2026-09-16
-tags: ["accessibility", "a11y", "features", "inclusion", "philosophy", "design"]
+tags: ['accessibility', 'a11y', 'features', 'inclusion', 'philosophy', 'design']
 draft: false
 ---
 
@@ -18,47 +18,51 @@ Here is the complete overview of the capabilities built into Minrock, what purpo
 
 Below is a summary of the core features pre-configured in Minrock:
 
-| Feature | What It Does | Why It Matters / Who It Helps |
-| :--- | :--- | :--- |
-| **🔊 Text-to-Speech Audio Reader** | Synthesizes article prose into spoken audio with play, pause, jump-to-paragraph, and speed controls. | Empowers readers with visual impairments, ADHD, dyslexia, cognitive fatigue, and auditory learners. |
-| **📌 Sticky Audio Drawer** | Follows the reader as a compact floating dock as they scroll down the page. | Ensures uninterrupted listening without having to scroll back to the top to pause or adjust speed. |
-| **🌐 Multi-Language Translator** | Instant language translation across English, Portuguese, Spanish, French, German, Russian, and Chinese using clean SVG flags. | Breaks linguistic barriers for global readers and international tech communities. |
-| **🌓 4 Calibrated Theme Palettes** | Seamless switching between Clean White, Warm Paper (Cream), Slate Navy, and OLED Midnight. | Prevents eye strain in daylight or nighttime reading, and respects user battery and contrast preferences. |
-| **⌨️ Global Search (Ctrl + K)** | Instant, keyboard-accessible fuzzy search across articles, projects, and taxonomy tags. | Enables rapid, frictionless navigation without loading new server pages. |
-| **📑 Sticky Table of Contents** | Two-column desktop layout with active scrollspy tracking headings in real time. | Provides clear mental orientation and quick jumping through long technical architecture documents. |
-| **🔍 PhotoSwipe 5 Lightbox** | Deep zoom, fluid pinch-to-zoom, and lightbox for architecture diagrams and code screenshots. | Allows readers to inspect intricate vector diagrams and high-resolution visuals at full scale. |
-| **📋 1-Click Code Copy** | Subtle hover button that copies code snippets to clipboard with visual feedback. | Eliminates manual text selection frustration for developers replicating configs. |
-| **🍃 ScatterLeaf Discussions** | Lightweight, iframe-free GitHub Discussions comment widget with native theme matching. | Enables authentic reader discussions without privacy-invasive third-party ad trackers. |
-| **⚡ Synchronized Pagination** | Top and bottom pagination controls integrated with live search and category filters. | Keeps navigation effortless even as the library of articles and projects grows. |
+| Feature                            | What It Does                                                                                                                  | Why It Matters / Who It Helps                                                                             |
+| :--------------------------------- | :---------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------- |
+| **🔊 Text-to-Speech Audio Reader** | Synthesizes article prose into spoken audio with play, pause, jump-to-paragraph, and speed controls.                          | Empowers readers with visual impairments, ADHD, dyslexia, cognitive fatigue, and auditory learners.       |
+| **📌 Sticky Audio Drawer**         | Follows the reader as a compact floating dock as they scroll down the page.                                                   | Ensures uninterrupted listening without having to scroll back to the top to pause or adjust speed.        |
+| **🌐 Multi-Language Translator**   | Instant language translation across English, Portuguese, Spanish, French, German, Russian, and Chinese using clean SVG flags. | Breaks linguistic barriers for global readers and international tech communities.                         |
+| **🌓 4 Calibrated Theme Palettes** | Seamless switching between Clean White, Warm Paper (Cream), Slate Navy, and OLED Midnight.                                    | Prevents eye strain in daylight or nighttime reading, and respects user battery and contrast preferences. |
+| **⌨️ Global Search (Ctrl + K)**    | Instant, keyboard-accessible fuzzy search across articles, projects, and taxonomy tags.                                       | Enables rapid, frictionless navigation without loading new server pages.                                  |
+| **📑 Sticky Table of Contents**    | Two-column desktop layout with active scrollspy tracking headings in real time.                                               | Provides clear mental orientation and quick jumping through long technical architecture documents.        |
+| **🔍 PhotoSwipe 5 Lightbox**       | Deep zoom, fluid pinch-to-zoom, and lightbox for architecture diagrams and code screenshots.                                  | Allows readers to inspect intricate vector diagrams and high-resolution visuals at full scale.            |
+| **📋 1-Click Code Copy**           | Subtle hover button that copies code snippets to clipboard with visual feedback.                                              | Eliminates manual text selection frustration for developers replicating configs.                          |
+| **🍃 ScatterLeaf Discussions**     | Lightweight, iframe-free GitHub Discussions comment widget with native theme matching.                                        | Enables authentic reader discussions without privacy-invasive third-party ad trackers.                    |
+| **⚡ Synchronized Pagination**     | Top and bottom pagination controls integrated with live search and category filters.                                          | Keeps navigation effortless even as the library of articles and projects grows.                           |
 
 ---
 
 ## Rethinking Accessibility: Beyond Visual Impairment
 
-When developers think about accessibility (*a11y*), they often imagine screen readers designed exclusively for individuals with severe visual impairments. While supporting low-vision and blind readers is essential, the human spectrum of cognition and sensory processing is vast.
+When developers think about accessibility (_a11y_), they often imagine screen readers designed exclusively for individuals with severe visual impairments. While supporting low-vision and blind readers is essential, the human spectrum of cognition and sensory processing is vast.
 
 Minrock's built-in **Audio Reader** was deliberately engineered to serve a wide range of needs:
 
 ### 1. Neurodiversity and ADHD
+
 For neurodivergent individuals, including those with ADHD or executive function challenges, maintaining focus on long walls of technical text can be exhausting. Combining visual reading with synchronous spoken audio creates dual-channel engagement, dramatically increasing comprehension and reducing cognitive drift.
 
 ### 2. Dyslexia and Visual Processing Differences
+
 Readers with dyslexia or tracking difficulties often struggle with standard typographic layouts. Hearing the text spoken aloud eliminates the barrier of letter decoding, allowing readers to absorb complex engineering concepts effortlessly.
 
 ### 3. Cognitive Fatigue and Rest
+
 Staring at screens for 8+ hours a day induces severe digital eye strain. The audio player lets developers close their eyes, lean back, and digest technical essays without ocular fatigue.
 
 ### 4. Auditory Learners & Multitasking
+
 Many people absorb spoken knowledge better than written prose. Having a native voice reader allows visitors to listen to articles while commuting, taking a walk, or reviewing code in another window.
 
 > [!TIP] The Floating Sticky Player
-> When you hit *"Play"* and scroll down into the article, the player smoothly morphs into a sticky floating dock at the top of your screen. You can pause, skip paragraphs, or adjust speed to 1.25x or 1.5x at any point without losing your reading position.
+> When you hit _"Play"_ and scroll down into the article, the player smoothly morphs into a sticky floating dock at the top of your screen. You can pause, skip paragraphs, or adjust speed to 1.25x or 1.5x at any point without losing your reading position.
 
 ---
 
 ## Breaking Linguistic Barriers
 
-The open-source community is fundamentally global, yet language remains one of the largest obstacles to knowledge sharing. 
+The open-source community is fundamentally global, yet language remains one of the largest obstacles to knowledge sharing.
 
 Minrock incorporates two key architectural solutions to bridge this gap:
 

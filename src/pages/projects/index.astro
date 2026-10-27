@@ -3,8 +3,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
 import { getCollection } from 'astro:content';
 
-const allProjects = (await getCollection('projects'))
-  .sort((a, b) => b.data.stars - a.data.stars || b.data.date.valueOf() - a.data.date.valueOf());
+const allProjects = (await getCollection('projects')).sort(
+  (a, b) => b.data.stars - a.data.stars || b.data.date.valueOf() - a.data.date.valueOf(),
+);
 
 const topProjects = allProjects.filter((p) => p.data.featured).slice(0, 2);
 const categories = ['All', ...new Set(allProjects.map((p) => p.data.category))];
@@ -49,7 +50,17 @@ const categories = ['All', ...new Set(allProjects.map((p) => p.data.category))];
         <!-- Search Filter Box (Live) -->
         <div class="search-wrap">
           <div class="search-box">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
               <circle cx="11" cy="11" r="8"></circle>
               <path d="m21 21-4.3-4.3"></path>
             </svg>
@@ -67,11 +78,7 @@ const categories = ['All', ...new Set(allProjects.map((p) => p.data.category))];
       <!-- Category Filter Pills -->
       <div class="filter-bar" role="group" aria-label="Filter by category">
         {categories.map((cat) => (
-          <button
-            type="button"
-            class={`filter-btn${cat === 'All' ? ' active' : ''}`}
-            data-category={cat}
-          >
+          <button type="button" class={`filter-btn${cat === 'All' ? ' active' : ''}`} data-category={cat}>
             {cat}
           </button>
         ))}
@@ -106,9 +113,13 @@ const categories = ['All', ...new Set(allProjects.map((p) => p.data.category))];
       <!-- Bottom Pagination -->
       <div class="pagination-container pagination-bottom" id="pagination-bottom" style="display: none;">
         <nav class="pagination-bar" aria-label="Bottom projects pagination">
-          <button type="button" class="pagination-btn prev" id="page-prev-bottom" aria-label="Previous page">←</button>
+          <button type="button" class="pagination-btn prev" id="page-prev-bottom" aria-label="Previous page">
+            ←
+          </button>
           <div class="pagination-pages" id="pagination-pages-bottom"></div>
-          <button type="button" class="pagination-btn next" id="page-next-bottom" aria-label="Next page">→</button>
+          <button type="button" class="pagination-btn next" id="page-next-bottom" aria-label="Next page">
+            →
+          </button>
         </nav>
       </div>
 
@@ -174,7 +185,12 @@ const categories = ['All', ...new Set(allProjects.map((p) => p.data.category))];
           btn.addEventListener('click', () => {
             currentPage = i;
             renderPagination();
-            window.scrollTo({ top: document.getElementById('projects-list')?.offsetTop ? document.getElementById('projects-list')!.offsetTop - 120 : 0, behavior: 'smooth' });
+            window.scrollTo({
+              top: document.getElementById('projects-list')?.offsetTop
+                ? document.getElementById('projects-list')!.offsetTop - 120
+                : 0,
+              behavior: 'smooth',
+            });
           });
           paginationPages.appendChild(btn);
         }
@@ -352,7 +368,10 @@ const categories = ['All', ...new Set(allProjects.map((p) => p.data.category))];
     background-color: var(--bg-surface);
     color: var(--text-muted);
     cursor: pointer;
-    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease;
   }
 
   .filter-btn:hover,
@@ -414,7 +433,10 @@ const categories = ['All', ...new Set(allProjects.map((p) => p.data.category))];
     font-size: 0.85rem;
     font-family: var(--font-mono);
     cursor: pointer;
-    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease,
+      border-color 0.15s ease;
   }
 
   .pagination-btn:hover:not(:disabled),

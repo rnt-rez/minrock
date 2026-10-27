@@ -63,7 +63,10 @@ const filtered = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
     padding: 0.35rem 0 0.35rem 0.75rem;
     border-left: 2px solid transparent;
     line-height: 1.45;
-    transition: color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+    transition:
+      color 0.15s ease,
+      border-color 0.15s ease,
+      transform 0.15s ease;
     text-decoration: none;
   }
 
@@ -171,7 +174,7 @@ const filtered = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
             }, 600);
           }
         },
-        { signal }
+        { signal },
       );
     });
 

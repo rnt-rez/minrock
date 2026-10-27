@@ -12,8 +12,21 @@
     aria-expanded="false"
     title="Color theme / Tema visual"
   >
-    <span id="theme-active-icon" class="theme-active-icon">📜</span>
-    <svg class="theme-chevron" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <span id="theme-active-icon" class="theme-active-icon">
+      📜
+    </span>
+    <svg
+      class="theme-chevron"
+      width="9"
+      height="9"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
       <polyline points="6 9 12 15 18 9"></polyline>
     </svg>
   </button>
@@ -27,7 +40,20 @@
         <span class="theme-emoji">☀️</span>
         <span class="theme-label">Clean White</span>
       </span>
-      <svg class="theme-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+      <svg
+        class="theme-check"
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <polyline points="20 6 9 17 4 12" />
+      </svg>
     </button>
 
     <button class="theme-option" data-theme-val="cream" role="menuitem">
@@ -35,7 +61,20 @@
         <span class="theme-emoji">📜</span>
         <span class="theme-label">Warm Paper</span>
       </span>
-      <svg class="theme-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+      <svg
+        class="theme-check"
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <polyline points="20 6 9 17 4 12" />
+      </svg>
     </button>
 
     <button class="theme-option" data-theme-val="slate" role="menuitem">
@@ -43,7 +82,20 @@
         <span class="theme-emoji">⚓</span>
         <span class="theme-label">Slate Navy</span>
       </span>
-      <svg class="theme-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+      <svg
+        class="theme-check"
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <polyline points="20 6 9 17 4 12" />
+      </svg>
     </button>
 
     <button class="theme-option" data-theme-val="midnight" role="menuitem">
@@ -51,7 +103,20 @@
         <span class="theme-emoji">🌌</span>
         <span class="theme-label">Midnight OLED</span>
       </span>
-      <svg class="theme-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+      <svg
+        class="theme-check"
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <polyline points="20 6 9 17 4 12" />
+      </svg>
     </button>
 
     <div class="theme-divider"></div>
@@ -61,7 +126,20 @@
         <span class="theme-emoji">💻</span>
         <span class="theme-label">System Auto</span>
       </span>
-      <svg class="theme-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+      <svg
+        class="theme-check"
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <polyline points="20 6 9 17 4 12" />
+      </svg>
     </button>
   </div>
 </div>
@@ -85,7 +163,11 @@
     background-color: var(--bg-surface);
     color: var(--text-muted);
     cursor: pointer;
-    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+    transition:
+      color 0.15s ease,
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      transform 0.15s ease;
     padding: var(--header-control-button-padding, 0 6px);
   }
 
@@ -113,7 +195,7 @@
     flex-shrink: 0;
   }
 
-  .theme-btn-trigger[aria-expanded="true"] .theme-chevron {
+  .theme-btn-trigger[aria-expanded='true'] .theme-chevron {
     transform: rotate(180deg);
   }
 
@@ -188,7 +270,9 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.12s ease, color 0.12s ease;
+    transition:
+      background-color 0.12s ease,
+      color 0.12s ease;
     gap: 0.5rem;
   }
 
@@ -257,10 +341,10 @@
 
     function updateThemeUI(storedTheme: string) {
       const effectiveTheme = getEffectiveTheme(storedTheme);
-      
+
       // Update icon on the button
       if (activeIcon) {
-        activeIcon.textContent = storedTheme === 'auto' ? '💻' : (themeIcons[effectiveTheme] || '📜');
+        activeIcon.textContent = storedTheme === 'auto' ? '💻' : themeIcons[effectiveTheme] || '📜';
       }
 
       // Update active checks in dropdown
@@ -318,8 +402,10 @@
     btn?.addEventListener('click', (e) => {
       e.stopPropagation();
       // Close other dropdowns if open
-      document.querySelectorAll('.lang-dropdown.open, .social-dropdown-menu.open').forEach(d => d.classList.remove('open'));
-      document.querySelectorAll('#lang-btn, #social-menu-btn').forEach(b => b.setAttribute('aria-expanded', 'false'));
+      document
+        .querySelectorAll('.lang-dropdown.open, .social-dropdown-menu.open')
+        .forEach((d) => d.classList.remove('open'));
+      document.querySelectorAll('#lang-btn, #social-menu-btn').forEach((b) => b.setAttribute('aria-expanded', 'false'));
 
       const open = dropdown?.classList.toggle('open');
       btn.setAttribute('aria-expanded', String(!!open));

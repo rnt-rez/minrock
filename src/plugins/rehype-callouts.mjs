@@ -49,7 +49,9 @@ function createCalloutIconNode(type) {
           {
             type: 'element',
             tagName: 'path',
-            properties: { d: 'M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5' },
+            properties: {
+              d: 'M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5',
+            },
             children: [],
           },
           {
@@ -200,7 +202,8 @@ export function rehypeCallouts() {
         const rawType = match[1].toLowerCase();
         const normalizedType = TYPE_ALIASES[rawType] || rawType;
         const customTitle = match[2]?.trim();
-        const title = customTitle || DEFAULT_TITLES[normalizedType] || (rawType.charAt(0).toUpperCase() + rawType.slice(1));
+        const title =
+          customTitle || DEFAULT_TITLES[normalizedType] || rawType.charAt(0).toUpperCase() + rawType.slice(1);
 
         const newText = textNode.value.slice(match[0].length);
         if (newText.trim() === '') {

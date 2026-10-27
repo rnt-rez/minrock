@@ -1,10 +1,10 @@
 ---
-title: "Visual Gallery & Deep Zoom Demo"
+title: 'Visual Gallery & Deep Zoom Demo'
 description: "Exploring Minrock's native PhotoSwipe 5 lightbox integration with interactive diagrams, fluid pinch-to-zoom, and responsive galleries."
 pubDate: 2026-09-16
-tags: ["design", "showcase", "typography", "obsidian"]
+tags: ['design', 'showcase', 'typography', 'obsidian']
 draft: false
-image: "/images/minrock-design-system.svg"
+image: '/images/minrock-design-system.svg'
 ---
 
 Welcome to the interactive visual gallery demo. In technical publications and architecture documentation, high-fidelity images, diagrams, and schematics require smooth, distraction-free inspection.

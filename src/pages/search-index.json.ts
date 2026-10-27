@@ -1,11 +1,11 @@
 import { getCollection } from 'astro:content';
 
 export async function GET() {
-  const posts = (await getCollection('blog', ({ data }) => !data.draft))
-    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+  );
 
-  const projects = (await getCollection('projects'))
-    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  const projects = (await getCollection('projects')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
   // Aggregate unique tags with counts
   const tagsMap = new Map<string, number>();

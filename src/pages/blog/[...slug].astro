@@ -13,7 +13,7 @@ export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
   return posts.map((post) => ({
     params: { slug: post.id },
-    props: { post }
+    props: { post },
   }));
 }
 
@@ -23,7 +23,7 @@ const { Content, headings } = await render(post);
 const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
   year: 'numeric',
   month: 'long',
-  day: 'numeric'
+  day: 'numeric',
 });
 
 // Reading time calculation
@@ -31,8 +31,9 @@ const words = (post.body ?? '').split(/\s+/).filter(Boolean).length;
 const readingMin = Math.max(1, Math.ceil(words / 200));
 
 // Prev / Next posts
-const allPosts = (await getCollection('blog', ({ data }) => !data.draft))
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const allPosts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
 const currentIndex = allPosts.findIndex((p) => p.id === post.id);
 const prevPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
 const nextPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
@@ -68,7 +69,17 @@ const showToc = features.tableOfContents !== false && headings.length > 0;
               <>
                 <span class="meta-dot">·</span>
                 <span class="reading-time">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
                     <circle cx="12" cy="12" r="10"></circle>
                     <polyline points="12 6 12 12 16 14"></polyline>
                   </svg>
@@ -81,7 +92,9 @@ const showToc = features.tableOfContents !== false && headings.length > 0;
                 <span class="meta-dot">·</span>
                 <span class="meta-tags">
                   {post.data.tags.map((tag: string) => (
-                    <a href={`/tags/${tag}`} class="tag">#{tag}</a>
+                    <a href={`/tags/${tag}`} class="tag">
+                      #{tag}
+                    </a>
                   ))}
                 </span>
               </>
@@ -107,9 +120,7 @@ const showToc = features.tableOfContents !== false && headings.length > 0;
           <Content />
         </div>
 
-        {showShare && (
-          <ShareBar title={post.data.title} url={currentUrl} description={post.data.description} />
-        )}
+        {showShare && <ShareBar title={post.data.title} url={currentUrl} description={post.data.description} />}
 
         <!-- Prev / Next Navigation -->
         <nav class="post-nav" aria-label="Post navigation">
@@ -291,7 +302,10 @@ const showToc = features.tableOfContents !== false && headings.length > 0;
     border-radius: 8px;
     background-color: var(--bg-surface);
     text-decoration: none;
-    transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.15s ease;
+    transition:
+      border-color 0.2s ease,
+      background-color 0.2s ease,
+      transform 0.15s ease;
   }
 
   .nav-card:hover {

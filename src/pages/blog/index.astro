@@ -4,8 +4,9 @@ import ArticleCard from '../../components/ArticleCard.astro';
 import { getCollection } from 'astro:content';
 import { siteConfig } from '../../config/site';
 
-const allPosts = (await getCollection('blog', ({ data }) => !data.draft))
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const allPosts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
 
 // Collect unique tags
 const allTags = Array.from(new Set(allPosts.flatMap((p) => p.data.tags || []))).sort();
@@ -16,15 +17,15 @@ const showTags = siteConfig.features?.tags !== false;
   <div class="blog-page">
     <header class="blog-header">
       <h1 class="page-title">Articles &amp; Notes</h1>
-      <p class="page-desc">
-        Explorations in software engineering, technical writing, and minimalist design.
-      </p>
+      <p class="page-desc">Explorations in software engineering, technical writing, and minimalist design.</p>
 
       {showTags && allTags.length > 0 && (
         <div class="tags-filter">
           <span class="tags-label">Topics:</span>
           {allTags.map((tag) => (
-            <a href={`/tags/${tag}`} class="tag-pill">#{tag}</a>
+            <a href={`/tags/${tag}`} class="tag-pill">
+              #{tag}
+            </a>
           ))}
         </div>
       )}
@@ -40,7 +41,17 @@ const showTags = siteConfig.features?.tags !== false;
         <!-- Simple Search Filter Box -->
         <div class="search-wrap">
           <div class="search-box">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
               <circle cx="11" cy="11" r="8"></circle>
               <path d="m21 21-4.3-4.3"></path>
             </svg>
@@ -72,9 +83,13 @@ const showTags = siteConfig.features?.tags !== false;
       <!-- Bottom Pagination -->
       <div class="pagination-container pagination-bottom" id="pagination-bottom" style="display: none;">
         <nav class="pagination-bar" aria-label="Bottom article pagination">
-          <button type="button" class="pagination-btn prev" id="page-prev-bottom" aria-label="Previous page">←</button>
+          <button type="button" class="pagination-btn prev" id="page-prev-bottom" aria-label="Previous page">
+            ←
+          </button>
           <div class="pagination-pages" id="pagination-pages-bottom"></div>
-          <button type="button" class="pagination-btn next" id="page-next-bottom" aria-label="Next page">→</button>
+          <button type="button" class="pagination-btn next" id="page-next-bottom" aria-label="Next page">
+            →
+          </button>
         </nav>
       </div>
 
@@ -138,7 +153,12 @@ const showTags = siteConfig.features?.tags !== false;
           btn.addEventListener('click', () => {
             currentPage = i;
             renderPagination();
-            window.scrollTo({ top: document.getElementById('posts-list')?.offsetTop ? document.getElementById('posts-list')!.offsetTop - 120 : 0, behavior: 'smooth' });
+            window.scrollTo({
+              top: document.getElementById('posts-list')?.offsetTop
+                ? document.getElementById('posts-list')!.offsetTop - 120
+                : 0,
+              behavior: 'smooth',
+            });
           });
           targetEl.appendChild(btn);
         }
@@ -179,7 +199,9 @@ const showTags = siteConfig.features?.tags !== false;
           const title = wrapper.dataset.title || '';
           const desc = wrapper.dataset.description || '';
           const tags = wrapper.dataset.tags || '';
-          return !query || title.includes(query) || desc.includes(query) || tags.includes(query) || slug.includes(query);
+          return (
+            !query || title.includes(query) || desc.includes(query) || tags.includes(query) || slug.includes(query)
+          );
         });
         currentPage = 1;
         renderPagination();
@@ -238,7 +260,10 @@ const showTags = siteConfig.features?.tags !== false;
     border-radius: 9999px;
     color: var(--text-muted);
     text-decoration: none;
-    transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+    transition:
+      color 0.15s ease,
+      border-color 0.15s ease,
+      background-color 0.15s ease;
   }
 
   .tag-pill:hover {
@@ -359,7 +384,10 @@ const showTags = siteConfig.features?.tags !== false;
     font-size: 0.85rem;
     font-family: var(--font-mono);
     cursor: pointer;
-    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease,
+      border-color 0.15s ease;
   }
 
   .pagination-btn:hover:not(:disabled),

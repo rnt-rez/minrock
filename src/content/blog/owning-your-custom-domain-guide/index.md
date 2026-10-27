@@ -1,8 +1,8 @@
 ---
-title: "Owning Your Identity: Custom Domains, Zero-Cost Hosting, and Digital Independence"
-description: "Why having your own domain name is surprisingly cheap and accessible, and how modern platforms like Vercel and Cloudflare let you host your site for free forever."
+title: 'Owning Your Identity: Custom Domains, Zero-Cost Hosting, and Digital Independence'
+description: 'Why having your own domain name is surprisingly cheap and accessible, and how modern platforms like Vercel and Cloudflare let you host your site for free forever.'
 pubDate: 2026-09-16
-tags: ["domain", "hosting", "vercel", "cloudflare", "indieweb", "guide"]
+tags: ['domain', 'hosting', 'vercel', 'cloudflare', 'indieweb', 'guide']
 draft: false
 ---
 
@@ -27,8 +27,8 @@ While platforms often provide free subdomains (like `username.vercel.app` or `us
 
 Many people assume a domain is a subscription service that costs dozens of dollars every month. In reality:
 
-* **Top-Level Domains (TLDs)**: Common extensions like `.com`, `.dev`, `.net`, or country-specific ones like `.com.br` typically cost between **$8 and $14 per year** (less than $1 a month).
-* **Transparent Registrars**: Platforms like [Cloudflare Registrar](https://www.cloudflare.com/products/registrar/), [Porkbun](https://porkbun.com), [Namecheap](https://www.namecheap.com), or [Registro.br](https://registro.br) sell domains at wholesale cost with zero hidden markups and free WHOIS privacy protection.
+- **Top-Level Domains (TLDs)**: Common extensions like `.com`, `.dev`, `.net`, or country-specific ones like `.com.br` typically cost between **$8 and $14 per year** (less than $1 a month).
+- **Transparent Registrars**: Platforms like [Cloudflare Registrar](https://www.cloudflare.com/products/registrar/), [Porkbun](https://porkbun.com), [Namecheap](https://www.namecheap.com), or [Registro.br](https://registro.br) sell domains at wholesale cost with zero hidden markups and free WHOIS privacy protection.
 
 ---
 
@@ -38,13 +38,13 @@ Historically, having a custom domain meant paying $10 to $30 every month for sha
 
 Today, static architecture themes like **Minrock** turn that model on its head:
 
-| Capability | Old Hosting Model | Modern JAMstack / SSG |
-| :--- | :--- | :--- |
-| **Monthly Cost** | $10 – $35 / month | **$0.00 / month (Free Tier)** |
-| **Global CDN** | Expensive add-on | **Included out of the box** |
-| **SSL / HTTPS** | Paid certificates ($50/yr) | **Free, automated Let's Encrypt** |
-| **Deployment** | Manual FTP uploads | **Automatic on `git push`** |
-| **Downtime / Maintenance** | Database crashes & updates | **Zero servers to maintain** |
+| Capability                 | Old Hosting Model          | Modern JAMstack / SSG             |
+| :------------------------- | :------------------------- | :-------------------------------- |
+| **Monthly Cost**           | $10 – $35 / month          | **$0.00 / month (Free Tier)**     |
+| **Global CDN**             | Expensive add-on           | **Included out of the box**       |
+| **SSL / HTTPS**            | Paid certificates ($50/yr) | **Free, automated Let's Encrypt** |
+| **Deployment**             | Manual FTP uploads         | **Automatic on `git push`**       |
+| **Downtime / Maintenance** | Database crashes & updates | **Zero servers to maintain**      |
 
 Because Minrock compiles into pure static HTML, CSS, and SVG files, platforms like **Vercel** and **Cloudflare Pages** can cache your entire website on edge servers in hundreds of cities around the world without incurring server compute charges.
 
@@ -55,21 +55,27 @@ Because Minrock compiles into pure static HTML, CSS, and SVG files, platforms li
 You don't need to be a network engineer to hook your custom domain up to your Minrock repository. The entire process consists of three straightforward steps:
 
 ### 1. Purchase Your Domain
+
 Pick a clean, memorable name on a reputable registrar (e.g., Cloudflare Registrar or Porkbun).
 
 ### 2. Add Domain to Your Hosting Dashboard
+
 In your **Vercel** or **Cloudflare Pages** project settings:
-* Navigate to **Settings** → **Domains**.
-* Type your domain name (e.g., `yourdomain.com` and `www.yourdomain.com`).
+
+- Navigate to **Settings** → **Domains**.
+- Type your domain name (e.g., `yourdomain.com` and `www.yourdomain.com`).
 
 ### 3. Point Your DNS Records
+
 Your host will give you two simple DNS values:
-* **CNAME Record**: Points `www` to your host's edge network (e.g. `cname.vercel-dns.com`).
-* **A Record (or ALIAS)**: Points your root domain to the host's anycast IP addresses.
+
+- **CNAME Record**: Points `www` to your host's edge network (e.g. `cname.vercel-dns.com`).
+- **A Record (or ALIAS)**: Points your root domain to the host's anycast IP addresses.
 
 Once saved in your registrar's dashboard, the host automatically issues a free SSL certificate within minutes. Your website is now live worldwide under your own personal domain!
 
 ### 4. Set Your `SITE_URL` Environment Variable
+
 In your host settings (**Settings** → **Environment Variables**), add `SITE_URL=https://yourdomain.com` and trigger a redeploy. This ensures Minrock compiles your sitemap, canonical SEO tags, OpenGraph cards, and RSS feed with your custom domain instead of the demo fallback.
 
 ---

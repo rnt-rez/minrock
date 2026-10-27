@@ -10,7 +10,13 @@ export interface Props {
 const { selector = '.post-content', title = '', label = 'Listen to Article' } = Astro.props;
 ---
 
-<div id="audio-player-root" class="audio-player-card is-collapsed" data-selector={selector} data-title={title} aria-label="Accessible audio reader">
+<div
+  id="audio-player-root"
+  class="audio-player-card is-collapsed"
+  data-selector={selector}
+  data-title={title}
+  aria-label="Accessible audio reader"
+>
   <!-- Trigger Bar -->
   <button
     id="audio-toggle-btn"
@@ -22,7 +28,16 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
   >
     <div class="audio-toggle-left">
       <div class="audio-speaker-icon" aria-hidden="true">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
           <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
           <path class="audio-wave wave-1" d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
           <path class="audio-wave wave-2" d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
@@ -30,15 +45,30 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
       </div>
       <div class="audio-toggle-text">
         <span class="audio-label">{label}</span>
-        <span class="audio-dot" aria-hidden="true">•</span>
-        <span id="audio-estimate" class="audio-estimate">Calculating...</span>
+        <span class="audio-dot" aria-hidden="true">
+          •
+        </span>
+        <span id="audio-estimate" class="audio-estimate">
+          Calculating...
+        </span>
       </div>
     </div>
 
     <div class="audio-toggle-right">
-      <span id="audio-status-badge" class="audio-status-badge">Ready to play</span>
+      <span id="audio-status-badge" class="audio-status-badge">
+        Ready to play
+      </span>
       <span class="audio-chevron-icon" aria-hidden="true">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg
+          width="15"
+          height="15"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
           <polyline points="6 9 12 15 18 9"></polyline>
         </svg>
       </span>
@@ -61,11 +91,19 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
             <rect x="6" y="4" width="4" height="16"></rect>
             <rect x="14" y="4" width="4" height="16"></rect>
           </svg>
-          <span id="audio-play-text" class="audio-btn-text">Play</span>
+          <span id="audio-play-text" class="audio-btn-text">
+            Play
+          </span>
         </button>
 
         <!-- Stop -->
-        <button id="audio-stop-btn" type="button" class="audio-btn audio-btn-secondary" aria-label="Stop playback" disabled>
+        <button
+          id="audio-stop-btn"
+          type="button"
+          class="audio-btn audio-btn-secondary"
+          aria-label="Stop playback"
+          disabled
+        >
           <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <rect x="5" y="5" width="14" height="14" rx="2"></rect>
           </svg>
@@ -74,14 +112,46 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
 
         <!-- Prev / Next Paragraph -->
         <div class="audio-nav-btns">
-          <button id="audio-prev-btn" type="button" class="audio-btn audio-btn-icon" aria-label="Previous paragraph" disabled title="Previous paragraph">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <button
+            id="audio-prev-btn"
+            type="button"
+            class="audio-btn audio-btn-icon"
+            aria-label="Previous paragraph"
+            disabled
+            title="Previous paragraph"
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
               <polygon points="19 20 9 12 19 4 19 20"></polygon>
               <line x1="5" y1="19" x2="5" y2="5"></line>
             </svg>
           </button>
-          <button id="audio-next-btn" type="button" class="audio-btn audio-btn-icon" aria-label="Next paragraph" disabled title="Next paragraph">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <button
+            id="audio-next-btn"
+            type="button"
+            class="audio-btn audio-btn-icon"
+            aria-label="Next paragraph"
+            disabled
+            title="Next paragraph"
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
               <polygon points="5 4 15 12 5 20 5 4"></polygon>
               <line x1="19" y1="5" x2="19" y2="19"></line>
             </svg>
@@ -90,7 +160,13 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
 
         <!-- Speed Rate Selector -->
         <div class="audio-rate-wrap">
-          <button type="button" id="audio-rate-btn" class="audio-rate-btn" aria-label="Playback speed" title="Adjust playback speed">
+          <button
+            type="button"
+            id="audio-rate-btn"
+            class="audio-rate-btn"
+            aria-label="Playback speed"
+            title="Adjust playback speed"
+          >
             <span id="audio-rate-val">1.0x</span>
           </button>
         </div>
@@ -154,8 +230,12 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
 
     // 1. Extract Title and Subtitle/Description from article header
     const articleEl = contentEl.closest('article') || document.querySelector('article') || document;
-    const titleEl = articleEl.querySelector('h1.post-title, h1.project-title, .post-header h1, .project-header h1, h1') as HTMLElement | null;
-    const subtitleEl = articleEl.querySelector('.post-description, .project-description, .post-header p.post-description, .project-header p') as HTMLElement | null;
+    const titleEl = articleEl.querySelector(
+      'h1.post-title, h1.project-title, .post-header h1, .project-header h1, h1',
+    ) as HTMLElement | null;
+    const subtitleEl = articleEl.querySelector(
+      '.post-description, .project-description, .post-header p.post-description, .project-header p',
+    ) as HTMLElement | null;
 
     const initialNodes: HTMLElement[] = [];
     if (titleEl && (titleEl.innerText || titleEl.textContent || '').trim()) {
@@ -166,19 +246,18 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
     }
 
     // 2. Extract textual elements from content body (h2, h3, p, li, blockquote)
-    const bodyNodes = Array.from(contentEl.querySelectorAll('h2, h3, p, li, blockquote'))
-      .filter((el) => {
-        // Exclude callout icons, copy buttons, pre, tables, toc, etc.
-        return (
-          !el.closest('pre') &&
-          !el.closest('.expressive-code') &&
-          !el.closest('.code-block') &&
-          !el.closest('.toc') &&
-          !el.closest('table') &&
-          !el.closest('.callout-title') &&
-          Boolean(el.textContent?.trim().length)
-        );
-      }) as HTMLElement[];
+    const bodyNodes = Array.from(contentEl.querySelectorAll('h2, h3, p, li, blockquote')).filter((el) => {
+      // Exclude callout icons, copy buttons, pre, tables, toc, etc.
+      return (
+        !el.closest('pre') &&
+        !el.closest('.expressive-code') &&
+        !el.closest('.code-block') &&
+        !el.closest('.toc') &&
+        !el.closest('table') &&
+        !el.closest('.callout-title') &&
+        Boolean(el.textContent?.trim().length)
+      );
+    }) as HTMLElement[];
 
     const rawNodes = [...initialNodes, ...bodyNodes];
     const textNodes = rawNodes.filter((el) => {
@@ -202,9 +281,9 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
     let currentIndex = 0;
     let isPlaying = false;
     let isPaused = false;
-    let rates = [1.0, 1.25, 1.5, 2.0, 0.75];
+    const rates = [1.0, 1.25, 1.5, 2.0, 0.75];
     let currentRateIdx = 0;
-    let synth = window.speechSynthesis;
+    const synth = window.speechSynthesis;
     let userToggledWhileSticky = false;
 
     // Detect language
@@ -424,26 +503,30 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
     if (!sentinel) {
       sentinel = document.createElement('div');
       sentinel.className = 'audio-sticky-sentinel';
-      sentinel.style.cssText = 'position: relative; top: -64px; height: 1px; pointer-events: none; visibility: hidden; margin: 0; padding: 0;';
+      sentinel.style.cssText =
+        'position: relative; top: -64px; height: 1px; pointer-events: none; visibility: hidden; margin: 0; padding: 0;';
       root.parentNode?.insertBefore(sentinel, root);
     }
 
-    activeStickyObserver = new IntersectionObserver(([entry]) => {
-      const isActive = root?.classList.contains('is-active-player') ?? false;
-      const isScrolledPast = !entry.isIntersecting && entry.boundingClientRect.top <= 64;
-      const shouldBeSticky = isActive && isScrolledPast;
-      const wasSticky = root?.classList.contains('is-sticky') ?? false;
+    activeStickyObserver = new IntersectionObserver(
+      ([entry]) => {
+        const isActive = root?.classList.contains('is-active-player') ?? false;
+        const isScrolledPast = !entry.isIntersecting && entry.boundingClientRect.top <= 64;
+        const shouldBeSticky = isActive && isScrolledPast;
+        const wasSticky = root?.classList.contains('is-sticky') ?? false;
 
-      root?.classList.toggle('is-sticky', shouldBeSticky);
+        root?.classList.toggle('is-sticky', shouldBeSticky);
 
-      if (shouldBeSticky && !wasSticky) {
-        if (!userToggledWhileSticky && root?.classList.contains('is-expanded')) {
-          setExpanded(false);
+        if (shouldBeSticky && !wasSticky) {
+          if (!userToggledWhileSticky && root?.classList.contains('is-expanded')) {
+            setExpanded(false);
+          }
+        } else if (!shouldBeSticky && wasSticky) {
+          userToggledWhileSticky = false;
         }
-      } else if (!shouldBeSticky && wasSticky) {
-        userToggledWhileSticky = false;
-      }
-    }, { threshold: [0, 1] });
+      },
+      { threshold: [0, 1] },
+    );
 
     activeStickyObserver.observe(sentinel);
   }
@@ -477,7 +560,10 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
     border-radius: 8px;
     background-color: var(--bg-surface);
     overflow: hidden;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      background-color 0.2s ease;
   }
 
   /* Sticky when active playback is initiated */
@@ -493,7 +579,9 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
   }
 
   .audio-player-card.is-active-player.is-sticky {
-    box-shadow: 0 10px 28px -6px rgba(0, 0, 0, 0.25), 0 2px 8px -2px rgba(37, 99, 235, 0.2);
+    box-shadow:
+      0 10px 28px -6px rgba(0, 0, 0, 0.25),
+      0 2px 8px -2px rgba(37, 99, 235, 0.2);
     border-color: var(--accent);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -508,7 +596,8 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
   }
 
   @keyframes pulse-wave {
-    0%, 100% {
+    0%,
+    100% {
       opacity: 0.3;
     }
     50% {
@@ -582,7 +671,9 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
     background-color: var(--bg);
     border: 1px solid var(--border);
     color: var(--text-muted);
-    transition: border-color 0.2s ease, color 0.2s ease;
+    transition:
+      border-color 0.2s ease,
+      color 0.2s ease;
   }
 
   .audio-player-card.is-playing .audio-status-badge {
@@ -593,7 +684,9 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
 
   .audio-chevron-icon {
     color: var(--text-muted);
-    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease;
+    transition:
+      transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+      color 0.2s ease;
     display: flex;
     align-items: center;
   }
@@ -606,7 +699,9 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
   .audio-player-drawer {
     display: grid;
     grid-template-rows: 0fr;
-    transition: grid-template-rows 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+    transition:
+      grid-template-rows 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.2s ease;
     opacity: 0;
   }
 
@@ -645,7 +740,9 @@ const { selector = '.post-content', title = '', label = 'Listen to Article' } = 
     background-color: var(--bg);
     color: var(--text);
     cursor: pointer;
-    transition: background-color 0.15s ease, border-color 0.15s ease;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease;
   }
 
   .audio-btn:hover:not(:disabled) {

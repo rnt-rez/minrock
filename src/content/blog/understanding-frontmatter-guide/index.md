@@ -1,12 +1,12 @@
 ---
-title: "Understanding Frontmatter in Minrock: The Complete Metadata Reference"
-description: "A deep-dive explanation of all YAML frontmatter options available when creating notes in Obsidian for Minrock."
+title: 'Understanding Frontmatter in Minrock: The Complete Metadata Reference'
+description: 'A deep-dive explanation of all YAML frontmatter options available when creating notes in Obsidian for Minrock.'
 pubDate: 2026-09-16
-tags: ["frontmatter", "obsidian", "astro", "guide"]
+tags: ['frontmatter', 'obsidian', 'astro', 'guide']
 draft: false
 ---
 
-Every article published in **Minrock** starts with a block of structured metadata at the very top of the file called **YAML Frontmatter**. 
+Every article published in **Minrock** starts with a block of structured metadata at the very top of the file called **YAML Frontmatter**.
 
 Enclosed between two sets of triple hyphens (`---`), frontmatter provides the Astro static compiler with essential attributes—such as title, publication date, taxonomy tags, and OpenGraph social previews—without cluttering the article's prose.
 
@@ -18,13 +18,13 @@ When creating a new note inside Obsidian (or typing `Ctrl + N` inside `src/conte
 
 ```yaml
 ---
-title: "Your Article Title Here"
-description: "A concise 1-2 sentence summary for search engines, cards, and RSS."
+title: 'Your Article Title Here'
+description: 'A concise 1-2 sentence summary for search engines, cards, and RSS.'
 pubDate: 2026-09-16
 updatedDate: 2026-09-17
-tags: ["engineering", "architecture", "astro"]
+tags: ['engineering', 'architecture', 'astro']
 draft: false
-image: "/images/custom-cover.jpg"
+image: '/images/custom-cover.jpg'
 audio: true
 ---
 ```
@@ -35,16 +35,16 @@ audio: true
 
 Here is what each property does, its data type, and why it matters to your blog:
 
-| Property | Type | Required? | Purpose & Impact |
-| :--- | :--- | :--- | :--- |
-| **`title`** | `string` | **Yes** | The main heading of your article. Used for `<title>` tags, H1 headings, cards, and JSON-LD structured data. |
-| **`description`** | `string` | **Yes** | Crucial for SEO and social sharing. Appears in Twitter/LinkedIn OpenGraph previews, RSS descriptions, and search indexing. |
-| **`pubDate`** | `date` | **Yes** | The initial publication timestamp (`YYYY-MM-DD`). Articles on the home page and `/blog` are sorted chronologically by this date. |
-| **`updatedDate`** | `date` | Optional | Displays a subtle *"Updated on [date]"* notice when revising an existing piece. |
-| **`tags`** | `array` | Optional | Categorization tags (`["astro", "obsidian"]`). Automatically populates the tag cloud on `/tags` and enables live topic filtering. |
-| **`draft`** | `boolean` | Optional (default `false`) | If set to `draft: true`, the post remains visible during local development (`npm run dev`), but is completely excluded from production builds (`npm run build`). |
-| **`image`** | `string` | Optional | Path to a cover image or vector diagram (e.g. `cover.png` in the local bundle or `/images/hero.svg`). |
-| **`audio`** | `boolean` | Optional (default `true`) | Controls whether the synthesized voice reader widget appears below the article title. |
+| Property          | Type      | Required?                  | Purpose & Impact                                                                                                                                                 |
+| :---------------- | :-------- | :------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`title`**       | `string`  | **Yes**                    | The main heading of your article. Used for `<title>` tags, H1 headings, cards, and JSON-LD structured data.                                                      |
+| **`description`** | `string`  | **Yes**                    | Crucial for SEO and social sharing. Appears in Twitter/LinkedIn OpenGraph previews, RSS descriptions, and search indexing.                                       |
+| **`pubDate`**     | `date`    | **Yes**                    | The initial publication timestamp (`YYYY-MM-DD`). Articles on the home page and `/blog` are sorted chronologically by this date.                                 |
+| **`updatedDate`** | `date`    | Optional                   | Displays a subtle _"Updated on [date]"_ notice when revising an existing piece.                                                                                  |
+| **`tags`**        | `array`   | Optional                   | Categorization tags (`["astro", "obsidian"]`). Automatically populates the tag cloud on `/tags` and enables live topic filtering.                                |
+| **`draft`**       | `boolean` | Optional (default `false`) | If set to `draft: true`, the post remains visible during local development (`npm run dev`), but is completely excluded from production builds (`npm run build`). |
+| **`image`**       | `string`  | Optional                   | Path to a cover image or vector diagram (e.g. `cover.png` in the local bundle or `/images/hero.svg`).                                                            |
+| **`audio`**       | `boolean` | Optional (default `true`)  | Controls whether the synthesized voice reader widget appears below the article title.                                                                            |
 
 ---
 
@@ -56,10 +56,10 @@ When you simply want to jot down an insight quickly from Obsidian:
 
 ```markdown
 ---
-title: "Zero-Latency Caching Patterns"
-description: "Quick notes on in-memory LRU cache implementations."
+title: 'Zero-Latency Caching Patterns'
+description: 'Quick notes on in-memory LRU cache implementations.'
 pubDate: 2026-09-16
-tags: ["systems", "performance"]
+tags: ['systems', 'performance']
 ---
 
 Here are my thoughts on memory limits...
@@ -71,10 +71,10 @@ If you are drafting an extensive technical whitepaper and want to preview it loc
 
 ```markdown
 ---
-title: "Deep Dive into Distributed Consensus"
-description: "Drafting notes on Raft election timeouts and log replication."
+title: 'Deep Dive into Distributed Consensus'
+description: 'Drafting notes on Raft election timeouts and log replication.'
 pubDate: 2026-09-16
-tags: ["distributed-systems"]
+tags: ['distributed-systems']
 draft: true
 ---
 ```
@@ -88,8 +88,8 @@ draft: true
 
 Because Minrock's content folder is a native Obsidian vault, you can take advantage of powerful visual tools:
 
-1. **Obsidian Properties Core Plugin**: Enable Obsidian's native *"Properties"* view in settings to edit your frontmatter using clean input fields, tag pickers, and calendar widgets instead of typing raw YAML.
-2. **Vault CMS Setup**: Vault CMS automatically maps the fields declared in `src/content.config.ts`, so when you click *"New Post"*, all fields are filled with sensible defaults.
+1. **Obsidian Properties Core Plugin**: Enable Obsidian's native _"Properties"_ view in settings to edit your frontmatter using clean input fields, tag pickers, and calendar widgets instead of typing raw YAML.
+2. **Vault CMS Setup**: Vault CMS automatically maps the fields declared in `src/content.config.ts`, so when you click _"New Post"_, all fields are filled with sensible defaults.
 3. **Automatic Slugs**: The folder name in `src/content/blog/<slug>/index.md` becomes your permanent URL route (`/blog/<slug>`), keeping filenames decoupled from the title.
 
 ---
@@ -110,7 +110,7 @@ const blog = defineCollection({
     draft: z.boolean().default(false),
     image: z.string().optional(),
     audio: z.boolean().default(true),
-  })
+  }),
 });
 ```
 
