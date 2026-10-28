@@ -19,13 +19,16 @@ const showTags = siteConfig.features?.tags !== false;
   <div class="card-meta">
     <time datetime={post.data.pubDate.toISOString()}>{formattedDate}</time>
     {showTags && post.data.tags && post.data.tags.length > 0 && (
-      <span class="tags">
-        {post.data.tags.map((tag) => (
-          <a href={`/tags/${tag}`} class="tag">
-            #{tag}
-          </a>
-        ))}
-      </span>
+      <div class="tags-row">
+        <span class="tags">
+          {post.data.tags.map((tag) => (
+            <a href={`/tags/${tag}`} class="tag">
+              #{tag}
+            </a>
+          ))}
+        </span>
+        <a href={`/blog/${post.id}`} class="tags-more" hidden></a>
+      </div>
     )}
   </div>
 
@@ -59,11 +62,42 @@ const showTags = siteConfig.features?.tags !== false;
     margin-bottom: 0.4rem;
   }
 
+  .card-meta time {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .tags-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.35rem;
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* Clamp to a single row: tag height = line + vertical padding + border. */
   .tags {
-    display: inline-flex;
+    display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 0.35rem;
-    flex-wrap: wrap;
+    min-width: 0;
+    font-size: 0.8rem;
+    max-height: calc(1lh + 0.24rem + 2px);
+    overflow: hidden;
+  }
+
+  .tags-more {
+    flex-shrink: 0;
+    padding: 0.12rem 0.25rem;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+
+  .tags-more:hover {
+    color: var(--accent);
   }
 
   .tag {
@@ -71,7 +105,7 @@ const showTags = siteConfig.features?.tags !== false;
     align-items: center;
     color: var(--accent);
     font-weight: 500;
-    font-size: 0.8rem;
+    font-size: inherit;
     text-decoration: none;
     padding: 0.12rem 0.45rem;
     border-radius: 4px;
@@ -84,12 +118,6 @@ const showTags = siteConfig.features?.tags !== false;
     color: var(--accent);
     background-color: var(--bg-subtle);
     border-color: var(--accent);
-    transform: translateY(-1.5px) scale(1.04);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  }
-
-  .tag:active {
-    transform: translateY(0) scale(0.98);
   }
 
   .card-title {
@@ -114,3 +142,45 @@ const showTags = siteConfig.features?.tags !== false;
     line-height: 1.6;
   }
 </style>
+
+<script>
+  // Tags are clamped to one row by CSS; count the ones that wrapped out of
+  // view and surface them as a "+N more" indicator.
+  const updateRow = (row: HTMLElement) => {
+    const tags = row.querySelector<HTMLElement>('.tags');
+    const more = row.querySelector<HTMLElement>('.tags-more');
+    if (!tags || !more) return;
+
+    const items = Array.from(tags.querySelectorAll<HTMLElement>('.tag'));
+    const overflowing = () =>
+      items.filter((item) => item.offsetTop > items[0].offsetTop);
+
+    // Measure with the indicator already in place, sized for the widest
+    // possible label (every tag clipped), so it can't clip more tags later.
+    more.textContent = `+${items.length} more`;
+    more.hidden = false;
+
+    const clipped = overflowing();
+    // Clipped tags are invisible, so keep them out of the tab order.
+    items.forEach((item) => {
+      item.inert = clipped.includes(item);
+    });
+
+    if (clipped.length === 0) {
+      more.hidden = true;
+      return;
+    }
+
+    more.textContent = `+${clipped.length} more`;
+    more.title = clipped.map((item) => item.textContent?.trim()).join(', ');
+  };
+
+  const observer = new ResizeObserver((entries) => {
+    entries.forEach((entry) => updateRow(entry.target as HTMLElement));
+  });
+
+  document.querySelectorAll<HTMLElement>('.tags-row').forEach((row) => {
+    observer.observe(row);
+    document.fonts.ready.then(() => updateRow(row));
+  });
+</script>
