@@ -30,4 +30,6 @@ Thumbs.db
 # Internal Fleet Harness & Process Logs (Strictly Local)
 PROGRESS.md
 AGENTS.md
+implementation_plan.md
+IMPLEMENTATION_PLAN.md
 .agents/
