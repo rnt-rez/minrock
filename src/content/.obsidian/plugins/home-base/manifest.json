@@ -1,7 +1,7 @@
 {
 	"id": "home-base",
 	"name": "Home Base",
-	"version": "0.2.11",
+	"version": "0.2.12",
 	"minAppVersion": "1.11.0",
 	"description": "Your dedicated home in your vault.",
 	"author": "David V. Kimball",

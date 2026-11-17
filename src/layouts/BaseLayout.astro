@@ -61,7 +61,13 @@ const showImageZoom = features.imageZoom !== false;
     <script is:inline>
       (function () {
         const savedTheme = localStorage.getItem('minrock_theme') || 'cream';
-        document.documentElement.setAttribute('data-theme', savedTheme);
+        const effectiveTheme =
+          savedTheme === 'auto'
+            ? window.matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'slate'
+              : 'cream'
+            : savedTheme;
+        document.documentElement.setAttribute('data-theme', effectiveTheme);
       })();
     </script>
   </head>

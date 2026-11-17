@@ -28,7 +28,7 @@ __export(main_exports, {
   default: () => AstroComposerPlugin
 });
 module.exports = __toCommonJS(main_exports);
-var import_obsidian14 = require("obsidian");
+var import_obsidian15 = require("obsidian");
 
 // src/types.ts
 var KNOWN_ARRAY_KEYS = ["tags", "aliases", "cssclasses"];
@@ -64,12 +64,14 @@ var DEFAULT_SETTINGS = {
   },
   showMdxFilesInExplorer: false,
   processBackgroundFileChanges: true,
+  externalNoteHandling: "prompt",
   syncDraftDate: false,
   draftDetectionMode: "property",
   draftProperty: "",
   draftLogic: "true-is-draft",
   publishDateField: "",
-  renameOnTitleClick: false
+  renameOnTitleClick: false,
+  showFolderNameAsInlineTitle: false
 };
 
 // src/commands/index.ts
@@ -106,6 +108,13 @@ function sortByPatternSpecificity(types) {
 }
 
 // src/utils/string-utils.ts
+function toSafeFileName(str) {
+  const cleaned = str.normalize("NFC").replace(/[‎‏‪-‮⁦-⁩]/g, "").split("").filter((char) => char.charCodeAt(0) >= 32).join("").replace(/[\\/:*?"<>|#^[\]]/g, " ").replace(/\s+/g, " ").trim().replace(/^\.+/, "").replace(/[.\s]+$/g, "");
+  if (/^(con|prn|aux|nul|com[1-9]|lpt[1-9])$/i.test(cleaned)) {
+    return `${cleaned} file`;
+  }
+  return cleaned;
+}
 function toKebabCase(str) {
   const normalized = str.normalize("NFKC").replace(/([a-z0-9])([A-Z])/g, "$1-$2").replace(/([A-Z])([A-Z][a-z])/g, "$1-$2$3").toLowerCase().replace(/[\u200e\u200f\u202a-\u202e\u2066-\u2069]/g, "").replace(/[<>:"/\\|?*]/g, " ").split("").filter((char) => char.charCodeAt(0) >= 32).join("").replace(/[^\p{L}\p{N}\p{M}\s-]/gu, "").trim().replace(/\s+/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
   if (!normalized) {
@@ -132,7 +141,9 @@ var FileOperations = class {
     }
     return this.settings;
   }
-  createSafeStem(title) {
+  /** A file or folder name from a title, in the content type's file name format. */
+  createSafeStem(title, contentType) {
+    if ((contentType == null ? void 0 : contentType.fileNameFormat) === "title") return toSafeFileName(title) || "Untitled";
     return toKebabCase(title) || "untitled";
   }
   getUniqueFilePath(path, currentPathToIgnore) {
@@ -171,8 +182,8 @@ var FileOperations = class {
       suffix += 1;
     }
   }
-  generateFilename(title, enableUnderscorePrefix = false) {
-    const safeKebabTitle = this.createSafeStem(title);
+  generateFilename(title, enableUnderscorePrefix = false, contentType) {
+    const safeKebabTitle = this.createSafeStem(title, contentType);
     const prefix = enableUnderscorePrefix ? "_" : "";
     return `${prefix}${safeKebabTitle}`;
   }
@@ -263,7 +274,7 @@ var FileOperations = class {
       new import_obsidian.Notice(`Content type ${type} not found.`);
       return null;
     }
-    const kebabTitle = this.createSafeStem(title);
+    const kebabTitle = this.createSafeStem(title, contentType);
     const enableUnderscorePrefix = (contentType == null ? void 0 : contentType.enableUnderscorePrefix) || false;
     const prefix = enableUnderscorePrefix ? "_" : "";
     let targetFolder = "";
@@ -444,7 +455,7 @@ var FileOperations = class {
       new import_obsidian.Notice(`Content type ${type} not found.`);
       return null;
     }
-    const kebabTitle = this.createSafeStem(title);
+    const kebabTitle = this.createSafeStem(title, contentType);
     const prefix = "";
     const creationMode = (contentType == null ? void 0 : contentType.creationMode) || "file";
     if (creationMode === "folder") {
@@ -452,6 +463,48 @@ var FileOperations = class {
     } else {
       return this.renameFileStructure(file, kebabTitle, prefix, contentType);
     }
+  }
+  /**
+   * Renames the parent folder of a folder-based index file to an explicit slug.
+   *
+   * Unlike renameFile, this takes the slug verbatim rather than deriving it
+   * from a title, and it deliberately leaves frontmatter alone. Editing the
+   * inline title changes the URL, not the headline, so rewriting `title:`
+   * here would silently change something the user did not ask to change.
+   */
+  async renameFolderSlug(file, rawSlug) {
+    const parent = file.parent;
+    if (!parent) {
+      new import_obsidian.Notice("Cannot rename: file has no parent folder.");
+      return null;
+    }
+    const grandparent = parent.parent;
+    if (!grandparent) {
+      new import_obsidian.Notice("Cannot rename: parent folder has no parent.");
+      return null;
+    }
+    const trimmed = rawSlug.trim();
+    const prefix = trimmed.startsWith("_") ? "_" : "";
+    const stem = this.createSafeStem(prefix ? trimmed.slice(1) : trimmed);
+    const newFolderName = `${prefix}${stem}`;
+    if (newFolderName === parent.name) return file;
+    const newFolderPath = this.getUniqueFolderPath(
+      grandparent.path === "" || grandparent.path === "/" ? newFolderName : `${grandparent.path}/${newFolderName}`,
+      parent.path
+    );
+    try {
+      await this.app.fileManager.renameFile(parent, newFolderPath);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      new import_obsidian.Notice(`Failed to rename folder: ${errorMessage}.`);
+      return null;
+    }
+    const newFile = this.app.vault.getAbstractFileByPath(`${newFolderPath}/${file.name}`);
+    if (!(newFile instanceof import_obsidian.TFile)) {
+      new import_obsidian.Notice("Failed to locate renamed file.");
+      return null;
+    }
+    return newFile;
   }
   async renameFolderStructure(file, kebabTitle, prefix, type, contentType) {
     const indexFileName = (contentType == null ? void 0 : contentType.indexFileName) || "index";
@@ -1433,6 +1486,18 @@ var TitleModal = class extends import_obsidian4.Modal {
       if (e.key === "Enter") void this.submit();
     });
   }
+  /**
+   * Apply the same conversion submit() performs, without showing the modal.
+   * Used when a note created outside the plugin should be restructured
+   * silently, so the logic stays in one place.
+   */
+  async convertSilently(title) {
+    if (!this.file) return;
+    const newFile = await this.fileOps.createFile({ file: this.file, title, type: this.type });
+    if (newFile && this.plugin.settings.autoInsertProperties) {
+      await this.addPropertiesToFile(newFile, title, this.type);
+    }
+  }
   async submit() {
     const title = this.titleInput.value.trim();
     if (!title) {
@@ -1503,8 +1568,8 @@ var TitleModal = class extends import_obsidian4.Modal {
     } else {
       targetFolder = originalDir;
     }
-    const filename = this.fileOps.generateFilename(title);
     const contentType = this.fileOps.getContentType(this.type);
+    const filename = this.fileOps.generateFilename(title, false, contentType);
     const extension = (contentType == null ? void 0 : contentType.useMdxExtension) ? ".mdx" : ".md";
     const filePath = targetFolder ? `${targetFolder}/${filename}${extension}` : `${filename}${extension}`;
     if (this.plugin) {
@@ -2628,10 +2693,18 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
             control: { type: "toggle", key: "addTrailingSlashToLinks" }
           },
           {
-            name: "Process background file changes",
+            name: "Externally created notes",
             // Technical terms like "Obsidian", "git" are proper nouns in this context
             desc: "Automatically process new files when they're changed in the background (by Git or other plugins). Disable to prevent modal spam when files are already processed on other devices during a sync.",
-            control: { type: "toggle", key: "processBackgroundFileChanges" }
+            control: {
+              type: "dropdown",
+              key: "externalNoteHandling",
+              options: {
+                off: "Ignore",
+                prompt: "Ask for a title",
+                convert: "Convert silently"
+              }
+            }
           },
           {
             // "MDX" is a proper noun (file format) and should be capitalized
@@ -2654,6 +2727,11 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
             name: "Rename file on title property click",
             desc: "When enabled, clicking into the title property will trigger the rename file command, keeping the file slug in sync.",
             control: { type: "toggle", key: "renameOnTitleClick" }
+          },
+          {
+            name: "Show folder name in inline title",
+            desc: "For folder-based content, show the parent folder name in the inline title instead of the index file name. Clicking it opens the rename dialog, which renames the folder.",
+            control: { type: "toggle", key: "showFolderNameAsInlineTitle" }
           },
           {
             name: "Update date on publish",
@@ -2783,9 +2861,9 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
             visible: () => settings.enableOpenTerminalCommand,
             // Render: multi-line description built as a document fragment.
             render: (setting) => {
-              const descFragment = activeDocument.createDocumentFragment();
-              descFragment.createEl("div", { text: 'Path relative to the Obsidian vault root folder. For two levels up, use "../..". Leave blank to use the vault folder' });
-              descFragment.createEl("div", { text: "This is where the terminal will open. Absolute paths work also." });
+              const descFragment = createFragment();
+              descFragment.createDiv({ text: 'Path relative to the Obsidian vault root folder. For two levels up, use "../..". Leave blank to use the vault folder' });
+              descFragment.createDiv({ text: "This is where the terminal will open. Absolute paths work also." });
               setting.setDesc(descFragment).addText(
                 (text) => text.setPlaceholder("../..").setValue(settings.terminalProjectRootPath).onChange(async (value) => {
                   settings.terminalProjectRootPath = value;
@@ -2800,9 +2878,9 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
             visible: () => settings.enableOpenTerminalCommand,
             // Render: multi-line description built as a document fragment.
             render: (setting) => {
-              const descFragment = activeDocument.createDocumentFragment();
-              descFragment.createEl("div", { text: "Leave blank to use platform defaults. On macOS, the default is Terminal. On Windows, it's Windows Terminal (Win 11) or cmd.exe (Win 10). On Linux, it's gnome-terminal, konsole, or xterm" });
-              descFragment.createEl("div", { text: "Examples include terminal, iTerm, PowerShell, and Alacritty" });
+              const descFragment = createFragment();
+              descFragment.createDiv({ text: "Leave blank to use platform defaults. On macOS, the default is Terminal. On Windows, it's Windows Terminal (Win 11) or cmd.exe (Win 10). On Linux, it's gnome-terminal, konsole, or xterm" });
+              descFragment.createDiv({ text: "Examples include terminal, iTerm, PowerShell, and Alacritty" });
               setting.setDesc(descFragment).addText(
                 (text) => text.setPlaceholder("Terminal").setValue(settings.terminalApplicationName).onChange(async (value) => {
                   settings.terminalApplicationName = value;
@@ -2865,9 +2943,9 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
             visible: () => settings.enableOpenConfigFileCommand,
             // Render: multi-line description built as a document fragment.
             render: (setting) => {
-              const descFragment = activeDocument.createDocumentFragment();
-              descFragment.createEl("div", { text: "Path to the config file relative to the vault root. Use ../config.ts or ../../astro.config.mjs." });
-              descFragment.createEl("div", { text: "Absolute paths work also." });
+              const descFragment = createFragment();
+              descFragment.createDiv({ text: "Path to the config file relative to the vault root. Use ../config.ts or ../../astro.config.mjs." });
+              descFragment.createDiv({ text: "Absolute paths work also." });
               setting.setDesc(descFragment).addText(
                 (text) => text.setPlaceholder("../config.ts").setValue(settings.configFilePath).onChange(async (value) => {
                   settings.configFilePath = value;
@@ -3046,11 +3124,15 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
       );
     });
     generalGroup.addSetting((setting) => {
-      setting.setName("Process background file changes").setDesc("Automatically process new files when they're changed in the background (by Git or other plugins). Disable to prevent modal spam when files are already processed on other devices during a sync.").addToggle(
-        (toggle) => toggle.setValue(settings.processBackgroundFileChanges).onChange(async (value) => {
-          settings.processBackgroundFileChanges = value;
-          await this.plugin.saveSettings();
-        })
+      setting.setName("Externally created notes").setDesc("How to treat notes created outside this plugin, such as by sync, Git or another plugin. Convert silently applies the content type structure with no modal, which avoids the modal spam that makes prompting impractical during a sync.").addDropdown(
+        (dropdown) => {
+          var _a2;
+          return dropdown.addOption("off", "Ignore").addOption("prompt", "Ask for a title").addOption("convert", "Convert silently").setValue((_a2 = settings.externalNoteHandling) != null ? _a2 : settings.processBackgroundFileChanges ? "prompt" : "off").onChange(async (value) => {
+            settings.externalNoteHandling = value;
+            settings.processBackgroundFileChanges = value !== "off";
+            await this.plugin.saveSettings();
+          });
+        }
       );
     });
     generalGroup.addSetting((setting) => {
@@ -3075,6 +3157,16 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
         (toggle) => toggle.setValue(settings.renameOnTitleClick).onChange(async (value) => {
           settings.renameOnTitleClick = value;
           await this.plugin.saveSettings();
+        })
+      );
+    });
+    automationGroup.addSetting((setting) => {
+      setting.setName("Show folder name in inline title").setDesc("For folder-based content, show the parent folder name in the inline title instead of the index file name. Clicking it opens the rename dialog, which renames the folder.").addToggle(
+        (toggle) => toggle.setValue(settings.showFolderNameAsInlineTitle).onChange(async (value) => {
+          var _a2;
+          settings.showFolderNameAsInlineTitle = value;
+          await this.plugin.saveSettings();
+          (_a2 = this.plugin.inlineTitleService) == null ? void 0 : _a2.refresh();
         })
       );
     });
@@ -3163,9 +3255,9 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
       this.terminalCommandContainer.classList.toggle("astro-composer-setting-container-visible", settings.enableOpenTerminalCommand);
       this.terminalCommandContainer.classList.toggle("astro-composer-setting-container-hidden", !settings.enableOpenTerminalCommand);
       developerGroup.addSetting((setting) => {
-        const descFragment = activeDocument.createDocumentFragment();
-        descFragment.createEl("div", { text: 'Path relative to the Obsidian vault root folder. For two levels up, use "../..". Leave blank to use the vault folder' });
-        descFragment.createEl("div", { text: "This is where the terminal will open. Absolute paths work also." });
+        const descFragment = createFragment();
+        descFragment.createDiv({ text: 'Path relative to the Obsidian vault root folder. For two levels up, use "../..". Leave blank to use the vault folder' });
+        descFragment.createDiv({ text: "This is where the terminal will open. Absolute paths work also." });
         setting.setName("Project root directory path").setDesc(descFragment).addText(
           (text) => text.setPlaceholder("../..").setValue(settings.terminalProjectRootPath).onChange(async (value) => {
             settings.terminalProjectRootPath = value;
@@ -3176,9 +3268,9 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
         setting.settingEl.classList.toggle("astro-composer-setting-container-hidden", !settings.enableOpenTerminalCommand);
       });
       developerGroup.addSetting((setting) => {
-        const descFragment = activeDocument.createDocumentFragment();
-        descFragment.createEl("div", { text: "Leave blank to use platform defaults. On macOS, the default is Terminal. On Windows, it's Windows Terminal (Win 11) or cmd.exe (Win 10). On Linux, it's gnome-terminal, konsole, or xterm" });
-        descFragment.createEl("div", { text: "Examples include terminal, iTerm, PowerShell, and Alacritty" });
+        const descFragment = createFragment();
+        descFragment.createDiv({ text: "Leave blank to use platform defaults. On macOS, the default is Terminal. On Windows, it's Windows Terminal (Win 11) or cmd.exe (Win 10). On Linux, it's gnome-terminal, konsole, or xterm" });
+        descFragment.createDiv({ text: "Examples include terminal, iTerm, PowerShell, and Alacritty" });
         setting.setName("Terminal application name").setDesc(descFragment).addText(
           (text) => text.setPlaceholder("Terminal").setValue(settings.terminalApplicationName).onChange(async (value) => {
             settings.terminalApplicationName = value;
@@ -3232,9 +3324,9 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
       this.configCommandContainer.classList.toggle("astro-composer-setting-container-visible", settings.enableOpenConfigFileCommand);
       this.configCommandContainer.classList.toggle("astro-composer-setting-container-hidden", !settings.enableOpenConfigFileCommand);
       developerGroup.addSetting((setting) => {
-        const descFragment = activeDocument.createDocumentFragment();
-        descFragment.createEl("div", { text: "Path to the config file relative to the vault root. Use ../config.ts or ../../astro.config.mjs." });
-        descFragment.createEl("div", { text: "Absolute paths work also." });
+        const descFragment = createFragment();
+        descFragment.createDiv({ text: "Path to the config file relative to the vault root. Use ../config.ts or ../../astro.config.mjs." });
+        descFragment.createDiv({ text: "Absolute paths work also." });
         setting.setName("Config file path").setDesc(descFragment).addText(
           (text) => text.setPlaceholder("../config.ts").setValue(settings.configFilePath).onChange(async (value) => {
             settings.configFilePath = value;
@@ -3428,6 +3520,7 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
       template: '---\ntitle: "{{title}}"\ndate: {{date}}\n---\n',
       enabled: true,
       creationMode: "file",
+      fileNameFormat: "kebab-case",
       indexFileName: "",
       ignoreSubfolders: false,
       enableUnderscorePrefix: false,
@@ -3476,7 +3569,7 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
         }
       });
       const headerName = header.createDiv({ cls: "astro-composer-header-name" });
-      headerName.createEl("div", { text: customType.name || `Content ${index + 1}`, cls: "setting-item-name" });
+      headerName.createDiv({ text: customType.name || `Content ${index + 1}`, cls: "setting-item-name" });
       const reorderContainer = header.createDiv({ cls: "astro-composer-reorder-buttons" });
       const upButton = reorderContainer.createEl("button", {
         cls: "astro-composer-reorder-button",
@@ -3600,6 +3693,12 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
           this.updateCustomContentTypeIndexFileField(customType.id);
         })
       );
+      new import_obsidian9.Setting(settingsContainer.createDiv()).setName("File name").setDesc("How new entries are named from their title. Kebab-case gives my-post.md; as typed keeps the title with its capitals and spaces, as Obsidian names notes.").addDropdown(
+        (dropdown) => dropdown.addOption("kebab-case", "Kebab-case (my-post.md)").addOption("title", "As typed (keeps capitals and spaces)").setValue(customType.fileNameFormat || "kebab-case").onChange(async (value) => {
+          customType.fileNameFormat = value;
+          await this.plugin.saveSettings();
+        })
+      );
       const indexFileContainer = settingsContainer.createDiv({ cls: "custom-index-file-field" });
       indexFileContainer.classList.toggle("astro-composer-setting-container-visible", customType.creationMode === "folder");
       indexFileContainer.classList.toggle("astro-composer-setting-container-hidden", customType.creationMode !== "folder");
@@ -3633,10 +3732,10 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
         return text;
       }).then((setting) => {
         setting.descEl.empty();
-        const descDiv = setting.descEl.createEl("div");
-        descDiv.createEl("div", { text: "Template for new files of this content type." });
-        descDiv.createEl("div", { text: "Variables include {{title}}, {{date}}, and {{slug}}." });
-        descDiv.createEl("div", { text: "Do not wrap {{date}} in quotes as it represents a datetime value, not a string." });
+        const descDiv = setting.descEl.createDiv();
+        descDiv.createDiv({ text: "Template for new files of this content type." });
+        descDiv.createDiv({ text: "Variables include {{title}}, {{date}}, and {{slug}}." });
+        descDiv.createDiv({ text: "Do not wrap {{date}} in quotes as it represents a datetime value, not a string." });
       });
       const removeContainer = settingsContainer.createDiv();
       const removeSetting = new import_obsidian9.Setting(removeContainer).setName("").addButton((button) => {
@@ -4203,6 +4302,7 @@ var CreateEventService = class {
   }
   handleCreate(file) {
     void (async () => {
+      var _a, _b;
       const now = Date.now();
       if (!(file instanceof import_obsidian12.TFile) || file.extension !== "md" && file.extension !== "mdx") {
         return;
@@ -4278,7 +4378,8 @@ var CreateEventService = class {
       const fileName = file.basename;
       const isUntitled = /^Untitled(\s\d+)?$/.test(fileName);
       if (!isUntitled) {
-        if (!this.plugin.settings.processBackgroundFileChanges) {
+        const handling = (_a = this.plugin.settings.externalNoteHandling) != null ? _a : this.plugin.settings.processBackgroundFileChanges ? "prompt" : "off";
+        if (handling === "off") {
           suppressor.dispose();
           return;
         }
@@ -4308,7 +4409,14 @@ var CreateEventService = class {
       window.setTimeout(() => {
         this.lastProcessedFiles.delete(file.path);
       }, CONSTANTS.DEBOUNCE_MS + 100);
-      new TitleModal(this.app, file, this.plugin, matchedContentTypeId, false, true).open();
+      const modal = new TitleModal(this.app, file, this.plugin, matchedContentTypeId, false, true);
+      const handlingMode = (_b = this.plugin.settings.externalNoteHandling) != null ? _b : this.plugin.settings.processBackgroundFileChanges ? "prompt" : "off";
+      const isUntitledFile = /^Untitled(\s\d+)?$/.test(file.basename);
+      if (handlingMode === "convert" && !isUntitledFile) {
+        void modal.convertSilently(file.basename);
+      } else {
+        modal.open();
+      }
     })();
   }
   /**
@@ -4613,8 +4721,162 @@ var FrontmatterService = class {
   }
 };
 
+// src/services/InlineTitleService.ts
+var import_obsidian14 = require("obsidian");
+var NATIVE_HIDDEN_CLASS = "astro-composer-native-title-hidden";
+var SLUG_TITLE_CLASS = "astro-composer-slug-title";
+var InlineTitleService = class {
+  constructor(app, plugin) {
+    this.app = app;
+    this.plugin = plugin;
+    this.refreshTimer = null;
+    /** Set while an Escape is being processed, so the ensuing blur does not commit. */
+    this.cancelling = false;
+  }
+  get doc() {
+    return this.app.workspace.containerEl.ownerDocument;
+  }
+  register() {
+    this.plugin.registerEvent(this.app.workspace.on("file-open", () => this.refresh()));
+    this.plugin.registerEvent(this.app.workspace.on("active-leaf-change", () => this.refresh()));
+    this.plugin.registerEvent(this.app.workspace.on("layout-change", () => this.refresh()));
+    this.observer = new MutationObserver((mutations) => {
+      if (!this.plugin.settings.showFolderNameAsInlineTitle) return;
+      for (const mutation of mutations) {
+        for (const node of Array.from(mutation.addedNodes)) {
+          if (!node.instanceOf(HTMLElement)) continue;
+          if (node.hasClass(SLUG_TITLE_CLASS)) continue;
+          if (node.classList.contains("inline-title") || node.querySelector(".inline-title")) {
+            this.scheduleRefresh();
+            return;
+          }
+        }
+      }
+    });
+    this.observer.observe(this.app.workspace.containerEl, {
+      childList: true,
+      subtree: true
+    });
+    this.refresh();
+  }
+  /**
+   * Returns the folder name to display, or null when this file is not a
+   * folder-based index file belonging to a content type we manage.
+   */
+  getFolderTitle(file) {
+    const contentType = this.plugin.fileOps.getContentTypeByPath(file.path);
+    if (!contentType || contentType.creationMode !== "folder") return null;
+    const indexFileName = contentType.indexFileName || "index";
+    if (file.basename !== indexFileName) return null;
+    const parent = file.parent;
+    if (!parent) return null;
+    if (parent.path === "" || parent.path === "/") return null;
+    return parent.name;
+  }
+  scheduleRefresh() {
+    if (this.refreshTimer !== null) window.clearTimeout(this.refreshTimer);
+    this.refreshTimer = window.setTimeout(() => {
+      this.refreshTimer = null;
+      this.refresh();
+    }, 0);
+  }
+  refresh() {
+    for (const leaf of this.app.workspace.getLeavesOfType("markdown")) {
+      const view = leaf.view;
+      if (view instanceof import_obsidian14.MarkdownView) this.applyToView(view);
+    }
+  }
+  applyToView(view) {
+    const nativeEl = view.containerEl.querySelector(
+      `.inline-title:not(.${SLUG_TITLE_CLASS})`
+    );
+    if (!nativeEl) return;
+    const file = view.file;
+    const folderName = this.plugin.settings.showFolderNameAsInlineTitle && file ? this.getFolderTitle(file) : null;
+    if (!folderName || !file) {
+      this.restore(view);
+      return;
+    }
+    nativeEl.addClass(NATIVE_HIDDEN_CLASS);
+    const existing = view.containerEl.querySelector(`.${SLUG_TITLE_CLASS}`);
+    if (existing) {
+      if (this.doc.activeElement === existing) return;
+      if (existing.textContent !== folderName) existing.textContent = folderName;
+      return;
+    }
+    this.createSlugTitle(nativeEl, folderName, view);
+  }
+  createSlugTitle(nativeEl, folderName, view) {
+    const el = this.doc.createElement("div");
+    el.className = `inline-title ${SLUG_TITLE_CLASS}`;
+    el.setAttribute("contenteditable", "true");
+    el.setAttribute("spellcheck", "false");
+    el.setAttribute("autocapitalize", "off");
+    el.textContent = folderName;
+    el.addEventListener("keydown", (evt) => {
+      var _a, _b, _c;
+      if (evt.key === "Enter") {
+        evt.preventDefault();
+        el.blur();
+        return;
+      }
+      if (evt.key === "Escape") {
+        evt.preventDefault();
+        this.cancelling = true;
+        const current = (_c = (_b = (_a = view.file) == null ? void 0 : _a.parent) == null ? void 0 : _b.name) != null ? _c : folderName;
+        el.textContent = current;
+        el.blur();
+      }
+    });
+    el.addEventListener("blur", () => {
+      if (this.cancelling) {
+        this.cancelling = false;
+        return;
+      }
+      void this.commit(el, view);
+    });
+    nativeEl.insertAdjacentElement("afterend", el);
+  }
+  async commit(el, view) {
+    var _a, _b, _c, _d, _e;
+    const file = view.file;
+    if (!file) return;
+    const current = (_b = (_a = file.parent) == null ? void 0 : _a.name) != null ? _b : "";
+    const typed = ((_c = el.textContent) != null ? _c : "").trim();
+    if (!typed) {
+      el.textContent = current;
+      return;
+    }
+    if (typed === current) {
+      el.textContent = current;
+      return;
+    }
+    const renamed = await this.plugin.fileOps.renameFolderSlug(file, typed);
+    if (!renamed) {
+      el.textContent = current;
+      return;
+    }
+    el.textContent = (_e = (_d = renamed.parent) == null ? void 0 : _d.name) != null ? _e : typed;
+  }
+  restore(view) {
+    view.containerEl.querySelectorAll(`.${SLUG_TITLE_CLASS}`).forEach((el) => el.remove());
+    view.containerEl.querySelectorAll(`.${NATIVE_HIDDEN_CLASS}`).forEach((el) => el.removeClass(NATIVE_HIDDEN_CLASS));
+  }
+  destroy() {
+    var _a;
+    if (this.refreshTimer !== null) {
+      window.clearTimeout(this.refreshTimer);
+      this.refreshTimer = null;
+    }
+    (_a = this.observer) == null ? void 0 : _a.disconnect();
+    this.observer = void 0;
+    this.doc.querySelectorAll(`.${SLUG_TITLE_CLASS}`).forEach((el) => el.remove());
+    this.doc.querySelectorAll(`.${NATIVE_HIDDEN_CLASS}`).forEach((el) => el.removeClass(NATIVE_HIDDEN_CLASS));
+  }
+};
+
 // src/main.ts
-var AstroComposerPlugin = class extends import_obsidian14.Plugin {
+var AstroComposerPlugin = class extends import_obsidian15.Plugin {
   constructor() {
     super(...arguments);
     this.pluginCreatedFiles = /* @__PURE__ */ new Map();
@@ -4646,6 +4908,7 @@ var AstroComposerPlugin = class extends import_obsidian14.Plugin {
       this.migrationService = new MigrationService(this.app, this);
       this.createEventService = new CreateEventService(this.app, this);
       this.frontmatterService = new FrontmatterService(this.app, this);
+      this.inlineTitleService = new InlineTitleService(this.app, this);
       this.templateParser = new TemplateParser(this.app, this.settings, this);
       this.headingLinkGenerator = new HeadingLinkGenerator(this.settings, this);
       if (this.settings.showMdxFilesInExplorer) {
@@ -4657,10 +4920,11 @@ var AstroComposerPlugin = class extends import_obsidian14.Plugin {
       }
       this.app.workspace.onLayoutReady(() => {
         this.registerCreateEvent();
-        if (!import_obsidian14.Platform.isMobile) {
+        if (!import_obsidian15.Platform.isMobile) {
           this.startHelpButtonMonitor();
         }
         this.registerTitlePropertyClickListener();
+        this.inlineTitleService.register();
         void this.migrateSettingsIfNeeded();
       });
       registerCommands(this, this.settings);
@@ -4672,7 +4936,7 @@ var AstroComposerPlugin = class extends import_obsidian14.Plugin {
       this.setupRibbonContextMenuHandling();
     } catch (error) {
       console.error("[Astro Composer] Critical error during onload:", error);
-      new import_obsidian14.Notice("Astro Composer failed to load. Check console (Ctrl+Shift+I) for details.");
+      new import_obsidian15.Notice("Astro Composer failed to load. Check console (Ctrl+Shift+I) for details.");
       throw error;
     }
   }
@@ -4682,7 +4946,7 @@ var AstroComposerPlugin = class extends import_obsidian14.Plugin {
       this.createEventRef = void 0;
     }
     const createEventRef = this.app.vault.on("create", (file) => {
-      if (file instanceof import_obsidian14.TFile) {
+      if (file instanceof import_obsidian15.TFile) {
         this.createEventService.handleCreate(file);
         this.cleanupPluginCreatedFiles();
       }
@@ -4782,7 +5046,7 @@ var AstroComposerPlugin = class extends import_obsidian14.Plugin {
         }
         const cursor = editor.getCursor();
         const file = view.file;
-        if (!(file instanceof import_obsidian14.TFile)) {
+        if (!(file instanceof import_obsidian15.TFile)) {
           return;
         }
         const heading = this.headingLinkGenerator.findHeadingAtLine(this.app, file, cursor.line);
@@ -4792,13 +5056,13 @@ var AstroComposerPlugin = class extends import_obsidian14.Plugin {
           menu.addItem((item) => {
             item.setTitle("Copy heading link").setIcon("link-2").onClick(async () => {
               await navigator.clipboard.writeText(urlOnly);
-              new import_obsidian14.Notice("Heading link copied to clipboard");
+              new import_obsidian15.Notice("Heading link copied to clipboard");
             });
           });
           menu.addItem((item) => {
             item.setTitle("Copy heading link with text").setIcon("heading").onClick(async () => {
               await navigator.clipboard.writeText(fullLink);
-              new import_obsidian14.Notice("Heading link with text copied to clipboard");
+              new import_obsidian15.Notice("Heading link with text copied to clipboard");
             });
           });
         }
@@ -4809,7 +5073,7 @@ var AstroComposerPlugin = class extends import_obsidian14.Plugin {
     renameContentByPath(this.app, filePath, this.settings, this);
   }
   registerRibbonIcons() {
-    if (import_obsidian14.Platform.isMobile) {
+    if (import_obsidian15.Platform.isMobile) {
       if (this.terminalRibbonIcon) {
         try {
           if (this.terminalRibbonIcon.parentNode) this.terminalRibbonIcon.remove();
@@ -4857,7 +5121,7 @@ var AstroComposerPlugin = class extends import_obsidian14.Plugin {
     if (terminalShouldExist) {
       this.terminalRibbonIcon = this.addRibbonIcon("terminal-square", "Open project terminal", () => {
         if (!this.settings.enableOpenTerminalCommand) {
-          new import_obsidian14.Notice("Open terminal command is disabled.");
+          new import_obsidian15.Notice("Open terminal command is disabled.");
           return;
         }
         openTerminalInProjectRoot(this.app, this.settings);
@@ -4867,7 +5131,7 @@ var AstroComposerPlugin = class extends import_obsidian14.Plugin {
     if (configShouldExist) {
       this.configRibbonIcon = this.addRibbonIcon("rocket", "Edit Astro config", async () => {
         if (!this.settings.enableOpenConfigFileCommand) {
-          new import_obsidian14.Notice("Edit config file command is disabled.");
+          new import_obsidian15.Notice("Edit config file command is disabled.");
           return;
         }
         await openConfigFile(this.app, this.settings);
@@ -4878,8 +5142,9 @@ var AstroComposerPlugin = class extends import_obsidian14.Plugin {
     this.setupRibbonContextMenuObserver();
   }
   onunload() {
-    var _a;
+    var _a, _b;
     (_a = this.frontmatterService) == null ? void 0 : _a.destroy();
+    (_b = this.inlineTitleService) == null ? void 0 : _b.destroy();
     if (this.terminalRibbonIcon) {
       this.terminalRibbonIcon.remove();
       this.terminalRibbonIcon = null;
@@ -5006,7 +5271,7 @@ var AstroComposerPlugin = class extends import_obsidian14.Plugin {
     const iconContainer = ((_c = customButton.querySelector("svg")) == null ? void 0 : _c.parentElement) || customButton;
     try {
       if (iconContainer.instanceOf(HTMLElement)) {
-        (0, import_obsidian14.setIcon)(iconContainer, this.settings.helpButtonReplacement.iconId);
+        (0, import_obsidian15.setIcon)(iconContainer, this.settings.helpButtonReplacement.iconId);
       }
     } catch (error) {
       console.warn("[Astro Composer] Error setting replacement icon:", error);
@@ -5062,3 +5327,5 @@ var AstroComposerPlugin = class extends import_obsidian14.Plugin {
     }
   }
 };
+
+/* nosourcemap */

@@ -1,7 +1,7 @@
 {
 	"id": "image-manager",
 	"name": "Image Manager",
-	"version": "0.3.8",
+	"version": "0.3.11",
 	"minAppVersion": "1.11.0",
 	"description": "Insert, rename, and sort images within your notes.",
 	"author": "David V. Kimball",

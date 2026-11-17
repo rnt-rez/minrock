@@ -176,6 +176,12 @@
       .replace(/'/g, '&#039;');
   }
 
+  function safeUrl(url?: string | null): string {
+    if (!url) return '#';
+    const trimmed = url.trim();
+    return /^(?:\/(?!\/)|https?:\/\/)/i.test(trimmed) ? escapeHtml(trimmed) : '#';
+  }
+
   function highlightText(text: string, query: string): string {
     if (!text) return '';
     if (!query) return escapeHtml(text);
@@ -187,11 +193,12 @@
       .filter(Boolean);
     if (escapedTokens.length === 0) return escapeHtml(text);
 
-    const regex = new RegExp(`(${escapedTokens.join('|')})`, 'gi');
-    const parts = text.split(regex);
+    const splitRegex = new RegExp(`(${escapedTokens.join('|')})`, 'gi');
+    const exactRegex = new RegExp(`^(?:${escapedTokens.join('|')})$`, 'i');
+    const parts = text.split(splitRegex);
     return parts
       .map((part) => {
-        if (regex.test(part)) {
+        if (exactRegex.test(part)) {
           return `<mark class="search-match">${escapeHtml(part)}</mark>`;
         }
         return escapeHtml(part);
@@ -327,12 +334,12 @@
       `;
       for (const post of matchedPosts) {
         html += `
-          <a href="${post.url}" class="search-result-item" data-search-item>
+          <a href="${safeUrl(post.url)}" class="search-result-item" data-search-item>
             <div class="search-result-icon">${resolveItemIcon(post)}</div>
             <div class="search-result-content">
               <div class="search-result-top">
                 <div class="search-result-title">${highlightText(post.title, cleanQuery)}</div>
-                <div class="search-result-meta">${post.date}</div>
+                <div class="search-result-meta">${escapeHtml(String(post.date ?? ''))}</div>
               </div>
               <div class="search-result-desc">${highlightText(post.description, cleanQuery)}</div>
               <div class="search-result-tags">
@@ -356,12 +363,12 @@
       `;
       for (const proj of matchedProjects) {
         html += `
-          <a href="${proj.url}" class="search-result-item" data-search-item>
+          <a href="${safeUrl(proj.url)}" class="search-result-item" data-search-item>
             <div class="search-result-icon">${resolveItemIcon(proj)}</div>
             <div class="search-result-content">
               <div class="search-result-top">
                 <div class="search-result-title">${highlightText(proj.title, cleanQuery)}</div>
-                <div class="search-result-meta">${proj.category || 'Project'}</div>
+                <div class="search-result-meta">${escapeHtml(proj.category || 'Project')}</div>
               </div>
               <div class="search-result-desc">${highlightText(proj.description, cleanQuery)}</div>
               <div class="search-result-tags">
@@ -387,9 +394,9 @@
       `;
       for (const tag of matchedTags) {
         html += `
-          <a href="${tag.url}" class="search-tag-item" data-search-item>
+          <a href="${safeUrl(tag.url)}" class="search-tag-item" data-search-item>
             <span>#${highlightText(tag.name, cleanQuery)}</span>
-            <span class="search-tag-count">(${tag.count})</span>
+            <span class="search-tag-count">(${escapeHtml(String(tag.count ?? 0))})</span>
           </a>
         `;
       }

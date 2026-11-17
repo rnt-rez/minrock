@@ -1,19 +1,28 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
+/**
+ * WCAG 2.1/2.2 AA accessibility and structural hygiene auditor over dist/.
+ * Exits with code 1 if any violation or unresolved Astro asset is found.
+ */
 function walk(dir) {
   let results = [];
-  const list = fs.readdirSync(dir);
-  for (const file of list) {
+  if (!fs.existsSync(dir)) return results;
+  for (const file of fs.readdirSync(dir)) {
     const full = path.join(dir, file);
     const stat = fs.statSync(full);
-    if (stat && stat.isDirectory()) {
-      results = results.concat(walk(full));
-    } else if (file.endsWith('.html')) {
-      results.push(full);
-    }
+    if (stat.isDirectory()) results = results.concat(walk(full));
+    else if (file.endsWith('.html')) results.push(full);
   }
   return results;
+}
+
+/** Strip script, style, and comment blocks to prevent false positives in regex DOM checks. */
+function stripNonDomBlocks(html) {
+  return html
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '')
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, '')
+    .replace(/<!--[\s\S]*?-->/g, '');
 }
 
 const htmlFiles = walk('dist');
@@ -29,53 +38,62 @@ const stats = {
 };
 
 for (const file of htmlFiles) {
-  const content = fs.readFileSync(file, 'utf8');
+  const rawContent = fs.readFileSync(file, 'utf8');
+  const domHtml = stripNonDomBlocks(rawContent);
   const rel = path.relative('dist', file).replace(/\\/g, '/');
 
   // 1. Check html lang (WCAG 3.1.1)
-  if (!content.includes('<html') || !/<html[^>]*\blang=["'][^"']+["']/i.test(content)) {
+  if (!/<html[^>]*\blang=["'][^"']+["']/i.test(domHtml)) {
     issues.push({ file: rel, type: 'WCAG 3.1.1 (Language of Page)', msg: 'Missing or empty <html lang="..."> attribute.' });
   }
 
   // 2. Check title (WCAG 2.4.2)
-  const titleMatch = content.match(/<title>([^<]*)<\/title>/i);
+  const titleMatch = domHtml.match(/<title>([^<]*)<\/title>/i);
   if (!titleMatch || !titleMatch[1].trim()) {
     issues.push({ file: rel, type: 'WCAG 2.4.2 (Page Titled)', msg: 'Missing or empty <title> element.' });
   }
 
   // 3. Check viewport (WCAG 1.4.4 Resize text)
-  if (!/<meta[^>]*name=["']viewport["']/i.test(content)) {
+  if (!/<meta[^>]*name=["']viewport["']/i.test(domHtml)) {
     issues.push({ file: rel, type: 'WCAG 1.4.4 (Resize text)', msg: 'Missing <meta name="viewport"> tag.' });
   }
 
-  // 4. Check img alt (WCAG 1.1.1 Non-text Content)
-  const imgMatches = content.match(/<img[^>]*>/gi) || [];
+  // 4. Check main landmark (WCAG 1.3.1 Info and Relationships)
+  if (!/<main\b/i.test(domHtml)) {
+    issues.push({ file: rel, type: 'WCAG 1.3.1 (Landmark Main)', msg: 'Missing <main> landmark element.' });
+  }
+
+  // 5. Check img resolution & alt attribute (WCAG 1.1.1 Non-text Content)
+  const imgMatches = domHtml.match(/<img[^>]*>/gi) || [];
   for (const img of imgMatches) {
     stats.imagesChecked++;
-    const hasAlt = /\balt=["'][^"']*["']/i.test(img) || (img.includes('__ASTRO_IMAGE_') && img.includes('&quot;alt&quot;:'));
-    if (!hasAlt) {
-      issues.push({ file: rel, type: 'WCAG 1.1.1 (Non-text Content)', msg: `Image missing alt attribute: ${img.slice(0, 70)}` });
+    if (img.includes('__ASTRO_IMAGE_')) {
+      issues.push({ file: rel, type: 'Astro Asset Resolution (Broken Image)', msg: `Unresolved __ASTRO_IMAGE_ attribute emitted in HTML: ${img.slice(0, 80)}` });
+      continue;
+    }
+    if (!/\balt=["'][^"']*["']/i.test(img)) {
+      issues.push({ file: rel, type: 'WCAG 1.1.1 (Non-text Content)', msg: `Image missing alt attribute: ${img.slice(0, 80)}` });
     }
   }
 
-  // 5. Check buttons without accessible name (WCAG 4.1.2 Name, Role, Value)
-  const btnMatches = content.match(/<button[\s\S]*?<\/button>/gi) || [];
+  // 6. Check buttons without accessible name (WCAG 4.1.2 Name, Role, Value)
+  const btnMatches = domHtml.match(/<button\b[\s\S]*?<\/button>/gi) || [];
   for (const btn of btnMatches) {
     stats.buttonsChecked++;
-    const hasAria = /aria-label=["'][^"']+["']/i.test(btn);
-    const hasAriaLabelledby = /aria-labelledby=["'][^"']+["']/i.test(btn);
-    const hasTitle = /title=["'][^"']+["']/i.test(btn);
+    const hasAria = /\baria-label=["'][^"']+["']/i.test(btn) || /\baria-labelledby=["'][^"']+["']/i.test(btn);
+    const hasTitle = /\btitle=["'][^"']+["']/i.test(btn);
+    const hasImgAlt = /<img[^>]*\balt=["'][^"']+["']/i.test(btn);
     const innerText = btn.replace(/<[^>]+>/g, '').trim();
-    if (!hasAria && !hasAriaLabelledby && !hasTitle && !innerText) {
-      issues.push({ file: rel, type: 'WCAG 4.1.2 (Name, Role, Value)', msg: `Button missing accessible name (no text, no aria-label, no title): ${btn.slice(0, 80)}` });
+    if (!hasAria && !hasTitle && !hasImgAlt && !innerText) {
+      issues.push({ file: rel, type: 'WCAG 4.1.2 (Name, Role, Value)', msg: `Button missing accessible name: ${btn.slice(0, 80)}` });
     }
   }
 
-  // 6. Check links without accessible name (WCAG 2.4.4 Link Purpose)
-  const linkMatches = content.match(/<a[\s\S]*?<\/a>/gi) || [];
+  // 7. Check links without accessible name (WCAG 2.4.4 Link Purpose)
+  const linkMatches = domHtml.match(/<a\b[\s\S]*?<\/a>/gi) || [];
   for (const a of linkMatches) {
     stats.linksChecked++;
-    const hasAria = /aria-label=["'][^"']+["']/i.test(a);
+    const hasAria = /\baria-label=["'][^"']+["']/i.test(a) || /\baria-labelledby=["'][^"']+["']/i.test(a);
     const hasImgWithAlt = /<img[^>]*\balt=["'][^"']+["']/i.test(a);
     const innerText = a.replace(/<[^>]+>/g, '').trim();
     if (!hasAria && !hasImgWithAlt && !innerText) {
@@ -83,9 +101,13 @@ for (const file of htmlFiles) {
     }
   }
 
-  // 7. Check heading hierarchy skips (WCAG 1.3.1 Info and Relationships)
-  const headings = Array.from(content.matchAll(/<h([1-6])[^>]*>/gi)).map(m => parseInt(m[1]));
+  // 8. Check heading hierarchy & unique H1 (WCAG 1.3.1)
+  const headings = Array.from(domHtml.matchAll(/<h([1-6])\b[^>]*>/gi)).map(m => Number.parseInt(m[1], 10));
   stats.headingsChecked += headings.length;
+  const h1Count = headings.filter(level => level === 1).length;
+  if (h1Count !== 1) {
+    issues.push({ file: rel, type: 'WCAG 1.3.1 (Single H1)', msg: `Expected exactly one <h1>, found ${h1Count}.` });
+  }
   for (let i = 0; i < headings.length - 1; i++) {
     if (headings[i + 1] > headings[i] + 1) {
       issues.push({ file: rel, type: 'WCAG 1.3.1 (Heading Order)', msg: `Heading level skipped from h${headings[i]} to h${headings[i + 1]}. Headings should not skip levels.` });
@@ -93,8 +115,8 @@ for (const file of htmlFiles) {
     }
   }
 
-  // 8. Check duplicate DOM IDs (WCAG 4.1.1 Parsing)
-  const idMatches = Array.from(content.matchAll(/\bid=["']([^"']+)["']/gi)).map(m => m[1]);
+  // 9. Check duplicate DOM IDs (WCAG 4.1.1 Parsing)
+  const idMatches = Array.from(domHtml.matchAll(/\bid=["']([^"']+)["']/gi)).map(m => m[1]);
   const seenIds = new Set();
   for (const id of idMatches) {
     if (seenIds.has(id)) {
@@ -121,6 +143,7 @@ if (issues.length > 0) {
     console.log(`[${idx + 1}] [${iss.type}] in ${iss.file}:`);
     console.log(`    ${iss.msg}`);
   });
+  process.exitCode = 1;
 } else {
-  console.log('🎉 100% CLEAN: Zero WCAG violations detected across all static routes!');
+  console.log('🎉 100% CLEAN: Zero WCAG or asset-resolution violations detected across all static routes!');
 }

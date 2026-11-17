@@ -4188,3 +4188,5 @@ var MinimalTheme = class extends import_obsidian12.Plugin {
     return this._isOxygenActive;
   }
 };
+
+/* nosourcemap */

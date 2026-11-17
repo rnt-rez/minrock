@@ -129,7 +129,7 @@ __export(settings_schema_exports, {
   readCMSSettings: () => readCMSSettings
 });
 function readCMSSettings(config, pluginSettings) {
-  var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z;
+  var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _A, _B;
   const getConfig = (key) => {
     var _a2;
     return (_a2 = config == null ? void 0 : config.get) == null ? void 0 : _a2.call(config, key);
@@ -146,7 +146,7 @@ function readCMSSettings(config, pluginSettings) {
     }
     return baseVal;
   };
-  return {
+  const settings = {
     titleProperty: getProp("titleProperty") || "note.title",
     descriptionProperty: getProp("descriptionProperty") || "",
     imageProperty: getProp("imageProperty") || "",
@@ -195,22 +195,65 @@ function readCMSSettings(config, pluginSettings) {
     propertyGroup6Position: getConfig("propertyGroup6Position") || "bottom",
     propertyGroup7Position: getConfig("propertyGroup7Position") || "bottom",
     imageFormat: getConfig("imageFormat") || "thumbnail",
+    imageFit: getConfig("imageFit") || "cover",
     imagePosition: getConfig("imagePosition") || "right",
     propertyLabels: getConfig("propertyLabels") || "hide",
     propertyDisplayMaxLength: (_q = getConfig("propertyDisplayMaxLength")) != null ? _q : 0,
-    showDraftStatus: (_r = getConfig("showDraftStatus")) != null ? _r : false,
+    wrapPropertyText: (_r = getConfig("wrapPropertyText")) != null ? _r : false,
+    showDraftStatus: (_s = getConfig("showDraftStatus")) != null ? _s : false,
     draftStatusProperty: getProp("draftStatusProperty") || "",
-    draftStatusReverse: (_s = getConfig("draftStatusReverse")) != null ? _s : false,
-    draftStatusUseFilenamePrefix: (_t = getConfig("draftStatusUseFilenamePrefix")) != null ? _t : false,
-    showTags: (_u = getConfig("showTags")) != null ? _u : false,
+    draftStatusReverse: (_t = getConfig("draftStatusReverse")) != null ? _t : false,
+    draftStatusUseFilenamePrefix: (_u = getConfig("draftStatusUseFilenamePrefix")) != null ? _u : false,
+    showTags: (_v = getConfig("showTags")) != null ? _v : false,
     tagsProperty: getProp("tagsProperty") || "",
-    maxTagsToShow: (_v = getConfig("maxTagsToShow")) != null ? _v : 3,
-    customizeNewButton: (_w = getConfig("customizeNewButton")) != null ? _w : false,
+    maxTagsToShow: (_w = getConfig("maxTagsToShow")) != null ? _w : 3,
+    customizeNewButton: (_x = getConfig("customizeNewButton")) != null ? _x : false,
     newNoteLocation: getConfig("newNoteLocation") || "",
-    hideQuickEditIcon: (_x = getConfig("hideQuickEditIcon")) != null ? _x : false,
-    cardSize: (_y = getConfig("cardSize")) != null ? _y : 250,
-    imageAspectRatio: (_z = getConfig("imageAspectRatio")) != null ? _z : 0.55
+    hideQuickEditIcon: (_y = getConfig("hideQuickEditIcon")) != null ? _y : false,
+    cardSize: (_z = getConfig("cardSize")) != null ? _z : 250,
+    imageAspectRatio: (_A = getConfig("imageAspectRatio")) != null ? _A : 0.55,
+    showToolbarProperties: (_B = getConfig("showToolbarProperties")) != null ? _B : true,
+    toolbarProperties: []
   };
+  if (settings.showToolbarProperties) {
+    settings.toolbarProperties = getToolbarProperties(config, settings);
+  }
+  return settings;
+}
+function getToolbarProperties(config, settings) {
+  var _a, _b;
+  let order = [];
+  try {
+    order = (_b = (_a = config == null ? void 0 : config.getOrder) == null ? void 0 : _a.call(config)) != null ? _b : [];
+  } catch (e) {
+    return [];
+  }
+  const shown = new Set([
+    // Bases lists file.name for every view, ticked or not, and core Cards
+    // uses it as the card title. The title slot already covers it here.
+    "file.name",
+    settings.titleProperty,
+    settings.showTextPreview ? settings.descriptionProperty : "",
+    settings.imageFormat !== "none" ? settings.imageProperty : "",
+    settings.showDate ? settings.dateProperty : "",
+    settings.showTags ? settings.tagsProperty : "",
+    settings.showDraftStatus ? settings.draftStatusProperty : "",
+    settings.propertyDisplay1,
+    settings.propertyDisplay2,
+    settings.propertyDisplay3,
+    settings.propertyDisplay4,
+    settings.propertyDisplay5,
+    settings.propertyDisplay6,
+    settings.propertyDisplay7,
+    settings.propertyDisplay8,
+    settings.propertyDisplay9,
+    settings.propertyDisplay10,
+    settings.propertyDisplay11,
+    settings.propertyDisplay12,
+    settings.propertyDisplay13,
+    settings.propertyDisplay14
+  ].filter(Boolean));
+  return order.filter((property) => !shown.has(property));
 }
 function getPropItems(displayName, key) {
   return [
@@ -276,6 +319,7 @@ function getCMSViewOptions() {
         { type: "dropdown", displayName: "Image format", key: "imageFormat", options: { "none": "No image", "thumbnail": "Thumbnail", "cover": "Cover" }, default: "thumbnail" },
         ...getPropItems("Image property", "imageProperty"),
         { type: "dropdown", displayName: "Show image embeds", key: "fallbackToEmbeds", options: { "always": "Always", "if-empty": "If image property missing or empty", "never": "Never" }, default: "if-empty" },
+        { type: "dropdown", displayName: "Image fit", key: "imageFit", options: { "cover": "Crop to fill", "contain": "Show whole image" }, default: "cover" },
         { type: "slider", displayName: "Image aspect ratio", key: "imageAspectRatio", min: 0.1, max: 2, step: 0.05, default: 0.55, showWhen: { key: "imageFormat", value: "cover" } }
       ]
     },
@@ -311,7 +355,9 @@ function getCMSViewOptions() {
       type: "group",
       displayName: "Properties",
       items: [
+        { type: "toggle", displayName: "Show properties from the Properties menu", key: "showToolbarProperties", default: true },
         { type: "dropdown", displayName: "Show property labels", key: "propertyLabels", options: { "hide": "Hide", "inline": "Inline", "above": "On top" }, default: "hide" },
+        { type: "toggle", displayName: "Wrap property text", key: "wrapPropertyText", default: false },
         { type: "slider", displayName: "Max characters per property (0 = no limit)", key: "propertyDisplayMaxLength", min: 0, max: 500, step: 10, default: 0 }
       ]
     },
@@ -2013,6 +2059,13 @@ async function basesEntryToCardData(entry, settings, sortMethod, isShuffled, sni
   cardData.property12 = effectiveProps[11] ? await resolveBasesPropertyAsync(effectiveProps[11], entry, cardData, settings, app, mdxFrontmatterCache) : null;
   cardData.property13 = effectiveProps[12] ? await resolveBasesPropertyAsync(effectiveProps[12], entry, cardData, settings, app, mdxFrontmatterCache) : null;
   cardData.property14 = effectiveProps[13] ? await resolveBasesPropertyAsync(effectiveProps[13], entry, cardData, settings, app, mdxFrontmatterCache) : null;
+  if (settings.toolbarProperties.length > 0) {
+    cardData.toolbarValues = [];
+    for (const property of settings.toolbarProperties) {
+      const value = await resolveBasesPropertyAsync(property, entry, cardData, settings, app, mdxFrontmatterCache);
+      cardData.toolbarValues.push({ property, value });
+    }
+  }
   return cardData;
 }
 async function transformBasesEntries(entries, settings, sortMethod, isShuffled, snippets, images, hasImageAvailable, app, mdxFrontmatterCache) {
@@ -3112,6 +3165,18 @@ var PropertyRenderer = class {
         }
       });
     }
+    if ((position === "bottom" || position === void 0) && card.toolbarValues && card.toolbarValues.length > 0) {
+      const toolbarEl = cardEl.createDiv("card-properties properties-bottom properties-toolbar");
+      for (const { property, value } of card.toolbarValues) {
+        const displayValue = maxLen > 0 && value != null && value.length > maxLen ? value.slice(0, maxLen) + "\u2026" : value;
+        if (shouldHideProperty(property, displayValue)) continue;
+        const rowEl = toolbarEl.createDiv("property-row");
+        const fieldEl = rowEl.createDiv("property-field property-field-1");
+        this.renderPropertyContent(fieldEl, property, displayValue, card, entry, settings, onPropertyToggle);
+        if (!fieldEl.hasChildNodes()) rowEl.remove();
+      }
+      if (!toolbarEl.hasChildNodes()) toolbarEl.remove();
+    }
   }
   /**
    * Renders individual property content
@@ -3233,7 +3298,9 @@ var PropertyRenderer = class {
         metaContent.addClass("is-checkbox-prop");
         const checkbox = metaContent.createEl("input", { type: "checkbox" });
         checkbox.checked = entryValue && "data" in entryValue ? Boolean(entryValue.data) : false;
-        metaContent.createSpan({ text: propertyLabel });
+        if (settings.propertyLabels === "hide") {
+          metaContent.createSpan({ text: propertyLabel });
+        }
         checkbox.addEventListener("change", (e) => {
           e.stopPropagation();
           const checked = checkbox.checked;
@@ -3254,7 +3321,7 @@ var PropertyRenderer = class {
         this.renderPropertyValueWithLinks(textWrapper, resolvedValue, card.path, propertyName);
       }
     }
-    if (!metaContent.textContent || metaContent.textContent.trim().length === 0) {
+    if (!metaContent.hasClass("is-checkbox-prop") && (!metaContent.textContent || metaContent.textContent.trim().length === 0)) {
       metaContent.remove();
     }
   }
@@ -3493,6 +3560,12 @@ var SharedCardRenderer = class {
     } else if (settings.imageFormat === "thumbnail") {
       cardEl.classList.add("image-format-thumbnail");
       cardEl.classList.add(`thumbnail-${settings.imagePosition}`);
+    }
+    if (settings.imageFit === "contain") {
+      cardEl.classList.add("image-fit-contain");
+    }
+    if (settings.wrapPropertyText) {
+      cardEl.classList.add("wrap-property-text");
     }
     cardEl.setAttribute("data-path", card.path);
     cardEl.setAttribute("data-href", card.path);
@@ -3741,7 +3814,7 @@ var SharedCardRenderer = class {
           })();
           imageEmbedContainer.style.backgroundImage = `url("${originalUrl}")`;
           setCssProps(imageEmbedContainer, {
-            backgroundSize: "cover",
+            backgroundSize: settings.imageFit,
             backgroundPosition: "center center",
             backgroundRepeat: "no-repeat"
           });
@@ -3813,7 +3886,7 @@ var SharedCardRenderer = class {
             })();
             imageEmbedContainer.style.backgroundImage = `url("${originalUrl}")`;
             setCssProps(imageEmbedContainer, {
-              backgroundSize: "cover",
+              backgroundSize: settings.imageFit,
               backgroundPosition: "center center",
               backgroundRepeat: "no-repeat"
             });
@@ -5970,6 +6043,9 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
       descriptionMaxLength: initialSettings.descriptionMaxLength,
       imageProperty: initialSettings.imageProperty,
       imageFormat: initialSettings.imageFormat,
+      imageFit: initialSettings.imageFit,
+      wrapPropertyText: initialSettings.wrapPropertyText,
+      toolbarProperties: initialSettings.toolbarProperties,
       fallbackToEmbeds: initialSettings.fallbackToEmbeds,
       propertyDisplay1: initialSettings.propertyDisplay1,
       propertyDisplay2: initialSettings.propertyDisplay2,
@@ -5988,6 +6064,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
       propertyDisplayMaxLength: initialSettings.propertyDisplayMaxLength
     };
     this.settingsPollInterval = window.setInterval(() => {
+      var _a;
       if (!this.config || typeof this.config.get !== "function") {
         return;
       }
@@ -5998,7 +6075,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
       if (!this.lastSettings) {
         return;
       }
-      const settingsChanged = this.lastSettings.descriptionProperty !== currentSettings.descriptionProperty || this.lastSettings.showTextPreview !== currentSettings.showTextPreview || this.lastSettings.fallbackToContent !== currentSettings.fallbackToContent || this.lastSettings.richContentPreview !== currentSettings.richContentPreview || this.lastSettings.truncatePreviewProperty !== currentSettings.truncatePreviewProperty || this.lastSettings.descriptionMaxLength !== currentSettings.descriptionMaxLength || this.lastSettings.imageProperty !== currentSettings.imageProperty || this.lastSettings.imageFormat !== currentSettings.imageFormat || this.lastSettings.fallbackToEmbeds !== currentSettings.fallbackToEmbeds || this.lastSettings.propertyDisplay1 !== currentSettings.propertyDisplay1 || this.lastSettings.propertyDisplay2 !== currentSettings.propertyDisplay2 || this.lastSettings.propertyDisplay3 !== currentSettings.propertyDisplay3 || this.lastSettings.propertyDisplay4 !== currentSettings.propertyDisplay4 || this.lastSettings.propertyDisplay5 !== currentSettings.propertyDisplay5 || this.lastSettings.propertyDisplay6 !== currentSettings.propertyDisplay6 || this.lastSettings.propertyDisplay7 !== currentSettings.propertyDisplay7 || this.lastSettings.propertyDisplay8 !== currentSettings.propertyDisplay8 || this.lastSettings.propertyDisplay9 !== currentSettings.propertyDisplay9 || this.lastSettings.propertyDisplay10 !== currentSettings.propertyDisplay10 || this.lastSettings.propertyDisplay11 !== currentSettings.propertyDisplay11 || this.lastSettings.propertyDisplay12 !== currentSettings.propertyDisplay12 || this.lastSettings.propertyDisplay13 !== currentSettings.propertyDisplay13 || this.lastSettings.propertyDisplay14 !== currentSettings.propertyDisplay14 || this.lastSettings.propertyDisplayMaxLength !== currentSettings.propertyDisplayMaxLength;
+      const settingsChanged = this.lastSettings.descriptionProperty !== currentSettings.descriptionProperty || this.lastSettings.showTextPreview !== currentSettings.showTextPreview || this.lastSettings.fallbackToContent !== currentSettings.fallbackToContent || this.lastSettings.richContentPreview !== currentSettings.richContentPreview || this.lastSettings.truncatePreviewProperty !== currentSettings.truncatePreviewProperty || this.lastSettings.descriptionMaxLength !== currentSettings.descriptionMaxLength || this.lastSettings.imageProperty !== currentSettings.imageProperty || this.lastSettings.imageFormat !== currentSettings.imageFormat || this.lastSettings.imageFit !== currentSettings.imageFit || this.lastSettings.wrapPropertyText !== currentSettings.wrapPropertyText || ((_a = this.lastSettings.toolbarProperties) == null ? void 0 : _a.join("|")) !== currentSettings.toolbarProperties.join("|") || this.lastSettings.fallbackToEmbeds !== currentSettings.fallbackToEmbeds || this.lastSettings.propertyDisplay1 !== currentSettings.propertyDisplay1 || this.lastSettings.propertyDisplay2 !== currentSettings.propertyDisplay2 || this.lastSettings.propertyDisplay3 !== currentSettings.propertyDisplay3 || this.lastSettings.propertyDisplay4 !== currentSettings.propertyDisplay4 || this.lastSettings.propertyDisplay5 !== currentSettings.propertyDisplay5 || this.lastSettings.propertyDisplay6 !== currentSettings.propertyDisplay6 || this.lastSettings.propertyDisplay7 !== currentSettings.propertyDisplay7 || this.lastSettings.propertyDisplay8 !== currentSettings.propertyDisplay8 || this.lastSettings.propertyDisplay9 !== currentSettings.propertyDisplay9 || this.lastSettings.propertyDisplay10 !== currentSettings.propertyDisplay10 || this.lastSettings.propertyDisplay11 !== currentSettings.propertyDisplay11 || this.lastSettings.propertyDisplay12 !== currentSettings.propertyDisplay12 || this.lastSettings.propertyDisplay13 !== currentSettings.propertyDisplay13 || this.lastSettings.propertyDisplay14 !== currentSettings.propertyDisplay14 || this.lastSettings.propertyDisplayMaxLength !== currentSettings.propertyDisplayMaxLength;
       if (settingsChanged) {
         if (this.lastSettings.descriptionProperty !== currentSettings.descriptionProperty || this.lastSettings.showTextPreview !== currentSettings.showTextPreview || this.lastSettings.fallbackToContent !== currentSettings.fallbackToContent || this.lastSettings.richContentPreview !== currentSettings.richContentPreview || this.lastSettings.truncatePreviewProperty !== currentSettings.truncatePreviewProperty || this.lastSettings.descriptionMaxLength !== currentSettings.descriptionMaxLength) {
           this.snippets = {};
@@ -6016,6 +6093,9 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
           descriptionMaxLength: currentSettings.descriptionMaxLength,
           imageProperty: currentSettings.imageProperty,
           imageFormat: currentSettings.imageFormat,
+          imageFit: currentSettings.imageFit,
+          wrapPropertyText: currentSettings.wrapPropertyText,
+          toolbarProperties: currentSettings.toolbarProperties,
           fallbackToEmbeds: currentSettings.fallbackToEmbeds,
           propertyDisplay1: currentSettings.propertyDisplay1,
           propertyDisplay2: currentSettings.propertyDisplay2,
@@ -6217,7 +6297,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
       })();
       imageEmbedContainer.style.backgroundImage = `url("${url}")`;
       setCssProps(imageEmbedContainer, {
-        backgroundSize: "cover",
+        backgroundSize: cardEl.classList.contains("image-fit-contain") ? "contain" : "cover",
         backgroundPosition: "center center",
         backgroundRepeat: "no-repeat"
       });
@@ -7007,3 +7087,5 @@ var BasesCMSPlugin = class extends import_obsidian24.Plugin {
     }, this.settings.embeddedViewRefreshDebounceMs);
   }
 };
+
+/* nosourcemap */

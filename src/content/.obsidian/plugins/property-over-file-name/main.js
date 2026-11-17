@@ -93,6 +93,13 @@ async function buildFileCache(files, metadataCache, app, propertyKey, settings) 
   const { getFrontmatter: getFrontmatter2 } = await Promise.resolve().then(() => (init_frontmatter(), frontmatter_exports));
   await Promise.all(files.map(async (file) => {
     if (!isFileTypeSupported(file.extension, settings)) {
+      cache.set(file.path, {
+        file,
+        displayName: file.basename,
+        aliases: [],
+        lastModified: file.stat.mtime,
+        isCustomDisplay: false
+      });
       return;
     }
     let frontmatter;
@@ -199,10 +206,24 @@ var init_QuickSwitchModal = __esm({
         void this.buildFileCache();
         this.updateRecentFiles();
         this.addKeyboardNavigation();
+        this.enableHoverAfterPointerMove();
         this.addFooter();
         if (this.plugin.settings.enableForQuickSwitcher) {
           this.containerEl.addClass("property-over-filename-modal");
         }
+      }
+      /**
+       * Only let hover highlight a row once the pointer has actually moved. If the
+       * switcher opens under a resting cursor, the row beneath it would otherwise
+       * highlight exactly like the keyboard selection and two rows would look
+       * selected at once. Moving the mouse afterwards behaves normally.
+       */
+      enableHoverAfterPointerMove() {
+        const activate = () => {
+          this.containerEl.addClass("pofn-pointer-active");
+          this.containerEl.removeEventListener("mousemove", activate);
+        };
+        this.containerEl.addEventListener("mousemove", activate);
       }
       addKeyboardNavigation() {
         this.inputEl.addEventListener("keydown", (e) => {
@@ -212,6 +233,75 @@ var init_QuickSwitchModal = __esm({
             e.stopPropagation();
           }
         });
+        this.scope.register(["Mod"], "Enter", (evt) => {
+          this.chooseSelected(evt);
+          return false;
+        });
+        this.scope.register(["Mod", "Alt"], "Enter", (evt) => {
+          this.chooseSelected(evt);
+          return false;
+        });
+        this.scope.register(["Shift"], "Enter", (evt) => {
+          this.chooseSelected(evt);
+          return false;
+        });
+        this.scope.register(["Mod", "Shift"], "Enter", (evt) => {
+          this.chooseFromQuery(evt);
+          return false;
+        });
+      }
+      /**
+       * Mod+Shift+Enter opens an exact match in a new tab, and otherwise creates a
+       * note named after the query in a new tab, which is what the core switcher
+       * does. It deliberately ignores the highlighted row: typing "amz" while a
+       * fuzzy result like "Amazing" is highlighted should create "amz", not open
+       * the highlighted note.
+       */
+      chooseFromQuery(evt) {
+        var _a;
+        const query = this.inputEl.value.trim();
+        if (!query) {
+          this.chooseSelected(evt);
+          return;
+        }
+        const existing = this.findExactMatch(query);
+        this.close();
+        if (existing) {
+          void this.app.workspace.getLeaf("tab").openFile(existing);
+          return;
+        }
+        const activeView = this.app.workspace.getActiveViewOfType(import_obsidian4.MarkdownView);
+        const sourcePath = ((_a = activeView == null ? void 0 : activeView.file) == null ? void 0 : _a.path) || "";
+        void this.app.workspace.openLinkText(query, sourcePath, "tab").catch((err) => {
+          const message = err instanceof Error ? err.message : String(err);
+          new import_obsidian4.Notice(`Error creating note: ${message}`);
+        });
+      }
+      /**
+       * A note whose title, file name or alias is exactly the query. The file name
+       * is always checked, even when it is excluded from search, so this can never
+       * create a second note beside one that already carries that name.
+       */
+      findExactMatch(query) {
+        const lower = query.toLowerCase();
+        for (const { file, displayName, aliases } of this.fileCache.values()) {
+          if (displayName.toLowerCase() === lower) return file;
+          if (file.basename.toLowerCase() === lower) return file;
+          if (this.plugin.settings.includeAliasesInSearch && aliases.some((a) => a.toLowerCase() === lower)) return file;
+        }
+        return null;
+      }
+      /**
+       * Hand the highlighted suggestion to onChooseItem along with the real
+       * keyboard event, so the modifier branches there can act on it. `chooser` is
+       * internal to SuggestModal and not in the public typings, so it is accessed
+       * defensively: if it is ever missing the shortcut simply does nothing rather
+       * than throwing inside a key handler.
+       */
+      chooseSelected(evt) {
+        var _a;
+        const chooser = this.chooser;
+        (_a = chooser == null ? void 0 : chooser.useSelectedItem) == null ? void 0 : _a.call(chooser, evt);
       }
       addFooter() {
         const promptContainer = this.containerEl.querySelector(".prompt");
@@ -223,6 +313,7 @@ var init_QuickSwitchModal = __esm({
             { command: "ctrl \u21B5", action: "to open in new tab" },
             { command: "ctrl alt \u21B5", action: "to open to the right" },
             { command: "shift \u21B5", action: "to create" },
+            { command: "ctrl shift \u21B5", action: "to create in new tab" },
             { command: "esc", action: "to dismiss" }
           ];
           instructions.forEach(({ command, action }) => {
@@ -245,6 +336,13 @@ var init_QuickSwitchModal = __esm({
       async updateFileCache(file) {
         const { getFrontmatter: getFrontmatter2, isFileTypeSupported: isFileTypeSupported2 } = await Promise.resolve().then(() => (init_frontmatter(), frontmatter_exports));
         if (!isFileTypeSupported2(file.extension, this.plugin.settings)) {
+          this.fileCache.set(file.path, {
+            file,
+            displayName: file.basename,
+            aliases: [],
+            lastModified: file.stat.mtime,
+            isCustomDisplay: false
+          });
           return;
         }
         const frontmatter = await getFrontmatter2(this.app, file, this.plugin.settings);
@@ -272,7 +370,7 @@ var init_QuickSwitchModal = __esm({
         });
       }
       updateRecentFiles() {
-        var _a, _b;
+        var _a, _b, _c;
         let recentFiles = [];
         const workspace = this.app.workspace;
         const quickSwitcherOptions = this.getQuickSwitcherOptions();
@@ -289,9 +387,10 @@ var init_QuickSwitchModal = __esm({
         if (behavior !== "ignore") {
           recentFiles = recentFiles.filter((file) => !isExcluded(file, this.app));
         }
-        if (!showAttachments) {
+        const showAllFileTypes = (_c = quickSwitcherOptions == null ? void 0 : quickSwitcherOptions.showAllFileTypes) != null ? _c : false;
+        if (!showAllFileTypes) {
           recentFiles = recentFiles.filter(
-            (file) => file.extension === "md" || file.extension === "mdx" && this.plugin.settings.enableMdxSupport
+            (file) => showAttachments ? this.isNoteFile(file) || this.isAttachment(file) : this.isNoteFile(file)
           );
         }
         const targetCount = 8;
@@ -302,11 +401,7 @@ var init_QuickSwitchModal = __esm({
             const additionalFiles = allFiles.filter((file) => !existingPaths.has(file.path)).slice(0, targetCount - recentFiles.length);
             recentFiles.push(...additionalFiles);
           } else {
-            const allMarkdownFiles = this.app.vault.getMarkdownFiles();
-            const mdxFiles = this.plugin.settings.enableMdxSupport ? this.app.vault.getFiles().filter(
-              (f) => f instanceof import_obsidian4.TFile && f.extension === "mdx"
-            ) : [];
-            const allSupportedFiles = [...allMarkdownFiles, ...mdxFiles];
+            const allSupportedFiles = this.app.vault.getFiles().filter((f) => f instanceof import_obsidian4.TFile && this.isNoteFile(f));
             const behavior2 = this.plugin.settings.quickSwitcherExcludedBehavior;
             const additionalFiles = allSupportedFiles.filter((file) => !existingPaths.has(file.path)).filter((file) => behavior2 === "ignore" || !isExcluded(file, this.app)).slice(0, targetCount - recentFiles.length);
             recentFiles.push(...additionalFiles);
@@ -319,20 +414,26 @@ var init_QuickSwitchModal = __esm({
       }
       getFilteredFiles() {
         const quickSwitcherOptions = this.getQuickSwitcherOptions();
-        let files = this.app.vault.getMarkdownFiles();
-        if (this.plugin.settings.enableMdxSupport) {
-          const mdxFiles = this.app.vault.getFiles().filter(
-            (f) => f instanceof import_obsidian4.TFile && f.extension === "mdx"
-          );
-          files = [...files, ...mdxFiles];
-        }
-        if (quickSwitcherOptions == null ? void 0 : quickSwitcherOptions.showAttachments) {
-          const allFiles = this.app.vault.getFiles().filter((file) => file instanceof import_obsidian4.TFile);
-          files = allFiles.filter(
-            (file) => file instanceof import_obsidian4.TFile && (file.extension === "md" || file.extension === "mdx" && this.plugin.settings.enableMdxSupport || this.isAttachment(file))
+        let files = this.app.vault.getFiles().filter((f) => f instanceof import_obsidian4.TFile && this.isNoteFile(f));
+        if (quickSwitcherOptions == null ? void 0 : quickSwitcherOptions.showAllFileTypes) {
+          files = this.app.vault.getFiles().filter((file) => file instanceof import_obsidian4.TFile);
+        } else if (quickSwitcherOptions == null ? void 0 : quickSwitcherOptions.showAttachments) {
+          files = this.app.vault.getFiles().filter(
+            (file) => file instanceof import_obsidian4.TFile && (this.isNoteFile(file) || this.isAttachment(file))
           );
         }
         return files;
+      }
+      /**
+       * What the core switcher lists by default, which is notes only. Canvas and
+       * base files are not included here on purpose: core treats them as other
+       * file types and reveals them through "Show all file types", so listing them
+       * unconditionally would show more than core does.
+       */
+      isNoteFile(file) {
+        const ext = file.extension.toLowerCase();
+        if (ext === "md") return true;
+        return ext === "mdx" && this.plugin.settings.enableMdxSupport;
       }
       isAttachment(file) {
         const attachmentExtensions = ["png", "jpg", "jpeg", "gif", "svg", "webp", "pdf", "mp4", "mp3", "wav", "ogg", "webm"];
@@ -437,45 +538,40 @@ var init_QuickSwitchModal = __esm({
             matchedInFilename: false,
             matchedInAlias: false
           };
-          let primaryMatch = null;
-          let bestMatch = null;
-          let matchType = null;
+          const candidates = [];
           if (isCustomDisplay) {
-            primaryMatch = search(displayName);
-            if (primaryMatch && primaryMatch.matches.length > 0) {
-              matchReason.matchedInTitle = true;
-              bestMatch = primaryMatch;
-              matchType = "title";
+            const titleMatch = search(displayName);
+            if (titleMatch && titleMatch.matches.length > 0) {
+              candidates.push({ type: "title", result: titleMatch });
             }
           }
-          if (!matchType) {
-            if (this.plugin.settings.includeFilenameInSearch && file.basename !== displayName) {
-              const filenameMatch = search(file.basename);
-              if (filenameMatch && filenameMatch.matches.length > 0) {
-                matchReason.matchedInFilename = true;
-                bestMatch = { ...filenameMatch, score: filenameMatch.score - 1 };
-                matchType = "filename";
-              }
-            } else if (!isCustomDisplay) {
-              const filenameMatch = search(file.basename);
-              if (filenameMatch && filenameMatch.matches.length > 0) {
-                matchReason.matchedInFilename = true;
-                bestMatch = filenameMatch;
-                matchType = "filename";
-              }
+          if (this.plugin.settings.includeFilenameInSearch || !isCustomDisplay) {
+            const filenameMatch = search(file.basename);
+            if (filenameMatch && filenameMatch.matches.length > 0) {
+              candidates.push({ type: "filename", result: { ...filenameMatch, score: filenameMatch.score - 1 } });
             }
           }
-          if (!matchType && this.plugin.settings.includeAliasesInSearch && aliases.length > 0) {
+          if (this.plugin.settings.includeAliasesInSearch) {
             for (const alias of aliases) {
               const aliasMatch = search(alias);
               if (aliasMatch && aliasMatch.matches.length > 0) {
-                matchReason.matchedInAlias = true;
-                matchReason.matchedAliasText = alias;
-                bestMatch = { ...aliasMatch, score: aliasMatch.score - 1 };
-                matchType = "alias";
-                break;
+                candidates.push({ type: "alias", result: { ...aliasMatch, score: aliasMatch.score - 1 }, alias });
               }
             }
+          }
+          const pathSearch = (0, import_obsidian4.prepareSimpleSearch)(searchQuery);
+          const pathMatch = pathSearch(file.path);
+          if (pathMatch && pathMatch.matches.length > 0) {
+            candidates.push({ type: "filename", result: { ...pathMatch, score: pathMatch.score - 3 } });
+          }
+          let bestMatch = null;
+          for (const candidate of candidates) {
+            if (bestMatch && candidate.result.score <= bestMatch.score) continue;
+            bestMatch = candidate.result;
+            matchReason.matchedInTitle = candidate.type === "title";
+            matchReason.matchedInFilename = candidate.type === "filename";
+            matchReason.matchedInAlias = candidate.type === "alias";
+            matchReason.matchedAliasText = candidate.type === "alias" ? candidate.alias : void 0;
           }
           if (bestMatch && bestMatch.matches.length > 0) {
             if (!searchQuery) {
@@ -609,13 +705,13 @@ var init_QuickSwitchModal = __esm({
           const cachedData = this.fileCache.get(item.path);
           const isCustomDisplay = (_a = cachedData == null ? void 0 : cachedData.isCustomDisplay) != null ? _a : false;
           const matchReason = this.matchReasons.get(item.path);
-          if (!isCustomDisplay && (matchReason == null ? void 0 : matchReason.matchedInAlias) && matchReason.matchedAliasText) {
+          if ((matchReason == null ? void 0 : matchReason.matchedInAlias) && matchReason.matchedAliasText) {
             el.addClass("mod-complex");
             const suggestionContent = el.createDiv({ cls: "suggestion-content" });
             const titleEl = suggestionContent.createDiv({ cls: "suggestion-title" });
             titleEl.setText(matchReason.matchedAliasText);
             const pathEl = suggestionContent.createDiv({ cls: "suggestion-note" });
-            pathEl.setText(item.path.replace(".md", ""));
+            pathEl.setText(item.path);
             const suggestionAux = el.createDiv({ cls: "suggestion-aux" });
             const suggestionFlair = suggestionAux.createSpan({
               cls: "suggestion-flair",
@@ -630,7 +726,7 @@ var init_QuickSwitchModal = __esm({
               const titleEl = suggestionContent.createDiv({ cls: "suggestion-title" });
               titleEl.setText(text);
               const pathEl = suggestionContent.createDiv({ cls: "suggestion-note" });
-              pathEl.setText(item.path.replace(".md", ""));
+              pathEl.setText(item.path);
               const suggestionAux = el.createDiv({ cls: "suggestion-aux" });
               const suggestionFlair = suggestionAux.createSpan({
                 cls: "suggestion-flair",
@@ -649,7 +745,7 @@ var init_QuickSwitchModal = __esm({
               const titleEl = suggestionContent.createDiv({ cls: "suggestion-title" });
               titleEl.setText(text);
               const pathEl = suggestionContent.createDiv({ cls: "suggestion-note" });
-              pathEl.setText(item.path.replace(".md", ""));
+              pathEl.setText(item.path);
               const suggestionAux = el.createDiv({ cls: "suggestion-aux" });
               const suggestionFlair = suggestionAux.createSpan({
                 cls: "suggestion-flair",
@@ -658,7 +754,10 @@ var init_QuickSwitchModal = __esm({
               this.createTypeIcon(suggestionFlair);
             }
           } else {
-            el.setText(text);
+            el.addClass("mod-complex");
+            const suggestionContent = el.createDiv({ cls: "suggestion-content" });
+            suggestionContent.createDiv({ cls: "suggestion-title" }).setText(text);
+            suggestionContent.createDiv({ cls: "suggestion-note" }).setText(item.path);
           }
         }
       }
@@ -817,17 +916,26 @@ var init_QuickSwitchModal = __esm({
         if ("isNewNote" in item) {
           const activeView = this.app.workspace.getActiveViewOfType(import_obsidian4.MarkdownView);
           const sourcePath = ((_b = activeView == null ? void 0 : activeView.file) == null ? void 0 : _b.path) || "";
-          void this.app.workspace.openLinkText(item.newName, sourcePath).catch((err) => {
+          const keyEvent = evt instanceof KeyboardEvent ? evt : null;
+          const createModKey = !!keyEvent && (keyEvent.ctrlKey || keyEvent.metaKey);
+          let newLeaf = false;
+          if (createModKey && (keyEvent == null ? void 0 : keyEvent.altKey)) {
+            newLeaf = "split";
+          } else if (createModKey) {
+            newLeaf = "tab";
+          }
+          void this.app.workspace.openLinkText(item.newName, sourcePath, newLeaf).catch((err) => {
             const message = err instanceof Error ? err.message : String(err);
             new import_obsidian4.Notice(`Error creating note: ${message}`);
           });
         } else if (item instanceof import_obsidian4.TFile) {
+          const modKey = evt instanceof KeyboardEvent && (evt.ctrlKey || evt.metaKey);
           if (evt instanceof KeyboardEvent) {
-            if (evt.ctrlKey && evt.altKey) {
-              const leaf = this.app.workspace.getLeaf(true);
+            if (modKey && evt.altKey) {
+              const leaf = this.app.workspace.getLeaf("split", "vertical");
               void leaf.openFile(item);
-            } else if (evt.ctrlKey) {
-              void this.app.workspace.getLeaf().openFile(item);
+            } else if (modKey) {
+              void this.app.workspace.getLeaf("tab").openFile(item);
             } else if (evt.shiftKey) {
               const activeView = this.app.workspace.getActiveViewOfType(import_obsidian4.MarkdownView);
               const sourcePath = ((_c = activeView == null ? void 0 : activeView.file) == null ? void 0 : _c.path) || "";
@@ -1053,7 +1161,10 @@ var LinkTitleSuggest = class extends import_obsidian2.EditorSuggest {
         const suggestion = {
           file,
           display: displayName,
-          isCustomDisplay
+          isCustomDisplay,
+          // Carry the matched alias through to insertion. The dropdown already
+          // shows it, so selecting it has to produce a link that uses it.
+          matchedAlias: matchType === "alias" ? matchReason.matchedAliasText : void 0
         };
         searchableSuggestions.push({ item: suggestion, match: bestMatch });
         this.matchReasons.set(file.path, matchReason);
@@ -1275,7 +1386,7 @@ var LinkTitleSuggest = class extends import_obsidian2.EditorSuggest {
     return !isUsingCustomProperty && Boolean(aliases);
   }
   selectSuggestion(suggestion, evt) {
-    var _a, _b;
+    var _a, _b, _c;
     if (suggestion.isNoMatch) {
       return;
     }
@@ -1291,24 +1402,14 @@ var LinkTitleSuggest = class extends import_obsidian2.EditorSuggest {
     if (!suggestion.file) {
       return;
     }
-    const vault = this.app.vault;
-    const useMarkdownLinks = (_b = (_a = vault.getConfig) == null ? void 0 : _a.call(vault, "useMarkdownLinks")) != null ? _b : false;
-    let linkText;
-    if (suggestion.isCustomDisplay) {
-      if (useMarkdownLinks) {
-        linkText = `[${suggestion.display}](${encodeURI(suggestion.file.path)})`;
-      } else {
-        const linkPath = suggestion.file.path.replace(".md", "");
-        linkText = `[[${linkPath}|${suggestion.display}]]`;
-      }
-    } else {
-      if (useMarkdownLinks) {
-        linkText = `[${suggestion.file.path.replace(".md", "")}](${encodeURI(suggestion.file.path)})`;
-      } else {
-        const linkPath = suggestion.file.path.replace(".md", "");
-        linkText = `[[${linkPath}]]`;
-      }
-    }
+    const sourcePath = (_b = (_a = activeView.file) == null ? void 0 : _a.path) != null ? _b : "";
+    const alias = (_c = suggestion.matchedAlias) != null ? _c : suggestion.isCustomDisplay ? suggestion.display : void 0;
+    const linkText = this.app.fileManager.generateMarkdownLink(
+      suggestion.file,
+      sourcePath,
+      void 0,
+      alias
+    );
     editor.replaceRange(linkText, { line: start.line, ch: start.ch }, endPos);
     const newCursorPos = start.ch + linkText.length;
     try {
@@ -1884,24 +1985,30 @@ var DragDropService = class {
     this.DROP_DEBOUNCE_MS = 100;
     this.plugin = plugin;
   }
+  /**
+   * Returns true only when this drop is one the plugin claims, so the caller
+   * knows whether to call preventDefault(). A drop of an image or any other
+   * non-note file is not ours, and preventing default on it would stop
+   * Obsidian from embedding the file at all.
+   */
   handleDragDrop(event, editor) {
     const dataTransfer = event.dataTransfer;
     if (!dataTransfer) {
-      return;
+      return false;
     }
-    const filePath = dataTransfer.getData("text/plain");
-    if (!filePath || !filePath.endsWith(".md") && !(filePath.endsWith(".mdx") && this.plugin.settings.enableMdxSupport)) {
-      return;
+    const filePath = this.resolveDroppedNotePath(dataTransfer.getData("text/plain"));
+    if (!filePath) {
+      return false;
     }
     const now = Date.now();
     if (now - this.lastDropTime < this.DROP_DEBOUNCE_MS && this.lastDropData === filePath) {
-      return;
+      return false;
     }
     this.lastDropTime = now;
     this.lastDropData = filePath;
     const file = this.plugin.app.vault.getAbstractFileByPath(filePath);
     if (!file || !(file instanceof import_obsidian6.TFile)) {
-      return;
+      return false;
     }
     if (file.extension === "md") {
       const displayName = this.getDisplayNameSync(file);
@@ -1926,7 +2033,44 @@ var DragDropService = class {
           window.setTimeout(attemptReplace, 150);
         }
       })();
+    } else {
+      return false;
     }
+    return true;
+  }
+  /**
+   * Work out which note a drag payload refers to.
+   *
+   * The payload is not always a bare vault path. Depending on the vault's link
+   * format Obsidian hands over a wikilink, a Markdown link, or an obsidian://
+   * URL, and the previous code required the string to end in .md, so every one
+   * of those forms was rejected and the drag was never handled at all.
+   *
+   * Returns the vault path of the note, or null when the drop is not a note
+   * this plugin should touch.
+   */
+  resolveDroppedNotePath(raw) {
+    if (!raw) return null;
+    let text = raw.trim();
+    if (text.startsWith("obsidian://")) {
+      try {
+        const fileParam = new URL(text).searchParams.get("file");
+        if (fileParam) text = fileParam;
+      } catch (e) {
+        return null;
+      }
+    }
+    const wiki = /^\[\[([^\]|]+)(?:\|[^\]]*)?\]\]$/.exec(text);
+    if (wiki && wiki[1]) text = wiki[1];
+    const md = /^\[[^\]]*\]\(([^)]+)\)$/.exec(text);
+    if (md && md[1]) text = md[1];
+    text = decodeURIComponent(text.trim());
+    if (!text) return null;
+    const resolved = this.plugin.app.metadataCache.getFirstLinkpathDest(text, "");
+    const path = resolved ? resolved.path : text;
+    const isMd = path.endsWith(".md");
+    const isMdx = path.endsWith(".mdx") && this.plugin.settings.enableMdxSupport;
+    return isMd || isMdx ? path : null;
   }
   handleDOMDrop(event) {
     const target = event.target;
@@ -3542,8 +3686,9 @@ var PropertyOverFileNamePlugin = class extends import_obsidian12.Plugin {
       this.app.workspace.on("editor-drop", (event, editor) => {
         if (event.defaultPrevented) return;
         if (this.settings.enableForDragDrop) {
-          this.dragDropService.handleDragDrop(event, editor);
-          event.preventDefault();
+          if (this.dragDropService.handleDragDrop(event, editor)) {
+            event.preventDefault();
+          }
         }
       })
     );

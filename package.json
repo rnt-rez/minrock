@@ -1,7 +1,7 @@
 {
   "name": "minrock",
   "type": "module",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Minimalist, typography-first Astro 7 theme crafted for technical writers and Obsidian vaults. Pure SSG, zero bloat.",
   "engines": {
     "node": ">=22.12.0"
@@ -44,8 +44,8 @@
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",
-    "@astrojs/sitemap": "^3.7.3",
-    "astro": "^7.2.9",
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^7.4.11",
     "photoswipe": "^5.4.4"
   },
   "devDependencies": {

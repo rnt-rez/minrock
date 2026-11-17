@@ -7454,3 +7454,5 @@ var UITweakerPlugin = class extends import_obsidian20.Plugin {
     }
   }
 };
+
+/* nosourcemap */

@@ -915,6 +915,11 @@ body.bases-cms-hide-checkboxes .bases-cms .bases-cms-select-checkbox {
    COVER IMAGE FORMAT
    ============================================ */
 
+/* Letterbox behind a thumbnail shown whole instead of cropped */
+.bases-cms .card.image-fit-contain .card-thumbnail {
+	background-color: var(--background-modifier-border);
+}
+
 .bases-cms .card.image-format-cover {
 	position: relative;
 	overflow: hidden;
@@ -1279,6 +1284,13 @@ body.bases-cms-property-color-custom .bases-cms .property-content {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+}
+
+/* Wrap property text: let values run onto more lines instead of truncating */
+.bases-cms .card.wrap-property-text .property-content .text-wrapper {
+	overflow: visible;
+	text-overflow: clip;
+	white-space: normal;
 }
 
 /* Tags */

@@ -1824,10 +1824,10 @@ var RenameModal = class extends import_obsidian3.Modal {
     const infoList = infoContainer.createEl("ul");
     const originalItem = infoList.createEl("li");
     originalItem.createEl("strong", { text: "Original: " });
-    originalItem.createEl("span", { text: this.imageFile.path });
+    originalItem.createSpan({ text: this.imageFile.path });
     const newItem = infoList.createEl("li");
     newItem.createEl("strong", { text: "New path: " });
-    this.previewEl = newItem.createEl("span", { text: this.getNewPath(this.currentName) });
+    this.previewEl = newItem.createSpan({ text: this.getNewPath(this.currentName) });
   }
   renderNameInput(containerEl) {
     new import_obsidian3.Setting(containerEl).setName("New name").setDesc("Enter a new name for the image (without extension)").addText((text) => {
@@ -1953,10 +1953,10 @@ var DescriptiveImageModal = class extends import_obsidian4.Modal {
     previewContainer.createEl("p", { text: "Preview:" });
     const fileNamePreview = previewContainer.createEl("p");
     fileNamePreview.createEl("strong", { text: "Filename: " });
-    this.fileNamePreviewEl = fileNamePreview.createEl("span");
+    this.fileNamePreviewEl = fileNamePreview.createSpan();
     const linkPreview = previewContainer.createEl("p");
     linkPreview.createEl("strong", { text: "Link: " });
-    this.previewEl = linkPreview.createEl("span", { cls: "code" });
+    this.previewEl = linkPreview.createSpan({ cls: "code" });
     this.errorEl = contentEl.createDiv({ cls: "image-manager-error image-manager-error-hidden" });
     new import_obsidian4.Setting(contentEl).addButton((btn) => {
       btn.setButtonText("Insert").setCta().onClick(() => this.submit());
@@ -2709,6 +2709,25 @@ var PasteHandler = class {
    * Handle editor paste event
    * This is registered via workspace.on('editor-paste')
    */
+  /**
+   * Synchronous mirror of the guards at the top of handleEditorPaste, so the
+   * workspace handler can decide whether to call preventDefault() itself.
+   * preventDefault must be called synchronously, and it must not fire for a
+   * plain text paste, so the decision cannot wait on the async handler.
+   */
+  willHandlePaste(evt) {
+    var _a;
+    if (!this.settings.showRenameDialog || !this.settings.enableRenameOnPaste) return false;
+    const activeEl = activeDocument.activeElement;
+    if (activeEl && this.isFrontmatterField(activeEl)) return false;
+    const files = (_a = evt.clipboardData) == null ? void 0 : _a.files;
+    if (!files || files.length === 0) return false;
+    for (let i = 0; i < files.length; i++) {
+      const f = files.item(i);
+      if (f && f.type.startsWith("image/")) return true;
+    }
+    return false;
+  }
   async handleEditorPaste(evt, editor, view) {
     var _a;
     if (!this.settings.showRenameDialog || !this.settings.enableRenameOnPaste) {
@@ -2920,6 +2939,21 @@ var DropHandler = class {
   /**
    * Handle editor drop event
    */
+  /**
+   * Synchronous mirror of the guards at the top of handleEditorDrop. See
+   * willHandlePaste for why the decision has to be synchronous.
+   */
+  willHandleDrop(evt) {
+    var _a;
+    if (!this.settings.showRenameDialog || !this.settings.enableRenameOnDrop) return false;
+    const files = (_a = evt.dataTransfer) == null ? void 0 : _a.files;
+    if (!files || files.length === 0) return false;
+    for (let i = 0; i < files.length; i++) {
+      const f = files.item(i);
+      if (f && f.type.startsWith("image/")) return true;
+    }
+    return false;
+  }
   async handleEditorDrop(evt, editor, view) {
     var _a;
     if (!this.settings.showRenameDialog || !this.settings.enableRenameOnDrop) {
@@ -4358,7 +4392,7 @@ var RemoteSearchModal = class extends import_obsidian13.Modal {
     this.sizeSelect.value = this.settings.defaultImageSize;
     this.loadingContainer = this.container.createDiv({ cls: "loading-container" });
     const loaderIcon = this.loadingContainer.createDiv({ cls: "loader-icon" });
-    const svg = activeDocument.createElementNS("http://www.w3.org/2000/svg", "svg");
+    const svg = createSvg("svg");
     svg.setAttribute("width", "24");
     svg.setAttribute("height", "24");
     svg.setAttribute("viewBox", "0 0 24 24");
@@ -4368,7 +4402,7 @@ var RemoteSearchModal = class extends import_obsidian13.Modal {
     svg.setAttribute("stroke-linecap", "round");
     svg.setAttribute("stroke-linejoin", "round");
     svg.classList.add("lucide", "lucide-loader-circle");
-    const path = activeDocument.createElementNS("http://www.w3.org/2000/svg", "path");
+    const path = createSvg("path");
     path.setAttribute("d", "M21 12a9 9 0 1 1-6.219-8.56");
     svg.appendChild(path);
     loaderIcon.appendChild(svg);
@@ -4713,16 +4747,18 @@ var ImageManagerPlugin = class extends import_obsidian15.Plugin {
    */
   registerEventHandlers() {
     this.registerEvent(
-      // eslint-disable-next-line obsidianmd/editor-drop-paste -- preventDefault is called conditionally inside handleEditorPaste only when an image is handled; unconditional preventDefault here would break normal text paste.
       this.app.workspace.on("editor-paste", (evt, editor, view) => {
         if (evt.defaultPrevented) return;
+        if (!this.pasteHandler.willHandlePaste(evt)) return;
+        evt.preventDefault();
         void this.pasteHandler.handleEditorPaste(evt, editor, view);
       })
     );
     this.registerEvent(
-      // eslint-disable-next-line obsidianmd/editor-drop-paste -- preventDefault is called conditionally inside handleEditorDrop only when an image is handled; unconditional preventDefault here would break normal drag-and-drop.
       this.app.workspace.on("editor-drop", (evt, editor, view) => {
         if (evt.defaultPrevented) return;
+        if (!this.dropHandler.willHandleDrop(evt)) return;
+        evt.preventDefault();
         void this.dropHandler.handleEditorDrop(evt, editor, view);
       })
     );
@@ -4950,3 +4986,5 @@ var ImageManagerPlugin = class extends import_obsidian15.Plugin {
     }
   }
 };
+
+/* nosourcemap */

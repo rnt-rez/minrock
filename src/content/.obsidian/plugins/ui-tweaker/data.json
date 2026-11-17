@@ -224,6 +224,13 @@
       "ariaLabel": "Mostrar filtro de busca",
       "type": "external",
       "hidden": false
+    },
+    {
+      "id": "external-expandir-tudo",
+      "name": "Expandir tudo",
+      "ariaLabel": "Expandir tudo",
+      "type": "external",
+      "hidden": false
     }
   ],
   "nativeExplorerButtonColors": {},

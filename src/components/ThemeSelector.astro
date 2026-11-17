@@ -310,8 +310,9 @@
       }
     }
 
-    // Initialize UI on mount
+    // Initialize UI on mount and ensure resolved effective theme (handles 'auto' cleanly)
     const saved = localStorage.getItem('minrock_theme') || 'cream';
+    document.documentElement.setAttribute('data-theme', getEffectiveTheme(saved));
     updateThemeUI(saved);
 
     // Toggle dropdown

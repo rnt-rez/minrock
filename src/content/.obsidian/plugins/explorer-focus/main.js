@@ -154,13 +154,15 @@ function patchFileExplorer(plugin) {
   }
   fileExplorer.fileExplorerPlusPatched = true;
 }
+function isReady(leaf) {
+  return !leaf.isDeferred;
+}
 function getFileExplorer(plugin) {
-  var _a;
-  const fileExplorerContainer = (_a = plugin.app.workspace.getLeavesOfType("file-explorer")) == null ? void 0 : _a.first();
+  const fileExplorerContainer = plugin.app.workspace.getLeavesOfType("file-explorer").find(isReady);
   return fileExplorerContainer == null ? void 0 : fileExplorerContainer.view;
 }
 function getAllFileExplorers(plugin) {
-  const fileExplorerLeaves = plugin.app.workspace.getLeavesOfType("file-explorer");
+  const fileExplorerLeaves = plugin.app.workspace.getLeavesOfType("file-explorer").filter(isReady);
   return fileExplorerLeaves.map((leaf) => leaf.view);
 }
 
@@ -905,3 +907,5 @@ var ExplorerFocusPlugin = class extends import_obsidian5.Plugin {
   }
 };
 var main_default = ExplorerFocusPlugin;
+
+/* nosourcemap */

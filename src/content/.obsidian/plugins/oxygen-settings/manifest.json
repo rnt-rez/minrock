@@ -1,7 +1,7 @@
 {
 	"id": "oxygen-settings",
 	"name": "Oxygen Theme Settings",
-	"version": "0.3.13",
+	"version": "0.3.15",
 	"minAppVersion": "1.11.0",
 	"description": "Configure advanced customization options in Oxygen Theme.",
 	"author": "David V. Kimball",

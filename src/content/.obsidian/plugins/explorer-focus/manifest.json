@@ -1,7 +1,7 @@
 {
 	"id": "explorer-focus",
 	"name": "Explorer Focus",
-	"version": "0.2.2",
+	"version": "0.2.5",
 	"minAppVersion": "1.11.0",
 	"description": "Focus on a specific file or folder in the file explorer.",
 	"author": "David V. Kimball",

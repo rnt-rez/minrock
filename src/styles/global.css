@@ -367,9 +367,16 @@ hr {
 /* ─── Google Translate UI Fixes (Prevents layout shift) ─── */
 .goog-te-banner-frame.skiptranslate,
 .goog-te-banner-frame,
-iframe.goog-te-banner-frame {
+iframe.goog-te-banner-frame,
+.VIpgJd-ZVi9od-ORHb-OEVmcd,
+iframe.VIpgJd-ZVi9od-ORHb-OEVmcd,
+body > .skiptranslate:not(#google_translate_element) {
   display: none !important;
   visibility: hidden !important;
+  height: 0 !important;
+  width: 0 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
 }
 
 body {
@@ -378,11 +385,18 @@ body {
 }
 
 .goog-tooltip,
-.goog-tooltip:hover {
+.goog-tooltip:hover,
+.VIpgJd-ZVi9od-aZ2wEe-wOHMyf {
   display: none !important;
 }
 
 .goog-text-highlight {
   background-color: transparent !important;
   box-shadow: none !important;
+}
+
+#goog-gt-tt,
+#goog-gt-vt,
+.goog-te-balloon-frame {
+  display: none !important;
 }

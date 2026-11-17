@@ -3,17 +3,49 @@
 /* Hide navbar */
 .zenmode-active .mobile-navbar,
 .zenmode-active .pdf-toolbar,
-/* Mobile view header */
-.zenmode-active div.app-container>div.horizontal-main-container>div>div.workspace-split.mod-vertical.mod-root.mod-visible>div>div.workspace-tab-container>div>div>div.view-header,
 /* Desktop view header */
 .zenmode-active .view-header-nav-buttons,
 .zenmode-active div.workspace-ribbon.side-dock-ribbon.mod-left,
-.zenmode-active div.workspace-tab-container>div>div>div.view-header,
+/* Obsidian 1.14+ names the left ribbon .mod-primary */
+.zenmode-active div.workspace-ribbon.side-dock-ribbon.mod-primary,
+/* Markdown headers stay focusable for Obsidian's rename requests. */
+.zenmode-active .workspace-leaf-content:not([data-type="markdown"]) > .view-header,
 /* Hide tooltips */
 .zenmode-active .tooltip,
-/* Hide status bar - conditional based on hideStatusBar setting (like UI Tweaker) */
-.zenmode-hide-status-bar .status-bar {
-	display: none !important;
+/* Hide status bar - conditional based on hideStatusBar setting */
+body.zenmode-hide-status-bar .status-bar {
+	display: none;
+}
+
+/* Obsidian checks titleEl.offsetParent before focusing a title. Using display:
+   none here causes URI `new` actions (including append) to open a rename dialog
+   when the inline title is unavailable. Collapse the header instead, and let
+   Obsidian's normal header styling return while its title is focused. */
+.zenmode-active .workspace-leaf-content[data-type="markdown"] > .view-header {
+	display: flex;
+	flex-shrink: 0;
+}
+
+/* Phones normally hide this container when inline titles are enabled, even
+   when Zen Mode's hide-inline-title option makes that title unavailable. */
+.zenmode-active
+	.workspace-leaf-content[data-type="markdown"]
+	> .view-header
+	> .view-header-title-container {
+	display: flex;
+}
+
+.zenmode-active
+	.workspace-leaf-content[data-type="markdown"]
+	> .view-header:not(:has(.view-header-title:focus)) {
+	height: 0;
+	min-height: 0;
+	padding-block: 0;
+	margin-block: 0;
+	border-block-width: 0;
+	overflow: hidden;
+	opacity: 0;
+	pointer-events: none;
 }
 
 /* Hide sidebar buttons */
@@ -42,7 +74,7 @@ body.hider-vault:not(.is-mobile)
 	padding-left: var(--frame-left-space);
 }
 
-/* Hide properties - conditional based on hideProperties setting (exactly like Hider plugin) */
+/* Hide properties - conditional based on hideProperties setting */
 .zenmode-hide-properties .markdown-reading-view .metadata-container {
 	display: none;
 }
@@ -65,35 +97,14 @@ body.hider-vault:not(.is-mobile)
 }
 
 /* Focused file mode - handled by JavaScript, but add CSS as backup */
-.zenmode-active[data-zen-focused-file="true"] .workspace-leaf:not(.mod-active) {
-	display: none !important;
-}
-
-/* Hide scrollbars */
-.hider-scroll ::-webkit-scrollbar {
+body.zenmode-active[data-zen-focused-file="true"]
+	.workspace-leaf:not(.mod-active) {
 	display: none;
 }
 
-/* Hide search suggestions */
-.hider-search-suggestions .suggestion-container.mod-search-suggestion {
-	display: none;
-}
-
-/* Draggable strip (leave OS window buttons untouched) */
+/* Hide the titlebar completely in zen mode */
 body:not(.is-mobile).zenmode-active .titlebar {
-	display: block !important;
-	position: fixed !important;
-	top: 0 !important;
-	left: 0 !important;
-	width: 100% !important;
-	z-index: 10 !important;
-	background: transparent !important;
-	-webkit-app-region: drag !important;
-}
-
-/* Make interactive elements inside titlebar not draggable */
-body:not(.is-mobile).zenmode-active .titlebar * {
-	-webkit-app-region: no-drag !important;
+	display: none;
 }
 
 .zenmode-button {
@@ -129,7 +140,6 @@ body:not(.is-mobile) .zenmode-button-auto-hide {
 }
 
 /* Reveal button on hover - works when hovering anywhere in the expanded area */
-/* Use specific selector to override fade-out state when hovering */
 body:not(.is-mobile) .zenmode-button-auto-hide:hover,
 body:not(.is-mobile) .zenmode-button-auto-hide.zenmode-button-fade-out:hover {
 	opacity: 1;
@@ -144,7 +154,6 @@ body:not(.is-mobile)
 }
 
 /* Initial highlight animation when entering Zen mode with auto-hide enabled */
-/* Use higher specificity to override auto-hide base state */
 body:not(.is-mobile)
 	.zenmode-button-auto-hide.zenmode-button-initial-highlight {
 	opacity: 1;
@@ -156,17 +165,14 @@ body:not(.is-mobile)
 
 @keyframes zenmode-button-highlight {
 	0% {
-		/* Start with a slightly brighter shadow for a subtle pulse effect */
 		box-shadow: 0 2px 12px var(--background-modifier-border);
 	}
 
 	50% {
-		/* Maintain the standard shadow for the first half of the animation */
 		box-shadow: 0 2px 8px var(--background-modifier-border);
 	}
 
 	100% {
-		/* Fade out completely */
 		box-shadow: none;
 	}
 }
@@ -179,7 +185,6 @@ body:not(.is-mobile)
 }
 
 /* Fade out after initial highlight */
-/* Use higher specificity to override auto-hide and initial-highlight states */
 body:not(.is-mobile) .zenmode-button-auto-hide.zenmode-button-fade-out {
 	opacity: 0;
 	transition: opacity 0.5s ease-in-out;
@@ -189,28 +194,37 @@ body:not(.is-mobile) .zenmode-button-auto-hide.zenmode-button-fade-out button {
 	box-shadow: none;
 }
 
-/* Button visibility */
-.zenmode-button-visible {
-	display: block !important;
+/* Button visibility - increased specificity avoids need for important */
+.zenmode-button.zenmode-button-visible {
+	display: block;
 }
 
 /* Focused file mode tab container styles */
-.zenmode-tab-hidden {
-	display: none !important;
+.workspace-tabs.zenmode-tab-hidden {
+	display: none;
 }
 
-.zenmode-tab-active {
-	display: block !important;
-	width: 100% !important;
-	flex: 1 1 100% !important;
+.workspace-tabs.zenmode-tab-active {
+	display: block;
+	width: 100%;
+	flex: 1 1 100%;
 }
 
 /* Hide linked mentions - conditional based on hideLinkedMentions setting */
-.zenmode-hide-linked-mentions .embedded-backlinks {
-	display: none !important;
+body.zenmode-hide-linked-mentions .embedded-backlinks {
+	display: none;
 }
 
 /* Hide scroll bars - conditional based on hideScrollBar setting */
-.zenmode-hide-scroll-bar ::-webkit-scrollbar {
-	display: none !important;
+body.zenmode-hide-scroll-bar ::-webkit-scrollbar {
+	display: none;
+}
+
+/* Hide spellcheck - conditional based on hideSpellcheck setting */
+body.zenmode-hide-spellcheck ::spelling-error,
+body.zenmode-hide-spellcheck ::grammar-error {
+	text-decoration: none;
+}
+body.zenmode-hide-spellcheck .cm-spell-error {
+	text-decoration: none;
 }

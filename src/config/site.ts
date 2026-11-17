@@ -1,3 +1,4 @@
+/** @access public - generic open-source template config (neutral defaults only) */
 /**
  * Granular Feature Flags ("Complete by default, minimalist on demand")
  *
@@ -51,7 +52,7 @@ export interface SiteConfig {
     provider: 'scatterleaf';
     repo: string;
     category?: string;
-    theme?: 'auto' | 'light' | 'dark' | 'cream' | 'midnight' | 'slate';
+    theme?: 'auto' | 'light' | 'dark' | 'cream' | 'midnight' | 'slate' | 'white' | 'clean-white';
     lang?: string;
     broker?: string;
     clientId?: string;

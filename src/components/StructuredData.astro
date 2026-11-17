@@ -53,6 +53,7 @@ const schema =
           name: siteConfig.author,
         },
       };
+const safeJsonLd = (data: unknown) => JSON.stringify(data).replace(/</g, '\\u003c');
 ---
 
-<script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
+<script is:inline type="application/ld+json" set:html={safeJsonLd(schema)} />
